@@ -1,0 +1,31 @@
+<? version="1.0 encoding="UTF-8" ?>
+<contactos>
+	<!-- attribute (agenda) acepta profesional o personal -->
+	<contacto agenda="profesional">
+		<telefonos>
+	<!-- label telefono singular acepta attribute (tipo) casa, movil o trabajo -->
+			<telefono tipo="casa">
+			258741456
+			<telefono/>
+			<telefono tipo="movil">
+			457896123
+			</telefono>
+			<telefono tipo="trabajo">
+			159753456
+			</telefono> 
+		</telefonos>
+	</contacto>	
+	<contacto agenda="personal">
+		<telefonos>
+			<telefono tipo="casa">
+			741456987
+			</telefono>
+			<telefono tipo="movil">
+			478147236
+			<telefono>
+			<telefono tipo="trabajo">
+			159753852
+			</telefono>
+		</telefonos>
+	</contacto>
+<contactos/>

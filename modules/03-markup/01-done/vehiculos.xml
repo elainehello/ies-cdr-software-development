@@ -1,0 +1,25 @@
+<? version="1.0" encoding="UTF-8 ?>
+
+<!-- crear un archivo vehiculos.xml -->
+<!-- tiene varios elementos (vehiculo) en singular-->
+<!-- cada (vehiculo) tiene dos elementos hijos que son -->
+<!-- (nombre) y (velocidad maxima) -->
+<!-- añadir comentarios -->
+<!-- en elemento vehiculo tiene un attributo que se llama (categoria) -->
+<!-- velocidad incluir &gt; mayor de 120 -->
+
+<vehiculos>
+	<vehiculo categoria="deportivo">
+		<nombre>BMW</nombre>
+		<velocidadMaxima>velocidad &gt; 120 </velocidadMaxima>
+	</vehiculo>
+	<vehiculo categoria="descapotable">
+		<nombre>AUDI</nombre>
+		<velocidadMaxima>velocidad &gt; 120</velocidadMaxima>
+	</vehiculo>
+	<vehiculo categoria="paseo">
+		<nombre>Mercedes</nombre>
+		<velocidadMaxima>velocidad &gt; 120</velocidadMaxima>
+	</vehiculo>
+</vehiculos>
+

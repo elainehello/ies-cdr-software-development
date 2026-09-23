@@ -6,7 +6,7 @@
 	<!-- label telefono singular acepta attribute (tipo) casa, movil o trabajo -->
 			<telefono tipo="casa">
 			258741456
-			<telefono/>
+			</telefono>
 			<telefono tipo="movil">
 			457896123
 			</telefono>
@@ -22,7 +22,7 @@
 			</telefono>
 			<telefono tipo="movil">
 			478147236
-			<telefono>
+			</telefono>
 			<telefono tipo="trabajo">
 			159753852
 			</telefono>

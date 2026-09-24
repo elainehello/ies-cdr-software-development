@@ -1,0 +1,34 @@
+<? version="1.0" encoding="UTF-8" ?>
+<pedidos>
+	<pedido id="p1">
+		<cliente>
+			<nombre>Antonio Lopez</nombre>
+			<email>antonio.lopez@gmail.com</email>
+		</cliente>
+		<articulos>
+			<articulo>
+				<nombre>Teclado</nombre>
+				<cantidad>1</cantidad>
+				<precio>29.99</precio>
+			</articulo>
+			<articulo>
+				<nombre>Raton</nombre>
+				<cantidad>2</cantidad>
+				<precio>19.99</precio>
+			</articulo>
+		</articulos>
+	</pedido>
+	<pedido id="p2">
+		<cliente>
+			<nombre>Laura Espejo</nombre>
+			<email>laura.espejo@gmail.com</email>
+		</cliente>
+		<articulos>
+			<articulo>
+				<nombre>Pantalla</nombre>
+				<cantidad>1</cantidad>
+				<precio>199.99</precio>
+			</articulo>
+		</articulos>
+	</pedido>
+</pedidos>

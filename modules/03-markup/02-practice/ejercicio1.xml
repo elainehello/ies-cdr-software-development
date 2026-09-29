@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<listado>
+	<alumno>
+		<datos>
+			<nombre>Alberto Jimenez Lopez</nombre>
+			<direccion></direccion>
+			<fechaNacimiento></fechaNacimiento>
+		</datos>
+		<progenitor tipo="padre">
+			<nombre>Juan Jimenez Lopez</nombre>
+			<documento></documento>
+		</progenitor>
+		<progenitor tipo="madre">
+			<nombre>Elvira Cortes Montes</nombre>
+			<documento></documento>
+		</progenitor>
+		<personaAutorizada>
+			<nombre>Manuel Cortes Sanchez</nombre>
+			<documento></documento>
+		</personaAutorizada>
+		<actividad grupo="iniciación">futbol</actividad>
+		<actividad grupo="avanzado">baloncesto</actividad>
+	</alumno>
+	<alumno>
+		<datos>
+			<nombre>Paula Jovellanos Hernan</nombre>
+			<direccion></direccion>
+			<fechaNacimiento></fechaNacimiento>
+		</datos>
+		<progenitor tipo="madre">
+			<nombre>Elena Garrido Sanz</nombre>
+			<documento></documento>
+		</progenitor>
+		<personaAutorizada>
+			<nombre>Alfonso Gomez Cuesta</nombre>
+			<documento></documento>
+		</personaAutorizada>
+		<actividad grupo="iniciacion">futbol</actividad>
+		<actividad grupo="iniciacion">informatica</actividad>
+	</alumno>
+	<alumno>
+		<datos>
+			<nombre>Antonio Norma Flores</nombre>
+			<direccion></direccion>
+			<fechaNacimiento></fechaNacimiento>
+		</datos>
+		<tutoriaLegal>
+			<nombre>Ana Maria Gil Gil</nombre>
+			<documento></documento>
+		</tutoriaLegal>
+		<actividad grupo="avanzado">informatica</actividad>
+		<actividad grupo="avanzado">baloncesto</actividad>
+	</alumno>
+</listado>

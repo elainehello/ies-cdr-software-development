@@ -1,0 +1,282 @@
+================================================================
+ ACTIVIDAD: PRUEBAS DE USABILIDAD CON POCOS RECURSOS
+ Unidad 9 - Técnicas de evaluación (Test de usuarios)
+================================================================
+
+Autora: Elaine Parra Valles
+Fecha:  28/09/2026
+
+
+----------------------------------------------------------------
+ a) WEB SELECCIONADA
+----------------------------------------------------------------
+
+URL: https://www.renfe.com
+
+Motivo: web de uso cotidiano, con procesos de varios pasos
+(búsqueda, compra, gestión de billetes) y mucha información de
+servicio repartida por el sitio.
+
+
+----------------------------------------------------------------
+ b) y c) LISTA DE 10 PRUEBAS (tarea concreta + tiempo previsto)
+----------------------------------------------------------------
+
+Nota: ninguna tarea requiere pagar. La compra se detiene al
+llegar a la pantalla de pago.
+
+ Nº | Tarea                                                    | Tiempo
+----+----------------------------------------------------------+-------
+ 01 | Buscar los trenes Madrid - Barcelona del próximo viernes | 2 min
+    | y anotar la hora de salida del primer tren de la mañana. |
+ 02 | Iniciar la compra de un billete de ida y vuelta Madrid - | 5 min
+    | Valencia (ida viernes por la tarde, vuelta domingo) y    |
+    | llegar hasta la pantalla de pago sin pagar.              |
+ 03 | Encontrar el precio más barato disponible para un viaje  | 3 min
+    | Madrid - Sevilla en una fecha concreta del próximo mes.  |
+ 04 | Averiguar cuánto equipaje se puede llevar en un tren de  | 2 min
+    | larga distancia.                                         |
+ 05 | Averiguar si se puede viajar con un perro y en qué       | 2 min
+    | condiciones o con qué coste.                             |
+ 06 | Encontrar las condiciones para anular un billete y       | 3 min
+    | cuánto dinero se devuelve.                               |
+ 07 | Encontrar el plano de la red de Cercanías de Madrid.     | 2 min
+ 08 | Encontrar qué descuentos existen para viajeros jóvenes.  | 2 min
+ 09 | Encontrar cómo se solicita asistencia para una persona   | 3 min
+    | con movilidad reducida en la estación.                   |
+ 10 | Encontrar un teléfono o formulario de atención al        | 1 min
+    | cliente.                                                 |
+
+Tiempo total previsto: 25 min por entrevistado.
+
+Códigos de resultado:
+  1 = Realizada dentro del tiempo previsto
+  2 = Realizada fuera del tiempo previsto
+  3 = No se ha podido realizar
+
+
+================================================================
+ ENTREVISTADO 1
+================================================================
+
+d) Nombre: Elaine
+   Fecha: 28/09/2026
+   Navegador: Firefox
+
+e) Resultados
+
+ Nº | Previsto | Real  | Resultado
+----+----------+-------+----------
+ 01 | 2 min    | 0:52  | 1
+ 02 | 5 min    | 2:16  | 1
+ 03 | 3 min    | 1:03  | 1
+ 04 | 2 min    | 1:10  | 1
+ 05 | 2 min    | 2:00+ | 2
+ 06 | 3 min    | 0:38  | 1
+ 07 | 2 min    | 0:55  | 1
+ 08 | 2 min    | 0:47  | 1
+ 09 | 3 min    | 1:11  | 1
+ 10 | 1 min    | 0:35  | 1
+
+Tiempo total: 11:27 aprox. (de 25 min previstos)
+
+Observaciones:
+  - Tarea 05: superó el tiempo previsto.
+
+f) Comentarios del entrevistado sobre la usabilidad:
+  - (sin comentarios registrados)
+
+g) Recomendaciones del entrevistado:
+  - (sin recomendaciones registradas)
+
+
+================================================================
+ ENTREVISTADO 2
+================================================================
+
+d) Nombre: Raúl Martín Dos Santos
+   Navegador: Firefox
+
+e) Resultados
+
+ Nº | Previsto | Real  | Resultado
+----+----------+-------+----------
+ 01 | 2 min    | 0:27  | 1
+ 02 | 5 min    | 2:00  | 1
+ 03 | 3 min    | 1:51  | 1
+ 04 | 2 min    | 0:30  | 1
+ 05 | 2 min    | 1:30  | 1
+ 06 | 3 min    | 1:12  | 1
+ 07 | 2 min    | 0:40  | 1
+ 08 | 2 min    | 0:50  | 1
+ 09 | 3 min    | 0:58  | 1
+ 10 | 1 min    | 0:23  | 1
+
+Tiempo total: 10:31 (de 25 min previstos)
+
+Observaciones:
+  - Tarea 02: el botón "Volver" lleva a la página de inicio;
+    preferiría que volviera al calendario de fechas.
+  - Tarea 03: una vez introducida la fecha, no encuentra la
+    opción de filtrar por precio.
+  - Tarea 04: buscó la información directamente en una compra
+    previa suya.
+  - Tarea 05: le resultó muy intuitivo, porque la información
+    está en las pestañas de ayuda.
+  - Tarea 09: bastante intuitivo encontrarlo en "Ver todo".
+
+f) Comentarios del entrevistado sobre la usabilidad:
+  - La web cumple con lo que espera un cliente.
+
+g) Recomendaciones del entrevistado:
+  - Mejorar la velocidad de carga (los servidores van lentos).
+  - Mejorar el comportamiento del botón "Volver".
+
+
+================================================================
+ ENTREVISTADO 3
+================================================================
+
+d) Nombre: Genaro
+
+e) Resultados
+
+ Nº | Previsto | Real  | Resultado
+----+----------+-------+----------
+ 01 | 2 min    | 0:32  | 1
+ 02 | 5 min    | 1:08  | 1
+ 03 | 3 min    | 1:33  | 1
+ 04 | 2 min    | 1:37  | 1
+ 05 | 2 min    | 1:17  | 1
+ 06 | 3 min    | 1:46  | 1
+ 07 | 2 min    | 0:54  | 1
+ 08 | 2 min    | 0:32  | 1
+ 09 | 3 min    | 2:00  | 1
+ 10 | 1 min    | 0:35  | 1
+
+Tiempo total: 12:34 (de 25 min previstos)
+
+Observaciones:
+  - Tarea 02: le resultó confuso elegir el tipo de billete.
+  - Tarea 06: le gustaría que las condiciones de anulación, que
+    están en la sección de ayuda de la parte inferior,
+    aparecieran en el momento de anular el billete.
+  - Tarea 09: al hacer clic pensó que "asistencia" se refería a
+    ayuda o atención general, no a asistencia para personas con
+    discapacidad.
+
+f) Comentarios del entrevistado sobre la usabilidad:
+  - (sin comentarios registrados)
+
+g) Recomendaciones del entrevistado:
+  - Mostrar las condiciones de anulación dentro del propio
+    proceso de anulación.
+
+
+================================================================
+ RESUMEN DE RESULTADOS
+================================================================
+
+ Nº | Entrev. 1 | Entrev. 2 | Entrev. 3 | ¿Problemática? | Incidencias
+----+-----------+-----------+-----------+----------------+------------
+ 01 |     1     |     1     |     1     |       No       |
+ 02 |     1     |     1     |     1     |       No       | Sí (2)
+ 03 |     1     |     1     |     1     |       No       | Sí (1)
+ 04 |     1     |     1     |     1     |       No       |
+ 05 |     2     |     1     |     1     |       No       | Sí (1)
+ 06 |     1     |     1     |     1     |       No       | Sí (1)
+ 07 |     1     |     1     |     1     |       No       |
+ 08 |     1     |     1     |     1     |       No       |
+ 09 |     1     |     1     |     1     |       No       | Sí (1)
+ 10 |     1     |     1     |     1     |       No       |
+
+Criterio: una tarea es problemática si al menos 2 de 3
+entrevistados obtienen resultado 2 o 3.
+"Incidencias" = nº de entrevistados que tuvieron alguna
+dificultad observada, aunque terminaran a tiempo.
+
+Totales:
+  Resultado 1 (en tiempo):       29 / 30
+  Resultado 2 (fuera de tiempo):  1 / 30
+  Resultado 3 (no realizada):     0 / 30
+
+
+================================================================
+ j) PROPUESTAS DE USABILIDAD A LA VISTA DE LAS PRUEBAS
+================================================================
+
+Ninguna tarea resulta problemática según el criterio de tiempo,
+pero las observaciones revelan puntos de fricción concretos:
+
+ 1. Tarea 02 - Problema: el botón "Volver" lleva al inicio en
+    lugar del paso anterior (calendario de fechas).
+    Principio incumplido: control y libertad del usuario.
+    Propuesta: que "Volver" regrese al paso anterior del
+    proceso conservando los datos introducidos.
+
+ 2. Tarea 02 - Problema: elegir el tipo de billete resulta
+    confuso.
+    Principio incumplido: reconocer antes que recordar /
+    relación entre el sistema y el mundo real.
+    Propuesta: mostrar las tarifas en una comparativa clara
+    (qué incluye cada una: cambios, anulación, equipaje).
+
+ 3. Tarea 03 - Problema: tras elegir fecha no hay forma de
+    filtrar u ordenar por precio.
+    Principio incumplido: flexibilidad y eficiencia de uso.
+    Propuesta: añadir la opción de ordenar resultados por
+    precio y destacar el más barato.
+
+ 4. Tarea 06 - Problema: las condiciones de anulación solo
+    están en la sección de ayuda, no en el proceso de anular.
+    Principio incumplido: ayuda y documentación
+    (información en contexto).
+    Propuesta: mostrar el importe que se devolverá y las
+    condiciones en la propia pantalla de anulación.
+
+ 5. Tarea 09 - Problema: el término "asistencia" es ambiguo;
+    se confunde con ayuda general.
+    Principio incumplido: relación entre el sistema y el
+    mundo real.
+    Propuesta: etiquetar la sección de forma explícita, por
+    ejemplo "Asistencia a personas con discapacidad o
+    movilidad reducida".
+
+ 6. General - Problema: lentitud de carga percibida.
+    Principio incumplido: visibilidad del estado del sistema.
+    Propuesta: mejorar el rendimiento y, mientras carga,
+    mostrar indicadores de progreso.
+
+
+================================================================
+ k) CONCLUSIONES
+================================================================
+
+- Sobre la web:
+  Renfe.com permite completar las tareas habituales con
+  rapidez: 29 de 30 tareas se hicieron dentro del tiempo
+  previsto y ningún entrevistado necesitó más de la mitad del
+  tiempo total. Aun así, el proceso de compra (botón "Volver",
+  elección de tarifa, filtro por precio) y la terminología de
+  algunas secciones generan dudas que se pueden corregir con
+  cambios pequeños.
+
+- Sobre la técnica:
+  Con muy pocos recursos (un navegador, una lista de tareas y
+  un cronómetro) se detectan problemas reales que no aparecen
+  al revisar la web uno mismo. El tiempo por sí solo no basta:
+  todas las tareas salieron "a tiempo", pero las observaciones
+  mostraron fricciones importantes. La principal limitación es
+  la muestra: con 3 personas solo aparecen los problemas más
+  evidentes (la unidad recomienda unas 15, en rondas de 5).
+  Además, una de las participantes es la autora de las
+  pruebas, lo que puede sesgar los resultados.
+
+- Qué haría diferente la próxima vez:
+  Contar solo con participantes que no conozcan las tareas,
+  ajustar los tiempos previstos (resultaron holgados), anotar
+  también errores y número de clics, registrar fecha y
+  dispositivo de todos los entrevistados, e incluir alguna
+  prueba en móvil.
+
+================================================================

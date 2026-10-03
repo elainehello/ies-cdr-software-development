@@ -1,0 +1,77 @@
+CardSorting
+
+Categorías:
+
+Moviles-----Samsung
+            IPhone
+            Android
+
+Componentes internos-----Placa base
+                         Grafica 
+                         Procesador
+                         Disco duro
+                         CPU
+                         RAM
+                         Disipadores de aire
+                         Refrigeración liquida 
+                         Hardware
+                         Fuente de alimentación 
+                         Componentes
+                         Batería 
+                         Tarjeta madre
+                         Tarjeta de sonido
+                         Tarjeta de red
+                         SSD
+                         HDD
+                         Tarjeta SD
+                         NVMe
+                         Lector de tarjetas
+                         Ventilador de caja
+                         Discos
+                        
+
+Equipos y sistemas-----Portátil
+                       Sobremesa
+                       Torre
+                       SO
+
+Perifericos-----Raton
+                Teclado
+		Teclado mecanico
+		Monitor
+		Impresora
+		Proyector
+		Camara
+		Webcam 4k
+		Camara web
+		Auriculares
+		Microfono
+		Altavoz
+		Mando
+
+Cables-----HDMI
+	   VGA
+	   Display port
+	   Cable de corriente
+	   Cargadores
+	   Cables 
+	   Adaptador
+	   Router
+	   Amplificador
+	   Hub USB
+	   Docking station
+
+Software y programas-----Software
+			 Programas
+			 Antivirus
+
+Mantenimiento y energía-----Reparaciones
+			    Mantenimiento
+			    Regleta
+			    SAI (UPS)
+
+Accesorios/Mobiliario-----Silla gaming
+			  Escritorio
+			  Brazo articulado
+			  Alfombrilla
+			  Soporte para monitor

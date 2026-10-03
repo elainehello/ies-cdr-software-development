@@ -1,0 +1,156 @@
+(cardSorting)[12]
+Vamos a diseñar el menu de una tienda de informática usando la tecnica de card sorting abierto:
+Parte1:
+- Todos dicen categorias de informática (unas 40). 
+- El profesor las anota en un fichero listaCardSorting.txt que comparte al aula al terminar.
+Parte2:
+- Crear grupos 2/3 personas. Colocar las categorias en un menu de dos niveles en un txt.
+- Cada grupo envia el txt (poner el nombre de un alumno del grupo).
+- Visualizar la propuesta de cada grupo y comentar. Compartir todas las propuestas.
+Parte3:
+- Volver al sitio. Individual. Descargar los ficheros y hacer un estudio estadistico de las categorias que aparecen juntas. Usar hoja de calculo copiar en un pdf.
+- Conclusiones del ejercicio completo. Añadir al pdf.
+# enviar pdf y exponer en clase, 30m
+
+
+ALUMNOS: Sabas Segura y Julian Otero
+
+- Componentes
+
+
+Disco duro  
+	HDD
+
+	SSD
+
+	NVMe
+
+	Discos
+
+
+
+Torre
+	Placa base / Tarjeta madre (motherboard)
+
+	Procesador / CPU
+
+	RAM
+
+	Gráfica
+
+	Pasta térmica
+
+	Disipadores de aire
+
+	Refrigeración líquida
+
+	Ventilador de caja
+
+	Tarjeta de sonido
+
+	Tarjeta de red
+
+	Batería
+
+	Fuente de alimentación
+
+- Periféricos
+
+Escritorio
+
+	Monitor
+
+	Impresora
+
+	Cámara / Cámara web / Webcam 4K
+
+	Teclado / Teclado mecánico
+
+	Ratón / Mouse
+
+	Alfombrilla
+
+	Silla gaming
+
+	Soporte para monitor
+
+	Brazo articulado
+
+Amplificador
+
+	Proyector
+
+	Mando
+
+	Auriculares
+
+	Micrófono
+
+	Altavoz
+
+	Router
+
+-Conectividad
+
+
+Cables
+
+	Cable de corriente
+
+	Cargadores
+
+	HDMI
+
+	VGA
+
+	DisplayPort
+
+	USB
+
+	Regleta
+	
+	Adaptador
+
+Lector de tarjetas
+
+	Pendrive
+
+	Tarjeta SD
+
+	Hub USB
+
+	Docking station
+
+	
+
+
+
+- Sistema
+
+Hardware
+
+	Portátil
+
+	Sobremesa
+
+	Reparaciones
+
+	Componentes
+
+	SAI (UPS)
+
+Software
+
+	Sistema operativo
+
+	Programas
+
+	Antivirus
+
+	Android
+
+	Samsung
+
+	iPhone
+
+	Mantenimiento

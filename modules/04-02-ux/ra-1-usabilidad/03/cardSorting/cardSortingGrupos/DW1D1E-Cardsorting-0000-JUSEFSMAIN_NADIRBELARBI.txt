@@ -1,0 +1,39 @@
+1. PORTÁTIL Y DISPOSITIVOS MÓVILES
+   1.1 Equipos y Telefonía
+       - Portátiles y tablets
+       - Smartphones (iPhone, Samsung, Android)
+   1.2 Energía Portátil
+       - Cargadores y adaptadores
+       - Baterías y powerbanks
+
+2. SOBREMESA Y COMPONENTES GENERALES
+   2.1 Hardware Core y Placa
+       - Procesamiento (CPU y placa base)
+       - Memoria y Gráfica (RAM y gráfica)
+   2.2 Almacenamiento y Conectividad Externa
+       - Discos internos (SSD, HDD, NVMe)
+       - Almacenamiento externo y lectores (Pendrive, SD)
+   2.3 Refrigeración y Energía de Torre
+       - Control térmico (Disipadores, líquida, ventiladores, pasta)
+       - Alimentación y protección (Fuente, cables, regletas, SAI)
+   2.4 Chasis, Vídeo y Pantallas
+       - Estructura y monitores (Torres y monitores)
+       - Proyectores y cables de vídeo (Proyector, HDMI, VGA, DisplayPort)
+   2.5 Periféricos de Entrada
+       - Control y escritura (Ratón, teclados mecánicos)
+       - Captura y multimedia (Micrófono, mandos, cámaras web)
+   2.6 Periféricos de Salida e Impresión
+       - Audio y visualización (Auriculares, altavoces)
+       - Impresión y periféricos generales (Impresoras, periféricos)
+   2.7 Redes y Expansión USB
+       - Conectividad de red (Router, amplificadores, tarjetas de red/sonido)
+       - Hubs y puertos (USB, adaptadores, hubs, docking stations)
+   2.8 Mobiliario y Ergonomía
+       - Espacio de trabajo (Escritorios, sillas gaming, alfombrillas)
+       - Soporte ergonómico (Soportes de monitor, brazos articulados)
+   2.9 Software y Programas
+       - Sistemas y aplicaciones (Software general, sistemas operativos, programas)
+       - Seguridad (Antivirus)
+   2.10 Servicios Técnicos
+       - Soporte y arreglos (Reparaciones)
+       - Cuidado preventivo (Mantenimiento)

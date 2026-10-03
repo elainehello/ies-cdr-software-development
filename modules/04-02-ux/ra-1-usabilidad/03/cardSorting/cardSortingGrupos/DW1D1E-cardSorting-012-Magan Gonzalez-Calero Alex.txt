@@ -1,0 +1,91 @@
+MENU TIENDA DE INFORMATICA - CARD SORTING ABIERTO (PARTE 2)
+Alumno: Alex Mágan, Maria Anyelica Place
+Grupo: DW1D1E
+
+Ordenadores
+- portátil
+- sobremesa
+- torre
+
+Componentes (hardware)
+- procesador
+- CPU
+- placa base
+- tarjeta madre (motherboard)
+- gráfica
+- RAM
+- fuente de alimentación
+- tarjeta de sonido
+- tarjeta de red
+
+Refrigeración
+- ventilador de caja
+- disipadores de aire
+- refrigeración líquida
+- pasta térmica
+
+Almacenamiento (discos)
+- disco duro
+- HDD
+- SSD
+- NVMe
+- pendrive
+- tarjeta SD
+- lector de tarjetas
+
+Periféricos
+- monitor
+- teclado
+- teclado mecánico
+- ratón
+- mouse
+- alfombrilla
+- mando
+- impresora
+- proyector
+- cámara
+- cámara web
+- webcam 4K
+
+Audio
+- auriculares
+- micrófono
+- altavoz
+- amplificador
+
+Cables y conectividad
+- HDMI
+- VGA
+- DisplayPort
+- USB
+- cable de corriente
+- adaptador
+- hub USB
+- docking station
+- router
+
+Energía
+- cargadores
+- batería
+- regleta
+- SAI (UPS)
+
+Móviles
+- iPhone
+- Samsung
+- Android
+
+Software
+- sistema operativo
+- programas
+- antivirus
+
+Setup y mobiliario
+- escritorio
+- silla gaming
+- soporte para monitor
+- brazo articulado
+
+Servicios técnicos
+- reparaciones
+- mantenimiento

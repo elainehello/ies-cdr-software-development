@@ -1,0 +1,21 @@
+
+ordenadores: portatil, sobremesa, CPU, escritorio
+
+
+1. Componentes de PC - placa base, gráfica,RAM,tarjeta de sonido,tarjeta de red,fuente de alimentación,disipadores de aire,refrigeración líquida,pasta térmica,ventilador de caja,procesador,torre
+
+
+
+2. Almacenamiento-discos,disco duro,HDD,SSD,NVMe,pendrive,tarjeta SD,lector de tarjetas
+
+3. Móviles y smartphones-iPhone,Samsung,Android
+
+  
+
+    
+
+4. USB Y conectividad-cargadores,batería,regleta,SAI (UPS),USB,hub USB,docking station,cables,adaptador,router,cable de corriente,DisplayPort,VGA,HDMI
+5. Periféricosmando,silla gaming,teclado,teclado mecánico,ratón,mouse,alfombrilla,monitor,brazo articulado,soporte para monitor
+6. Audio y vídeo-auriculares,micrófono,altavoz,amplificador,cámara,cámara web,webcam 4K,proyector
+7. Servicios-reparaciones,mantenimiento
+8. Software - so anti programas 

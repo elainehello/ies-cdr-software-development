@@ -1,0 +1,253 @@
+ACTIVIDAD (PROTOTIPO) - VENDE TU PROTOTIPO
+Autora: Elaine Parra Valles
+Webs analizadas: Amazon.es y Trivago.es
+Prototipo: CompraYa (comparador de precios de productos)
+==================================================================
+
+==================================================================
+PARTE A) ANÁLISIS DE CÓMO RESUELVE CADA WEB LAS 8 TAREAS
+==================================================================
+
+------------------------------------------------------------------
+A.1 AMAZON.ES
+Búsqueda realizada: "radio"
+------------------------------------------------------------------
+
+1. Listado de productos
+   Resultados en formato de lista o cuadrícula según la categoría.
+   Cada artículo muestra imagen, título, precio, valoración con
+   estrellas, número de opiniones y plazo de entrega; algunos
+   resultados aparecen marcados como patrocinados. En escritorio usa paginación numerada, sin
+   opción de "cargar más". En móvil carga automáticamente más
+   resultados al llegar al último artículo (scroll infinito).
+
+2. Características del producto
+   Página organizada en secciones, sin pestañas. Mantiene los
+   detalles principales del producto de forma simple y usa
+   acordeones para las especificaciones técnicas. Incluye una
+   sección de reseñas en la que pueden opinar los usuarios que han
+   comprado el producto en la web.
+
+3. Navegación
+   Menú hamburguesa ("Todo") que muestra categorías y subcategorías
+   de los servicios de Amazon, acompañado de una barra de accesos
+   rápidos bajo la cabecera (ofertas, novedades, más vendidos...).
+   La versión móvil está optimizada.
+
+4. Retorno a home
+   El logo, situado a la izquierda de la cabecera, lleva a la página
+   principal desde cualquier página de la web.
+
+5. Migas
+   No aparecen en el listado de resultados de una búsqueda, por lo
+   que ahí no se muestra la ruta completa. En la ficha del producto
+   (versión escritorio) sí muestra, en la parte superior, la ruta de
+   categorías a la que pertenece el artículo, con cada nivel
+   clicable.
+
+6. Filtros
+   En escritorio, los filtros están en una barra lateral a la
+   izquierda: categoría, valoración de clientes, marca, precio,
+   envío, estado del producto y características propias de cada
+   categoría. Se aplican al instante al marcarlos y cada filtro
+   activo muestra la opción de borrarlo. En móvil se agrupan tras un
+   botón "Filtros" que abre un panel.
+   A nivel técnico, los filtros se guardan en la dirección (URL) de
+   la página: el parámetro "k" contiene el término buscado y el
+   parámetro "rh" los filtros aplicados. Esto permite compartir una
+   búsqueda filtrada y volver atrás sin perder los filtros.
+
+7. Ordenación
+   Desplegable "Ordenar por" en la parte superior derecha del
+   listado. Opciones: destacados (por defecto), precio de más bajo a
+   más alto, precio de más alto a más bajo, valoración media de los
+   clientes y últimas novedades. El criterio activo se muestra en el
+   propio desplegable.
+
+8. Búsqueda de un producto
+   Barra de búsqueda amplia en el centro de la cabecera, visible en
+   todas las páginas. A su izquierda incluye un selector de
+   departamento para limitar la búsqueda a una categoría. Muestra
+   sugerencias mientras se escribe y, ante errores tipográficos,
+   corrige o propone resultados para el término más probable.
+
+
+------------------------------------------------------------------
+A.2 TRIVAGO.ES
+Búsqueda realizada: Madrid, 2 huéspedes, 1 habitación
+------------------------------------------------------------------
+
+1. Listado de productos
+   Encabezado con el número total de alojamientos encontrados. Cada
+   tarjeta de hotel está numerada según su posición y muestra: foto,
+   nombre, categoría en estrellas, nota media con etiqueta textual
+   (p. ej. "Excelente") y número de puntuaciones, rasgos destacados
+   del alojamiento, distancia a un punto de referencia, número de
+   webs de reserva comparadas y precio mínimo ("desde X €"), con
+   botón "Ver precios". Permite compartir y añadir a favoritos.
+   Paginación numerada en escritorio y móvil (sin scroll infinito).
+   Ofrece vista de resultados sobre mapa; en móvil está mejor
+   optimizada, con un esquema de la zona y respuesta más rápida.
+
+2. Características del producto
+   Al hacer clic se abre una pestaña nueva del navegador, lo que
+   mantiene intacto el listado original con los filtros aplicados.
+   La ficha del hotel incluye galería de fotos, estrellas, precio
+   "desde" con el número de webs comparadas y botón "Ver precios",
+   descripción del alojamiento, servicios, ubicación con distancias a
+   puntos de referencia, horarios de entrada y salida, preguntas
+   frecuentes y una comparación con alojamientos similares. Las
+   opiniones se presentan como una nota global agregada de otras
+   webs, desglosada por aspectos (limpieza, ubicación, servicio,
+   confort, instalaciones y relación calidad-precio).
+
+3. Navegación
+   Cabecera mínima: logo, Favoritos, selector de idioma y moneda,
+   botón "Iniciar" y botón "Menú". No hay menú de categorías: la
+   navegación se apoya en el buscador. Como navegación secundaria,
+   al pie de las páginas ofrece enlaces por tipo de alojamiento,
+   categorías populares, barrios y puntos de interés.
+
+4. Retorno a home
+   Al hacer clic en el logo se vuelve a la página principal.
+
+5. Migas
+   En la parte superior no hay migas tradicionales: se mantiene fija
+   la barra con la búsqueda actual (destino, fechas, huéspedes). Al
+   final de la página sí aparece la ruta completa (Busca hoteles >
+   Europa > España > Madrid), aunque en una zona poco visible, más
+   orientada al posicionamiento en buscadores que al usuario.
+
+6. Filtros
+   Botones "Ordenar", "Filtrar" y "Mapa" junto a la barra de
+   búsqueda, y filtros rápidos en forma de botones horizontales
+   ("Desayuno incluido", cercanía al centro...) con una flecha para
+   ver más. Los filtros se reflejan en la URL, por lo que una
+   búsqueda filtrada se puede compartir o guardar.
+
+7. Ordenación
+   Botón "Ordenar" junto a los filtros, acompañado de un enlace
+   visible que explica cómo influyen los pagos en los resultados,
+   lo que aporta transparencia sobre el orden por defecto
+   (recomendación). Permite ordenar también por precio, valoración
+   y distancia.
+
+8. Búsqueda de un producto
+   El buscador es el elemento principal de la home y ocupa la
+   primera parte de la pantalla. Permite elegir el tipo de búsqueda
+   (destino, hotel, lugar de interés o búsqueda inteligente) y pide
+   fechas, huéspedes y habitaciones. Tolera errores tipográficos.
+   Incluye accesos directos a búsquedas populares con el número de
+   hoteles y el precio medio.
+
+Observaciones adicionales
+   Aparece con frecuencia un aviso flotante junto al botón "Iniciar"
+   que invita a iniciar sesión para ahorrar más. No bloquea la
+   página y se puede cerrar, pero se superpone a la zona de filtros
+   y reaparece con frecuencia.
+
+
+==================================================================
+PARTE B) MEJOR SOLUCIÓN ENCONTRADA PARA CADA TAREA
+==================================================================
+
+1. Listado de productos -> TRIVAGO
+   Cada tarjeta resume lo esencial para decidir: imagen, nombre,
+   valoración con número de opiniones, cuántas webs se comparan y el
+   precio mínimo. Para un agregador es la mejor solución, porque el
+   usuario ve de un vistazo el valor principal del servicio: la
+   comparación de precios.
+
+2. Características del producto -> AMAZON
+   Organiza la ficha en secciones claras, muestra los datos
+   principales de forma simple y agrupa las especificaciones
+   técnicas en acordeones, de modo que la información detallada no
+   satura la página. Añade reseñas de compradores reales.
+
+3. Navegación -> AMAZON
+   Su menú de categorías y subcategorías permite recorrer un
+   catálogo muy amplio sin depender solo del buscador. La navegación
+   mínima de Trivago funciona para una sola tarea (buscar hotel),
+   pero no para un catálogo de productos.
+
+4. Retorno a home -> AMAZON y TRIVAGO (empate)
+   Ambas resuelven la vuelta al inicio con el logo en la cabecera,
+   visible en todas las páginas. Es la convención más reconocida por
+   los usuarios.
+
+5. Migas -> AMAZON
+   Muestra la ruta de categorías en la parte superior de la ficha de
+   producto, con cada nivel clicable. Trivago solo muestra la ruta completa al final de la
+   página, donde el usuario apenas la ve.
+
+6. Filtros -> TRIVAGO (filtros rápidos) + AMAZON (panel completo)
+   Trivago ofrece filtros rápidos en botones horizontales para las
+   opciones más habituales; Amazon ofrece un panel completo para
+   búsquedas detalladas. Ambas guardan los filtros en la URL, lo que
+   permite compartir la búsqueda y volver atrás sin perderlos.
+
+7. Ordenación -> TRIVAGO
+   El control de ordenación está visible junto a los filtros y se
+   acompaña de una explicación de cómo se ordenan los resultados.
+   Esa transparencia genera confianza, algo clave en un comparador.
+
+8. Búsqueda de un producto -> TRIVAGO
+   El buscador es el protagonista de la home, ocupa la primera parte
+   de la pantalla, tolera errores tipográficos y ofrece accesos
+   directos a búsquedas populares.
+
+Decisiones ante soluciones en conflicto
+   - Paginación numerada frente a scroll infinito: se elige la
+     paginación numerada (como Trivago), porque permite al usuario
+     saber dónde está y volver a un resultado concreto.
+   - Aviso de inicio de sesión: se descarta. En Trivago interrumpe
+     la tarea del usuario y se superpone a los filtros.
+   - Mapa: no se incluye, porque en un comparador de productos la
+     ubicación no es relevante (sí lo es en hoteles).
+
+
+==================================================================
+PARTE C) PROTOTIPO: COMPRAYA
+==================================================================
+
+Archivo adjunto: prototipo_compraya.jpg
+
+CompraYa es un comparador de precios de productos que combina el
+catálogo por categorías de Amazon con el modelo de comparación de
+Trivago. El prototipo incluye tres pantallas y una leyenda que
+indica cómo se resuelve cada tarea.
+
+Pantalla 1 - Home
+   Cabecera con logo, buscador, acceso a cuenta y carrito, y menú de
+   categorías. Buscador protagonista en la parte principal ("Compara
+   precios y encuentra el mejor"), categorías destacadas con iconos,
+   ventajas del servicio y ofertas destacadas con precio "desde" y
+   valoración.
+
+Pantalla 2 - Listado de productos, filtros, ordenación y búsqueda
+   Migas de pan (Inicio > Electrónica > Audio > Auriculares), título
+   con número de resultados, filtros rápidos en botones horizontales
+   y panel lateral completo (precio con deslizador, marca con número
+   de productos, tipo, cancelación de ruido y valoración mínima).
+   Selector "Ordenar por" con una línea que explica el criterio de
+   ordenación. Tarjetas con imagen, nombre, características breves,
+   valoración, número de tiendas comparadas y precio "desde", botón
+   "Ver detalles" y opción de favoritos. Paginación numerada.
+
+Pantalla 3 - Ficha de producto y migas
+   Migas completas hasta el producto, galería de imágenes con
+   miniaturas y vídeo, valoración, precio "desde" con número de
+   tiendas comparadas y botón "Ver precios". Bloque "Mejores
+   precios" con precio y gastos de envío de cada tienda. Pestañas de
+   Características, Opiniones y Comparar precios; características
+   principales con iconos y especificaciones agrupadas en acordeones.
+
+Relación de cada tarea con su solución de origen
+   1. Listado de productos ........ Trivago
+   2. Características del producto  Amazon
+   3. Navegación .................. Amazon
+   4. Retorno a home .............. Amazon y Trivago
+   5. Migas ....................... Amazon
+   6. Filtros ..................... Trivago + Amazon
+   7. Ordenación .................. Trivago
+   8. Búsqueda .................... Trivago

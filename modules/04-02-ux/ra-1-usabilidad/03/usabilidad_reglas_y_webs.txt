@@ -1,0 +1,148 @@
+USABILIDAD WEB - 10 REGLAS Y ANÁLISIS DE 5 WEBS
+Basado en "Don't Make Me Think" (Steve Krug)
+Autora: Elaine Parra Valles
+=====================================================================
+
+PARTE 1. 10 REGLAS CONCRETAS DE USABILIDAD
+---------------------------------------------------------------------
+
+R1. NO ME HAGAS PENSAR (1ª ley de Krug)
+    Cada página debe entenderse de un vistazo: qué es, qué ofrece y
+    qué puedo hacer en ella, sin esfuerzo mental.
+
+R2. JERARQUÍA VISUAL CLARA
+    Lo más importante debe ser lo más destacado (tamaño, color,
+    posición). Lo relacionado se agrupa; lo secundario se ve menos.
+
+R3. RESPETAR LAS CONVENCIONES
+    Logo arriba a la izquierda enlazando a Inicio, menú principal
+    arriba, buscador arriba a la derecha, carrito arriba a la derecha.
+    No reinventar lo que el usuario ya sabe usar.
+
+R4. QUE LO CLICABLE SEA OBVIAMENTE CLICABLE
+    Botones con aspecto de botón y enlaces distinguibles del texto.
+    El usuario no debe "probar a ver" dónde se puede pulsar.
+
+R5. ELIMINAR EL RUIDO (desorden visual)
+    Nada de páginas abarrotadas, animaciones, parpadeos o elementos
+    que compiten entre sí por la atención.
+
+R6. OMITIR PALABRAS INNECESARIAS (3ª ley de Krug)
+    Quitar la mitad del texto y luego la mitad de lo que queda.
+    Fuera el "texto de relleno" y las instrucciones que nadie lee.
+
+R7. NAVEGACIÓN PERSISTENTE Y CONSISTENTE
+    El mismo menú, en el mismo sitio, en todas las páginas, con un
+    enlace a Inicio siempre visible.
+
+R8. "USTED ESTÁ AQUÍ" (Trunk test)
+    En cualquier página debo saber: en qué web estoy, en qué página,
+    cuáles son las secciones principales y dónde estoy dentro de ellas
+    (título de página, sección resaltada, migas de pan).
+
+R9. ETIQUETAS CLARAS Y CLICS SIN DUDA (2ª ley de Krug)
+    Nombres descriptivos ("Productos", "Contacto"), no ingeniosos ni
+    crípticos. Da igual el número de clics si cada clic es obvio.
+
+R10. BUSCADOR VISIBLE Y DISEÑO ADAPTADO A MÓVIL
+    Caja de búsqueda simple ("Buscar" + campo + botón) y una página
+    que se adapte a la pantalla sin zoom ni scroll horizontal.
+    Texto legible y con buen contraste (accesibilidad).
+
+=====================================================================
+PARTE 2. 5 WEBS CON MALA USABILIDAD Y 5 REGLAS FALLIDAS EN CADA UNA
+---------------------------------------------------------------------
+
+WEB 1: Arngren.net  (https://arngren.net)
+  Tienda noruega de electrónica, vehículos y gadgets.
+  - R2 Jerarquía: cientos de productos con el mismo peso visual;
+       no hay nada principal ni punto de entrada.
+  - R5 Ruido: collage de imágenes y textos superpuestos, colores
+       chillones; parece un folleto de mercadillo.
+  - R3 Convenciones: no hay cabecera, menú ni carrito donde se
+       esperan.
+  - R8 "Usted está aquí": imposible saber en qué sección estás o qué
+       categorías existen.
+  - R10 Móvil/legibilidad: letra diminuta, no responsive, hay que
+       hacer zoom y scroll horizontal incluso en escritorio.
+
+WEB 2: LINGsCARS  (https://www.lingscars.com)
+  Empresa británica de leasing de coches.
+  - R5 Ruido: históricamente llena de GIFs, animaciones y colores que
+       compiten por la atención (sigue siendo muy recargada).
+  - R7 Navegación: menús repetidos/duplicados que confunden en vez
+       de orientar.
+  - R2 Jerarquía: ofertas en lista plana, repetidas, sin orden por
+       precio o popularidad.
+  - R10 Buscador: no hay búsqueda visible ni filtro rápido por marca
+       o precio con +50 marcas.
+  - R6 Palabras innecesarias: mucho texto de "personalidad" y relleno
+       antes de llegar a la información útil.
+
+WEB 3: Space Jam 1996  (https://www.spacejam.com/1996/)
+  Web original de la película, conservada tal cual.
+  - R9 Etiquetas: secciones crípticas ("Press Box Shuttle", "Jam
+       Central", "Lunar Tunes"): hay que adivinar qué contienen.
+  - R4 Clicable: los iconos-planeta sobre fondo estrellado no indican
+       claramente que son enlaces.
+  - R2 Jerarquía: todas las opciones con el mismo peso; nada indica
+       por dónde empezar.
+  - R10 Buscador/móvil: sin búsqueda y diseño fijo de 1996, no
+       adaptado a móvil.
+  - R8 "Usted está aquí": uso de frames, no hay migas ni sección
+       marcada; difícil volver o guardar una página.
+
+WEB 4: Drudge Report  (https://drudgereport.com)
+  Agregador de noticias de EE. UU.
+  - R2 Jerarquía: columnas de titulares casi iguales; solo el titular
+       central destaca, el resto es una pared de enlaces.
+  - R7 Navegación: no hay menú ni secciones (política, economía...).
+  - R10 Buscador/legibilidad: sin búsqueda, letra pequeña tipo
+       máquina de escribir, poco legible en móvil.
+  - R5 Ruido: anuncios intercalados que se confunden con contenido.
+  - R9 Clics sin duda: los enlaces no dicen a qué medio llevan; el
+       usuario no sabe adónde va hasta que pulsa.
+
+WEB 5: Berkshire Hathaway  (https://www.berkshirehathaway.com)
+  Holding de Warren Buffett.
+  - R2 Jerarquía: lista de enlaces en texto plano, todos iguales;
+       nada destaca.
+  - R3 Convenciones: sin logo, sin cabecera ni menú habitual de web
+       corporativa.
+  - R1 No me hagas pensar: un visitante nuevo no entiende qué es la
+       empresa ni qué hace (no hay descripción).
+  - R10 Buscador/móvil: no hay buscador y no es responsive (texto
+       pequeño en móvil).
+  - R8 "Usted está aquí": las subpáginas (muchas en PDF) no tienen
+       menú ni forma clara de volver.
+  (A su favor: carga rapidísimo y no tiene ruido.)
+
+=====================================================================
+PARTE 3. RANKING DE MEJOR A PEOR NAVEGABILIDAD
+---------------------------------------------------------------------
+
+ 1. Berkshire Hathaway - Fea y pobre, pero sin ruido, rápida y los
+    enlaces se encuentran. Se navega sin perderse.
+ 2. Drudge Report - Caótica pero predecible: todo son enlaces de
+    texto; lo que falta es estructura.
+ 3. Space Jam 1996 - Pocas opciones, pero etiquetas crípticas e
+    iconos ambiguos obligan a adivinar.
+ 4. LINGsCARS - Mucha información, menús duplicados, sin búsqueda y
+    ruido visual: cuesta encontrar una oferta concreta.
+ 5. Arngren.net - No hay navegación como tal; buscar algo es pura
+    exploración visual.
+
+=====================================================================
+PARTE 4. ¿CUÁL ES LA WEB CON PEOR USABILIDAD?
+---------------------------------------------------------------------
+
+ARNGREN.NET. Incumple casi las 10 reglas a la vez: no tiene jerarquía
+visual, ignora todas las convenciones, el ruido es máximo, no hay
+menú ni "usted está aquí", el texto es ilegible y no funciona en
+móvil. Es el ejemplo perfecto de lo contrario de "Don't make me
+think": cada segundo en la página exige pensar.
+
+=====================================================================
+Fuentes:
+- Steve Krug, "Don't Make Me Think, Revisited" (caps. 1-6, 10, 12)
+- https://colorlib.com/wp/bad-websites/

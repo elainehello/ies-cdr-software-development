@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- root aka bookstore -->
+<bookstore>
+	<!-- child aka book -->
+	<book>
+		<title lang="en">Memories, Dreams, Reflections</title>
+		<author>C. G. Jung</author>
+		<released>1962</released>
+		<rating>4.17</rating>
+	</book>
+	<book>
+		<!-- labels aka title, author, released, rating -->
+		<!-- attribute aka lang -->
+		<title lang="en">Man and His Symbols</title>
+		<author>C. G. Jung</author>
+		<released>1964</released>
+		<rating>4.18</rating>
+	</book>
+	<book>
+		<title lang="en">Modern Man in Search of a Soul</title>
+		<author>C. G. Jung</author>
+		<released>1931</released>
+		<rating>4.20</rating>
+	</book>
+	<book>
+		<title lang="en">The Undiscovered Self</title>
+		<author>C. G. Jung</author>
+		<released>1961</released>
+		<rating>4.13</rating>
+	</book>
+	<book>
+		<title lang="en">The Archetypes and the Collective Unconscious</title>
+		<author>C. G. Jung</author>
+		<released>1959</released>
+		<rating>4.29</rating>
+	</book>
+</bookstore>

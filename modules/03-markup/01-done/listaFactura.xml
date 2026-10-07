@@ -1,0 +1,30 @@
+<? version="1.0" encoding="UTF-8" ?>
+<listaFactura>
+	<factura>
+		<emisor CIF="00000000F">
+			<nombre></nombre>
+		</emisor>
+		<pagador CIF="00000000E">
+			<nombre></nombre>
+		</pagador>
+		<importe>40</importe>
+	</factura>
+	<factura>
+		<emisor CIF="00000000R">
+			<nombre></nombre>
+		</emisor>
+		<pagador CIF="00000000T">
+			<nombre></nombre>
+		</pagador>
+		<importe>60</importe>
+	</factura>
+	<factura>
+		<emisor id="00000000Y">
+			<nombre></nombre>
+		</emisor>
+		<pagador id="00000000W">
+			<nombre></nombre>
+		</pagador>
+		<importe>70</importe>
+	</factura>
+</listaFactura>

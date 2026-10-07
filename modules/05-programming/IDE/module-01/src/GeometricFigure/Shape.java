@@ -71,6 +71,9 @@ public class Shape {
                 area = Math.PI * Math.pow(radius, 2);
                 System.out.printf("The circle area is %.2f%n", area);
                 break;
+            default:
+                System.out.println("Incorrect option\n");
+                break;
         }
     }
 }

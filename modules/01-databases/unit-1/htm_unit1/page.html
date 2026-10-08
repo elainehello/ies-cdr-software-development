@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards - Fundamentos de Bases de Datos</title>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --primary-soft: #eff6ff;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --card-back-bg: #f8fafc;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border: #e2e8f0;
+            --track: #e2e8f0;
+            --ok-bg: #dcfce7;
+            --ok-text: #15803d;
+            --ok-border: #bbf7d0;
+            --rep-bg: #fee2e2;
+            --rep-text: #b91c1c;
+            --rep-border: #fecaca;
+            --radius: 12px;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary: #60a5fa;
+                --primary-dark: #3b82f6;
+                --primary-soft: #1e293b;
+                --bg: #0b1220;
+                --card-bg: #111827;
+                --card-back-bg: #0f172a;
+                --text-main: #e2e8f0;
+                --text-muted: #94a3b8;
+                --border: #1f2937;
+                --track: #1f2937;
+                --ok-bg: #14532d;
+                --ok-text: #bbf7d0;
+                --ok-border: #166534;
+                --rep-bg: #7f1d1d;
+                --rep-text: #fecaca;
+                --rep-border: #991b1b;
+                --shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 16px 40px;
+        }
+
+        .wrap {
+            width: 100%;
+            max-width: 720px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Controles */
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto auto;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        select, button {
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text-main);
+            font-size: 0.9rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        button:hover, select:hover {
+            border-color: var(--primary);
+        }
+
+        select:focus-visible, button:focus-visible, .card-container:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Estadísticas */
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .progress-container {
+            height: 8px;
+            background-color: var(--track);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--ok-text);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Tarjeta y animación */
+        .card-container {
+            height: 380px;
+            perspective: 1000px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            border-radius: var(--radius);
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: var(--radius);
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 24px 28px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background-color: var(--card-back-bg);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tag {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background-color: var(--primary-soft);
+            color: var(--primary);
+        }
+
+        .tag.ok {
+            background: var(--ok-bg);
+            color: var(--ok-text);
+        }
+
+        .tag.rep {
+            background: var(--rep-bg);
+            color: var(--rep-text);
+        }
+
+        .tag.hidden {
+            visibility: hidden;
+        }
+
+        /* Centrado seguro: si el texto es largo se hace scroll sin cortar el inicio */
+        .card-content {
+            flex: 1;
+            display: flex;
+            overflow-y: auto;
+            margin: 16px 0;
+        }
+
+        .card-content > div {
+            margin: auto;
+            white-space: pre-line;
+        }
+
+        .card-front .card-content > div {
+            font-size: 1.25rem;
+            font-weight: 600;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .card-back .card-content > div {
+            font-size: 1.02rem;
+            line-height: 1.6;
+            text-align: left;
+            width: 100%;
+        }
+
+        .card-hint {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Acciones */
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .review-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-ok {
+            background-color: var(--ok-bg);
+            color: var(--ok-text);
+            border-color: var(--ok-border);
+            font-weight: 600;
+        }
+
+        .btn-rep {
+            background-color: var(--rep-bg);
+            color: var(--rep-text);
+            border-color: var(--rep-border);
+            font-weight: 600;
+        }
+
+        .shortcuts {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        kbd {
+            border: 1px solid var(--border);
+            border-bottom-width: 2px;
+            border-radius: 4px;
+            padding: 1px 6px;
+            font-family: inherit;
+            font-size: 0.75rem;
+            background: var(--card-bg);
+        }
+
+        @media (max-width: 600px) {
+            .controls {
+                grid-template-columns: 1fr 1fr;
+            }
+            .card-container {
+                height: 440px;
+            }
+            .card-face {
+                padding: 20px;
+            }
+            .card-front .card-content > div {
+                font-size: 1.1rem;
+            }
+            .card-back .card-content > div {
+                font-size: 0.95rem;
+            }
+            .actions {
+                flex-wrap: wrap;
+            }
+            .review-buttons {
+                order: -1;
+                width: 100%;
+            }
+            .review-buttons button {
+                flex: 1;
+            }
+            .actions > button {
+                flex: 1;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .card, .progress-bar {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+
+    <header>
+        <h1>Fundamentos de Bases de Datos</h1>
+        <p class="subtitle">Tarjetas de repaso · Capítulo 1</p>
+    </header>
+
+    <div class="controls">
+        <select id="category-filter" aria-label="Filtrar por apartado"></select>
+        <select id="status-filter" aria-label="Filtrar por estado">
+            <option value="all">Todas las tarjetas</option>
+            <option value="pending">Pendientes (no dominadas)</option>
+            <option value="rep">Marcadas para repasar</option>
+            <option value="ok">Dominadas</option>
+        </select>
+        <button class="btn-primary" id="btn-shuffle">Mezclar</button>
+        <button id="btn-reset" title="Borrar el progreso guardado">Reiniciar</button>
+    </div>
+
+    <div class="stats-bar" aria-live="polite">
+        <span id="card-counter">Tarjeta 0 de 0</span>
+        <span id="score-counter">Dominadas: 0 | Repasar: 0</span>
+    </div>
+
+    <div class="progress-container" title="Porcentaje de tarjetas dominadas en la selección actual">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <div class="card-container" id="card-container" role="button" tabindex="0"
+         aria-label="Tarjeta. Pulsa para ver la respuesta">
+        <div class="card" id="card">
+            <div class="card-face card-front">
+                <div class="card-top">
+                    <span class="tag" id="card-category">Apartado</span>
+                    <span class="tag hidden" id="card-status"></span>
+                </div>
+                <div class="card-content"><div id="card-question"></div></div>
+                <div class="card-hint">Haz clic o pulsa Espacio para ver la respuesta</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-top">
+                    <span class="tag">Respuesta</span>
+                </div>
+                <div class="card-content"><div id="card-answer"></div></div>
+                <div class="card-hint">Haz clic o pulsa Espacio para voltear</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="actions">
+        <button id="btn-prev">← Anterior</button>
+        <div class="review-buttons">
+            <button class="btn-rep" id="btn-rep">Repasar ✗</button>
+            <button class="btn-ok" id="btn-ok">Dominada ✓</button>
+        </div>
+        <button id="btn-next">Siguiente →</button>
+    </div>
+
+    <p class="shortcuts">
+        <kbd>Espacio</kbd> / <kbd>Enter</kbd> voltear ·
+        <kbd>←</kbd> <kbd>→</kbd> navegar ·
+        <kbd>1</kbd> repasar · <kbd>2</kbd> dominada ·
+        en móvil, desliza a izquierda o derecha
+    </p>
+</div>
+
+<script>
+    const CATEGORIAS = [
+        { id: "intro",     nombre: "1. Introducción" },
+        { id: "apps",      nombre: "2. Aplicaciones" },
+        { id: "archivos",  nombre: "3. BD frente a archivos" },
+        { id: "vision",    nombre: "4. Visión de los datos" },
+        { id: "modelos",   nombre: "5. Modelos de datos" },
+        { id: "lenguajes", nombre: "6. Lenguajes (LDD / LMD)" },
+        { id: "usuarios",  nombre: "7. Usuarios y ABD" },
+        { id: "trans",     nombre: "8. Transacciones" },
+        { id: "estructura",nombre: "9. Estructura del sistema" }
+    ];
+
+    const flashcards = [
+        // 1. Introducción
+        { cat: "intro", q: "¿Qué es un sistema gestor de bases de datos (SGBD)?",
+          a: "Una colección de datos interrelacionados y un conjunto de programas para acceder a dichos datos.\n\nA la colección de datos se la llama base de datos y contiene información relevante para una empresa." },
+        { cat: "intro", q: "¿Cuál es el objetivo principal de un SGBD?",
+          a: "Proporcionar una forma de almacenar y recuperar la información de una base de datos que sea práctica y eficiente.\n\nAdemás debe garantizar la fiabilidad de los datos a pesar de caídas del sistema o accesos no autorizados, y evitar resultados anómalos cuando varios usuarios comparten los datos." },
+        { cat: "intro", q: "¿Qué implica la gestión de los datos en un SGBD?",
+          a: "• La definición de estructuras para almacenar la información.\n• La provisión de mecanismos para manipular esa información." },
+
+        // 2. Aplicaciones
+        { cat: "apps", q: "Cita aplicaciones representativas de los sistemas de bases de datos.",
+          a: "Banca, líneas aéreas, universidades, transacciones con tarjetas de crédito, telecomunicaciones, finanzas, ventas, producción y recursos humanos." },
+        { cat: "apps", q: "¿Qué sector fue de los primeros en usar bases de datos distribuidas geográficamente?",
+          a: "Las líneas aéreas. Sus terminales, repartidos por todo el mundo, accedían a un sistema de bases de datos centralizado a través de líneas telefónicas y otras redes de datos." },
+        { cat: "apps", q: "¿Cómo cambió Internet el acceso a las bases de datos?",
+          a: "A finales de los 90 muchas interfaces telefónicas se convirtieron en interfaces web, lo que aumentó mucho el acceso directo de los usuarios.\n\nHoy casi todo el mundo usa bases de datos (tiendas en línea, banca web, anuncios personalizados) aunque la mayoría no sea consciente de ello." },
+
+        // 3. BD frente a sistemas de archivos
+        { cat: "archivos", q: "¿Qué es un sistema de procesamiento de archivos?",
+          a: "Un sistema en el que los registros permanentes se guardan en varios archivos del sistema operativo y se escriben distintos programas de aplicación para extraer y añadir registros.\n\nEra la forma habitual de guardar la información antes de los SGBD." },
+        { cat: "archivos", q: "Enumera los inconvenientes de los sistemas de procesamiento de archivos.",
+          a: "1. Redundancia e inconsistencia de datos.\n2. Dificultad en el acceso a los datos.\n3. Aislamiento de datos.\n4. Problemas de integridad.\n5. Problemas de atomicidad.\n6. Anomalías en el acceso concurrente.\n7. Problemas de seguridad." },
+        { cat: "archivos", q: "¿Qué es la redundancia de datos y qué problema genera?",
+          a: "La misma información aparece duplicada en varios archivos (ej. la dirección de un cliente en el archivo de cuentas de ahorro y en el de cuentas corrientes).\n\nProvoca mayor coste de almacenamiento y acceso, y puede causar INCONSISTENCIA: las copias dejan de coincidir tras un cambio." },
+        { cat: "archivos", q: "¿En qué consiste la dificultad en el acceso a los datos?",
+          a: "No existe un programa para cada consulta que surge. Si se pide algo no previsto (ej. clientes del distrito postal 28733), hay que filtrar a mano una lista general o pedir que se escriba un programa nuevo. Ninguna opción es práctica ni eficiente." },
+        { cat: "archivos", q: "¿Qué es el aislamiento de datos?",
+          a: "Los datos están dispersos en varios archivos que pueden tener formatos distintos, por lo que es difícil escribir nuevos programas que recuperen los datos apropiados." },
+        { cat: "archivos", q: "¿Por qué hay problemas de integridad en un sistema de archivos?",
+          a: "Las restricciones de consistencia (ej. el saldo nunca puede bajar de 25 €) se programan dentro del código de cada aplicación. Añadir o cambiar restricciones es difícil, y más aún si afectan a datos de varios archivos." },
+        { cat: "archivos", q: "¿Por qué la atomicidad es un problema en los sistemas de archivos?",
+          a: "Si el sistema falla a mitad de una operación, los datos pueden quedar a medias. Ej.: al transferir 50 € de la cuenta A a la B, se descuentan de A pero no se abonan en B.\n\nLa operación debe ser atómica: ocurrir por completo o no ocurrir en absoluto." },
+        { cat: "archivos", q: "Explica las anomalías en el acceso concurrente con el ejemplo de la cuenta de 500 €.",
+          a: "Dos clientes retiran 50 € y 100 € casi a la vez. Ambos programas leen 500 € y escriben 450 € y 400 €.\n\nSegún cuál escriba el último, la cuenta queda en 450 € o 400 €, en lugar del valor correcto: 350 €." },
+        { cat: "archivos", q: "¿Por qué hay problemas de seguridad en un sistema de archivos?",
+          a: "No todos los usuarios deben ver todos los datos (ej. el personal de nóminas no debe ver las cuentas de los clientes). Como los programas se añaden de forma ad hoc, es difícil garantizar esas restricciones." },
+
+        // 4. Visión de los datos
+        { cat: "vision", q: "¿Cuál es uno de los propósitos principales de un sistema de bases de datos respecto a cómo ven los datos los usuarios?",
+          a: "Proporcionar una visión abstracta de los datos: el sistema esconde los detalles de cómo se almacenan y mantienen." },
+        { cat: "vision", q: "Menciona y define los 3 niveles de abstracción.",
+          a: "1. Físico: el más bajo. Describe cómo se almacenan realmente los datos (estructuras complejas de bajo nivel).\n2. Lógico: describe qué datos se almacenan y qué relaciones existen entre ellos.\n3. Vistas: el más alto. Describe solo una parte de la base de datos. Puede haber muchas vistas." },
+        { cat: "vision", q: "¿Quién trabaja en cada nivel de abstracción?",
+          a: "• Físico: oculto a los programadores; el ABD puede conocer algunos detalles.\n• Lógico: programadores y administradores de bases de datos (ABD).\n• Vistas: usuarios finales, a través de programas de aplicación." },
+        { cat: "vision", q: "Además de simplificar, ¿qué otra función cumple el nivel de vistas?",
+          a: "Es un mecanismo de seguridad: impide que los usuarios accedan a ciertas partes de la base de datos.\n\nEj.: los cajeros de un banco solo ven la información de las cuentas de clientes, no los sueldos de los empleados." },
+        { cat: "vision", q: "Diferencia entre esquema y ejemplar (instancia).",
+          a: "• Esquema: el diseño completo de la base de datos. Rara vez cambia. Equivale a las declaraciones de variables de un programa.\n• Ejemplar: la información almacenada en la base de datos en un momento concreto. Equivale a los valores de las variables en un instante." },
+        { cat: "vision", q: "¿Qué tipos de esquemas hay y cuál es el más importante?",
+          a: "• Esquema físico (nivel físico).\n• Esquema lógico (nivel lógico).\n• Subesquemas (nivel de vistas).\n\nEl más importante es el lógico, porque los programadores construyen las aplicaciones a partir de él." },
+        { cat: "vision", q: "¿Qué se entiende por independencia física de datos?",
+          a: "Los programas de aplicación no dependen del esquema físico, así que no hay que modificarlos si este cambia." },
+
+        // 5. Modelos de datos
+        { cat: "modelos", q: "¿Qué es un modelo de datos y en qué grupos se clasifican?",
+          a: "Una colección de herramientas conceptuales para describir los datos, sus relaciones, su semántica y las restricciones de consistencia.\n\nGrupos: modelos lógicos basados en objetos, modelos lógicos basados en registros y modelos físicos." },
+        { cat: "modelos", q: "En el modelo E-R, ¿qué son una entidad, un atributo y una relación?",
+          a: "• Entidad: una «cosa» u objeto del mundo real distinguible de otros (ej. un cliente, una cuenta).\n• Atributo: propiedad que describe a una entidad (ej. número-cuenta, saldo).\n• Relación: asociación entre varias entidades (ej. titular, que une cliente y cuenta).\n\nEl conjunto de entidades o relaciones del mismo tipo se llama conjunto de entidades / conjunto de relaciones." },
+        { cat: "modelos", q: "¿Cuáles son los componentes gráficos de un diagrama E-R?",
+          a: "• Rectángulos: conjuntos de entidades.\n• Elipses: atributos.\n• Rombos: relaciones entre conjuntos de entidades.\n• Líneas: unen los atributos con los conjuntos de entidades y estos con las relaciones." },
+        { cat: "modelos", q: "¿Qué es la correspondencia de cardinalidades?",
+          a: "Una restricción del modelo E-R que expresa con cuántas entidades se puede asociar otra entidad a través de un conjunto de relaciones (1:1, 1:N, N:M).\n\nEj.: indicar que cada cuenta solo puede pertenecer a un cliente." },
+        { cat: "modelos", q: "¿En qué consiste el modelo relacional y cómo se relaciona con el E-R?",
+          a: "Usa un grupo de tablas para representar los datos y sus relaciones. Cada tabla tiene varias columnas, cada una con un nombre único.\n\nEs el modelo más usado y está a un nivel de abstracción inferior al E-R: el diseño suele hacerse en E-R y luego traducirse a tablas." },
+        { cat: "modelos", q: "¿Por qué el modelo relacional es un modelo «basado en registros»?",
+          a: "Porque la base de datos se estructura en registros de formato fijo de varios tipos. Cada tabla contiene registros de un tipo y sus columnas corresponden a los atributos del tipo de registro." },
+        { cat: "modelos", q: "¿Qué otros modelos de datos existen?",
+          a: "• Orientado a objetos: extiende el E-R con encapsulación, métodos e identidad de objeto.\n• Relacional orientado a objetos: combina el orientado a objetos y el relacional.\n• Semiestructurado: elementos del mismo tipo pueden tener atributos distintos. Se representa con XML.\n• De red y jerárquico: anteriores al relacional, muy ligados a la implementación; hoy casi no se usan." },
+
+        // 6. Lenguajes
+        { cat: "lenguajes", q: "¿Qué es el LDD y qué ocurre al ejecutar una instrucción LDD?",
+          a: "El Lenguaje de Definición de Datos especifica el esquema de la base de datos (ej. CREATE TABLE en SQL).\n\nAl ejecutarse crea la estructura y actualiza el DICCIONARIO DE DATOS, que guarda metadatos (datos sobre los datos). El sistema lo consulta antes de leer o modificar datos." },
+        { cat: "lenguajes", q: "Además de definir tablas, ¿qué más permite especificar el LDD?",
+          a: "• Restricciones de consistencia (ej. el saldo no puede bajar de 100 €), que el sistema comprueba en cada actualización.\n• El almacenamiento y los métodos de acceso, mediante un tipo especial: el lenguaje de almacenamiento y definición de datos." },
+        { cat: "lenguajes", q: "¿Qué operaciones abarca la manipulación de datos?",
+          a: "• Recuperación de información.\n• Inserción de información nueva.\n• Borrado de información.\n• Modificación de información almacenada." },
+        { cat: "lenguajes", q: "Diferencia entre LMD procedimental y declarativo.",
+          a: "• Procedimental: el usuario indica QUÉ datos necesita y CÓMO obtenerlos.\n• Declarativo (no procedimental): indica QUÉ datos necesita, sin decir cómo. Es más fácil de aprender, y el sistema debe encontrar la forma eficiente de obtenerlos.\n\nEl LMD de SQL es no procedimental." },
+        { cat: "lenguajes", q: "¿Qué es una consulta y qué es el lenguaje de consultas?",
+          a: "• Consulta: instrucción que solicita recuperar información.\n• Lenguaje de consultas: la parte del LMD dedicada a la recuperación.\n\nEn la práctica se usan como sinónimos de LMD, aunque técnicamente no lo son." },
+        { cat: "lenguajes", q: "¿Cuáles son las 2 formas de acceder a una BD desde un programa de aplicación?",
+          a: "Los programas se escriben en un lenguaje anfitrión (Cobol, C, C++, Java).\n\n1. Mediante una interfaz de programas de aplicación (API), como ODBC (C) o JDBC (Java).\n2. Extendiendo la sintaxis del lenguaje anfitrión con llamadas LMD, que un precompilador LMD convierte en llamadas normales a procedimientos." },
+
+        // 7. Usuarios y ABD
+        { cat: "usuarios", q: "¿Cuáles son los 4 tipos de usuarios de una base de datos?",
+          a: "1. Normales: invocan programas de aplicación ya escritos (ej. un cajero usando «transferir»).\n2. Programadores de aplicaciones: profesionales que escriben esos programas.\n3. Sofisticados: escriben consultas en un lenguaje de consultas, sin programas (ej. analistas).\n4. Especializados: escriben aplicaciones especiales (CAD, sistemas expertos, datos de audio o gráficos, modelado del entorno)." },
+        { cat: "usuarios", q: "¿Qué interfaz usan normalmente los usuarios normales?",
+          a: "Una interfaz de formularios, en la que rellenan los campos apropiados. También pueden limitarse a leer informes generados desde la base de datos." },
+        { cat: "usuarios", q: "¿Qué son las herramientas DRA y los lenguajes de cuarta generación?",
+          a: "• DRA (desarrollo rápido de aplicaciones): permiten crear formularios e informes sin escribir un programa.\n• Lenguajes de cuarta generación: combinan estructuras de control imperativas (for, while, if-then-else) con instrucciones LMD." },
+        { cat: "usuarios", q: "¿Qué son las herramientas OLAP y a quién benefician?",
+          a: "Herramientas de procesamiento analítico en línea que permiten a los usuarios sofisticados (analistas) ver resúmenes de datos de distintas formas: ventas por región, por producto o por ambas, con más o menos detalle.\n\nOtra clase de herramientas para analistas son las de recopilación de datos, que buscan patrones." },
+        { cat: "usuarios", q: "¿Cuáles son las funciones del administrador de la base de datos (ABD)?",
+          a: "1. Definición del esquema (con instrucciones LDD).\n2. Definición de la estructura y del método de acceso.\n3. Modificación del esquema y de la organización física.\n4. Concesión de autorización para el acceso a los datos.\n5. Mantenimiento rutinario: copias de seguridad, espacio libre en disco y supervisión del rendimiento." },
+
+        // 8. Transacciones
+        { cat: "trans", q: "Define transacción.",
+          a: "Una colección de operaciones que se lleva a cabo como una única función lógica en una aplicación de bases de datos.\n\nCada transacción es una unidad de atomicidad y consistencia." },
+        { cat: "trans", q: "Explica atomicidad, consistencia y durabilidad (las propiedades que trata el tema).",
+          a: "• Atomicidad: todo o nada; la transacción ocurre por completo o no ocurre.\n• Consistencia: se preserva la corrección de la BD (ej. la suma A + B no cambia tras una transferencia).\n• Durabilidad: tras completarse con éxito, los nuevos valores persisten aunque falle el sistema." },
+        { cat: "trans", q: "¿Puede la base de datos estar inconsistente durante una transacción?",
+          a: "Sí, de forma temporal: el cargo en A y el abono en B no ocurren a la vez. Es una inconsistencia necesaria, pero puede causar problemas si se produce un fallo en ese momento." },
+        { cat: "trans", q: "¿Por qué dos programas separados, uno que carga A y otro que abona B, no son transacciones?",
+          a: "Porque cada uno por sí solo no lleva la base de datos de un estado consistente a otro estado consistente. Solo ejecutados juntos preservan la consistencia." },
+        { cat: "trans", q: "¿Quién es responsable de cada aspecto de las transacciones?",
+          a: "• Programador: definir las transacciones para que preserven la consistencia.\n• Gestor de transacciones (SGBD): asegurar atomicidad y durabilidad, y recuperar la BD tras un fallo.\n• Gestor de control de concurrencia: controlar las transacciones concurrentes para mantener la consistencia." },
+
+        // 9. Estructura
+        { cat: "estructura", q: "¿En qué dos grandes componentes se divide un sistema de bases de datos y por qué es importante cada uno?",
+          a: "• Gestor de almacenamiento: las BD son enormes y viven en disco; debe minimizar el movimiento de datos entre disco y memoria principal.\n• Procesador de consultas: simplifica el acceso a los datos traduciendo consultas del nivel lógico a operaciones del nivel físico." },
+        { cat: "estructura", q: "¿Qué es el gestor de almacenamiento?",
+          a: "El módulo que hace de interfaz entre los datos de bajo nivel y los programas de aplicación y consultas.\n\nInteractúa con el gestor de archivos, traduce las instrucciones LMD a órdenes del sistema de archivos y es responsable del almacenamiento, recuperación y actualización de los datos." },
+        { cat: "estructura", q: "¿Cuáles son los componentes del gestor de almacenamiento?",
+          a: "1. Gestor de autorización e integridad.\n2. Gestor de transacciones.\n3. Gestor de archivos.\n4. Gestor de memoria intermedia." },
+        { cat: "estructura", q: "¿Qué función cumple el gestor de memoria intermedia?",
+          a: "Trae los datos del disco a la memoria principal y decide qué datos mantener en caché.\n\nEs una parte crítica: permite manejar bases de datos mucho mayores que la memoria principal." },
+        { cat: "estructura", q: "¿Qué 3 estructuras de datos implementa el gestor de almacenamiento?",
+          a: "1. Archivos de datos: almacenan la base de datos en sí.\n2. Diccionario de datos: metadatos sobre la estructura, en particular el esquema.\n3. Índices: acceso rápido a elementos con valores concretos." },
+        { cat: "estructura", q: "¿Cuáles son los componentes del procesador de consultas?",
+          a: "1. Intérprete del LDD: interpreta las instrucciones LDD y registra las definiciones en el diccionario de datos.\n2. Compilador del LMD: traduce las instrucciones LMD a un plan de evaluación.\n3. Motor de evaluación de consultas: ejecuta las instrucciones de bajo nivel generadas por el compilador." },
+        { cat: "estructura", q: "¿Qué es la optimización de consultas y quién la realiza?",
+          a: "Una consulta puede traducirse en varios planes de evaluación que dan el mismo resultado. El compilador del LMD elige el plan de menor coste entre todas las alternativas." }
+    ];
+
+    flashcards.forEach((c, i) => { c.id = "c" + (i + 1); });
+
+    const STORAGE_KEY = "flashcards-bd-cap1";
+    let marcas = cargarMarcas(); // { id: "ok" | "rep" }
+    let activeCards = [];
+    let currentIndex = 0;
+
+    const $ = (id) => document.getElementById(id);
+
+    function cargarMarcas() {
+        try {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+        } catch (e) {
+            return {};
+        }
+    }
+
+    function guardarMarcas() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(marcas));
+        } catch (e) { /* sin almacenamiento: el progreso dura solo esta sesión */ }
+    }
+
+    function nombreCategoria(id) {
+        const c = CATEGORIAS.find(x => x.id === id);
+        return c ? c.nombre : id;
+    }
+
+    function construirSelectCategorias() {
+        const sel = $("category-filter");
+        sel.innerHTML = "";
+        const todas = document.createElement("option");
+        todas.value = "all";
+        todas.textContent = `Todos los apartados (${flashcards.length})`;
+        sel.appendChild(todas);
+        CATEGORIAS.forEach(c => {
+            const n = flashcards.filter(f => f.cat === c.id).length;
+            const opt = document.createElement("option");
+            opt.value = c.id;
+            opt.textContent = `${c.nombre} (${n})`;
+            sel.appendChild(opt);
+        });
+    }
+
+    function aplicarFiltros() {
+        const cat = $("category-filter").value;
+        const est = $("status-filter").value;
+        activeCards = flashcards.filter(c => {
+            if (cat !== "all" && c.cat !== cat) return false;
+            if (est === "pending") return marcas[c.id] !== "ok";
+            if (est === "rep") return marcas[c.id] === "rep";
+            if (est === "ok") return marcas[c.id] === "ok";
+            return true;
+        });
+        currentIndex = 0;
+        render();
+    }
+
+    // Quita el giro sin animación para no mostrar la respuesta de la siguiente tarjeta
+    function resetGiro() {
+        const card = $("card");
+        if (!card.classList.contains("flipped")) return;
+        card.style.transition = "none";
+        card.classList.remove("flipped");
+        void card.offsetWidth;
+        card.style.transition = "";
+    }
+
+    function actualizarEstadisticas() {
+        const total = activeCards.length;
+        const ok = activeCards.filter(c => marcas[c.id] === "ok").length;
+        const rep = activeCards.filter(c => marcas[c.id] === "rep").length;
+        $("score-counter").textContent = `Dominadas: ${ok} | Repasar: ${rep}`;
+        $("progress-bar").style.width = total ? `${(ok / total) * 100}%` : "0%";
+    }
+
+    function render() {
+        resetGiro();
+        const total = activeCards.length;
+        const status = $("card-status");
+
+        if (total === 0) {
+            $("card-category").textContent = "Vacío";
+            $("card-question").textContent = "No hay tarjetas con estos filtros.";
+            $("card-answer").textContent = "Cambia el apartado o el estado en los filtros superiores.";
+            $("card-counter").textContent = "Tarjeta 0 de 0";
+            status.className = "tag hidden";
+            actualizarEstadisticas();
+            return;
+        }
+
+        const c = activeCards[currentIndex];
+        $("card-category").textContent = nombreCategoria(c.cat);
+        $("card-question").textContent = c.q;
+        $("card-answer").textContent = c.a;
+        $("card-counter").textContent = `Tarjeta ${currentIndex + 1} de ${total}`;
+
+        if (marcas[c.id] === "ok") {
+            status.textContent = "Dominada";
+            status.className = "tag ok";
+        } else if (marcas[c.id] === "rep") {
+            status.textContent = "Repasar";
+            status.className = "tag rep";
+        } else {
+            status.className = "tag hidden";
+        }
+
+        actualizarEstadisticas();
+    }
+
+    function flipCard() {
+        if (activeCards.length === 0) return;
+        $("card").classList.toggle("flipped");
+    }
+
+    function nextCard() {
+        if (activeCards.length === 0) return;
+        currentIndex = (currentIndex + 1) % activeCards.length;
+        render();
+    }
+
+    function prevCard() {
+        if (activeCards.length === 0) return;
+        currentIndex = (currentIndex - 1 + activeCards.length) % activeCards.length;
+        render();
+    }
+
+    function markCard(dominada) {
+        if (activeCards.length === 0) return;
+        marcas[activeCards[currentIndex].id] = dominada ? "ok" : "rep";
+        guardarMarcas();
+        nextCard();
+    }
+
+    function shuffleCards() {
+        for (let i = activeCards.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [activeCards[i], activeCards[j]] = [activeCards[j], activeCards[i]];
+        }
+        currentIndex = 0;
+        render();
+    }
+
+    function resetProgreso() {
+        if (!confirm("¿Borrar todas las marcas de «Dominada» y «Repasar»?")) return;
+        marcas = {};
+        guardarMarcas();
+        aplicarFiltros();
+    }
+
+    // Eventos
+    $("category-filter").addEventListener("change", aplicarFiltros);
+    $("status-filter").addEventListener("change", aplicarFiltros);
+    $("btn-shuffle").addEventListener("click", shuffleCards);
+    $("btn-reset").addEventListener("click", resetProgreso);
+    $("btn-prev").addEventListener("click", prevCard);
+    $("btn-next").addEventListener("click", nextCard);
+    $("btn-ok").addEventListener("click", () => markCard(true));
+    $("btn-rep").addEventListener("click", () => markCard(false));
+    $("card-container").addEventListener("click", flipCard);
+
+    document.addEventListener("keydown", (e) => {
+        const tag = e.target.tagName;
+        if (tag === "SELECT") return;
+        // Espacio/Enter sobre un botón ya activan ese botón
+        if (tag === "BUTTON" && (e.key === " " || e.key === "Enter")) return;
+
+        if (e.key === " " || e.key === "Enter") {
+            e.preventDefault();
+            flipCard();
+        } else if (e.key === "ArrowRight") {
+            nextCard();
+        } else if (e.key === "ArrowLeft") {
+            prevCard();
+        } else if (e.key === "1") {
+            markCard(false);
+        } else if (e.key === "2") {
+            markCard(true);
+        }
+    });
+
+    // Deslizar en pantallas táctiles
+    let touchX = null;
+    const cont = $("card-container");
+    cont.addEventListener("touchstart", (e) => { touchX = e.changedTouches[0].clientX; }, { passive: true });
+    cont.addEventListener("touchend", (e) => {
+        if (touchX === null) return;
+        const dx = e.changedTouches[0].clientX - touchX;
+        touchX = null;
+        if (Math.abs(dx) > 50) {
+            dx < 0 ? nextCard() : prevCard();
+        }
+    });
+
+    construirSelectCategorias();
+    aplicarFiltros();
+</script>
+</body>
+</html>

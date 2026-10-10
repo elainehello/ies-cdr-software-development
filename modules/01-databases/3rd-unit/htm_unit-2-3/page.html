@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entidad/Relación · Ejercicios resueltos</title>
+<style>
+:root{
+  --primary:#2563eb; --primary-dark:#1d4ed8; --soft:#eff6ff;
+  --bg:#f8fafc; --card:#ffffff; --card2:#f8fafc; --ink:#0f172a; --muted:#475569;
+  --border:#e2e8f0; --track:#e2e8f0;
+  --ok-bg:#dcfce7; --ok:#15803d; --bad-bg:#fee2e2; --bad:#b91c1c;
+  --ent:#ffffff; --entStroke:#1e293b; --rel:#fef3c7; --relStroke:#92400e;
+  --card-label:#c2410c; --q:#7c3aed; --hier:#0f766e;
+  --radius:12px; --shadow:0 10px 15px -3px rgba(0,0,0,.08),0 4px 6px -2px rgba(0,0,0,.04);
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --primary:#60a5fa; --primary-dark:#3b82f6; --soft:#1e293b;
+    --bg:#0b1220; --card:#111827; --card2:#0f172a; --ink:#e2e8f0; --muted:#94a3b8;
+    --border:#1f2937; --track:#1f2937;
+    --ok-bg:#14532d; --ok:#bbf7d0; --bad-bg:#7f1d1d; --bad:#fecaca;
+    --ent:#0f172a; --entStroke:#cbd5e1; --rel:#3b2a0a; --relStroke:#fbbf24;
+    --card-label:#fb923c; --q:#c4b5fd; --hier:#5eead4;
+    --shadow:0 10px 20px rgba(0,0,0,.4);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);padding:20px 16px 48px;display:flex;justify-content:center}
+.wrap{width:100%;max-width:1100px}
+header{text-align:center;margin-bottom:16px}
+h1{font-size:1.7rem;margin-bottom:6px}
+.subtitle{color:var(--muted);font-size:.95rem}
+h2{font-size:1.2rem;margin:4px 0 10px}
+h3{font-size:1rem;margin:18px 0 8px}
+p,li{line-height:1.6}
+ul,ol{padding-left:22px}
+code,.mono{font-family:var(--mono);font-size:.88em}
+
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--track);padding:4px;border-radius:10px;margin-bottom:16px}
+.tab{border:none!important;background:transparent!important;padding:10px;font-weight:600;color:var(--muted)}
+.tab.active{background:var(--card)!important;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.view[hidden]{display:none}
+
+button,select{padding:9px 13px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--ink);font:inherit;font-size:.9rem;cursor:pointer}
+button:hover,select:hover{border-color:var(--primary)}
+button:focus-visible,select:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.btn-primary{background:var(--primary);border-color:var(--primary);color:#fff;font-weight:600}
+.btn-primary:hover{background:var(--primary-dark)}
+.btn-ok{background:var(--ok-bg);color:var(--ok);font-weight:600}
+
+.panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 22px;margin-bottom:16px}
+.muted{color:var(--muted)}
+
+/* exercise picker */
+.picker{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.pick{min-width:44px;padding:8px 10px;font-weight:600}
+.pick.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.pick.done{border-color:var(--ok);}
+.ex-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.ex-head h2{margin:0}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.badge{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:3px 9px;border-radius:20px;background:var(--soft);color:var(--primary)}
+
+details.enun{margin-top:12px;border:1px solid var(--border);border-radius:10px;padding:10px 14px;background:var(--card2)}
+details.enun summary{cursor:pointer;font-weight:600}
+details.enun .txt{white-space:pre-line;margin-top:8px;line-height:1.6}
+
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0 10px}
+.toolbar .sp{flex:1}
+.switch{display:inline-flex;align-items:center;gap:6px;font-size:.9rem;color:var(--muted);cursor:pointer;user-select:none}
+.switch input{width:16px;height:16px;accent-color:var(--primary)}
+
+.diagram{border:1px solid var(--border);border-radius:10px;background:var(--card2);overflow:auto;-webkit-overflow-scrolling:touch}
+.diagram svg{display:block;width:100%;height:auto}
+.diagram.zoom svg{width:auto;max-width:none}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin-top:8px}
+
+/* svg */
+.e-box{fill:var(--ent);stroke:var(--entStroke);stroke-width:1.6}
+.e-name{font:700 12.5px -apple-system,Segoe UI,Roboto,Arial,sans-serif;fill:var(--ink)}
+.e-attr{font:11px -apple-system,Segoe UI,Roboto,Arial,sans-serif;fill:var(--muted)}
+.e-attr.pk{fill:var(--ink);font-weight:600}
+.r-box{fill:var(--rel);stroke:var(--relStroke);stroke-width:1.6}
+.r-name{font:700 11.5px -apple-system,Segoe UI,Roboto,Arial,sans-serif;fill:var(--ink)}
+.r-type{font:700 10.5px var(--mono);fill:var(--relStroke)}
+.edge{stroke:var(--entStroke);stroke-width:1.4;fill:none}
+.card-lbl{font:700 11.5px var(--mono);fill:var(--card-label);paint-order:stroke;stroke:var(--card2);stroke-width:4px;stroke-linejoin:round}
+.card-lbl.q{fill:var(--q)}
+.role-lbl{font:italic 10.5px -apple-system,Segoe UI,Arial,sans-serif;fill:var(--muted);paint-order:stroke;stroke:var(--card2);stroke-width:4px}
+.r-attr{font:11px -apple-system,Segoe UI,Arial,sans-serif;fill:var(--muted);paint-order:stroke;stroke:var(--card2);stroke-width:3px}
+.r-attr.pk{text-decoration:underline;fill:var(--ink)}
+.a-dot{fill:var(--card2);stroke:var(--entStroke);stroke-width:1.2}
+.h-tri{fill:var(--card2);stroke:var(--hier);stroke-width:1.8}
+.h-edge{stroke:var(--hier);stroke-width:1.6;fill:none}
+.h-lbl{font:italic 10.5px -apple-system,Segoe UI,Arial,sans-serif;fill:var(--hier);paint-order:stroke;stroke:var(--card2);stroke-width:3px}
+.c-edge{stroke:var(--bad);stroke-width:1.4;stroke-dasharray:5 4;fill:none}
+.c-lbl{font:italic 700 10.5px -apple-system,Segoe UI,Arial,sans-serif;fill:var(--bad);paint-order:stroke;stroke:var(--card2);stroke-width:3px}
+
+/* analysis */
+.rels{display:grid;gap:10px}
+.relcard{border:1px solid var(--border);border-radius:10px;padding:12px 14px;background:var(--card2)}
+.relcard.ok{border-color:var(--ok);background:var(--ok-bg)}
+.relcard.bad{border-color:var(--bad);background:var(--bad-bg)}
+.relcard .t{font-weight:700}
+.relcard .t .type{font-family:var(--mono);color:var(--relStroke);margin-left:6px}
+.relcard ul{margin-top:6px}
+.relcard .why{margin-top:6px;font-size:.92rem;color:var(--muted)}
+.pr-row{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-top:8px;font-size:.9rem}
+.pr-row label{display:inline-flex;gap:6px;align-items:center}
+.pr-row select{padding:5px 8px;font-family:var(--mono)}
+.score{font-weight:700}
+
+.notes{margin-top:10px;padding:10px 14px;border-left:4px solid var(--card-label);background:var(--card2);border-radius:6px}
+.notes li{margin:2px 0}
+
+/* relational */
+.rschema{font-family:var(--mono);font-size:.9rem;line-height:1.9}
+.rschema .tbl{margin-bottom:6px}
+.rschema .tn{font-weight:700}
+.rschema .pk{text-decoration:underline;font-weight:700}
+.rschema .fk{font-style:italic;color:var(--primary)}
+.rschema .uq{font-weight:700}
+.rschema .fkl{color:var(--muted);font-size:.85em;padding-left:18px}
+pre.sql{font-family:var(--mono);font-size:.82rem;line-height:1.5;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:14px;overflow:auto;white-space:pre;max-height:460px}
+details.sec{margin-top:14px}
+details.sec>summary{cursor:pointer;font-weight:700;font-size:1rem;padding:6px 0}
+
+/* guide */
+.guide h3{color:var(--primary)}
+.rule{border:1px solid var(--border);border-radius:10px;padding:12px 14px;background:var(--card2);margin:8px 0}
+.rule b{color:var(--card-label)}
+table.tb{border-collapse:collapse;width:100%;font-size:.92rem;margin:8px 0}
+table.tb th,table.tb td{border:1px solid var(--border);padding:7px 9px;text-align:left;vertical-align:top}
+table.tb th{background:var(--card2)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mini svg{width:100%;max-width:460px;height:auto;display:block;margin:6px auto}
+
+@media (max-width:700px){
+  .panel{padding:16px 14px}
+  .grid2{grid-template-columns:1fr}
+  h1{font-size:1.4rem}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Modelo Entidad/Relación → Modelo Relacional</h1>
+  <p class="subtitle">Temas 2 y 3 · Los 18 ejercicios resueltos con diagrama, cardinalidades, paso a tablas y SQL</p>
+</header>
+
+<div class="tabs" role="tablist">
+  <button class="tab active" id="tab-ex" role="tab" aria-selected="true">Ejercicios</button>
+  <button class="tab" id="tab-guide" role="tab" aria-selected="false">Guía: notación y método</button>
+</div>
+
+<section class="view" id="view-ex">
+  <div class="picker" id="picker" aria-label="Elegir ejercicio"></div>
+  <div class="panel" id="ex-panel"></div>
+</section>
+
+<section class="view guide" id="view-guide" hidden></section>
+</div>
+
+<script>
+// =====================================================================
+//  EJERCICIOS DEL TEMA 2 (los mismos se pasan a tablas en el Tema 3)
+//  Atributos: #id = identificador · x* = opcional (0,1) · x+ = multivaluado · x! = identificador alternativo
+//  Cardinalidad ca va junto a la entidad a, cb junto a b:
+//  (mín,máx) junto a X = cuántos X se relacionan con UN ejemplar de la otra entidad.
+// =====================================================================
+const EXERCISES = [
+{
+ id: 1, page: 52, title: "Red de metro", tags: ["1:N", "N:M", "atributo en interrelación"],
+ text: `Se desea diseñar una base de datos que almacene información sobre la red del metro.
+Además se tendrán en cuenta los siguientes supuestos semánticos:
+a.- Los trenes están asignados a una línea determinada.
+b.- Cada tren se guarda en una cochera determinada.
+c.- En una línea cada estación tiene un número de orden.`,
+ ents: [
+  { id: "COCHERA", x: 120, y: 70, attrs: ["#cod_cochera", "direccion"] },
+  { id: "TREN", x: 120, y: 330, attrs: ["#cod_tren", "modelo", "fecha_compra"] },
+  { id: "LINEA", label: "LÍNEA", x: 520, y: 330, attrs: ["#cod_linea", "nombre", "color"] },
+  { id: "ESTACION", label: "ESTACIÓN", x: 520, y: 70, attrs: ["#cod_estacion", "nombre", "direccion"] }
+ ],
+ rels: [
+  { n: "Guarda", a: "COCHERA", b: "TREN", ca: "(1,1)", cb: "(0,n)", x: 120, y: 200,
+    why: "«Cada tren se guarda en <b>una cochera determinada</b>» → junto a COCHERA va (1,1). Una cochera puede guardar varios trenes y podría estar vacía → (0,n) junto a TREN." },
+  { n: "Asignado", a: "LINEA", b: "TREN", ca: "(1,1)", cb: "(1,n)", x: 320, y: 330,
+    why: "«Los trenes están asignados a <b>una línea determinada</b>» → (1,1) junto a LÍNEA. Una línea en servicio tiene al menos un tren → (1,n) junto a TREN." },
+  { n: "Pertenece", a: "LINEA", b: "ESTACION", ca: "(1,n)", cb: "(1,n)", x: 520, y: 200, attrs: ["num_orden"], ap: "r",
+    why: "Una línea tiene muchas estaciones y una estación de correspondencia está en varias líneas → N:M. El <b>número de orden</b> no es de la estación ni de la línea, sino de la pareja (línea, estación): la estación Sol puede ser la 5ª en una línea y la 12ª en otra. Por eso es atributo de la interrelación." }
+ ],
+ notes: [
+  "Si el profesor dice que cada estación pertenece a una sola línea, Pertenece pasaría a ser 1:N y num_orden se iría a la tabla ESTACION.",
+  "Los atributos (modelo, color…) no los da el enunciado: son ejemplos razonables. En el examen basta con el identificador y los que pida el texto."
+ ]
+},
+{
+ id: 2, page: 52, title: "Municipios y viviendas", tags: ["1:N", "N:M", "reflexiva", "dos relaciones entre las mismas entidades"],
+ text: `Queremos tener información de municipios, viviendas y personas. Las viviendas se encuentran en un solo municipio, pero pueden existir municipios sin viviendas.
+Toda persona está empadronada en un municipio y vive en una vivienda.
+Cada persona sólo puede habitar en una vivienda pero puede ser propietaria de más de una vivienda.
+Nos interesa conocer las personas que dependen del cabeza de familia (observar que éste a su vez es una persona).
+Elaborar:
+· Diagrama Entidad/Relación
+· Esquema de las tablas que se generarán, indicando los campos clave.`,
+ ents: [
+  { id: "MUNICIPIO", x: 120, y: 80, attrs: ["#cod_municipio", "nombre", "provincia"] },
+  { id: "VIVIENDA", x: 600, y: 80, attrs: ["#cod_vivienda", "direccion"] },
+  { id: "PERSONA", x: 360, y: 360, attrs: ["#dni", "nombre", "apellidos"] }
+ ],
+ rels: [
+  { n: "Situada", a: "MUNICIPIO", b: "VIVIENDA", ca: "(1,1)", cb: "(0,n)", x: 360, y: 80,
+    why: "«Las viviendas se encuentran en <b>un solo municipio</b>» → (1,1) junto a MUNICIPIO. «Pueden existir municipios <b>sin viviendas</b>» → mínimo 0: (0,n) junto a VIVIENDA." },
+  { n: "Empadronada", a: "MUNICIPIO", b: "PERSONA", ca: "(1,1)", cb: "(0,n)", x: 150, y: 250,
+    why: "«<b>Toda</b> persona está empadronada en <b>un</b> municipio» → (1,1) junto a MUNICIPIO. Un municipio sin viviendas no tendrá habitantes → (0,n) junto a PERSONA." },
+  { n: "Habita", a: "VIVIENDA", b: "PERSONA", ca: "(1,1)", cb: "(0,n)", x: 430, y: 215,
+    why: "«Cada persona <b>sólo puede habitar en una vivienda</b>» y «toda persona vive en una vivienda» → (1,1) junto a VIVIENDA. Una vivienda puede estar vacía o tener varios habitantes → (0,n)." },
+  { n: "Posee", a: "PERSONA", b: "VIVIENDA", ca: "(1,n)", cb: "(0,n)", x: 600, y: 250, ap: "r",
+    why: "«Puede ser propietaria de <b>más de una</b> vivienda» → (0,n) junto a VIVIENDA (puede no tener ninguna). Una vivienda tiene al menos un propietario y puede tener varios (copropiedad) → (1,n) junto a PERSONA. Resultado N:M." },
+  { n: "Depende", a: "PERSONA", b: "PERSONA", ca: "(0,1)", cb: "(0,n)", roleA: "cabeza", roleB: "dependiente", x: 360, y: 540,
+    why: "Interrelación <b>reflexiva</b>: el cabeza de familia también es una PERSONA. Cada persona depende de ninguno o un cabeza (el propio cabeza no depende de nadie) → (0,1) en el rol cabeza. Un cabeza tiene varios dependientes → (0,n)." }
+ ],
+ notes: [
+  "Habita y Posee unen las mismas dos entidades pero significan cosas distintas: hay que dibujar <b>dos rombos</b>.",
+  "Si se supone que cada vivienda tiene un único propietario, Posee sería 1:N: (1,1) junto a PERSONA y la clave del propietario iría a VIVIENDA.",
+  "En la tabla PERSONA, dni_cabeza admite nulos porque el mínimo es 0."
+ ]
+},
+{
+ id: 3, page: 52, title: "En la Ópera", tags: ["1:1", "1:N", "N:M", "dos relaciones entre las mismas entidades"],
+ text: `a.- Una Orquesta puede interpretar varios conciertos.
+b.- La orquesta tiene un director titular pero puede contar con directores invitados.
+c.- En un mismo concierto puede interpretarse varias obras y las pueden interpretar varios solistas.
+d.- Un solista puede participar en varios conciertos.
+e.- Cada obra es escrita por un solo compositor.
+f.- En una obra pueden participar varios solistas.
+Construir el modelo E/R relacionado con el ejercicio suponiendo que la información se pretende almacenar en una base de datos.`,
+ ents: [
+  { id: "DIRECTOR", x: 110, y: 90, attrs: ["#cod_director", "nombre"] },
+  { id: "ORQUESTA", x: 430, y: 90, attrs: ["#cod_orquesta", "nombre"] },
+  { id: "COMPOSITOR", x: 760, y: 90, attrs: ["#cod_compositor", "nombre"] },
+  { id: "CONCIERTO", x: 430, y: 340, attrs: ["#cod_concierto", "fecha", "lugar"] },
+  { id: "OBRA", x: 760, y: 340, attrs: ["#cod_obra", "titulo"] },
+  { id: "SOLISTA", x: 760, y: 580, attrs: ["#cod_solista", "nombre", "instrumento"] }
+ ],
+ rels: [
+  { n: "Titular", a: "DIRECTOR", b: "ORQUESTA", ca: "(1,1)", cb: "(0,1)", x: 270, y: 45, fkIn: "ORQUESTA", rename: { cod_director: "cod_director_titular" },
+    why: "«La orquesta tiene <b>un</b> director titular» → (1,1) junto a DIRECTOR. Un director es titular de una orquesta como mucho (y los invitados no lo son de ninguna) → (0,1) junto a ORQUESTA. Es 1:1: la clave del director pasa a ORQUESTA." },
+  { n: "Invitado", a: "DIRECTOR", b: "ORQUESTA", ca: "(0,n)", cb: "(0,n)", x: 270, y: 150,
+    why: "«Puede contar con directores invitados» → (0,n) junto a DIRECTOR (puede no tener). Un director puede ser invitado por varias orquestas → (0,n). N:M." },
+  { n: "Interpreta", a: "ORQUESTA", b: "CONCIERTO", ca: "(1,1)", cb: "(0,n)", x: 430, y: 215,
+    why: "«Una orquesta puede interpretar <b>varios</b> conciertos» → (0,n) junto a CONCIERTO. Cada concierto lo da una orquesta → (1,1)." },
+  { n: "Escribe", a: "COMPOSITOR", b: "OBRA", ca: "(1,1)", cb: "(1,n)", x: 760, y: 215,
+    why: "«Cada obra es escrita por <b>un solo</b> compositor» → (1,1) junto a COMPOSITOR. Un compositor guardado ha escrito al menos una obra → (1,n)." },
+  { n: "Incluye", a: "CONCIERTO", b: "OBRA", ca: "(0,n)", cb: "(1,n)", x: 595, y: 340,
+    why: "«En un mismo concierto pueden interpretarse <b>varias obras</b>» → (1,n) junto a OBRA. Una obra puede tocarse en varios conciertos o en ninguno todavía → (0,n). N:M." },
+  { n: "Participa", a: "SOLISTA", b: "CONCIERTO", ca: "(0,n)", cb: "(1,n)", x: 560, y: 470,
+    why: "«Un solista puede participar en <b>varios</b> conciertos» → (1,n) junto a CONCIERTO. Un concierto puede tener varios solistas o ninguno → (0,n). N:M." },
+  { n: "Interviene", a: "SOLISTA", b: "OBRA", ca: "(0,n)", cb: "(1,n)", x: 760, y: 460, ap: "r",
+    why: "«En una obra pueden participar <b>varios</b> solistas» → (0,n) junto a SOLISTA. Un solista interpreta varias obras → (1,n). N:M." }
+ ],
+ notes: [
+  "Alternativa más precisa: una interrelación <b>ternaria</b> CONCIERTO–OBRA–SOLISTA si hace falta saber qué solista tocó qué obra en qué concierto. Con tres binarias no se puede deducir.",
+  "Titular e Invitado unen las mismas entidades: son dos rombos distintos."
+ ]
+},
+{
+ id: 4, page: 53, title: "Compañía aérea", tags: ["entidad débil (ID)", "jerarquía", "N:M"],
+ text: `a.- En una compañía aérea los pasajeros reservan plazas para las partidas. Una partida es un número de vuelo y una fecha.
+b.- Un mismo vuelo puede tener lugar en diferentes fechas.
+c.- Las aeronaves se encuadran en grupos según el tipo de avión.
+d.- Un mismo piloto es capaz de tripular diversos tipos de aviones.
+e.- Los empleados de la compañía pueden formar parte de la tripulación de diferentes partidas.
+f.- Un piloto es un empleado más de la compañía.`,
+ ents: [
+  { id: "VUELO", x: 110, y: 80, attrs: ["#num_vuelo", "origen", "destino"] },
+  { id: "PARTIDA", x: 110, y: 320, weak: true, attrs: ["#fecha"] },
+  { id: "PASAJERO", x: 110, y: 560, attrs: ["#dni", "nombre"] },
+  { id: "AERONAVE", x: 450, y: 320, attrs: ["#matricula"] },
+  { id: "TIPO_AVION", label: "TIPO_AVIÓN", x: 790, y: 320, attrs: ["#cod_tipo", "modelo", "plazas"] },
+  { id: "EMPLEADO", x: 450, y: 560, attrs: ["#cod_empleado", "nombre", "puesto"] },
+  { id: "PILOTO", x: 790, y: 720, attrs: ["num_licencia"] }
+ ],
+ rels: [
+  { n: "Tiene", a: "VUELO", b: "PARTIDA", ca: "(1,1)", cb: "(1,n)", dep: "ID", x: 110, y: 200,
+    why: "«Una partida es <b>un número de vuelo y una fecha</b>»: la fecha sola no identifica una partida, necesita el número de vuelo → PARTIDA es <b>débil por identificación (ID)</b>. «Un mismo vuelo puede tener lugar en diferentes fechas» → (1,n) junto a PARTIDA." },
+  { n: "Reserva", a: "PASAJERO", b: "PARTIDA", ca: "(0,n)", cb: "(1,n)", x: 110, y: 440, attrs: ["num_plaza"], ap: "r",
+    why: "Un pasajero reserva plaza en una o varias partidas → (1,n) junto a PARTIDA. Una partida tiene muchos pasajeros o ninguno → (0,n). N:M; la plaza depende de la pareja (pasajero, partida)." },
+  { n: "Vuela", a: "AERONAVE", b: "PARTIDA", ca: "(1,1)", cb: "(0,n)", x: 280, y: 320,
+    why: "Supuesto razonable: cada partida la hace un avión concreto → (1,1) junto a AERONAVE; un avión hace muchas partidas → (0,n)." },
+  { n: "Es_de", a: "TIPO_AVION", b: "AERONAVE", ca: "(1,1)", cb: "(1,n)", x: 620, y: 320,
+    why: "«Las aeronaves se encuadran en grupos según el tipo de avión» → cada aeronave es de un tipo (1,1); un tipo agrupa varias aeronaves (1,n)." },
+  { n: "Tripula", a: "EMPLEADO", b: "PARTIDA", ca: "(1,n)", cb: "(0,n)", x: 280, y: 450,
+    why: "«Los empleados pueden formar parte de la tripulación de <b>diferentes</b> partidas» → (0,n) junto a PARTIDA. Cada partida necesita tripulación → (1,n) junto a EMPLEADO. N:M." },
+  { n: "Capacitado", a: "PILOTO", b: "TIPO_AVION", ca: "(0,n)", cb: "(1,n)", x: 790, y: 520,
+    why: "«Un mismo piloto es capaz de tripular <b>diversos</b> tipos de aviones» → (1,n) junto a TIPO_AVIÓN. Un tipo lo pueden pilotar varios pilotos → (0,n). N:M." }
+ ],
+ hier: [ { sup: "EMPLEADO", subs: ["PILOTO"], x: 450, y: 665, total: false, excl: false, label: "parcial",
+   why: "«Un piloto es un empleado más»: PILOTO es un <b>subtipo</b> de EMPLEADO. Es parcial porque hay empleados que no son pilotos (azafatas, etc.). El piloto hereda la clave cod_empleado." } ],
+ notes: [
+  "La clave de PARTIDA es (num_vuelo, fecha): la de VUELO + su propio atributo. Por eso RESERVA y TRIPULA llevan esas dos columnas.",
+  "Capacitado se une a PILOTO y no a EMPLEADO porque solo los pilotos tripulan tipos de avión."
+ ]
+},
+{
+ id: 5, page: 53, title: "Elaboración de proyectos", tags: ["débil (ID)", "1:1", "histórico", "N:M"],
+ text: `Diseñar un modelo Entidad/Relación para una empresa que se dedica a la elaboración de proyectos.
+a.- Los proyectos son encargados por clientes.
+b.- Cada uno de los proyectos está dividido en fases y de cada uno de ellos nos interesa conservar la información relativa a su desarrollo.
+c.- En la empresa hay empleados y cada uno de ellos está asignado a un único proyecto, sin embargo un empleado ha trabajado en muchos proyectos de los que queremos conservar información.
+d.- Los empleados son todos titulados universitarios pertenecientes a diferentes carreras y se quiere destacar la existencia de las carreras y la pertenencia de algún empleado a alguna de ellas.
+e.- La empresa está dividida en departamentos que tienen un único jefe.
+f.- Un empleado no puede pertenecer a más de un departamento.`,
+ ents: [
+  { id: "CLIENTE", x: 110, y: 80, attrs: ["#cod_cliente", "nombre"] },
+  { id: "PROYECTO", x: 440, y: 80, attrs: ["#cod_proyecto", "nombre"] },
+  { id: "FASE", x: 790, y: 80, weak: true, attrs: ["#num_fase", "descripcion", "fecha_inicio", "fecha_fin*"] },
+  { id: "CARRERA", x: 110, y: 380, attrs: ["#cod_carrera", "nombre"] },
+  { id: "EMPLEADO", x: 440, y: 380, attrs: ["#cod_empleado", "nombre"] },
+  { id: "DEPARTAMENTO", x: 790, y: 380, attrs: ["#cod_departamento", "nombre"] }
+ ],
+ rels: [
+  { n: "Encarga", a: "CLIENTE", b: "PROYECTO", ca: "(1,1)", cb: "(1,n)", x: 270, y: 80,
+    why: "Cada proyecto lo encarga un cliente (1,1); un cliente guardado ha encargado al menos uno (1,n)." },
+  { n: "Dividido", a: "PROYECTO", b: "FASE", ca: "(1,1)", cb: "(1,n)", dep: "ID", x: 615, y: 80,
+    why: "Una fase (1, 2, 3…) solo tiene sentido dentro de su proyecto: la «fase 2» se repite en todos. FASE es <b>débil por identificación</b>; su clave es (cod_proyecto, num_fase)." },
+  { n: "Asignado", a: "PROYECTO", b: "EMPLEADO", ca: "(1,1)", cb: "(0,n)", x: 360, y: 230,
+    why: "«Cada empleado está asignado a <b>un único</b> proyecto» (el actual) → (1,1) junto a PROYECTO. Un proyecto tiene varios empleados → (0,n)." },
+  { n: "Ha_trabajado", a: "PROYECTO", b: "EMPLEADO", ca: "(0,n)", cb: "(0,n)", x: 530, y: 230, attrs: ["fecha_inicio", "fecha_fin*"], ap: "r",
+    why: "«Un empleado <b>ha trabajado</b> en muchos proyectos de los que queremos conservar información» → es un <b>histórico</b> distinto de la asignación actual. N:M con fechas." },
+  { n: "Titulado", a: "CARRERA", b: "EMPLEADO", ca: "(1,n)", cb: "(0,n)", x: 275, y: 380,
+    why: "«Todos titulados universitarios» → cada empleado tiene al menos una carrera (1,n). «La pertenencia de <b>algún</b> empleado» → puede haber carreras sin empleados (0,n)." },
+  { n: "Pertenece", a: "DEPARTAMENTO", b: "EMPLEADO", ca: "(1,1)", cb: "(1,n)", x: 615, y: 330,
+    why: "«Un empleado <b>no puede pertenecer a más de un</b> departamento» → máximo 1 junto a DEPARTAMENTO. Mínimo 1 porque la empresa «está dividida en departamentos»." },
+  { n: "Dirige", a: "EMPLEADO", b: "DEPARTAMENTO", ca: "(1,1)", cb: "(0,1)", x: 615, y: 440, fkIn: "DEPARTAMENTO", rename: { cod_empleado: "cod_jefe" },
+    why: "«Departamentos que tienen <b>un único jefe</b>» → (1,1) junto a EMPLEADO. Un empleado es jefe de un departamento o de ninguno → (0,1). 1:1: la clave del jefe va a DEPARTAMENTO." }
+ ],
+ notes: [
+  "Asignado (actual) y Ha_trabajado (histórico) son <b>dos interrelaciones</b> distintas entre las mismas entidades.",
+  "EMPLEADO apunta a DEPARTAMENTO y DEPARTAMENTO apunta a EMPLEADO (jefe): el SQL añade una de las dos claves ajenas al final con ALTER TABLE."
+ ]
+},
+{
+ id: 6, page: 54, title: "Videoclub Glob-Gusters", tags: ["débil (ID)", "reflexiva", "N:M con fechas"],
+ text: `La cadena de Videoclubs Glob-Gusters ha decidido, para mejorar su servicio, emplear una base de datos para almacenar la información referente a las películas que ofrece en alquiler. Esta información es la siguiente:
+a.- Una película se caracteriza por su título, nacionalidad, productora y fecha (por ejemplo, Quo Vadis, Estados Unidos, M.G.M., 1955).
+b.- En una película pueden participar varios actores (código de actor, nombre, nacionalidad, sexo), algunos de ellos como actores principales.
+c.- Una película está dirigida por un director (código de director, nombre, nacionalidad).
+d.- De cada película se dispone de uno o varios ejemplares diferenciados por un número de ejemplar y caracterizados por su estado de conservación.
+e.- Un ejemplar se puede encontrar alquilado a algún socio (código socio, nombre, dirección, teléfono). Se desea almacenar la fecha de comienzo de alquiler y la de devolución.
+f.- Un socio tiene que ser avalado por otro socio que responda de él en caso de tener problemas en el alquiler.`,
+ ents: [
+  { id: "ACTOR", x: 110, y: 90, attrs: ["#cod_actor", "nombre", "nacionalidad", "sexo"] },
+  { id: "PELICULA", label: "PELÍCULA", x: 450, y: 90, attrs: ["#cod_pelicula", "titulo", "nacionalidad", "productora", "fecha"] },
+  { id: "DIRECTOR", x: 800, y: 90, attrs: ["#cod_director", "nombre", "nacionalidad"] },
+  { id: "EJEMPLAR", x: 450, y: 380, weak: true, attrs: ["#num_ejemplar", "estado"] },
+  { id: "SOCIO", x: 110, y: 380, attrs: ["#cod_socio", "nombre", "direccion", "telefono"] }
+ ],
+ rels: [
+  { n: "Actua", label: "Actúa", a: "ACTOR", b: "PELICULA", ca: "(1,n)", cb: "(1,n)", x: 280, y: 90, attrs: ["principal"],
+    why: "«En una película pueden participar <b>varios</b> actores» y un actor sale en varias películas → N:M. «Algunos de ellos como principales»: ser principal depende de la pareja (actor, película) → atributo de la interrelación." },
+  { n: "Dirige", a: "DIRECTOR", b: "PELICULA", ca: "(1,1)", cb: "(1,n)", x: 625, y: 90,
+    why: "«Una película está dirigida por <b>un</b> director» → (1,1) junto a DIRECTOR." },
+  { n: "Tiene", a: "PELICULA", b: "EJEMPLAR", ca: "(1,1)", cb: "(1,n)", dep: "ID", x: 450, y: 245,
+    why: "«<b>Uno o varios</b> ejemplares diferenciados por un número de ejemplar» → (1,n). El ejemplar nº 1 existe en cada película, así que EJEMPLAR es <b>débil por identificación</b>: clave (cod_pelicula, num_ejemplar)." },
+  { n: "Alquila", a: "SOCIO", b: "EJEMPLAR", ca: "(0,n)", cb: "(0,n)", x: 280, y: 380, attrs: ["#fecha_alquiler", "fecha_devolucion*"], ap: "b",
+    why: "Guardamos el <b>histórico</b> de alquileres (fecha de comienzo y devolución): un socio alquila muchos ejemplares y un ejemplar se alquila a muchos socios a lo largo del tiempo → N:M. La fecha de alquiler forma parte de la clave porque el mismo socio puede repetir ejemplar." },
+  { n: "Avala", a: "SOCIO", b: "SOCIO", ca: "(1,1)", cb: "(0,n)", roleA: "avalista", roleB: "avalado", x: 110, y: 560,
+    why: "Reflexiva. «Un socio <b>tiene que</b> ser avalado por <b>otro</b> socio» → (1,1) en el rol avalista. Un socio puede avalar a varios o a ninguno → (0,n)." }
+ ],
+ notes: [
+  "Si solo interesa el alquiler <b>actual</b>, Alquila sería 1:N: (0,1) junto a SOCIO y las fechas irían a EJEMPLAR.",
+  "Con Avala (1,1) el primer socio no podría darse de alta. En la práctica se admite nulo para el socio fundador; en el modelo conceptual se respeta el enunciado."
+ ]
+},
+{
+ id: 7, page: 55, title: "Corridas de toros", tags: ["clave compuesta", "(1,3) y (6,n)", "reflexiva", "débil (ID)"],
+ text: `La asociación "Amigos de la Fiesta" desea recoger en una base de datos toda la información acerca de las corridas de toros que se celebran en España y de todos los datos relacionados con ellas.
+a.- Se desea tener información acerca de cada corrida, identificada conjuntamente por un número de orden, la feria en la que se celebra y el año de celebración (por ejemplo, orden = 2, feria = San Isidro, año = 1990).
+b.- En una determinada corrida actúan una serie de toreros (mínimo 1 y máximo 3) de los que se desea guardar su D.N.I., nombre, apodo y fecha en que tomó la alternativa (fecha en la que se convirtió en matador de toros). Además se desea saber quién fue el torero que le dio la alternativa (padrino) en su día (un torero puede dar la alternativa a varios compañeros o a ninguno).
+c.- En cada corrida un torero obtiene una serie de premios (nº de orejas, nº de rabos, si salió por la puerta grande o no) de los que se desea mantener la información.
+d.- Cada torero puede tener un apoderado del que es protegido. A su vez, un apoderado lo puede ser de varios toreros. De él se desea saber su D.N.I., nombre, dirección y teléfono.
+e.- Una corrida se celebra en una plaza de toros de la que se desea saber su nombre que se supone único, localidad, dirección y aforo. En una misma plaza se pueden celebrar varias corridas de toros.
+f.- En cada corrida son estoqueados al menos 6 toros. Cada toro viene identificado por el código de la ganadería a la que pertenece, el año en el que nació y un número de orden. Además se desea mantener información acerca de su nombre y color así como del orden en que fue toreado.
+g.- Cada toro pertenece a una ganadería determinada. De cada ganadería se pretende saber su código, nombre, localidad y antigüedad (fecha de creación).`,
+ ents: [
+  { id: "PLAZA", x: 110, y: 90, attrs: ["#nombre_plaza", "localidad", "direccion", "aforo"] },
+  { id: "CORRIDA", x: 440, y: 90, attrs: ["#num_orden", "#feria", "#anio"] },
+  { id: "TORO", x: 790, y: 90, weak: true, attrs: ["#anio_nac", "#num_toro", "nombre", "color"] },
+  { id: "APODERADO", x: 110, y: 380, attrs: ["#dni", "nombre", "direccion", "telefono"] },
+  { id: "TORERO", x: 440, y: 380, attrs: ["#dni", "nombre", "apodo", "fecha_alternativa"] },
+  { id: "GANADERIA", label: "GANADERÍA", x: 790, y: 380, attrs: ["#cod_ganaderia", "nombre", "localidad", "antiguedad"] }
+ ],
+ rels: [
+  { n: "Se_celebra", a: "PLAZA", b: "CORRIDA", ca: "(1,1)", cb: "(0,n)", x: 275, y: 90,
+    why: "«Una corrida se celebra en <b>una</b> plaza» → (1,1). «En una misma plaza se pueden celebrar <b>varias</b> corridas» → (0,n)." },
+  { n: "Actua", label: "Actúa", a: "TORERO", b: "CORRIDA", ca: "(1,3)", cb: "(0,n)", x: 440, y: 235, attrs: ["orejas", "rabos", "puerta_grande"], ap: "r",
+    why: "«Actúan una serie de toreros (<b>mínimo 1 y máximo 3</b>)» → (1,3) junto a TORERO. Los <b>premios</b> son de un torero en una corrida concreta → atributos de la interrelación." },
+  { n: "Estoqueado", a: "CORRIDA", b: "TORO", ca: "(0,1)", cb: "(6,n)", x: 615, y: 90, attrs: ["orden_lidia"], rename: { num_orden: "orden_corrida", anio: "anio_corrida" },
+    why: "«En cada corrida son estoqueados <b>al menos 6</b> toros» → (6,n) junto a TORO. Un toro muere en una corrida como mucho → (0,1). El orden en que fue toreado es del toro en esa corrida; al ser 1:N acaba en la tabla TORO." },
+  { n: "Pertenece", a: "GANADERIA", b: "TORO", ca: "(1,1)", cb: "(1,n)", dep: "ID", x: 790, y: 235,
+    why: "«Cada toro viene identificado por el <b>código de la ganadería</b>, el año y un número» → TORO es <b>débil por identificación</b> de GANADERÍA." },
+  { n: "Apodera", a: "APODERADO", b: "TORERO", ca: "(0,1)", cb: "(1,n)", x: 275, y: 380, rename: { dni: "dni_apoderado" },
+    why: "«Cada torero <b>puede</b> tener <b>un</b> apoderado» → (0,1). «Un apoderado lo puede ser de <b>varios</b> toreros» → (1,n)." },
+  { n: "Padrino", a: "TORERO", b: "TORERO", ca: "(0,1)", cb: "(0,n)", roleA: "padrino", roleB: "ahijado", x: 440, y: 570,
+    why: "Reflexiva. Cada torero recibió la alternativa de un padrino (0,1: los más antiguos pueden no constar). «Un torero puede dar la alternativa a varios compañeros <b>o a ninguno</b>» → (0,n)." }
+ ],
+ notes: [
+  "CORRIDA tiene un <b>identificador compuesto</b> (num_orden, feria, anio): los tres atributos van subrayados.",
+  "En TORO, las columnas de la corrida se renombran (orden_corrida, anio_corrida) para no chocar con las del propio toro."
+ ]
+},
+{
+ id: 8, page: 56, title: "Pinacotecas", tags: ["1:N", "N:M", "reflexiva"],
+ text: `El Ministerio de Educación y Ciencia desea mantener información acerca de todos los cuadros que se encuentran en las pinacotecas españolas y toda la información relacionada con ellos.
+a.- De cada pinacoteca se desea saber el nombre (que se supone único), la ciudad en que se encuentra, la dirección y los metros cuadrados que tiene.
+b.- Cada pinacoteca tiene una serie de cuadros de los que se quiere mantener información acerca de su código, nombre, dimensiones, fecha en que fue pintado y técnica utilizada.
+c.- Cada cuadro es pintado por un determinado pintor (nombre, país, ciudad, fecha de nacimiento y fecha de defunción). Un pintor puede tener a otro como maestro; a su vez, un maestro puede serlo de varios (o de ninguno).
+d.- Los pintores pueden pertenecer o no a una escuela de la que se desea saber su nombre y en qué país y en qué fecha apareció.
+e.- Los pintores pueden tener también uno o varios mecenas que les protegen (nombre, fecha, país, ciudad de nacimiento y fecha de muerte). A su vez un mismo mecenas puede serlo de varios pintores.`,
+ ents: [
+  { id: "PINACOTECA", x: 110, y: 90, attrs: ["#nombre_pinacoteca", "ciudad", "direccion", "m2"] },
+  { id: "CUADRO", x: 450, y: 90, attrs: ["#cod_cuadro", "nombre", "dimensiones", "fecha", "tecnica"] },
+  { id: "ESCUELA", x: 110, y: 370, attrs: ["#nombre_escuela", "pais", "fecha_aparicion"] },
+  { id: "PINTOR", x: 450, y: 370, attrs: ["#nombre_pintor", "pais", "ciudad", "fecha_nac", "fecha_def*"] },
+  { id: "MECENAS", x: 800, y: 370, attrs: ["#nombre_mecenas", "pais", "ciudad", "fecha_nac", "fecha_muerte*"] }
+ ],
+ rels: [
+  { n: "Tiene", a: "PINACOTECA", b: "CUADRO", ca: "(1,1)", cb: "(1,n)", x: 280, y: 90,
+    why: "Un cuadro está en una pinacoteca (1,1); «cada pinacoteca tiene <b>una serie</b> de cuadros» (1,n)." },
+  { n: "Pinta", a: "PINTOR", b: "CUADRO", ca: "(1,1)", cb: "(1,n)", x: 450, y: 235,
+    why: "«Cada cuadro es pintado por <b>un determinado</b> pintor» → (1,1) junto a PINTOR." },
+  { n: "Pertenece", a: "ESCUELA", b: "PINTOR", ca: "(0,1)", cb: "(1,n)", x: 280, y: 370,
+    why: "«Los pintores <b>pueden pertenecer o no</b> a <b>una</b> escuela» → (0,1) junto a ESCUELA." },
+  { n: "Protege", a: "MECENAS", b: "PINTOR", ca: "(0,n)", cb: "(1,n)", x: 625, y: 370,
+    why: "«Pueden tener <b>uno o varios</b> mecenas» (el «pueden» da el mínimo 0) y «un mecenas puede serlo de <b>varios</b> pintores» → N:M." },
+  { n: "Maestro", a: "PINTOR", b: "PINTOR", ca: "(0,1)", cb: "(0,n)", roleA: "maestro", roleB: "discipulo", x: 450, y: 560,
+    why: "Reflexiva. «Un pintor <b>puede</b> tener a <b>otro</b> como maestro» → (0,1). «Un maestro puede serlo de <b>varios (o de ninguno)</b>» → (0,n)." }
+ ],
+ notes: ["El enunciado identifica a pintores, escuelas y mecenas por su nombre. En SQL suele preferirse un código numérico, pero en el examen respeta lo que diga el texto."]
+},
+{
+ id: 9, page: 57, title: "Gimnasio «Siempre en Forma»", tags: ["1:N", "N:M", "fecha en la clave"],
+ text: `En el gimnasio "Siempre en Forma" se quiere implantar una base de datos para llevar el control de los socios, recursos utilizados, etc. Las especificaciones que nos han dado son las siguientes:
+a.- Existen varias salas, de las cuales se quiere guardar información, como los metros cuadrados que ocupa, ubicación y el tipo de sala (cardio, general, muscular). Cada sala se identifica por un número.
+b.- Hay salas que tienen aparatos y salas que no. En las salas se pueden impartir clases o no.
+c.- Cada aparato está asignado a una única sala y de cada uno de ellos se quiere tener almacenado su código, descripción y estado de conservación.
+d.- También se quiere mantener información relacionada con las clases que se imparten (descripción y día/hora en la que se imparten); cada clase se identifica por un código de clase. Cada clase tiene asignada una sala en la que se imparte y un monitor.
+e.- De cada monitor se quiere conocer el DNI, nombre, teléfono, si tienen o no titulación y experiencia profesional, así como las clases que pueden impartir (preparación como monitor de aeróbic, step, streching, etc).
+f.- De cada socio se quiere conocer el número de socio, nombre, dirección, teléfono, profesión y datos bancarios así como las clases a las que asiste.
+g.- El gimnasio dispone también de pistas de squash, de las que se quiere conocer el número de pista, ubicación y estado. Las pistas de squash pueden ser utilizadas por socios, y existe un servicio de reserva de pista (en una fecha y a una hora).`,
+ ents: [
+  { id: "APARATO", x: 110, y: 90, attrs: ["#cod_aparato", "descripcion", "estado"] },
+  { id: "SALA", x: 440, y: 90, attrs: ["#num_sala", "m2", "ubicacion", "tipo"] },
+  { id: "PISTA_SQUASH", x: 790, y: 90, attrs: ["#num_pista", "ubicacion", "estado"] },
+  { id: "MONITOR", x: 110, y: 400, attrs: ["#dni", "nombre", "telefono", "titulacion", "experiencia"] },
+  { id: "CLASE", x: 440, y: 400, attrs: ["#cod_clase", "descripcion", "dia_hora"] },
+  { id: "SOCIO", x: 790, y: 400, attrs: ["#num_socio", "nombre", "direccion", "telefono", "profesion", "datos_bancarios"] }
+ ],
+ rels: [
+  { n: "Tiene", a: "SALA", b: "APARATO", ca: "(1,1)", cb: "(0,n)", x: 275, y: 90,
+    why: "«Cada aparato está asignado a <b>una única</b> sala» → (1,1) junto a SALA. «Hay salas que tienen aparatos <b>y salas que no</b>» → (0,n)." },
+  { n: "Se_imparte", a: "SALA", b: "CLASE", ca: "(1,1)", cb: "(0,n)", x: 440, y: 245,
+    why: "«Cada clase tiene asignada <b>una</b> sala» → (1,1). «En las salas se pueden impartir clases <b>o no</b>» → (0,n)." },
+  { n: "Imparte", a: "MONITOR", b: "CLASE", ca: "(1,1)", cb: "(0,n)", x: 275, y: 345, rename: { dni: "dni_monitor" },
+    why: "«Cada clase tiene asignado <b>un monitor</b>» → (1,1) junto a MONITOR." },
+  { n: "Capacitado", a: "MONITOR", b: "CLASE", ca: "(1,n)", cb: "(1,n)", x: 275, y: 460,
+    why: "«Las clases que <b>pueden impartir</b>»: distinto de las que imparten realmente. Un monitor está preparado para varias clases y una clase la pueden dar varios monitores → N:M." },
+  { n: "Asiste", a: "SOCIO", b: "CLASE", ca: "(0,n)", cb: "(0,n)", x: 615, y: 400,
+    why: "«Las clases a las que asiste» cada socio: varias por socio y varios socios por clase → N:M." },
+  { n: "Reserva", a: "SOCIO", b: "PISTA_SQUASH", ca: "(0,n)", cb: "(0,n)", x: 790, y: 245, attrs: ["#fecha", "#hora"], ap: "r",
+    why: "Un socio reserva pistas muchas veces y una pista la reservan muchos socios → N:M. La fecha y la hora forman parte de la clave para poder repetir socio y pista." }
+ ],
+ notes: ["Imparte (la clase real) y Capacitado (lo que puede impartir) son dos interrelaciones distintas entre MONITOR y CLASE."]
+},
+{
+ id: 10, page: 57, title: "Gimnasio con restricciones (h, i)", tags: ["jerarquía total y exclusiva"],
+ text: `El gimnasio "Siempre en Forma" del ejercicio anterior impone además las siguientes restricciones:
+h.- Las pistas de squash se consideran salas.
+i.- Las clases solo se imparten en salas sin aparatos. Las salas con aparatos se siguen clasificando en sala de cardio, general, etc.`,
+ ents: [
+  { id: "SALA", x: 470, y: 70, attrs: ["#num_sala", "m2", "ubicacion"] },
+  { id: "SALA_APARATOS", x: 150, y: 300, attrs: ["tipo"] },
+  { id: "SALA_SIN_APARATOS", x: 470, y: 300, attrs: [] },
+  { id: "PISTA_SQUASH", x: 790, y: 300, attrs: ["estado"] },
+  { id: "APARATO", x: 150, y: 540, attrs: ["#cod_aparato", "descripcion", "estado"] },
+  { id: "CLASE", x: 470, y: 540, attrs: ["#cod_clase", "descripcion", "dia_hora"] },
+  { id: "SOCIO", x: 790, y: 540, attrs: ["#num_socio", "nombre", "telefono"] },
+  { id: "MONITOR", x: 470, y: 790, attrs: ["#dni", "nombre", "titulacion"] }
+ ],
+ rels: [
+  { n: "Tiene", a: "SALA_APARATOS", b: "APARATO", ca: "(1,1)", cb: "(1,n)", x: 150, y: 420,
+    why: "Ahora los aparatos solo están en el subtipo SALA_APARATOS, y por definición esa sala tiene al menos uno → (1,n)." },
+  { n: "Se_imparte", a: "SALA_SIN_APARATOS", b: "CLASE", ca: "(1,1)", cb: "(0,n)", x: 470, y: 420,
+    why: "«Las clases <b>solo</b> se imparten en salas sin aparatos» → la interrelación se une al subtipo SALA_SIN_APARATOS, no a SALA." },
+  { n: "Asiste", a: "SOCIO", b: "CLASE", ca: "(0,n)", cb: "(0,n)", x: 630, y: 540 },
+  { n: "Reserva", a: "SOCIO", b: "PISTA_SQUASH", ca: "(0,n)", cb: "(0,n)", x: 790, y: 420, attrs: ["#fecha", "#hora"], ap: "r" },
+  { n: "Imparte", a: "MONITOR", b: "CLASE", ca: "(1,1)", cb: "(0,n)", x: 400, y: 665, rename: { dni: "dni_monitor" } },
+  { n: "Capacitado", a: "MONITOR", b: "CLASE", ca: "(1,n)", cb: "(1,n)", x: 545, y: 665 }
+ ],
+ hier: [ { sup: "SALA", subs: ["SALA_APARATOS", "SALA_SIN_APARATOS", "PISTA_SQUASH"], x: 470, y: 170, total: true, excl: true,
+   why: "«Las pistas de squash <b>se consideran salas</b>» → generalización. Toda sala es de uno de los tres tipos (<b>total</b>) y solo de uno (<b>exclusiva</b>). El atributo tipo (cardio, general…) baja al subtipo SALA_APARATOS porque solo esas salas se clasifican así." } ],
+ notes: ["Cada subtipo hereda num_sala, m2 y ubicacion. En tablas, cada subtipo tiene como clave num_sala, que es a la vez clave ajena hacia SALA."]
+},
+{
+ id: 11, page: 57, title: "Gimnasio sin la restricción (i)", tags: ["jerarquía parcial"],
+ text: `El gimnasio "Siempre en Forma" del ejercicio anterior elimina la restricción de que una clase sólo se imparte en salas sin aparatos.`,
+ ents: [
+  { id: "SALA", x: 470, y: 80, attrs: ["#num_sala", "m2", "ubicacion"] },
+  { id: "CLASE", x: 860, y: 80, attrs: ["#cod_clase", "descripcion", "dia_hora"] },
+  { id: "MONITOR", x: 1210, y: 80, attrs: ["#dni", "nombre", "titulacion"] },
+  { id: "SALA_APARATOS", x: 260, y: 320, attrs: ["tipo"] },
+  { id: "PISTA_SQUASH", x: 560, y: 320, attrs: ["estado"] },
+  { id: "APARATO", x: 260, y: 540, attrs: ["#cod_aparato", "descripcion", "estado"] },
+  { id: "SOCIO", x: 560, y: 560, attrs: ["#num_socio", "nombre", "telefono"] }
+ ],
+ rels: [
+  { n: "Se_imparte", a: "SALA", b: "CLASE", ca: "(1,1)", cb: "(0,n)", x: 665, y: 80,
+    why: "Al quitar la restricción, la clase puede darse en cualquier sala: la interrelación sube al <b>supertipo</b> SALA." },
+  { n: "Imparte", a: "MONITOR", b: "CLASE", ca: "(1,1)", cb: "(0,n)", x: 1035, y: 30, rename: { dni: "dni_monitor" } },
+  { n: "Capacitado", a: "MONITOR", b: "CLASE", ca: "(1,n)", cb: "(1,n)", x: 1035, y: 135 },
+  { n: "Tiene", a: "SALA_APARATOS", b: "APARATO", ca: "(1,1)", cb: "(1,n)", x: 260, y: 430 },
+  { n: "Reserva", a: "SOCIO", b: "PISTA_SQUASH", ca: "(0,n)", cb: "(0,n)", x: 560, y: 440, attrs: ["#fecha", "#hora"], ap: "r" },
+  { n: "Asiste", a: "SOCIO", b: "CLASE", ca: "(0,n)", cb: "(0,n)", x: 800, y: 330 }
+ ],
+ hier: [ { sup: "SALA", subs: ["SALA_APARATOS", "PISTA_SQUASH"], x: 420, y: 190, total: false, excl: true,
+   why: "El subtipo «sala sin aparatos» ya no tiene nada propio (ni atributos ni interrelaciones), así que desaparece: una sala sin aparatos es simplemente una SALA. La jerarquía pasa a ser <b>parcial</b> (hay salas que no son de ningún subtipo) y sigue siendo <b>exclusiva</b>." } ],
+ notes: ["Comparar con el ejercicio 10: una restricción del enunciado cambia <b>dónde se engancha</b> la interrelación (subtipo o supertipo) y el tipo de jerarquía."]
+},
+{
+ id: 12, page: 58, title: "Farmacia", tags: ["(0,1)", "jerarquía", "N:M con fecha"],
+ text: `La gestión de una farmacia requiere poder llevar control de los medicamentos existentes, así como de los que se van sirviendo, para lo cual se pretende diseñar un sistema acorde a las siguientes especificaciones:
+a.- En la farmacia se requiere una catalogación de todos los medicamentos existentes, para lo cual se almacenará un código de medicamento, nombre del medicamento, tipo de medicamento (jarabe, comprimido, pomada, etc), unidades en stock, unidades vendidas y precio. Existen medicamentos de venta libre y otros que solo pueden dispensarse con receta médica.
+b.- La farmacia compra cada medicamento a un laboratorio, o bien los fabrica ella misma. Se desea conocer el código del laboratorio, nombre, teléfono, dirección y fax, así como el nombre de la persona de contacto.
+c.- Los medicamentos se agrupan en familias, dependiendo del tipo de enfermedades a las que dicho medicamento se aplica. De este modo, si la farmacia no dispone de un medicamento en concreto, puede vender otro similar aunque de distinto laboratorio.
+d.- La farmacia tiene algunos clientes que realizan los pagos de sus pedidos a final de cada mes (clientes con crédito). La farmacia quiere mantener las unidades de cada medicamento comprado (con o sin crédito) así como la fecha de compra. Además, es necesario conocer los datos bancarios de los clientes con crédito, así como la fecha de pago de las compras que realizan.`,
+ ents: [
+  { id: "LABORATORIO", x: 120, y: 100, attrs: ["#cod_laboratorio", "nombre", "telefono", "direccion", "fax", "contacto"] },
+  { id: "MEDICAMENTO", x: 470, y: 100, attrs: ["#cod_medicamento", "nombre", "tipo", "stock", "unidades_vendidas", "precio", "con_receta"] },
+  { id: "FAMILIA", x: 810, y: 100, attrs: ["#cod_familia", "descripcion"] },
+  { id: "CLIENTE", x: 470, y: 400, attrs: ["#cod_cliente", "nombre", "telefono"] },
+  { id: "CLIENTE_CREDITO", label: "CLIENTE_CRÉDITO", x: 470, y: 610, attrs: ["datos_bancarios"] }
+ ],
+ rels: [
+  { n: "Suministra", a: "LABORATORIO", b: "MEDICAMENTO", ca: "(0,1)", cb: "(1,n)", x: 295, y: 100,
+    why: "«Compra cada medicamento a <b>un</b> laboratorio, <b>o bien los fabrica ella misma</b>» → máximo 1, mínimo 0: (0,1) junto a LABORATORIO. En tablas, cod_laboratorio admite nulos (nulo = fabricado en la farmacia)." },
+  { n: "Pertenece", a: "FAMILIA", b: "MEDICAMENTO", ca: "(1,1)", cb: "(1,n)", x: 640, y: 100,
+    why: "Cada medicamento se agrupa en una familia; una familia agrupa varios medicamentos (así se pueden buscar similares)." },
+  { n: "Compra", a: "CLIENTE", b: "MEDICAMENTO", ca: "(0,n)", cb: "(1,n)", x: 470, y: 265, attrs: ["#fecha_compra", "unidades", "fecha_pago*"], ap: "r",
+    why: "Un cliente compra muchos medicamentos y un medicamento lo compran muchos clientes → N:M. Las unidades y la fecha son de cada compra; la fecha de pago solo existe si el cliente tiene crédito (opcional)." }
+ ],
+ hier: [ { sup: "CLIENTE", subs: ["CLIENTE_CREDITO"], x: 470, y: 505, total: false, excl: false, label: "parcial",
+   why: "Solo <b>algunos</b> clientes tienen crédito y de ellos se guardan datos bancarios → subtipo con jerarquía <b>parcial</b>." } ],
+ notes: [
+  "«Venta libre o con receta» se resuelve con un atributo (con_receta). No hace falta jerarquía porque no hay datos distintos para cada tipo.",
+  "Otra opción válida: una entidad COMPRA (o PEDIDO) con su propio código y una interrelación con MEDICAMENTO."
+ ]
+},
+{
+ id: 13, page: 59, title: "Empresa «X»", tags: ["jerarquía de 2 niveles", "(2,30) (0,5) (1,2)", "débil (ID)", "multivaluado"],
+ text: `La empresa "X" desea llevar un control de sus departamentos, empleados y proyectos según las siguientes especificaciones:
+a.- Se desea conocer el nombre, salario y número de la seguridad social de cada empleado, así como el nombre, fecha de nacimiento y estudios que cursa cada uno de sus hijos. Existen tres tipos de empleados: directores (encargados de un departamento), representantes de ventas (se ocupan de la representación de un número de regiones) e ingenieros (encargados de realizar los proyectos de la empresa). Un director no puede ejercer ninguna otra función; sin embargo un representante de ventas puede desempeñar también las funciones de un ingeniero y viceversa.
+b.- Los distintos departamentos conceden becas de estudio a los hijos de los empleados. Se desea conocer la fecha de concesión de cada beca así como la cuantía de ésta.
+c.- Un ingeniero puede tener varias especialidades que se desean conocer.
+d.- De los departamentos se necesita el nombre, localización y empleados que trabajan en él. Un departamento tiene como mínimo 2 empleados y como máximo 30, y está al cargo de un único director. Cada departamento tiene un director distinto.
+e.- Un departamento puede controlar un número de proyectos, de los que se desea conocer su nombre y fecha de comienzo.
+f.- En la realización de un proyecto no puede haber involucrados más de 5 ingenieros. Todo ingeniero debe estar asociado a un proyecto como mínimo y a 2 como máximo.`,
+ ents: [
+  { id: "HIJO", x: 110, y: 80, weak: true, attrs: ["#nombre_hijo", "fecha_nac", "estudios"] },
+  { id: "EMPLEADO", x: 520, y: 80, attrs: ["#nss", "nombre", "salario"] },
+  { id: "DIRECTOR", x: 360, y: 310, attrs: [] },
+  { id: "TECNICO", label: "TÉCNICO", x: 680, y: 310, attrs: [] },
+  { id: "INGENIERO", x: 500, y: 520, attrs: ["especialidad+"] },
+  { id: "REPRESENTANTE", x: 860, y: 520, attrs: [] },
+  { id: "DEPARTAMENTO", x: 110, y: 480, attrs: ["#cod_departamento", "nombre", "localizacion"] },
+  { id: "PROYECTO", x: 110, y: 760, attrs: ["#cod_proyecto", "nombre", "fecha_comienzo"] },
+  { id: "REGION", label: "REGIÓN", x: 860, y: 760, attrs: ["#cod_region", "nombre"] }
+ ],
+ rels: [
+  { n: "Tiene", a: "EMPLEADO", b: "HIJO", ca: "(1,1)", cb: "(0,n)", dep: "ID", x: 310, y: 80,
+    why: "El hijo se identifica por su nombre <b>dentro</b> de su progenitor (dos empleados pueden tener un hijo llamado igual) → HIJO débil por identificación: clave (nss, nombre_hijo)." },
+  { n: "Trabaja", a: "DEPARTAMENTO", b: "EMPLEADO", ca: "(1,1)", cb: "(2,30)", x: 270, y: 240,
+    why: "«Un departamento tiene <b>como mínimo 2</b> empleados y <b>como máximo 30</b>» → (2,30) junto a EMPLEADO." },
+  { n: "Dirige", a: "DIRECTOR", b: "DEPARTAMENTO", ca: "(1,1)", cb: "(1,1)", x: 360, y: 480, fkIn: "DEPARTAMENTO", rename: { nss: "nss_director" },
+    why: "«Está al cargo de <b>un único</b> director» → (1,1) junto a DIRECTOR. «Cada departamento tiene un director <b>distinto</b>» y los directores son «encargados de un departamento» → (1,1). Es 1:1; en tablas, nss_director lleva UNIQUE." },
+  { n: "Concede", a: "DEPARTAMENTO", b: "HIJO", ca: "(0,n)", cb: "(0,n)", x: 60, y: 280, attrs: ["fecha_concesion", "cuantia"], ap: "l", table: "BECA",
+    why: "Los departamentos conceden becas a hijos: N:M con fecha y cuantía de cada beca." },
+  { n: "Controla", a: "DEPARTAMENTO", b: "PROYECTO", ca: "(1,1)", cb: "(0,n)", x: 110, y: 625,
+    why: "«Un departamento <b>puede</b> controlar un número de proyectos» → (0,n)." },
+  { n: "Realiza", a: "INGENIERO", b: "PROYECTO", ca: "(0,5)", cb: "(1,2)", x: 300, y: 650,
+    why: "«En un proyecto <b>no puede haber más de 5</b> ingenieros» → (0,5) junto a INGENIERO. «Todo ingeniero debe estar asociado a un proyecto <b>como mínimo y a 2 como máximo</b>» → (1,2) junto a PROYECTO." },
+  { n: "Representa", a: "REPRESENTANTE", b: "REGION", ca: "(0,n)", cb: "(1,n)", x: 860, y: 640,
+    why: "«Se ocupan de la representación de <b>un número de</b> regiones» → (1,n) junto a REGIÓN." }
+ ],
+ hier: [
+  { sup: "EMPLEADO", subs: ["DIRECTOR", "TECNICO"], x: 520, y: 190, total: true, excl: true,
+    why: "«Un director <b>no puede ejercer ninguna otra función</b>» → primer nivel exclusivo: DIRECTOR o TÉCNICO. Total porque todo empleado es de algún tipo." },
+  { sup: "TECNICO", subs: ["INGENIERO", "REPRESENTANTE"], x: 680, y: 410, total: true, excl: false,
+    why: "«Un representante puede desempeñar también las funciones de un ingeniero y viceversa» → segundo nivel <b>solapado</b>. Truco: el subtipo intermedio TÉCNICO permite expresar ambas restricciones a la vez." }
+ ],
+ notes: [
+  "Especialidad es un atributo <b>multivaluado</b> de INGENIERO (1,n): en tablas genera INGENIERO_ESPECIALIDAD.",
+  "Las cardinalidades numéricas (2,30), (0,5) y (1,2) no se pueden garantizar solo con claves: en SQL harían falta CHECK, aserciones o triggers (Tema 3)."
+ ]
+},
+{
+ id: 14, page: 60, title: "Agencias TECHNOHOUSE", tags: ["dos jerarquías", "1:1", "multivaluado"],
+ text: `Se trata de diseñar una base de datos para una red de agencias franquiciadas a TECHNOHOUSE, empresa especializada en el alquiler y compra de inmuebles.
+a.- Cada agencia tiene un titular propio y un conjunto de vendedores. Tanto el titular como los vendedores solo pueden pertenecer a una agencia. Sobre las agencias interesa almacenar su dirección, teléfonos (que pueden ser varios), fax, etc. Además cada agencia tiene asignada una zona de actuación que es única.
+b.- Las agencias disponen de inmuebles tanto para alquilar como para vender (incluso ambas cosas); en el primer caso figurará el precio de alquiler y la fianza a depositar, mientras que en el segundo caso además del precio de la venta, se indica si el inmueble está hipotecado o no.
+c.- Por otro lado los inmuebles pueden ser locales comerciales, o pisos. En ambos casos se identifican por un código, e interesa conocer el propietario, la dirección y la superficie en metros cuadrados.
+d.- Además en el caso de los pisos interesa conocer el número de habitaciones (incluyendo el salón), el número de cuartos de baño, el tipo de gas (natural, ciudad, butano) y si es interior o exterior. Para los locales comerciales se debe conocer si dispone de licencia de apertura.
+e.- Un cliente puede acudir a varias agencias, en cada una se le asigna un vendedor, que es el encargado de seleccionar los inmuebles que cumplen las características deseadas, y en caso de estar interesado, el cliente debe dar una señal para reservar el inmueble (o los inmuebles) que desea.`,
+ ents: [
+  { id: "TITULAR", x: 110, y: 90, attrs: ["#dni", "nombre"] },
+  { id: "AGENCIA", x: 460, y: 90, attrs: ["#cod_agencia", "direccion", "fax", "zona!", "telefono+"] },
+  { id: "VENDEDOR", x: 820, y: 90, attrs: ["#dni", "nombre"] },
+  { id: "INMUEBLE", x: 460, y: 380, attrs: ["#cod_inmueble", "propietario", "direccion", "superficie"] },
+  { id: "CLIENTE", x: 820, y: 380, attrs: ["#dni_cliente", "nombre", "telefono"] },
+  { id: "PISO", x: 110, y: 640, attrs: ["habitaciones", "banos", "tipo_gas", "exterior"] },
+  { id: "LOCAL", x: 330, y: 640, attrs: ["licencia_apertura"] },
+  { id: "EN_ALQUILER", x: 590, y: 640, attrs: ["precio_alquiler", "fianza"] },
+  { id: "EN_VENTA", x: 830, y: 640, attrs: ["precio_venta", "hipotecado"] }
+ ],
+ rels: [
+  { n: "Dirige", a: "TITULAR", b: "AGENCIA", ca: "(1,1)", cb: "(1,1)", x: 285, y: 90, fkIn: "AGENCIA", rename: { dni: "dni_titular" },
+    why: "«Cada agencia tiene <b>un titular propio</b>» y «el titular solo puede pertenecer a <b>una</b> agencia» → 1:1 con mínimos 1." },
+  { n: "Trabaja", a: "AGENCIA", b: "VENDEDOR", ca: "(1,1)", cb: "(1,n)", x: 640, y: 90,
+    why: "«Un <b>conjunto</b> de vendedores» por agencia; «los vendedores solo pueden pertenecer a <b>una</b> agencia» → 1:N." },
+  { n: "Dispone", a: "AGENCIA", b: "INMUEBLE", ca: "(1,1)", cb: "(0,n)", x: 460, y: 235,
+    why: "Cada inmueble lo gestiona una agencia; una agencia dispone de muchos inmuebles." },
+  { n: "Atiende", a: "VENDEDOR", b: "CLIENTE", ca: "(1,n)", cb: "(0,n)", x: 820, y: 235, renameA: { dni: "dni_vendedor" },
+    why: "«Un cliente puede acudir a <b>varias</b> agencias, en cada una se le asigna <b>un</b> vendedor» → un cliente tiene uno o varios vendedores (uno por agencia) → N:M." },
+  { n: "Reserva", a: "CLIENTE", b: "INMUEBLE", ca: "(0,1)", cb: "(0,n)", x: 640, y: 380, attrs: ["senal*", "fecha_reserva*"], ap: "b",
+    why: "«El cliente debe dar una señal para reservar el inmueble <b>(o los inmuebles)</b>» → un cliente reserva varios (0,n); un inmueble lo reserva un cliente como mucho (0,1). La señal va con la reserva." }
+ ],
+ hier: [
+  { sup: "INMUEBLE", subs: ["PISO", "LOCAL"], x: 300, y: 500, total: true, excl: true, label: "por tipo: total, exclusiva",
+    why: "«Los inmuebles pueden ser locales comerciales <b>o</b> pisos»: cada uno es de un tipo y solo uno." },
+  { sup: "INMUEBLE", subs: ["EN_ALQUILER", "EN_VENTA"], x: 650, y: 500, total: true, excl: false, label: "por oferta: total, solapada",
+    why: "«Tanto para alquilar como para vender <b>(incluso ambas cosas)</b>» → jerarquía <b>solapada</b>. Cada subtipo tiene sus propios atributos." }
+ ],
+ notes: [
+  "Un mismo supertipo puede tener <b>dos jerarquías</b> independientes (por tipo y por oferta).",
+  "teléfono es multivaluado → tabla AGENCIA_TELEFONO. zona es única → identificador alternativo (UNIQUE)."
+ ]
+},
+{
+ id: 15, page: 61, title: "Cursos de formación", tags: ["reflexiva N:M", "débil (ID)", "restricción de exclusión"],
+ text: `El departamento de formación de una empresa desea construir una base de datos para planificar y gestionar la formación de sus empleados.
+La empresa organiza cursos internos de formación de los que desea conocer el código de curso, el nombre, descripción, duración y coste.
+Un curso puede tener como prerrequisito haber realizado otro(s) previamente, y, a su vez la realización de un curso puede ser prerrequisito de otros. Un curso que es un prerrequisito de otro puede serlo de forma obligatoria o solo recomendable.
+Un mismo curso tiene diferentes ediciones, es decir, se imparte en diferentes lugares, fechas y con diferentes horarios (intensivo, de mañana o de tarde). En una misma fecha de inicio solo puede impartirse una edición de un curso.
+Los cursos se imparten por personal de la propia empresa.
+De los empleados se desea almacenar su código de empleado, nombre y apellidos, dirección, teléfono, NIF, fecha de nacimiento, nacionalidad, sexo, firma y salario, así como si está capacitado para impartir cursos.
+Un mismo empleado puede ser docente en una edición de un curso y alumno en otra edición, pero nunca pueden ser ambas cosas a la vez (en una misma edición de un curso o lo imparte o lo recibe).`,
+ ents: [
+  { id: "CURSO", x: 140, y: 110, attrs: ["#cod_curso", "nombre", "descripcion", "duracion", "coste"] },
+  { id: "EDICION", label: "EDICIÓN", x: 560, y: 110, weak: true, attrs: ["#fecha_inicio", "lugar", "horario"] },
+  { id: "EMPLEADO", x: 560, y: 470, attrs: ["#cod_empleado", "nombre", "apellidos", "nif!", "direccion", "telefono", "fecha_nac", "nacionalidad", "sexo", "firma", "salario", "capacitado"] }
+ ],
+ rels: [
+  { n: "Prerrequisito", a: "CURSO", b: "CURSO", ca: "(0,n)", cb: "(0,n)", roleA: "previo", roleB: "siguiente", x: 140, y: 330, attrs: ["obligatorio"], ap: "b",
+    why: "Reflexiva N:M: un curso puede exigir <b>otro(s)</b> y puede ser requisito <b>de otros</b>. «Obligatoria o solo recomendable» depende de la pareja de cursos → atributo de la interrelación." },
+  { n: "Tiene", a: "CURSO", b: "EDICION", ca: "(1,1)", cb: "(0,n)", dep: "ID", x: 350, y: 110,
+    why: "«En una misma fecha de inicio solo puede impartirse <b>una edición de un curso</b>» → la edición se identifica por (cod_curso, fecha_inicio): débil por identificación." },
+  { n: "Imparte", a: "EMPLEADO", b: "EDICION", ca: "(1,1)", cb: "(0,n)", x: 460, y: 280, rename: { cod_empleado: "cod_docente" },
+    why: "Cada edición la imparte un empleado (1,1); un empleado capacitado imparte varias ediciones o ninguna (0,n)." },
+  { n: "Recibe", a: "EMPLEADO", b: "EDICION", ca: "(0,n)", cb: "(0,n)", x: 690, y: 280, table: "MATRICULA",
+    why: "Los alumnos de una edición son empleados: N:M." }
+ ],
+ cons: [ { a: "Imparte", b: "Recibe", label: "exclusión" } ],
+ notes: [
+  "«En una misma edición o lo imparte o lo recibe» es una <b>restricción de exclusión</b> (apartado 7.2): un mismo par (empleado, edición) no puede estar en Imparte y en Recibe. Se dibuja con una línea discontinua entre los dos rombos.",
+  "En SQL esa exclusión no la garantizan las claves: necesitaría un CHECK con subconsulta o un trigger."
+ ]
+},
+{
+ id: 16, page: 62, title: "Campeonato de ajedrez", tags: ["jerarquía", "(2,2)", "débiles (ID)", "reflexiva", "multivaluados"],
+ text: `El club de Ajedrez de Villatortas de Arriba ha sido encargado por la Federación Internacional de Ajedrez de la organización de los próximos campeonatos mundiales que se celebrarán en la citada localidad. Por este motivo, se desea llevar a una base de datos toda la gestión relativa a participantes, alojamientos y partidas. Teniendo en cuenta que:
+a.- En el campeonato participan jugadores y árbitros; de ambos se quiere conocer el número de asociado, nombre, dirección, teléfono y campeonatos en los que ha participado (como jugador o como árbitro). De los jugadores se precisa además el nivel de juego en una escala de 1 a 10.
+b.- Ningún árbitro puede participar como jugador.
+c.- Los países envían al campeonato un conjunto de jugadores y árbitros, aunque no todos los países envían participantes. Todo jugador y árbitro es enviado por un único país. Un país puede ser representado por otro país.
+d.- Cada país se identifica por un número correlativo según su orden alfabético e interesa conocer además de su nombre, el número de clubes de ajedrez existentes en el mismo.
+e.- Cada partida se identifica por un número correlativo (Cód_P), la juegan dos jugadores y la arbitra un árbitro. Interesa registrar las partidas que juega cada jugador y el color (blancas o negras) con el que juega. Ha de tenerse en cuenta que un árbitro no puede arbitrar a jugadores enviados por el mismo país que le ha enviado a él.
+f.- Todo participante participa en al menos una partida.
+g.- Tanto jugadores como árbitros se alojan en uno de los hoteles en los que se desarrollan las partidas; se desea conocer en qué hotel y en qué fechas se ha alojado cada uno de los participantes. Los participantes pueden no permanecer en Villatortas durante todo el campeonato, sino acudir cuando tienen que jugar alguna partida, alojándose en el mismo o distinto hotel. De cada hotel, se desea conocer el nombre, la dirección y el teléfono.
+h.- El campeonato se desarrolla a lo largo de una serie de jornadas (día, mes, año) y cada partida tiene lugar en una de las jornadas aunque no tengan lugar partidas todas las jornadas.
+i.- Cada partida se celebra en una de las salas de las que pueden disponer los hoteles; se desea conocer el número de entradas vendidas en la sala para cada partida. De cada sala, se desea conocer la capacidad y medios de que dispone (radio, televisión, video...) para facilitar la retransmisión de los encuentros. Una sala puede disponer de varios medios distintos.
+j.- De cada partida se pretende registrar todos los movimientos que la componen; la identificación de movimiento se establece en base a un número de orden dentro de cada partida: para cada movimiento se guardan la jugada (5 posiciones) y un breve comentario realizado por un experto.`,
+ ents: [
+  { id: "PAIS", label: "PAÍS", x: 110, y: 90, attrs: ["#num_pais", "nombre", "num_clubes"] },
+  { id: "PARTICIPANTE", x: 470, y: 90, attrs: ["#num_asociado", "nombre", "direccion", "telefono", "campeonato+"] },
+  { id: "HOTEL", x: 840, y: 90, attrs: ["#nombre_hotel", "direccion", "telefono"] },
+  { id: "JUGADOR", x: 320, y: 350, attrs: ["nivel"] },
+  { id: "ARBITRO", label: "ÁRBITRO", x: 620, y: 350, attrs: [] },
+  { id: "JORNADA", x: 110, y: 570, attrs: ["#fecha"] },
+  { id: "PARTIDA", x: 470, y: 570, attrs: ["#cod_p"] },
+  { id: "SALA", x: 840, y: 570, weak: true, attrs: ["#num_sala", "capacidad", "medio+"] },
+  { id: "MOVIMIENTO", x: 470, y: 800, weak: true, attrs: ["#num_orden", "jugada", "comentario"] }
+ ],
+ rels: [
+  { n: "Envia", label: "Envía", a: "PAIS", b: "PARTICIPANTE", ca: "(1,1)", cb: "(0,n)", x: 285, y: 90,
+    why: "«Todo jugador y árbitro es enviado por <b>un único</b> país» → (1,1). «<b>No todos</b> los países envían participantes» → (0,n)." },
+  { n: "Representa", a: "PAIS", b: "PAIS", ca: "(0,1)", cb: "(0,n)", roleA: "representante", roleB: "representado", x: 110, y: 290,
+    why: "Reflexiva. «Un país <b>puede</b> ser representado por <b>otro</b> país» → (0,1) en el rol representante." },
+  { n: "Aloja", a: "HOTEL", b: "PARTICIPANTE", ca: "(1,n)", cb: "(0,n)", x: 655, y: 90, attrs: ["#fecha_entrada", "fecha_salida"], ap: "t",
+    why: "Un participante puede alojarse <b>varias veces</b>, «en el mismo o distinto hotel», con fechas → N:M con la fecha de entrada en la clave." },
+  { n: "Juega", a: "JUGADOR", b: "PARTIDA", ca: "(2,2)", cb: "(1,n)", x: 380, y: 465, attrs: ["color"], ap: "l",
+    why: "«La juegan <b>dos</b> jugadores» → (2,2) junto a JUGADOR. «Todo participante participa en <b>al menos una</b> partida» → (1,n). El color es del jugador en esa partida." },
+  { n: "Arbitra", a: "ARBITRO", b: "PARTIDA", ca: "(1,1)", cb: "(1,n)", x: 560, y: 465, rename: { num_asociado: "num_arbitro" },
+    why: "«La arbitra <b>un</b> árbitro» → (1,1). Todo árbitro arbitra al menos una → (1,n)." },
+  { n: "Se_juega", a: "JORNADA", b: "PARTIDA", ca: "(1,1)", cb: "(0,n)", x: 290, y: 570,
+    why: "«Cada partida tiene lugar en <b>una</b> de las jornadas, aunque <b>no</b> tengan lugar partidas todas las jornadas» → (1,1) y (0,n)." },
+  { n: "Celebra", a: "SALA", b: "PARTIDA", ca: "(1,1)", cb: "(0,n)", x: 655, y: 570, attrs: ["entradas_vendidas"], ap: "b",
+    why: "Cada partida en una sala; las entradas vendidas son de esa partida en esa sala (al ser 1:N, van a PARTIDA)." },
+  { n: "Dispone", a: "HOTEL", b: "SALA", ca: "(1,1)", cb: "(0,n)", dep: "ID", x: 840, y: 330,
+    why: "Las salas se numeran dentro de cada hotel → SALA débil por identificación: clave (nombre_hotel, num_sala)." },
+  { n: "Compuesta", a: "PARTIDA", b: "MOVIMIENTO", ca: "(1,1)", cb: "(1,n)", dep: "ID", x: 470, y: 690,
+    why: "«Un número de orden <b>dentro de cada partida</b>» → MOVIMIENTO débil por identificación: clave (cod_p, num_orden)." }
+ ],
+ hier: [ { sup: "PARTICIPANTE", subs: ["JUGADOR", "ARBITRO"], x: 470, y: 225, total: true, excl: true,
+   why: "Participan jugadores y árbitros (<b>total</b>) y «ningún árbitro puede participar como jugador» (<b>exclusiva</b>)." } ],
+ notes: [
+  "campeonato y medio son atributos <b>multivaluados</b> → tablas PARTICIPANTE_CAMPEONATO y SALA_MEDIO.",
+  "«Un árbitro no puede arbitrar a jugadores de su mismo país» no se puede dibujar en el E/R: se anota como restricción y en SQL requiere un trigger o aserción."
+ ]
+},
+{
+ id: 17, page: 63, title: "Energía eléctrica", tags: ["jerarquía de 4 subtipos", "ternaria", "reflexiva N:M", "(2,n)"],
+ text: `Se pretende llevar a cabo un control sobre la energía eléctrica que se produce y consume en un determinado país. Se parte de las siguientes hipótesis:
+a.- Existen productores básicos de electricidad que se identifican por un nombre, de los cuales interesa su producción media, su producción máxima y fecha de entrada en funcionamiento. Estos productores básicos lo son de una de las siguientes categorías: Hidroeléctrica, Solar, Nuclear o Térmica. De una central hidroeléctrica o presa nos interesa saber su ocupación, capacidad máxima y número de turbinas. De una central solar nos interesa saber la superficie total de paneles solares, la media anual de horas de sol y tipo (fotovoltaica o termodinámica). De una central nuclear, nos interesa saber el número de reactores que posee, el volumen de plutonio consumido y el de residuos nucleares que produce. De una central térmica, nos interesa saber el número de hornos que posee, el volumen de carbón consumido y el volumen de su emisión de gases.
+b.- Por motivos de seguridad nacional interesa controlar el plutonio de que se provee una central nuclear; este control se refiere a la cantidad de plutonio que compra a cada uno de sus posibles suministradores (nombre y país) y que porta un determinado transportista (nombre y matrícula); ha de tenerse en cuenta que el mismo suministrador puede vender plutonio a distintas centrales nucleares y que cada porte (un único porte por compra) puede realizarlo un transportista diferente.
+c.- Cada día, los productores entregan la energía producida a una o varias estaciones primarias, las cuales pueden recibir diariamente una cantidad distinta de energía de cada uno de estos productores. Los productores entregan siempre el total de su producción. Las estaciones primarias se identifican por su nombre y tienen un número de transformadores de baja a alta tensión y son cabecera de una a varias redes de distribución.
+d.- Una red de distribución se identifica por un número de red y solo puede tener una estación primaria como cabecera. La propiedad de una red puede ser compartida por varias compañías eléctricas; a cada compañía eléctrica se la identifica por su nombre.
+e.- La energía sobrante en una de las redes puede enviarse a otra red. Se registra el volumen total de energía intercambiada entre dos redes.
+f.- Una red está compuesta por una serie de líneas; cada línea se identifica por un número secuencial dentro del número de red y tiene una determinada longitud. La menor de las líneas posibles abastecerá al menos a dos subestaciones.
+g.- Una subestación es abastecida solo por una línea y distribuye a una o varias zonas de servicio; a tales efectos, las provincias (código y nombre) se encuentran divididas en tales zonas de servicio, aunque no puede haber zonas de servicio que pertenezcan a más de una provincia. Cada zona de servicio puede ser atendida por más de una subestación.
+h.- En cada zona de servicio se desea registrar el consumo medio y el número de consumidores finales de cada una de las siguientes categorías: particulares, empresas e instituciones.`,
+ ents: [
+  { id: "SUMINISTRADOR", x: 110, y: 90, attrs: ["#nombre_suministrador", "pais"] },
+  { id: "TRANSPORTISTA", x: 110, y: 360, attrs: ["#nombre_transportista", "matricula"] },
+  { id: "PRODUCTOR", x: 760, y: 90, attrs: ["#nombre_productor", "prod_media", "prod_maxima", "fecha_inicio"] },
+  { id: "NUCLEAR", x: 420, y: 360, attrs: ["reactores", "vol_plutonio", "vol_residuos"] },
+  { id: "HIDROELECTRICA", label: "HIDROELÉCTRICA", x: 640, y: 360, attrs: ["ocupacion", "capacidad_max", "turbinas"] },
+  { id: "SOLAR", x: 870, y: 360, attrs: ["superficie_paneles", "horas_sol", "tipo"] },
+  { id: "TERMICA", label: "TÉRMICA", x: 1090, y: 360, attrs: ["hornos", "vol_carbon", "vol_gases"] },
+  { id: "ESTACION_PRIMARIA", label: "ESTACIÓN_PRIMARIA", x: 1380, y: 90, attrs: ["#nombre_estacion", "num_transformadores"] },
+  { id: "RED", x: 1380, y: 600, attrs: ["#num_red"] },
+  { id: "COMPANIA", label: "COMPAÑÍA", x: 1380, y: 840, attrs: ["#nombre_compania"] },
+  { id: "LINEA", label: "LÍNEA", x: 1090, y: 600, weak: true, attrs: ["#num_linea", "longitud"] },
+  { id: "SUBESTACION", label: "SUBESTACIÓN", x: 780, y: 600, attrs: ["#cod_subestacion"] },
+  { id: "ZONA", x: 460, y: 600, attrs: ["#cod_zona"] },
+  { id: "PROVINCIA", x: 140, y: 600, attrs: ["#cod_provincia", "nombre"] },
+  { id: "CATEGORIA", label: "CATEGORÍA", x: 460, y: 840, attrs: ["#tipo_consumidor"] }
+ ],
+ rels: [
+  { n: "Compra", ends: [ { e: "NUCLEAR", c: "(0,n)" }, { e: "SUMINISTRADOR", c: "(0,n)" }, { e: "TRANSPORTISTA", c: "(1,1)" } ], pk: ["NUCLEAR", "SUMINISTRADOR"],
+    x: 260, y: 230, attrs: ["#fecha", "cantidad"], ap: "t",
+    why: "Interrelación <b>ternaria</b>: cada compra une una central nuclear, un suministrador y un transportista. «<b>Un único porte</b> por compra» → fijados central y suministrador (y fecha), hay exactamente un transportista: (1,1). Lectura de una ternaria: cada etiqueta es para la combinación fija de los <b>otros dos</b>." },
+  { n: "Entrega", a: "ESTACION_PRIMARIA", b: "PRODUCTOR", ca: "(1,n)", cb: "(0,n)", x: 1070, y: 90, attrs: ["#fecha", "cantidad"], ap: "t",
+    why: "«Entregan la energía a <b>una o varias</b> estaciones», «cantidad distinta <b>cada día</b>» → N:M con fecha en la clave." },
+  { n: "Cabecera", a: "ESTACION_PRIMARIA", b: "RED", ca: "(1,1)", cb: "(1,n)", x: 1380, y: 345,
+    why: "«Solo puede tener <b>una</b> estación primaria como cabecera» → (1,1); una estación es cabecera de <b>una a varias</b> redes → (1,n)." },
+  { n: "Propiedad", a: "COMPANIA", b: "RED", ca: "(1,n)", cb: "(1,n)", x: 1380, y: 720,
+    why: "«La propiedad de una red puede ser <b>compartida por varias</b> compañías» → N:M." },
+  { n: "Intercambia", a: "RED", b: "RED", ca: "(0,n)", cb: "(0,n)", roleA: "origen", roleB: "destino", x: 1640, y: 600, attrs: ["volumen"], ap: "r",
+    why: "Reflexiva N:M: una red envía energía a otras y recibe de otras. El volumen es de cada pareja (origen, destino)." },
+  { n: "Compuesta", a: "RED", b: "LINEA", ca: "(1,1)", cb: "(1,n)", dep: "ID", x: 1235, y: 600,
+    why: "«Cada línea se identifica por un número secuencial <b>dentro del número de red</b>» → LÍNEA débil por identificación." },
+  { n: "Abastece", a: "LINEA", b: "SUBESTACION", ca: "(1,1)", cb: "(2,n)", x: 935, y: 600,
+    why: "«Abastecerá <b>al menos a dos</b> subestaciones» → (2,n). «Una subestación es abastecida <b>solo por una</b> línea» → (1,1)." },
+  { n: "Distribuye", a: "SUBESTACION", b: "ZONA", ca: "(1,n)", cb: "(1,n)", x: 620, y: 600,
+    why: "Distribuye a «<b>una o varias</b> zonas» y «cada zona puede ser atendida por <b>más de una</b> subestación» → N:M." },
+  { n: "Dividida", a: "PROVINCIA", b: "ZONA", ca: "(1,1)", cb: "(1,n)", x: 300, y: 600,
+    why: "«No puede haber zonas que pertenezcan a <b>más de una</b> provincia» → (1,1) junto a PROVINCIA." },
+  { n: "Consume", a: "CATEGORIA", b: "ZONA", ca: "(1,3)", cb: "(0,n)", x: 460, y: 720, attrs: ["consumo_medio", "num_consumidores"], ap: "r",
+    why: "Consumo y nº de consumidores <b>de cada categoría en cada zona</b> → N:M con atributos. Hay tres categorías: particulares, empresas e instituciones → (1,3)." }
+ ],
+ hier: [ { sup: "PRODUCTOR", subs: ["NUCLEAR", "HIDROELECTRICA", "SOLAR", "TERMICA"], x: 760, y: 220, total: true, excl: true,
+   why: "«Lo son de <b>una</b> de las siguientes categorías» → exclusiva y total. Cada subtipo tiene sus atributos y la ternaria Compra solo afecta a NUCLEAR." } ],
+ notes: [
+  "Con «Ampliar (tamaño real)» el diagrama se ve sin reducir y se puede desplazar.",
+  "Alternativa a la ternaria: una entidad COMPRA (con fecha y cantidad) unida 1:N a NUCLEAR, a SUMINISTRADOR y a TRANSPORTISTA."
+ ]
+},
+{
+ id: 18, page: 64, title: "Conflictos bélicos", tags: ["jerarquía solapada", "ternaria", "débiles (ID)", "(2,n) (1,3)"],
+ text: `Una organización internacional pretende realizar un seguimiento de los conflictos bélicos que se producen en todo el mundo. Para ello creará una base de datos que responderá al siguiente análisis:
+a.- Se entiende por conflicto cualquier lucha armada que afecte a uno o varios países y en la cual se produzcan muertos y/o heridos. Todo conflicto se identificará por un nombre que habitualmente hará referencia a la zona o causa que provoca el conflicto, aunque dado que este nombre puede cambiar con el paso del tiempo, dentro de la base de datos cada conflicto se identificará mediante un código numérico sin significado alguno. Para cada conflicto se desea recoger los países a que afecta, así como el número de muertos y heridos contabilizados hasta el momento.
+b.- Los conflictos pueden ser de distintos tipos según la causa que los ha originado, clasificándose, a lo sumo, en cuatro grupos: territoriales, religiosos, económicos o raciales; en cada uno de estos grupos se recogerán diversos datos. En los conflictos territoriales se recogerán las regiones afectadas, en los religiosos las religiones afectadas, en los económicos las materias primas disputadas y en los raciales las etnias enfrentadas.
+c.- En los conflictos intervienen diversos grupos armados (al menos dos) y diversas organizaciones mediadoras (podría no haber ninguna). Los mismos grupos armados y organizaciones mediadoras pueden intervenir en diferentes conflictos. Tanto los grupos armados como las organizaciones mediadoras podrán entrar y salir del conflicto; en ambos casos se recogerá tanto la fecha de incorporación como la fecha de salida. Temporalmente, tanto un grupo armado como una organización mediadora podrían no intervenir en conflicto alguno.
+d.- De cada grupo armado se recoge el código que se le asigna y un nombre. Cada grupo armado dispone de al menos una división y es liderado al menos por un líder político. Las divisiones de que dispone un grupo armado se numeran consecutivamente y se registra el número de barcos, tanques, aviones y hombres de que dispone; asimismo se recoge el número de bajas que ha tenido. Para los grupos armados se recoge el número de bajas como suma de las bajas producidas en todas sus divisiones.
+e.- Los traficantes de armas suministran diferentes tipos de arma a los grupos armados. De cada tipo de armas se recoge un nombre y un indicador de su capacidad destructiva. De cada traficante se recoge su nombre, los diferentes tipos de arma que puede suministrar y cantidad de armas de cada uno de los tipos de arma que podría suministrar. Se mantiene el número total de armas de cada uno de los diferentes tipos de armas suministrado por cada traficante a cada grupo armado.
+f.- Los líderes políticos se identifican por su nombre y por el código de grupo armado que lideran. Además se recoge una descripción textual de los apoyos que éste posee.
+g.- Cada división la pueden dirigir conjuntamente un máximo de tres jefes militares, aunque cada jefe militar no dirige más de una división. A cada jefe militar se le identifica por un código, además se recoge el rango que éste posee, y dado que un jefe militar no actúa por iniciativa propia sino que siempre obedece las órdenes de un único líder político de entre aquellos que lideran el grupo armado al que el jefe pertenece, se registra el líder político al que obedece.
+h.- De las organizaciones mediadoras se recogerá su código, su nombre, su tipo (gubernamental, no gubernamental o internacional), la organización de que depende (una como máximo), el número de personas que mantiene desplegadas en cada conflicto y el tipo de ayuda que presta en cada conflicto que será de uno y solo uno de los tres tipos siguientes: médica, diplomática o presencial.
+i.- Con diversos fines, los líderes políticos dialogan con las organizaciones; se desea recoger explícitamente esta información. Así para cada líder se recogerán aquellas organizaciones con que dialoga y viceversa.`,
+ ents: [
+  { id: "TERRITORIAL", x: 340, y: 80, attrs: ["region+"] },
+  { id: "RELIGIOSO", x: 570, y: 80, attrs: ["religion+"] },
+  { id: "ECONOMICO", label: "ECONÓMICO", x: 830, y: 80, attrs: ["materia_prima+"] },
+  { id: "RACIAL", x: 1070, y: 80, attrs: ["etnia+"] },
+  { id: "PAIS", label: "PAÍS", x: 300, y: 340, attrs: ["#cod_pais", "nombre"] },
+  { id: "CONFLICTO", x: 700, y: 340, attrs: ["#cod_conflicto", "nombre", "muertos", "heridos"] },
+  { id: "ORGANIZACION", label: "ORGANIZACIÓN", x: 1120, y: 340, attrs: ["#cod_org", "nombre", "tipo"] },
+  { id: "TIPO_ARMA", x: 300, y: 620, attrs: ["#nombre_arma", "capacidad_destructiva"] },
+  { id: "GRUPO_ARMADO", x: 700, y: 620, attrs: ["#cod_grupo", "nombre", "bajas"] },
+  { id: "LIDER", label: "LÍDER", x: 1120, y: 620, weak: true, attrs: ["#nombre_lider", "apoyos"] },
+  { id: "TRAFICANTE", x: 300, y: 880, attrs: ["#nombre_traficante"] },
+  { id: "DIVISION", label: "DIVISIÓN", x: 700, y: 880, weak: true, attrs: ["#num_division", "barcos", "tanques", "aviones", "hombres", "bajas"] },
+  { id: "JEFE_MILITAR", x: 1120, y: 880, attrs: ["#cod_jefe", "rango"] }
+ ],
+ rels: [
+  { n: "Afecta", a: "PAIS", b: "CONFLICTO", ca: "(1,n)", cb: "(0,n)", x: 500, y: 340,
+    why: "«Lucha armada que afecte a <b>uno o varios</b> países» → (1,n) junto a PAÍS." },
+  { n: "Media", a: "ORGANIZACION", b: "CONFLICTO", ca: "(0,n)", cb: "(0,n)", x: 910, y: 340, attrs: ["#fecha_incorporacion", "fecha_salida*", "personas", "tipo_ayuda"], ap: "b",
+    why: "Organizaciones mediadoras: «<b>podría no haber ninguna</b>» → (0,n) junto a ORGANIZACIÓN; pueden no intervenir en ninguno → (0,n). Entran y salen → la fecha de incorporación forma parte de la clave. Personas y tipo de ayuda son «<b>en cada conflicto</b>»." },
+  { n: "Depende", a: "ORGANIZACION", b: "ORGANIZACION", ca: "(0,1)", cb: "(0,n)", roleA: "matriz", roleB: "dependiente", x: 1420, y: 340,
+    why: "Reflexiva: «la organización de que depende (<b>una como máximo</b>)» → (0,1)." },
+  { n: "Interviene", a: "GRUPO_ARMADO", b: "CONFLICTO", ca: "(2,n)", cb: "(0,n)", x: 700, y: 480, attrs: ["#fecha_incorporacion", "fecha_salida*"], ap: "r",
+    why: "«Intervienen diversos grupos armados (<b>al menos dos</b>)» → (2,n) junto a GRUPO_ARMADO. «<b>Podrían no intervenir</b> en conflicto alguno» → (0,n)." },
+  { n: "Liderado", a: "GRUPO_ARMADO", b: "LIDER", ca: "(1,1)", cb: "(1,n)", dep: "ID", x: 910, y: 620,
+    why: "«Los líderes se identifican por su nombre <b>y por el código de grupo</b>» → débil por identificación. «Liderado <b>al menos por un</b> líder» → (1,n)." },
+  { n: "Dialoga", a: "LIDER", b: "ORGANIZACION", ca: "(0,n)", cb: "(0,n)", x: 1120, y: 480,
+    why: "«Para cada líder las organizaciones con que dialoga <b>y viceversa</b>» → N:M." },
+  { n: "Dispone", a: "GRUPO_ARMADO", b: "DIVISION", ca: "(1,1)", cb: "(1,n)", dep: "ID", x: 700, y: 750,
+    why: "«<b>Al menos una</b> división», «se numeran consecutivamente» <b>dentro</b> del grupo → débil por identificación." },
+  { n: "Dirige", a: "JEFE_MILITAR", b: "DIVISION", ca: "(1,3)", cb: "(1,1)", x: 910, y: 880,
+    why: "«Cada división la pueden dirigir conjuntamente <b>un máximo de tres</b> jefes» → (1,3) junto a JEFE_MILITAR. «Cada jefe <b>no dirige más de una</b> división» → (1,1)." },
+  { n: "Obedece", a: "LIDER", b: "JEFE_MILITAR", ca: "(1,1)", cb: "(0,n)", x: 1120, y: 750,
+    why: "«Siempre obedece las órdenes de <b>un único</b> líder político» → (1,1) junto a LÍDER." },
+  { n: "Puede_suministrar", a: "TRAFICANTE", b: "TIPO_ARMA", ca: "(0,n)", cb: "(1,n)", x: 300, y: 750, attrs: ["cantidad"], ap: "l",
+    why: "«Los tipos de arma que <b>puede</b> suministrar y la cantidad de cada uno» → N:M con atributo (catálogo del traficante)." },
+  { n: "Suministra", ends: [ { e: "TRAFICANTE", c: "(0,n)" }, { e: "TIPO_ARMA", c: "(1,n)" }, { e: "GRUPO_ARMADO", c: "(0,n)" } ],
+    x: 500, y: 760, attrs: ["total"], ap: "b",
+    why: "«El número total de armas de cada tipo suministrado <b>por cada traficante a cada grupo</b>» → ternaria: el total depende de los tres a la vez. Convive con Puede_suministrar porque significan cosas distintas (lo que puede vs. lo que ha vendido)." }
+ ],
+ hier: [ { sup: "CONFLICTO", subs: ["TERRITORIAL", "RELIGIOSO", "ECONOMICO", "RACIAL"], x: 700, y: 215, dir: "up", total: false, excl: false,
+   why: "«Clasificándose, <b>a lo sumo</b>, en cuatro grupos»: un conflicto puede ser de varios tipos a la vez (<b>solapada</b>) o de ninguno (<b>parcial</b>). Los datos de cada subtipo son multivaluados (varias regiones, religiones…)." } ],
+ notes: [
+  "Aquí el triángulo apunta hacia arriba solo por espacio en el dibujo: el significado es el mismo.",
+  "Las bajas del grupo armado son un <b>atributo derivado</b> (suma de las bajas de sus divisiones). En el diagrama del profesor se marcaría con «Di».",
+  "En JEFE_MILITAR aparece dos veces el código de grupo (el de la división y el del líder). La restricción «el líder es de su mismo grupo» se garantiza haciendo que ambos coincidan (CHECK)."
+ ]
+}
+];
+
+// =====================================================================
+//  MINI DIAGRAMAS DE LA GUÍA
+// =====================================================================
+const MINI = {
+ pertenece: { title: "Pertenece", ents: [
+   { id: "DEPARTAMENTO", x: 100, y: 50, attrs: ["#cod_dep"] }, { id: "PROFESOR", x: 470, y: 50, attrs: ["#dni"] } ],
+   rels: [ { n: "Pertenece", a: "DEPARTAMENTO", b: "PROFESOR", ca: "(1,1)", cb: "(0,n)", x: 285, y: 50 } ] },
+ nm: { title: "Imparte", ents: [
+   { id: "PROFESOR", x: 90, y: 50, attrs: ["#dni"] }, { id: "CURSO", x: 450, y: 50, attrs: ["#cod_curso"] } ],
+   rels: [ { n: "Imparte", a: "PROFESOR", b: "CURSO", ca: "(1,n)", cb: "(0,n)", x: 270, y: 50, attrs: ["fecha"] } ] },
+ weak: { title: "Tiene", ents: [
+   { id: "CURSO", x: 90, y: 50, attrs: ["#cod_curso"] }, { id: "EDICION", label: "EDICIÓN", x: 450, y: 50, weak: true, attrs: ["#cod_edicion"] } ],
+   rels: [ { n: "Tiene", a: "CURSO", b: "EDICION", ca: "(1,1)", cb: "(0,n)", dep: "ID", x: 270, y: 50 } ] },
+ refl: { title: "Consta", ents: [ { id: "TEMA", x: 100, y: 60, attrs: ["#cod_tema"] } ],
+   rels: [ { n: "Consta", a: "TEMA", b: "TEMA", ca: "(0,1)", cb: "(0,n)", roleA: "tema", roleB: "subtema", x: 330, y: 60 } ] },
+ hier: { title: "Jerarquía", ents: [
+   { id: "PROFESOR", x: 250, y: 40, attrs: ["#dni"] }, { id: "DOCTOR", x: 110, y: 200, attrs: [] }, { id: "NO_DOCTOR", x: 390, y: 200, attrs: [] } ],
+   rels: [], hier: [ { sup: "PROFESOR", subs: ["DOCTOR", "NO_DOCTOR"], x: 250, y: 115, total: true, excl: true } ] },
+ hier2: { title: "Jerarquía parcial solapada", ents: [
+   { id: "DOCUMENTO", x: 250, y: 40, attrs: ["#cod_doc"] }, { id: "LIBRO", x: 110, y: 200, attrs: [] }, { id: "ARTICULO", label: "ARTÍCULO", x: 390, y: 200, attrs: [] } ],
+   rels: [], hier: [ { sup: "DOCUMENTO", subs: ["LIBRO", "ARTICULO"], x: 250, y: 115, total: false, excl: false } ] }
+};
+
+// =====================================================================
+//  GUÍA (texto)
+// =====================================================================
+const GUIDE_HTML = `
+<div class="panel">
+  <h2>1. La notación de tus apuntes</h2>
+  <p>Tu profesor usa la notación del capítulo 2 (fig. 2.20): <b>Pertenece (DEPARTAMENTO(1,1) : PROFESOR(0,n))</b>.</p>
+  <div class="rule">La etiqueta <b>(mín,máx)</b> que va <b>junto a una entidad</b> indica cuántos ejemplares de <b>esa</b> entidad se relacionan con <b>un</b> ejemplar de la otra.</div>
+  <div class="mini" data-mini="pertenece" data-attrs="keys"></div>
+  <ul>
+    <li><b>(1,1) junto a DEPARTAMENTO</b>: cada profesor pertenece a mínimo 1 y máximo 1 departamento.</li>
+    <li><b>(0,n) junto a PROFESOR</b>: cada departamento tiene ninguno o varios profesores (puede estar recién creado).</li>
+    <li><b>Tipo de correspondencia 1:N</b> = los dos máximos (1 y n). Va dentro del rombo.</li>
+  </ul>
+  <div class="rule">Pregunta mágica para el examen: <b>«Para UN [entidad A], ¿cuántos [entidad B] como mínimo y como máximo?»</b> La respuesta se escribe <b>junto a B</b>. Luego repítela al revés.</div>
+  <p class="muted">Cuidado: otros libros y herramientas (Tardieu/Merise, muchas CASE) ponen las etiquetas en el lado contrario. Tus apuntes lo avisan en el apartado 4.2. En el examen usa siempre la de tu profesor.</p>
+</div>
+
+<div class="panel">
+  <h2>2. Método paso a paso (examen)</h2>
+  <ol>
+    <li><b>Subraya los sustantivos</b> del enunciado. Los que tienen datos propios y se repiten son <b>entidades</b>; sus datos, <b>atributos</b>.</li>
+    <li>Elige el <b>identificador</b> de cada entidad (subrayado). Si no puede identificarse sola («número de orden <i>dentro de</i>…», «se identifica por X <i>y</i> el código de…»), es <b>débil por identificación (ID)</b>.</li>
+    <li><b>Busca los verbos</b> que unen entidades: cada uno es una <b>interrelación</b> (rombo). Si dos verbos unen las mismas entidades con significado distinto, son <b>dos rombos</b>.</li>
+    <li>Para cada interrelación aplica la pregunta mágica <b>en los dos sentidos</b> y escribe (mín,máx) junto a cada entidad.</li>
+    <li>Pon el <b>tipo de correspondencia</b> (1:1, 1:N, N:M) con los dos máximos.</li>
+    <li>Coloca los <b>atributos de la interrelación</b>: datos que dependen de la pareja (nota, fecha, cantidad, número de orden…).</li>
+    <li>Revisa <b>jerarquías</b> («es un», «pueden ser A o B»), <b>reflexivas</b> (una entidad consigo misma: pon los roles) y <b>ternarias</b> (un dato que depende de tres a la vez).</li>
+    <li>Comprueba que no sobra ninguna interrelación (ciclos redundantes, apartado 5.2).</li>
+  </ol>
+</div>
+
+<div class="panel">
+  <h2>3. Palabras del enunciado → cardinalidad</h2>
+  <table class="tb">
+    <tr><th>Si el enunciado dice…</th><th>Significa</th><th>Ejemplo</th></tr>
+    <tr><td>un, una determinada, un solo, un único, no más de uno</td><td>máximo <b>1</b></td><td>«Cada tren se guarda en <i>una cochera determinada</i>» → (1,1)</td></tr>
+    <tr><td>varios, una serie, muchos, diversos, uno o varios</td><td>máximo <b>n</b></td><td>«Una orquesta puede interpretar <i>varios</i> conciertos» → (0,n)</td></tr>
+    <tr><td>todo, siempre, tiene que, debe, cada… (obligación)</td><td>mínimo <b>1</b></td><td>«<i>Toda</i> persona está empadronada…» → (1,1)</td></tr>
+    <tr><td>puede, pueden existir sin, o no, o ninguno, algunos</td><td>mínimo <b>0</b></td><td>«Pueden existir municipios <i>sin viviendas</i>» → (0,n)</td></tr>
+    <tr><td>al menos X, como mínimo X, como máximo Y, no más de Y</td><td>números concretos</td><td>«Mínimo 2 y máximo 30 empleados» → (2,30)</td></tr>
+  </table>
+</div>
+
+<div class="panel">
+  <h2>4. Casos especiales</h2>
+  <div class="grid2">
+    <div><h3>N:M con atributo</h3><div class="mini" data-mini="nm" data-attrs="keys"></div><p>Si un dato depende de la <b>pareja</b> (profesor y curso), es atributo del rombo. Si la relación es 1:N, ese atributo puede llevarse a la entidad del lado N.</p></div>
+    <div><h3>Entidad débil (ID)</h3><div class="mini" data-mini="weak" data-attrs="keys"></div><p>Doble rectángulo. <b>ID</b> en el rombo si necesita la clave de la otra para identificarse; <b>E</b> si solo depende en existencia.</p></div>
+    <div><h3>Reflexiva</h3><div class="mini" data-mini="refl" data-attrs="keys"></div><p>Una entidad consigo misma. Escribe siempre los <b>roles</b> (tema / subtema, maestro / discípulo) y una cardinalidad en cada línea.</p></div>
+    <div><h3>Jerarquía total y exclusiva</h3><div class="mini" data-mini="hier"></div><p><b>Arco</b> = exclusiva (solo un subtipo). <b>Círculo</b> = total (todo ejemplar es de algún subtipo). Los subtipos heredan atributos e identificador.</p></div>
+    <div><h3>Jerarquía parcial y solapada</h3><div class="mini" data-mini="hier2"></div><p>Sin arco ni círculo: un documento puede ser libro y artículo a la vez, o ninguno.</p></div>
+    <div><h3>Ternaria</h3><p>Cuando un dato depende de <b>tres</b> entidades a la vez (cantidad que el traficante X vende del arma Y al grupo Z). Cada etiqueta se lee fijando los <b>otros dos</b> extremos. Antes de usarla, comprueba que no se puede descomponer en binarias sin perder información (apartado 6).</p></div>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>5. Paso al modelo relacional (Tema 3)</h2>
+  <table class="tb">
+    <tr><th>Caso</th><th>Regla</th></tr>
+    <tr><td><b>Entidad</b></td><td>Una tabla. Su identificador es la clave primaria.</td></tr>
+    <tr><td><b>1:N</b></td><td>La clave de la entidad del lado <b>1</b> pasa como clave ajena a la del lado <b>N</b> (junto con los atributos de la interrelación).</td></tr>
+    <tr><td><b>1:1</b></td><td>La clave de la entidad más importante pasa a la menos importante (con UNIQUE).</td></tr>
+    <tr><td><b>N:M</b></td><td>Nueva tabla («entidad renacida») cuya clave es la unión de las dos claves, más los atributos de la interrelación.</td></tr>
+    <tr><td>Débil por ID</td><td>Su clave = clave de la entidad fuerte + su propio identificador. Borrado en cascada (B:C).</td></tr>
+    <tr><td>Reflexiva</td><td>1:N → clave ajena a la misma tabla con otro nombre (dni_cabeza). N:M → tabla nueva con la clave dos veces (cod_curso_previo, cod_curso_siguiente).</td></tr>
+    <tr><td>Ternaria</td><td>Tabla nueva con las tres claves ajenas.</td></tr>
+    <tr><td>Jerarquía</td><td>Una tabla por subtipo con la clave del supertipo, que es primaria y ajena a la vez.</td></tr>
+    <tr><td>Multivaluado</td><td>Tabla aparte con la clave de la entidad + el valor.</td></tr>
+  </table>
+  <div class="rule">El <b>mínimo</b> decide los nulos: si junto a la entidad referenciada pone <b>(0,…)</b>, la clave ajena <b>admite nulos</b> (*). Si pone <b>(1,…)</b>, es NOT NULL.</div>
+  <h3>Notación del grafo relacional</h3>
+  <ul>
+    <li><span style="text-decoration:underline;font-weight:700">Clave primaria</span> subrayada · <i>clave ajena</i> en cursiva con flecha a su tabla · <b>clave alternativa</b> en negrita · * = admite nulos.</li>
+    <li>Opciones de integridad referencial: B:C / M:C (cascada), B:N / M:N (nulos), B:D / M:D (valor por defecto), B:R / M:R (restringido).</li>
+  </ul>
+</div>
+
+<div class="panel">
+  <h2>6. Errores típicos que restan puntos</h2>
+  <ul>
+    <li>Poner la cardinalidad en el lado contrario. Repite la pregunta mágica en voz baja con cada línea.</li>
+    <li>Confundir el tipo de correspondencia con la cardinalidad: 1:N solo usa los <b>máximos</b>.</li>
+    <li>Olvidar el mínimo 0 cuando el texto dice «puede», «o no», «algunos».</li>
+    <li>Meter en una entidad un dato que depende de dos (la nota va en Matrícula, no en Alumno).</li>
+    <li>Dibujar un solo rombo cuando hay dos significados (asignado actual vs. ha trabajado).</li>
+    <li>No marcar como débil una entidad numerada «dentro de» otra (ediciones, fases, líneas, movimientos).</li>
+    <li>En una jerarquía, repetir en los subtipos los atributos comunes (ya se heredan).</li>
+    <li>En una N:M histórica, olvidar la fecha en la clave: sin ella no se puede repetir la misma pareja.</li>
+  </ul>
+</div>`;
+
+</script>
+<script>
+// =====================================================================
+//  UTILIDADES
+// =====================================================================
+const $ = (id) => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+function lsGet(k, f) { try { const v = localStorage.getItem(k); return v === null ? f : JSON.parse(v); } catch (e) { return f; } }
+function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* sin almacenamiento */ } }
+function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+
+function parseCard(s) {
+    const m = String(s).match(/\(\s*(\d+)\s*,\s*([0-9nNmM*]+)\s*\)/);
+    if (!m) return { min: 0, max: Infinity };
+    return { min: +m[1], max: /^[nNmM*]$/.test(m[2]) ? Infinity : +m[2] };
+}
+function parseAttr(raw) {
+    let n = raw, pk = false, nul = false, multi = false, uq = false;
+    if (n.startsWith("#")) { pk = true; n = n.slice(1); }
+    while (/[*+!]$/.test(n)) {
+        const c = n.slice(-1);
+        if (c === "*") nul = true; else if (c === "+") multi = true; else uq = true;
+        n = n.slice(0, -1);
+    }
+    return { n, pk, nul, multi, uq };
+}
+function relType(rel) {
+    if (rel.type) return rel.type;
+    if (rel.ends) {
+        const L = ["N", "M", "P"]; let i = 0;
+        return rel.ends.map(e => parseCard(e.c).max > 1 ? L[i++] : "1").join(":");
+    }
+    const A = parseCard(rel.ca).max > 1, B = parseCard(rel.cb).max > 1;
+    if (A && B) return "N:M";
+    return (A ? "N" : "1") + ":" + (B ? "N" : "1");
+}
+function describe(c) {
+    const { min, max } = parseCard(c);
+    if (min === 0 && max === 1) return "0 o 1";
+    if (min === 1 && max === 1) return "exactamente 1";
+    if (min === 0 && max === Infinity) return "0 o varios";
+    if (min === 1 && max === Infinity) return "1 o varios";
+    if (max === Infinity) return `al menos ${min}`;
+    if (min === max) return `exactamente ${min}`;
+    return `entre ${min} y ${max}`;
+}
+
+// =====================================================================
+//  RENDER DEL DIAGRAMA E/R (SVG)
+// =====================================================================
+function textW(s, px) { return String(s).length * px * 0.58; }
+const _cv = document.createElement("canvas").getContext("2d");
+function measure(s, font) { _cv.font = font; return _cv.measureText(String(s)).width; }
+
+function attrLabel(a) {
+    let s = a.n;
+    if (a.multi) s += " (1,n)";
+    else if (a.nul) s += " (0,1)";
+    if (a.uq) s += " · IA";
+    return s;
+}
+
+function entGeom(e, mode) {
+    const attrs = (e.attrs || []).map(parseAttr);
+    const shown = mode === "all" ? attrs : mode === "keys" ? attrs.filter(a => a.pk) : [];
+    const label = e.label || e.id;
+    let w = Math.max(textW(label, 12.5) + 26, 92);
+    shown.forEach(a => { w = Math.max(w, textW(attrLabel(a), 11) + 24); });
+    const h = shown.length ? 26 + shown.length * 13.5 + 4 : 32;
+    return { x: e.x, y: e.y, w, h, shown, label };
+}
+function relGeom(r) {
+    const w = Math.max(textW(r.label || r.n, 11.5) + 40, 84);
+    return { x: r.x, y: r.y, w, h: 46 };
+}
+// intersección de la recta centro->(tx,ty) con el borde del rectángulo
+function rectBorder(g, tx, ty) {
+    const dx = tx - g.x, dy = ty - g.y;
+    if (!dx && !dy) return { x: g.x, y: g.y };
+    const sx = (g.w / 2) / Math.abs(dx || 1e-9), sy = (g.h / 2) / Math.abs(dy || 1e-9);
+    const s = Math.min(sx, sy);
+    return { x: g.x + dx * s, y: g.y + dy * s };
+}
+function diamondBorder(g, tx, ty) {
+    const dx = tx - g.x, dy = ty - g.y;
+    const t = 1 / (Math.abs(dx) / (g.w / 2) + Math.abs(dy) / (g.h / 2));
+    return { x: g.x + dx * t, y: g.y + dy * t };
+}
+
+// ¿la etiqueta centrada en (lx, ly-baseline) pisa la caja de la entidad?
+function hitsBox(g, lx, ly, s) {
+    const w = textW(s, 11.5) / 2 + 3;
+    const x1 = lx - w, x2 = lx + w, y1 = ly - 12, y2 = ly + 3;
+    return !(x2 < g.x - g.w / 2 || x1 > g.x + g.w / 2 || y2 < g.y - g.h / 2 || y1 > g.y + g.h / 2);
+}
+function el(tag, attrs, parent) {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+}
+function txt(parent, x, y, s, cls, anchor) {
+    const t = el("text", { x, y, class: cls, "text-anchor": anchor || "middle" }, parent);
+    t.textContent = s;
+    return t;
+}
+
+function renderER(ex, opts) {
+    const mode = opts.attrs;                    // all | keys | none
+    const hidden = opts.hidden || (() => false); // (relIndex) => ocultar cardinalidades
+    const svg = el("svg", { role: "img", "aria-label": "Diagrama E/R: " + ex.title });
+    const gEdges = el("g", {}, svg), gShapes = el("g", {}, svg), gLabels = el("g", {}, svg);
+    const bounds = { x1: Infinity, y1: Infinity, x2: -Infinity, y2: -Infinity };
+    const grow = (x1, y1, x2, y2) => { bounds.x1 = Math.min(bounds.x1, x1); bounds.y1 = Math.min(bounds.y1, y1); bounds.x2 = Math.max(bounds.x2, x2); bounds.y2 = Math.max(bounds.y2, y2); };
+
+    const EG = {};
+    ex.ents.forEach(e => { EG[e.id] = entGeom(e, mode); });
+
+    // --- entidades
+    ex.ents.forEach(e => {
+        const g = EG[e.id];
+        const x0 = g.x - g.w / 2, y0 = g.y - g.h / 2;
+        el("rect", { x: x0, y: y0, width: g.w, height: g.h, rx: 3, class: "e-box" }, gShapes);
+        if (e.weak) el("rect", { x: x0 + 4, y: y0 + 4, width: g.w - 8, height: g.h - 8, rx: 2, class: "e-box", fill: "none" }, gShapes);
+        txt(gShapes, g.x, y0 + (g.shown.length ? 18 : g.h / 2 + 4.5), g.label, "e-name");
+        g.shown.forEach((a, i) => {
+            const ty = y0 + 34 + i * 13.5;
+            txt(gShapes, x0 + 12, ty, attrLabel(a), "e-attr" + (a.pk ? " pk" : ""), "start");
+            if (a.pk) el("line", { x1: x0 + 12, y1: ty + 2.5, x2: x0 + 12 + measure(a.n, "600 11px -apple-system, Segoe UI, Roboto, Arial, sans-serif"), y2: ty + 2.5, "stroke-width": 1, style: "stroke:var(--ink)" }, gShapes);
+        });
+        grow(x0, y0, x0 + g.w, y0 + g.h);
+    });
+
+    function cardLabel(entG, from, txtS, isQ, role) {
+        // from = punto del rombo; etiqueta junto a la entidad
+        const p = rectBorder(entG, from.x, from.y);
+        let ux = from.x - p.x, uy = from.y - p.y;
+        const L = Math.hypot(ux, uy) || 1; ux /= L; uy /= L;
+        const nx = -uy, ny = ux;
+        let along = 17, lx, ly;
+        do {
+            lx = p.x + ux * along + nx * 13; ly = p.y + uy * along + ny * 13 + 4;
+            along += 3;
+        } while (hitsBox(entG, lx, ly, txtS) && along < 60);
+        txt(gLabels, lx, ly, txtS, "card-lbl" + (isQ ? " q" : ""));
+        grow(lx - 22, ly - 12, lx + 22, ly + 4);
+        if (role) {
+            const rx = p.x + ux * 17 - nx * 14, ry = p.y + uy * 17 - ny * 14 + 4;
+            txt(gLabels, rx, ry, role, "role-lbl");
+            grow(rx - 30, ry - 12, rx + 30, ry + 4);
+        }
+    }
+
+    function drawRelAttrs(r, g, ents) {
+        const attrs = (r.attrs || []).map(parseAttr);
+        if (!attrs.length) return;
+        let pos = r.ap;
+        if (!pos) {
+            const vertical = ents.some(eg => Math.abs(eg.y - g.y) > Math.abs(eg.x - g.x));
+            pos = vertical ? "r" : "t";
+        }
+        attrs.forEach((a, i) => {
+            const label = a.n + (a.nul ? " (0,1)" : "");
+            let vx, vy, cx, cy, tx, ty, anchor;
+            if (pos === "r" || pos === "l") {
+                const s = pos === "r" ? 1 : -1;
+                vx = g.x + s * g.w / 2; vy = g.y;
+                cx = vx + s * 16; cy = g.y + (i - (attrs.length - 1) / 2) * 15;
+                tx = cx + s * 7; ty = cy + 4; anchor = s > 0 ? "start" : "end";
+            } else {
+                const s = pos === "b" ? 1 : -1;
+                vx = g.x; vy = g.y + s * g.h / 2;
+                cx = g.x + 10; cy = vy + s * (14 + i * 15);
+                tx = cx + 7; ty = cy + 4; anchor = "start";
+            }
+            el("line", { x1: vx, y1: vy, x2: cx, y2: cy, class: "edge" }, gEdges);
+            el("circle", { cx, cy, r: 3.6, class: "a-dot" }, gShapes);
+            const t = txt(gLabels, tx, ty, label, "r-attr" + (a.pk ? " pk" : ""), anchor);
+            if (a.pk) t.setAttribute("text-decoration", "underline");
+            const w = textW(label, 11);
+            grow(anchor === "end" ? tx - w : tx, ty - 11, anchor === "end" ? tx : tx + w, ty + 3);
+        });
+    }
+
+    // --- interrelaciones
+    const RG = {};
+    ex.rels.forEach((r, ri) => {
+        const g = relGeom(r); RG[r.n] = g;
+        const q = hidden(ri);
+        const pts = `${g.x},${g.y - g.h / 2} ${g.x + g.w / 2},${g.y} ${g.x},${g.y + g.h / 2} ${g.x - g.w / 2},${g.y}`;
+        el("polygon", { points: pts, class: "r-box" }, gShapes);
+        txt(gShapes, g.x, g.y - 1, r.label || r.n, "r-name");
+        const sub = (r.dep ? r.dep + " · " : "") + (q ? "?:?" : relType(r));
+        txt(gShapes, g.x, g.y + 12, sub, "r-type");
+        grow(g.x - g.w / 2, g.y - g.h / 2, g.x + g.w / 2, g.y + g.h / 2);
+
+        const connected = [];
+        if (r.ends) {
+            r.ends.forEach(end => {
+                const eg = EG[end.e]; connected.push(eg);
+                const a = diamondBorder(g, eg.x, eg.y), b = rectBorder(eg, g.x, g.y);
+                el("line", { x1: a.x, y1: a.y, x2: b.x, y2: b.y, class: "edge" }, gEdges);
+                cardLabel(eg, g, q ? "(?,?)" : end.c, q, end.role);
+            });
+        } else if (r.a === r.b) {
+            const eg = EG[r.a]; connected.push(eg);
+            let ux = g.x - eg.x, uy = g.y - eg.y; const L = Math.hypot(ux, uy) || 1; ux /= L; uy /= L;
+            const nx = -uy * 22, ny = ux * 22;
+            [[1, r.ca, r.roleA], [-1, r.cb, r.roleB]].forEach(([s, c, role]) => {
+                const fake = { x: eg.x + nx * s, y: eg.y + ny * s, w: eg.w, h: eg.h };
+                const target = { x: g.x + nx * s * 0.5, y: g.y + ny * s * 0.5 };
+                const b = rectBorder(fake, target.x, target.y);
+                const a = diamondBorder(g, b.x, b.y);
+                el("line", { x1: a.x, y1: a.y, x2: b.x, y2: b.y, class: "edge" }, gEdges);
+                // etiqueta junto a la entidad, en la línea correspondiente
+                let vx = a.x - b.x, vy = a.y - b.y; const l2 = Math.hypot(vx, vy) || 1; vx /= l2; vy /= l2;
+                const lab = q ? "(?,?)" : c;
+                let along = 18, lx, ly;
+                do {
+                    lx = b.x + vx * along + (-vy) * 12 * s; ly = b.y + vy * along + vx * 12 * s + 4;
+                    along += 3;
+                } while (hitsBox(eg, lx, ly, lab) && along < 60);
+                txt(gLabels, lx, ly, lab, "card-lbl" + (q ? " q" : ""));
+                grow(lx - 22, ly - 12, lx + 22, ly + 4);
+                if (role) {
+                    const vertical = Math.abs(vy) > Math.abs(vx);
+                    const al = vertical ? along + 24 : along + 2, pp = vertical ? 14 : 28;
+                    const rx = b.x + vx * al + (-vy) * pp * s, ry = b.y + vy * al + vx * pp * s + 4;
+                    txt(gLabels, rx, ry, role, "role-lbl");
+                    grow(rx - 34, ry - 12, rx + 34, ry + 4);
+                }
+            });
+        } else {
+            [[r.a, r.ca], [r.b, r.cb]].forEach(([id, c]) => {
+                const eg = EG[id]; connected.push(eg);
+                const a = diamondBorder(g, eg.x, eg.y), b = rectBorder(eg, g.x, g.y);
+                el("line", { x1: a.x, y1: a.y, x2: b.x, y2: b.y, class: "edge" }, gEdges);
+                cardLabel(eg, g, q ? "(?,?)" : c, q, id === r.a ? r.roleA : r.roleB);
+            });
+        }
+        drawRelAttrs(r, g, connected);
+    });
+
+    // --- jerarquías
+    (ex.hier || []).forEach(h => {
+        const sg = EG[h.sup];
+        const up = h.dir === "up";
+        const hx = h.x, hy = h.y;
+        const baseY = up ? hy + 12 : hy - 12, apexY = up ? hy - 15 : hy + 15;
+        el("polygon", { points: `${hx - 19},${baseY} ${hx + 19},${baseY} ${hx},${apexY}`, class: "h-tri" }, gShapes);
+        const sp = rectBorder(sg, hx, baseY);
+        el("line", { x1: sp.x, y1: sp.y, x2: hx, y2: baseY, class: "h-edge" }, gEdges);
+        if (h.total) {
+            const mx = (sp.x + hx) / 2, my = (sp.y + baseY) / 2;
+            el("circle", { cx: mx, cy: my, r: 5, class: "h-tri" }, gShapes);
+        }
+        const angs = [];
+        h.subs.forEach(id => {
+            const eg = EG[id];
+            const b = rectBorder(eg, hx, apexY);
+            el("line", { x1: hx, y1: apexY, x2: b.x, y2: b.y, class: "h-edge" }, gEdges);
+            angs.push(Math.atan2(b.y - apexY, b.x - hx));
+        });
+        if (h.excl && angs.length > 1) {
+            const R = 26, a1 = Math.min(...angs), a2 = Math.max(...angs);
+            const p1 = { x: hx + R * Math.cos(a1), y: apexY + R * Math.sin(a1) };
+            const p2 = { x: hx + R * Math.cos(a2), y: apexY + R * Math.sin(a2) };
+            el("path", { d: `M${p1.x},${p1.y} A${R},${R} 0 0 1 ${p2.x},${p2.y}`, class: "h-edge" }, gEdges);
+        }
+        const lab = h.label || ((h.total ? "total" : "parcial") + ", " + (h.excl ? "exclusiva" : "solapada"));
+        txt(gLabels, hx + 26, hy + 4, lab, "h-lbl", "start");
+        grow(hx - 30, hy - 30, hx + 30 + textW(lab, 10.5), hy + 30);
+    });
+
+    // --- restricciones entre interrelaciones
+    (ex.cons || []).forEach(c => {
+        const a = RG[c.a], b = RG[c.b];
+        el("path", { d: `M${a.x + a.w / 2},${a.y} L${b.x - b.w / 2},${b.y}`, class: "c-edge" }, gEdges);
+        txt(gLabels, (a.x + b.x) / 2, Math.min(a.y, b.y) - 28, c.label, "c-lbl");
+    });
+
+    const pad = 18;
+    const vb = [bounds.x1 - pad, bounds.y1 - pad, bounds.x2 - bounds.x1 + pad * 2, bounds.y2 - bounds.y1 + pad * 2];
+    svg.setAttribute("viewBox", vb.join(" "));
+    svg.setAttribute("width", Math.round(vb[2]));
+    svg.setAttribute("height", Math.round(vb[3]));
+    return svg;
+}
+
+// =====================================================================
+//  PASO AL MODELO RELACIONAL (Tema 3) + SQL
+// =====================================================================
+function sqlType(n) {
+    n = n.toLowerCase();
+    if (n === "dia_hora") return "DATETIME";
+    if (/^hora/.test(n)) return "TIME";
+    if (/^fecha|_fecha|^antiguedad/.test(n)) return "DATE";
+    if (/precio|salario|coste|cuantia|fianza|senal|importe/.test(n)) return "DECIMAL(10,2)";
+    if (/^(principal|puerta_grande|hipotecado|licencia_apertura|con_receta|obligatorio|exterior|titulacion|capacitado)$/.test(n)) return "BOOLEAN";
+    if (/^(dni|nif)/.test(n)) return "CHAR(9)";
+    if (/^nss/.test(n)) return "CHAR(12)";
+    if (/^(num_|cod_|n_|anio|orejas|rabos|aforo|m2|stock|unidades|reactores|turbinas|hornos|habitaciones|banos|nivel|capacidad|entradas|muertos|heridos|bajas|barcos|tanques|aviones|hombres|personas|duracion|cantidad|volumen|vol_|prod_|horas_sol|superficie|ocupacion|consumo|longitud|orden_)/.test(n)) return "INT";
+    if (/telefono|fax/.test(n)) return "VARCHAR(15)";
+    if (/descripcion|comentario|apoyos|direccion|experiencia/.test(n)) return "VARCHAR(255)";
+    return "VARCHAR(100)";
+}
+
+function buildSchema(ex) {
+    const E = {}; ex.ents.forEach(e => { E[e.id] = e; });
+    const superOf = {}; (ex.hier || []).forEach(h => h.subs.forEach(s => { superOf[s] = h.sup; }));
+    const ownerOf = {}; ex.rels.forEach(r => { if (r.dep === "ID") ownerOf[r.b] = r.a; });
+
+    const pkMemo = {};
+    function pkCols(id) { // [{n, type}]
+        if (pkMemo[id]) return pkMemo[id];
+        let res;
+        const own = (E[id].attrs || []).map(parseAttr).filter(a => a.pk && !a.multi).map(a => ({ n: a.n, type: sqlType(a.n) }));
+        if (superOf[id]) res = pkCols(superOf[id]);
+        else if (ownerOf[id]) res = pkCols(ownerOf[id]).concat(own);
+        else res = own;
+        pkMemo[id] = res;
+        return res;
+    }
+
+    const T = {}; const order = [];
+    function table(name, src) { if (!T[name]) { T[name] = { name, cols: [], fks: [], uniq: [], src }; order.push(name); } return T[name]; }
+    function addCol(t, c) {
+        if (t.cols.some(x => x.n === c.n)) return false;
+        t.cols.push(c); return true;
+    }
+    function freeName(t, base, suffix) {
+        if (!t.cols.some(c => c.n === base)) return base;
+        let n = base + "_" + suffix; let i = 2;
+        while (t.cols.some(c => c.n === n)) n = base + "_" + suffix + (i++);
+        return n;
+    }
+    function addFK(t, refId, opts) {
+        // opts: {pk, nul, rename, suffix, role, uniq}
+        const ref = pkCols(refId);
+        const names = ref.map(rc => {
+            let n = (opts.rename && opts.rename[rc.n]) || (opts.role ? rc.n + "_" + opts.role : rc.n);
+            n = freeName(t, n, opts.suffix || refId.toLowerCase());
+            addCol(t, { n, type: rc.type, pk: !!opts.pk, nul: !!opts.nul, fk: true });
+            return n;
+        });
+        const del = opts.pk ? "C" : opts.nul ? "N" : "R";
+        t.fks.push({ cols: names, ref: refId, refcols: ref.map(r => r.n), del, upd: "C" });
+        if (opts.uniq) t.uniq.push(names);
+        return names;
+    }
+
+    // 1) entidades
+    ex.ents.forEach(e => {
+        const t = table(e.id, "entidad" + (e.weak ? " débil" : "") + (superOf[e.id] ? " (subtipo de " + superOf[e.id] + ")" : ""));
+        if (superOf[e.id]) addFK(t, superOf[e.id], { pk: true });
+        else if (ownerOf[e.id]) addFK(t, ownerOf[e.id], { pk: true });
+        (e.attrs || []).map(parseAttr).forEach(a => {
+            if (a.multi) return;
+            addCol(t, { n: a.n, type: sqlType(a.n), pk: a.pk, nul: a.nul });
+            if (a.uq) t.uniq.push([a.n]);
+        });
+    });
+    // 2) atributos multivaluados
+    ex.ents.forEach(e => {
+        (e.attrs || []).map(parseAttr).filter(a => a.multi).forEach(a => {
+            const t = table(e.id + "_" + a.n.toUpperCase(), "atributo multivaluado de " + e.id);
+            addFK(t, e.id, { pk: true });
+            addCol(t, { n: a.n, type: sqlType(a.n), pk: true });
+        });
+    });
+    // 3) interrelaciones
+    function relAttrs(t, r, forcePk, allNull) {
+        (r.attrs || []).map(parseAttr).forEach(a => {
+            addCol(t, { n: freeName(t, a.n, r.n.toLowerCase()), type: sqlType(a.n), pk: forcePk && a.pk, nul: a.nul || !!allNull });
+        });
+    }
+    ex.rels.forEach(r => {
+        if (r.dep === "ID") return;
+        const tName = (r.table || r.n).toUpperCase();
+        if (r.ends) {
+            const t = table(tName, "interrelación ternaria " + r.n);
+            const pkSet = r.pk || r.ends.map(e => e.e);
+            r.ends.forEach(end => addFK(t, end.e, { pk: pkSet.includes(end.e), role: end.col, rename: end.rename }));
+            relAttrs(t, r, true);
+            return;
+        }
+        const A = parseCard(r.ca), B = parseCard(r.cb);
+        if (r.a === r.b) {
+            if (A.max > 1 && B.max > 1) {
+                const t = table(tName, "interrelación reflexiva N:M " + r.n);
+                addFK(t, r.a, { pk: true, role: r.roleA, suffix: r.roleA });
+                addFK(t, r.a, { pk: true, role: r.roleB, suffix: r.roleB });
+                relAttrs(t, r, true);
+            } else {
+                const t = T[r.a];
+                addFK(t, r.a, { nul: A.min === 0 || r.nullable, role: r.roleA, suffix: r.roleA, uniq: B.max === 1 });
+                relAttrs(t, r, false, A.min === 0 || r.nullable);
+            }
+            return;
+        }
+        if (A.max > 1 && B.max > 1) {
+            const t = table(tName, "interrelación N:M " + r.n);
+            addFK(t, r.a, { pk: true, rename: r.renameA || r.rename });
+            addFK(t, r.b, { pk: true, rename: r.renameB || r.rename });
+            relAttrs(t, r, true);
+            return;
+        }
+        let inT, refId, refCard;
+        if (A.max === 1 && B.max > 1) { inT = r.b; refId = r.a; refCard = A; }
+        else if (B.max === 1 && A.max > 1) { inT = r.a; refId = r.b; refCard = B; }
+        else { inT = r.fkIn || r.b; refId = inT === r.a ? r.b : r.a; refCard = inT === r.a ? B : A; }
+        const t = T[inT];
+        const oneToOne = A.max === 1 && B.max === 1;
+        const nul = refCard.min === 0 || !!r.nullable;
+        addFK(t, refId, { nul, rename: r.rename, suffix: r.n.toLowerCase(), uniq: oneToOne });
+        relAttrs(t, r, false, nul);
+    });
+    // pk primero
+    order.forEach(n => { const t = T[n]; t.cols.sort((a, b) => (b.pk ? 1 : 0) - (a.pk ? 1 : 0)); });
+    return order.map(n => T[n]);
+}
+
+function schemaHTML(tables) {
+    return tables.map(t => {
+        const fkCols = new Set(t.fks.flatMap(f => f.cols));
+        const uqCols = new Set(t.uniq.filter(u => u.length === 1).flat());
+        const cols = t.cols.map(c => {
+            let cls = []; if (c.pk) cls.push("pk"); if (fkCols.has(c.n)) cls.push("fk"); if (uqCols.has(c.n) && !c.pk) cls.push("uq");
+            return `<span class="${cls.join(" ")}">${esc(c.n)}</span>${c.nul ? "*" : ""}`;
+        }).join(", ");
+        const fks = t.fks.map(f => `<div class="fkl">${esc(f.cols.join(", "))} → ${esc(f.ref)} &nbsp;(B:${f.del}, M:${f.upd})</div>`).join("");
+        return `<div class="tbl"><span class="tn">${esc(t.name)}</span> (${cols})${fks}</div>`;
+    }).join("");
+}
+
+function schemaSQL(tables, title) {
+    const DEL = { C: "CASCADE", N: "SET NULL", R: "RESTRICT" };
+    const created = new Set(); const out = []; const later = [];
+    // orden: primero las tablas cuyas FK (no reflexivas) ya existen
+    const pending = tables.slice();
+    const ordered = [];
+    let guard = 0;
+    while (pending.length && guard++ < 500) {
+        const i = pending.findIndex(t => t.fks.every(f => f.ref === t.name || created.has(f.ref)));
+        const t = i >= 0 ? pending.splice(i, 1)[0] : pending.shift();
+        ordered.push(t); created.add(t.name);
+    }
+    const done = new Set();
+    ordered.forEach(t => {
+        const lines = t.cols.map(c => `  ${c.n} ${c.type}${c.pk || !c.nul ? " NOT NULL" : ""}`);
+        lines.push(`  PRIMARY KEY (${t.cols.filter(c => c.pk).map(c => c.n).join(", ")})`);
+        t.uniq.forEach(u => lines.push(`  UNIQUE (${u.join(", ")})`));
+        t.fks.forEach((f, k) => {
+            const def = `CONSTRAINT fk_${t.name.toLowerCase()}_${k + 1} FOREIGN KEY (${f.cols.join(", ")}) REFERENCES ${f.ref} (${f.refcols.join(", ")}) ON DELETE ${DEL[f.del]} ON UPDATE CASCADE`;
+            if (f.ref === t.name || done.has(f.ref)) lines.push("  " + def);
+            else later.push(`ALTER TABLE ${t.name} ADD ${def};`);
+        });
+        out.push(`CREATE TABLE ${t.name} (\n${lines.join(",\n")}\n);`);
+        done.add(t.name);
+    });
+    let sql = `-- ${title}\n-- Generado a partir del diagrama E/R (sintaxis MySQL / MariaDB)\n\n` + out.join("\n\n");
+    if (later.length) sql += "\n\n-- Claves ajenas que forman un ciclo: se añaden al final\n" + later.join("\n");
+    return sql + "\n";
+}
+
+// =====================================================================
+//  INTERFAZ: EJERCICIOS
+// =====================================================================
+const STATE = {
+    tab: lsGet("er-tab", "ex"),
+    ex: lsGet("er-ex", 1),
+    attrs: lsGet("er-attrs", "all"),
+    zoom: false,
+    practice: false,
+    revealed: new Set(),
+    checked: {}
+};
+
+function setTab(t) {
+    STATE.tab = t; lsSet("er-tab", t);
+    $("view-ex").hidden = t !== "ex";
+    $("view-guide").hidden = t !== "guide";
+    $("tab-ex").classList.toggle("active", t === "ex");
+    $("tab-guide").classList.toggle("active", t === "guide");
+    $("tab-ex").setAttribute("aria-selected", t === "ex");
+    $("tab-guide").setAttribute("aria-selected", t === "guide");
+}
+$("tab-ex").addEventListener("click", () => setTab("ex"));
+$("tab-guide").addEventListener("click", () => setTab("guide"));
+
+function buildPicker() {
+    const box = $("picker"); box.innerHTML = "";
+    const done = lsGet("er-done", {});
+    EXERCISES.forEach(ex => {
+        const b = document.createElement("button");
+        b.className = "pick" + (ex.id === STATE.ex ? " active" : "") + (done[ex.id] ? " done" : "");
+        b.textContent = ex.id + "º";
+        b.title = ex.title + (done[ex.id] ? " · practicado ✓" : "");
+        b.addEventListener("click", () => { STATE.ex = ex.id; lsSet("er-ex", ex.id); STATE.practice = false; STATE.revealed = new Set(); STATE.checked = {}; buildPicker(); renderExercise(); });
+        box.appendChild(b);
+    });
+}
+
+function cardOptions(actual) {
+    const base = ["(0,1)", "(1,1)", "(0,n)", "(1,n)"];
+    if (!base.includes(actual)) base.push(actual);
+    return base;
+}
+
+function renderExercise() {
+    const ex = EXERCISES.find(e => e.id === STATE.ex) || EXERCISES[0];
+    const P = $("ex-panel"); P.innerHTML = "";
+    const L = {}; ex.ents.forEach(e => { L[e.id] = e.label || e.id; });
+
+    const head = document.createElement("div"); head.className = "ex-head";
+    head.innerHTML = `<div><h2>Ejercicio ${ex.id}º · ${esc(ex.title)}</h2><div class="badges">${(ex.tags || []).map(t => `<span class="badge">${esc(t)}</span>`).join("")}</div></div>`;
+    const nav = document.createElement("div"); nav.style.cssText = "display:flex;gap:6px";
+    const idx = EXERCISES.indexOf(ex);
+    const prev = document.createElement("button"); prev.textContent = "← Anterior"; prev.disabled = idx === 0;
+    const next = document.createElement("button"); next.textContent = "Siguiente →"; next.disabled = idx === EXERCISES.length - 1;
+    prev.onclick = () => { STATE.ex = EXERCISES[idx - 1].id; lsSet("er-ex", STATE.ex); STATE.practice = false; STATE.revealed = new Set(); STATE.checked = {}; buildPicker(); renderExercise(); };
+    next.onclick = () => { STATE.ex = EXERCISES[idx + 1].id; lsSet("er-ex", STATE.ex); STATE.practice = false; STATE.revealed = new Set(); STATE.checked = {}; buildPicker(); renderExercise(); };
+    nav.append(prev, next); head.appendChild(nav);
+    P.appendChild(head);
+
+    const en = document.createElement("details"); en.className = "enun"; en.open = true;
+    en.innerHTML = `<summary>Enunciado (Tema 2, pág. ${ex.page})</summary><div class="txt">${esc(ex.text.trim())}</div>`;
+    P.appendChild(en);
+
+    // barra de herramientas
+    const tb = document.createElement("div"); tb.className = "toolbar";
+    tb.innerHTML = `
+      <label class="switch"><input type="checkbox" id="sw-practice" ${STATE.practice ? "checked" : ""}> Modo práctica (ocultar cardinalidades)</label>
+      <span class="sp"></span>
+      <select id="sel-attrs" aria-label="Atributos">
+        <option value="all">Todos los atributos</option>
+        <option value="keys">Solo identificadores</option>
+        <option value="none">Sin atributos</option>
+      </select>
+      <button id="btn-zoom">${STATE.zoom ? "Ajustar al ancho" : "Ampliar (tamaño real)"}</button>`;
+    P.appendChild(tb);
+
+    const dia = document.createElement("div"); dia.className = "diagram" + (STATE.zoom ? " zoom" : "");
+    P.appendChild(dia);
+    const legend = document.createElement("div"); legend.className = "legend";
+    legend.innerHTML = `<span>▭ entidad · ▭▭ entidad débil · ◇ interrelación (ID = dependencia en identificación)</span><span>(mín,máx) junto a una entidad = cuántos de ESA entidad por cada uno de la otra</span><span>△ jerarquía: arco = exclusiva, círculo = total</span><span>atributo subrayado = identificador · (0,1) opcional · (1,n) multivaluado · IA = identificador alternativo</span>`;
+    P.appendChild(legend);
+
+    function drawDiagram() {
+        dia.innerHTML = "";
+        dia.appendChild(renderER(ex, { attrs: STATE.attrs, hidden: (i) => STATE.practice && !STATE.revealed.has(i) }));
+    }
+    drawDiagram();
+
+    $("sel-attrs").value = STATE.attrs;
+    $("sel-attrs").onchange = (e) => { STATE.attrs = e.target.value; lsSet("er-attrs", STATE.attrs); drawDiagram(); };
+    $("btn-zoom").onclick = () => { STATE.zoom = !STATE.zoom; renderExercise(); };
+    $("sw-practice").onchange = (e) => { STATE.practice = e.target.checked; STATE.revealed = new Set(); STATE.checked = {}; renderExercise(); };
+
+    // análisis / práctica
+    const an = document.createElement("div");
+    an.innerHTML = `<h3>${STATE.practice ? "Práctica: elige la cardinalidad de cada extremo" : "Análisis de las interrelaciones"}</h3>`;
+    const list = document.createElement("div"); list.className = "rels";
+    ex.rels.forEach((r, i) => {
+        const c = document.createElement("div"); c.className = "relcard";
+        if (STATE.checked[i] === true) c.classList.add("ok");
+        if (STATE.checked[i] === false) c.classList.add("bad");
+        const showSol = !STATE.practice || STATE.revealed.has(i);
+        const ends = r.ends ? r.ends.map(e => ({ e: e.e, c: e.c, role: e.role }))
+                   : [{ e: r.a, c: r.ca, role: r.roleA, other: r.b, orole: r.roleB }, { e: r.b, c: r.cb, role: r.roleB, other: r.a, orole: r.roleA }];
+        const names = r.ends ? r.ends.map(e => L[e.e]).join(" – ") : (r.a === r.b ? `${L[r.a]} – ${L[r.a]} (reflexiva)` : `${L[r.a]} – ${L[r.b]}`);
+        let html = `<div class="t">${esc(r.label || r.n)} <span class="muted">(${esc(names)})</span>${showSol ? `<span class="type">${esc((r.dep ? r.dep + " · " : "") + relType(r))}</span>` : ""}</div>`;
+        if (STATE.practice) {
+            html += `<div class="pr-row">` + ends.map((e, k) => {
+                const lab = e.role ? `${L[e.e]} (${e.role})` : L[e.e];
+                return `<label>Junto a <b>${esc(lab)}</b> <select data-k="${k}">${["—"].concat(cardOptions(e.c)).map(o => `<option>${o}</option>`).join("")}</select></label>`;
+            }).join("") + `<label>Tipo <select data-k="type">${["—", "1:1", "1:N", "N:1", "N:M"].concat(r.ends ? [relType(r)] : []).filter((v, j, a) => a.indexOf(v) === j).map(o => `<option>${o}</option>`).join("")}</select></label></div>`;
+        }
+        if (showSol) {
+            html += "<ul>" + ends.map(e => {
+                if (r.ends) return `<li><b>${esc(e.c)}</b> junto a ${esc(L[e.e])}: fijada una combinación de los otros extremos → ${describe(e.c)} ${esc(L[e.e])}.</li>`;
+                const who = e.orole ? `${L[e.other]} (como ${e.orole})` : L[e.other];
+                const what = e.role ? `${L[e.e]} (como ${e.role})` : L[e.e];
+                return `<li><b>${esc(e.c)}</b> junto a ${esc(e.role ? L[e.e] + " (" + e.role + ")" : L[e.e])}: por cada ${esc(who)} → ${describe(e.c)} ${esc(what)}.</li>`;
+            }).join("") + "</ul>";
+            if (r.why) html += `<div class="why">${r.why}</div>`;
+        }
+        c.innerHTML = html;
+        list.appendChild(c);
+    });
+    an.appendChild(list);
+    if (STATE.practice) {
+        const row = document.createElement("div"); row.className = "toolbar";
+        const chk = document.createElement("button"); chk.className = "btn-primary"; chk.textContent = "Comprobar";
+        const sol = document.createElement("button"); sol.textContent = "Ver solución completa";
+        const score = document.createElement("span"); score.className = "score";
+        const ok = Object.values(STATE.checked).filter(v => v).length;
+        if (Object.keys(STATE.checked).length) score.textContent = `${ok} de ${ex.rels.length} interrelaciones correctas`;
+        chk.onclick = () => {
+            const cards = list.querySelectorAll(".relcard");
+            ex.rels.forEach((r, i) => {
+                const sels = cards[i].querySelectorAll("select");
+                const vals = {}; sels.forEach(s => { vals[s.dataset.k] = s.value; });
+                const ends = r.ends ? r.ends.map(e => e.c) : [r.ca, r.cb];
+                const good = ends.every((c, k) => vals[k] === c) && vals.type === relType(r);
+                STATE.checked[i] = good;
+                if (good) STATE.revealed.add(i);
+            });
+            const allOk = ex.rels.every((r, i) => STATE.checked[i]);
+            if (allOk) { const d = lsGet("er-done", {}); d[ex.id] = true; lsSet("er-done", d); buildPicker(); }
+            renderExercise();
+        };
+        sol.onclick = () => { ex.rels.forEach((r, i) => STATE.revealed.add(i)); renderExercise(); };
+        row.append(chk, sol, score);
+        an.appendChild(row);
+        // mantener lo elegido tras redibujar
+        list.querySelectorAll(".relcard").forEach((card, i) => {
+            const saved = STATE.sel && STATE.sel[ex.id] && STATE.sel[ex.id][i];
+            card.querySelectorAll("select").forEach(s => {
+                if (saved && saved[s.dataset.k]) s.value = saved[s.dataset.k];
+                s.addEventListener("change", () => {
+                    STATE.sel = STATE.sel || {}; STATE.sel[ex.id] = STATE.sel[ex.id] || {}; STATE.sel[ex.id][i] = STATE.sel[ex.id][i] || {};
+                    STATE.sel[ex.id][i][s.dataset.k] = s.value;
+                });
+            });
+        });
+    }
+    if (ex.hier && ex.hier.length && !STATE.practice) {
+        const h = document.createElement("div"); h.className = "rels"; h.style.marginTop = "10px";
+        ex.hier.forEach(x => {
+            const d = document.createElement("div"); d.className = "relcard";
+            d.innerHTML = `<div class="t">Jerarquía ${esc(x.sup)} → ${esc(x.subs.join(", "))} <span class="type" style="font-family:var(--mono);color:var(--hier)">${x.total ? "total" : "parcial"} · ${x.excl ? "exclusiva" : "solapada"}</span></div>${x.why ? `<div class="why">${x.why}</div>` : ""}`;
+            h.appendChild(d);
+        });
+        an.appendChild(h);
+    }
+    P.appendChild(an);
+
+    if (ex.notes && ex.notes.length && !STATE.practice) {
+        const n = document.createElement("div"); n.className = "notes";
+        n.innerHTML = `<b>Decisiones de diseño y alternativas</b><ul>${ex.notes.map(s => `<li>${s}</li>`).join("")}</ul>`;
+        P.appendChild(n);
+    }
+
+    // Tema 3
+    const tables = buildSchema(ex);
+    const rs = document.createElement("details"); rs.className = "sec"; rs.open = !STATE.practice;
+    rs.innerHTML = `<summary>Paso al modelo relacional (Tema 3) · ${tables.length} tablas</summary>
+      <p class="muted" style="margin:4px 0 10px">Notación del grafo relacional: <span style="text-decoration:underline;font-weight:700">clave primaria</span> subrayada, <i style="color:var(--primary)">clave ajena</i> en cursiva (→ tabla a la que apunta), <b>clave alternativa</b> en negrita, * = admite nulos. B/M = borrado/modificación: C cascada, N nulos, R restringido.</p>
+      <div class="rschema">${schemaHTML(tables)}</div>`;
+    P.appendChild(rs);
+
+    const sq = document.createElement("details"); sq.className = "sec";
+    const sql = schemaSQL(tables, `Ejercicio ${ex.id}º - ${ex.title}`);
+    sq.innerHTML = `<summary>Script SQL (CREATE TABLE)</summary><div class="toolbar"><button id="btn-copy">Copiar SQL</button><span class="muted" id="copy-msg"></span></div><pre class="sql"></pre>`;
+    sq.querySelector("pre").textContent = sql;
+    P.appendChild(sq);
+    sq.querySelector("#btn-copy").onclick = async () => {
+        try { await navigator.clipboard.writeText(sql); $("copy-msg").textContent = "Copiado ✓"; }
+        catch (e) {
+            const r = document.createRange(); r.selectNodeContents(sq.querySelector("pre"));
+            const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+            $("copy-msg").textContent = "Seleccionado: pulsa Ctrl+C";
+        }
+    };
+}
+
+// =====================================================================
+//  GUÍA
+// =====================================================================
+function renderGuide() {
+    const G = $("view-guide");
+    G.innerHTML = GUIDE_HTML;
+    G.querySelectorAll("[data-mini]").forEach(box => {
+        const ex = MINI[box.dataset.mini];
+        box.appendChild(renderER(ex, { attrs: box.dataset.attrs || "none" }));
+    });
+}
+
+// =====================================================================
+//  INICIO
+// =====================================================================
+if (!EXERCISES.some(e => e.id === STATE.ex)) STATE.ex = 1;
+buildPicker();
+renderExercise();
+renderGuide();
+setTab(STATE.tab === "guide" ? "guide" : "ex");
+
+</script>
+</body>
+</html>

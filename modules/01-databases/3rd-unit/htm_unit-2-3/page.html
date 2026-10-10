@@ -38,7 +38,7 @@ p,li{line-height:1.6}
 ul,ol{padding-left:22px}
 code,.mono{font-family:var(--mono);font-size:.88em}
 
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--track);padding:4px;border-radius:10px;margin-bottom:16px}
+.tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;background:var(--track);padding:4px;border-radius:10px;margin-bottom:16px}
 .tab{border:none!important;background:transparent!important;padding:10px;font-weight:600;color:var(--muted)}
 .tab.active{background:var(--card)!important;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
 .view[hidden]{display:none}
@@ -137,6 +137,41 @@ table.tb th{background:var(--card2)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .mini svg{width:100%;max-width:460px;height:auto;display:block;margin:6px auto}
 
+
+/* flujo Tema 3 */
+.stepper{list-style:none;display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:16px 0 6px;padding:0;counter-reset:s}
+.step{width:100%;display:flex;align-items:center;gap:8px;text-align:left;padding:8px 10px;border-radius:10px;font-size:.85rem;line-height:1.25;height:100%}
+.step .n{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-weight:700;background:var(--track);color:var(--muted)}
+.step.active{border-color:var(--primary);background:var(--soft);font-weight:600}
+.step.active .n{background:var(--primary);color:#fff}
+.step.done .n{background:var(--ok-bg);color:var(--ok)}
+.flow-body{margin-top:12px}
+.flow-nav{margin-top:20px;border-top:1px solid var(--border);padding-top:14px}
+.tcard{border:1px solid var(--border);border-radius:10px;background:var(--card2);padding:12px 14px;margin:10px 0}
+.tcard-h{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.tcard-h .tn{font-weight:700;font-family:var(--mono)}
+.tscroll{overflow-x:auto}
+table.keys td{font-size:.86rem}
+.fkl2{font-family:var(--mono);font-size:.8rem;color:var(--muted);margin-top:6px;line-height:1.7}
+.chip{display:inline-block;font:700 .7rem var(--mono);padding:2px 6px;border-radius:5px;margin:1px 0;white-space:nowrap}
+.chip.pk{background:#fde68a;color:#78350f}
+.chip.fk{background:#bfdbfe;color:#1e3a8a}
+.chip.pfk{background:#fbcfe8;color:#831843}
+.chip.uq{background:#ddd6fe;color:#4c1d95}
+.chip.nn{background:var(--track);color:var(--muted)}
+.chip.nl{background:transparent;color:var(--muted);border:1px dashed var(--muted)}
+.u-st{font:italic 9.5px -apple-system,Segoe UI,Arial,sans-serif;fill:var(--muted)}
+.u-col{font:11px var(--mono);fill:var(--ink)}
+.u-col.pk{font-weight:700}
+.u-key{stroke:none}
+.u-key.u-pk{fill:#fde68a}.u-key.u-fk{fill:#bfdbfe}.u-key.u-pfk{fill:#fbcfe8}.u-key.u-uq{fill:#ddd6fe}
+.u-keyt{font:700 9px var(--mono);fill:#1f2937}
+.u-mult{font:700 11px var(--mono);fill:var(--card-label);paint-order:stroke;stroke:var(--card2);stroke-width:4px;text-anchor:middle}
+.u-rel{font:italic 10.5px -apple-system,Segoe UI,Arial,sans-serif;fill:var(--muted);paint-order:stroke;stroke:var(--card2);stroke-width:4px;text-anchor:middle}
+@media (max-width:700px){
+  .stepper{grid-template-columns:1fr}
+  .tabs{grid-template-columns:1fr}
+}
 @media (max-width:700px){
   .panel{padding:16px 14px}
   .grid2{grid-template-columns:1fr}
@@ -152,13 +187,19 @@ table.tb th{background:var(--card2)}
 </header>
 
 <div class="tabs" role="tablist">
-  <button class="tab active" id="tab-ex" role="tab" aria-selected="true">Ejercicios</button>
-  <button class="tab" id="tab-guide" role="tab" aria-selected="false">Guía: notación y método</button>
+  <button class="tab active" id="tab-ex" role="tab" aria-selected="true">Tema 2 · Diagrama E/R</button>
+  <button class="tab" id="tab-flow" role="tab" aria-selected="false">Tema 3 · Claves, CHECK, UML y SQL</button>
+  <button class="tab" id="tab-guide" role="tab" aria-selected="false">Guía y método</button>
 </div>
 
 <section class="view" id="view-ex">
   <div class="picker" id="picker" aria-label="Elegir ejercicio"></div>
   <div class="panel" id="ex-panel"></div>
+</section>
+
+<section class="view" id="view-flow" hidden>
+  <div class="picker" id="flow-picker" aria-label="Elegir ejercicio"></div>
+  <div class="panel" id="flow-panel"></div>
 </section>
 
 <section class="view guide" id="view-guide" hidden></section>
@@ -608,7 +649,7 @@ f.- En la realización de un proyecto no puede haber involucrados más de 5 inge
  ]
 },
 {
- id: 14, page: 60, title: "Agencias TECHNOHOUSE", tags: ["dos jerarquías", "1:1", "multivaluado"],
+ id: 14, page: 60, title: "Agencias TECHNOHOUSE", umlPos: { AGENCIA_TELEFONO: [270, 235] }, tags: ["dos jerarquías", "1:1", "multivaluado"],
  text: `Se trata de diseñar una base de datos para una red de agencias franquiciadas a TECHNOHOUSE, empresa especializada en el alquiler y compra de inmuebles.
 a.- Cada agencia tiene un titular propio y un conjunto de vendedores. Tanto el titular como los vendedores solo pueden pertenecer a una agencia. Sobre las agencias interesa almacenar su dirección, teléfonos (que pueden ser varios), fax, etc. Además cada agencia tiene asignada una zona de actuación que es única.
 b.- Las agencias disponen de inmuebles tanto para alquilar como para vender (incluso ambas cosas); en el primer caso figurará el precio de alquiler y la fianza a depositar, mientras que en el segundo caso además del precio de la venta, se indica si el inmueble está hipotecado o no.
@@ -680,7 +721,7 @@ Un mismo empleado puede ser docente en una edición de un curso y alumno en otra
  ]
 },
 {
- id: 16, page: 62, title: "Campeonato de ajedrez", tags: ["jerarquía", "(2,2)", "débiles (ID)", "reflexiva", "multivaluados"],
+ id: 16, page: 62, title: "Campeonato de ajedrez", umlPos: { PARTICIPANTE_CAMPEONATO: [190, 245] }, tags: ["jerarquía", "(2,2)", "débiles (ID)", "reflexiva", "multivaluados"],
  text: `El club de Ajedrez de Villatortas de Arriba ha sido encargado por la Federación Internacional de Ajedrez de la organización de los próximos campeonatos mundiales que se celebrarán en la citada localidad. Por este motivo, se desea llevar a una base de datos toda la gestión relativa a participantes, alojamientos y partidas. Teniendo en cuenta que:
 a.- En el campeonato participan jugadores y árbitros; de ambos se quiere conocer el número de asociado, nombre, dirección, teléfono y campeonatos en los que ha participado (como jugador o como árbitro). De los jugadores se precisa además el nivel de juego en una escala de 1 a 10.
 b.- Ningún árbitro puede participar como jugador.
@@ -952,7 +993,21 @@ const GUIDE_HTML = `
 </div>
 
 <div class="panel">
-  <h2>6. Errores típicos que restan puntos</h2>
+  <h2>6. Del modelo relacional al SQL: PK, FK, CHECK y UML</h2>
+  <table class="tb">
+    <tr><th>Restricción</th><th>Qué garantiza</th><th>De dónde sale en el E/R</th><th>SQL</th></tr>
+    <tr><td><b>PRIMARY KEY</b></td><td>Cada fila es única y la clave nunca es nula</td><td>Identificador subrayado (+ clave de la fuerte si es débil; unión de claves si es N:M)</td><td class="mono">PRIMARY KEY (a, b)</td></tr>
+    <tr><td><b>FOREIGN KEY</b></td><td>El valor existe en la tabla padre (integridad referencial)</td><td>Cada interrelación: lado N en 1:N, tabla nueva en N:M, subtipos y débiles</td><td class="mono">FOREIGN KEY (x) REFERENCES T (x)</td></tr>
+    <tr><td><b>UNIQUE</b></td><td>No se repite, pero no es la clave principal</td><td>Identificador alternativo (IA) y la clave ajena de una 1:1</td><td class="mono">UNIQUE (x)</td></tr>
+    <tr><td><b>NOT NULL</b></td><td>Obligatoriedad</td><td>Mínimo 1 en la cardinalidad, atributo obligatorio</td><td class="mono">x INT NOT NULL</td></tr>
+    <tr><td><b>CHECK</b></td><td>Condición sobre los valores de la misma fila</td><td>Dominios del enunciado (tipos, escalas 1-10, fechas coherentes)</td><td class="mono">CHECK (nivel BETWEEN 1 AND 10)</td></tr>
+    <tr><td><b>ASSERTION / TRIGGER</b></td><td>Condiciones entre filas o tablas</td><td>Cardinalidades numéricas (2,30), exclusividad de jerarquías, restricciones de exclusión</td><td class="mono">CREATE TRIGGER …</td></tr>
+  </table>
+  <p>En UML (modelo lógico) cada tabla es una clase «table»; la cardinalidad (1,n) del E/R se escribe <span class="mono">1..*</span>, la entidad débil se dibuja como <b>composición</b> y la jerarquía como <b>generalización</b>. La pestaña «Tema 3» recorre los 18 ejercicios en 5 pasos.</p>
+</div>
+
+<div class="panel">
+  <h2>7. Errores típicos que restan puntos</h2>
   <ul>
     <li>Poner la cardinalidad en el lado contrario. Repite la pregunta mágica en voz baja con cada línea.</li>
     <li>Confundir el tipo de correspondencia con la cardinalidad: 1:N solo usa los <b>máximos</b>.</li>
@@ -964,6 +1019,454 @@ const GUIDE_HTML = `
     <li>En una N:M histórica, olvidar la fecha en la clave: sin ella no se puede repetir la misma pareja.</li>
   </ul>
 </div>`;
+
+</script>
+<script>
+// =====================================================================
+//  RESTRICCIONES CHECK POR EJERCICIO
+//  checks: [tabla, expresión, por qué]
+//  triggers: restricciones que un CHECK no puede garantizar (afectan a otras filas/tablas)
+//  Los CHECK de las reflexivas (x <> y) se generan solos.
+// =====================================================================
+const CONSTRAINTS = {
+ 1: { checks: [
+   ["PERTENECE", "num_orden > 0", "El número de orden de una estación en la línea empieza en 1."] ],
+   triggers: ["Que dos estaciones de la misma línea no tengan el mismo num_orden → UNIQUE (cod_linea, num_orden) en PERTENECE (se puede añadir como clave alternativa)."] },
+ 2: { checks: [],
+   triggers: ["Que el cabeza de familia no dependa a su vez de otro cabeza (un solo nivel) → trigger, porque mira otra fila de PERSONA."] },
+ 3: { checks: [],
+   triggers: ["El director titular de una orquesta no puede figurar también como invitado de esa orquesta → afecta a ORQUESTA e INVITADO: aserción o trigger."] },
+ 4: { checks: [
+   ["VUELO", "origen <> destino", "Un vuelo no puede salir y llegar al mismo sitio."],
+   ["TIPO_AVION", "plazas > 0", "Un tipo de avión tiene al menos una plaza."],
+   ["RESERVA", "num_plaza > 0", "Las plazas se numeran desde 1."] ],
+   triggers: ["Un piloto solo puede tripular partidas de un tipo de avión para el que esté CAPACITADO → cruza TRIPULA, PARTIDA, AERONAVE y CAPACITADO: trigger.",
+              "num_plaza no puede superar las plazas del tipo de avión de esa partida → trigger."] },
+ 5: { checks: [
+   ["FASE", "fecha_fin IS NULL OR fecha_fin >= fecha_inicio", "Una fase no puede terminar antes de empezar (y puede no haber terminado)."],
+   ["HA_TRABAJADO", "fecha_fin IS NULL OR fecha_fin >= fecha_inicio", "Mismo control de fechas en el histórico."] ],
+   triggers: ["El jefe de un departamento debe pertenecer a ese departamento → compara DEPARTAMENTO.cod_jefe con EMPLEADO.cod_departamento: aserción o trigger."] },
+ 6: { checks: [
+   ["ACTOR", "sexo IN ('H', 'M')", "Dominio restringido del atributo sexo."],
+   ["ALQUILA", "fecha_devolucion IS NULL OR fecha_devolucion >= fecha_alquiler", "No se devuelve antes de alquilar; nulo = todavía alquilado."] ],
+   triggers: ["Un ejemplar no puede estar alquilado a la vez a dos socios (fechas que se solapan) → trigger sobre ALQUILA."] },
+ 7: { checks: [
+   ["PLAZA", "aforo > 0", "Una plaza tiene aforo positivo."],
+   ["ACTUA", "orejas >= 0 AND rabos >= 0", "Los premios no pueden ser negativos."],
+   ["TORO", "orden_lidia > 0", "Orden en que se lidió el toro (si es nulo, el CHECK no se aplica)."],
+   ["TORO", "(orden_corrida IS NULL AND feria IS NULL AND anio_corrida IS NULL) OR (orden_corrida IS NOT NULL AND feria IS NOT NULL AND anio_corrida IS NOT NULL)", "La clave ajena compuesta hacia CORRIDA va completa o vacía, nunca a medias."] ],
+   triggers: ["(1,3) toreros por corrida y (6,n) toros por corrida: hay que contar filas de otra tabla → aserción o trigger.",
+              "Un torero no puede ser padrino de otro con fecha de alternativa anterior a la suya → trigger."] },
+ 8: { checks: [
+   ["PINACOTECA", "m2 > 0", "Superficie positiva."],
+   ["PINTOR", "fecha_def IS NULL OR fecha_def > fecha_nac", "No se muere antes de nacer; nulo = vivo."],
+   ["MECENAS", "fecha_muerte IS NULL OR fecha_muerte > fecha_nac", "Igual que en PINTOR."] ],
+   triggers: ["Un cuadro no puede estar fechado después de la muerte de su pintor → compara CUADRO con PINTOR: trigger."] },
+ 9: { checks: [
+   ["SALA", "m2 > 0", "Superficie positiva."],
+   ["SALA", "tipo IN ('cardio', 'general', 'muscular')", "El enunciado da la lista cerrada de tipos de sala."] ],
+   triggers: ["El monitor que imparte una clase debe estar CAPACITADO para ella → trigger.",
+              "No puede haber dos reservas de la misma pista a la misma fecha y hora → UNIQUE (num_pista, fecha, hora) en RESERVA."] },
+ 10: { checks: [
+   ["SALA", "m2 > 0", "Superficie positiva."],
+   ["SALA_APARATOS", "tipo IN ('cardio', 'general', 'muscular')", "Solo las salas con aparatos se clasifican por tipo."] ],
+   triggers: ["Jerarquía exclusiva: un num_sala no puede aparecer en dos subtablas (SALA_APARATOS, SALA_SIN_APARATOS, PISTA_SQUASH) → trigger.",
+              "Jerarquía total: toda SALA debe aparecer en una de las subtablas → trigger o procedimiento de alta."] },
+ 11: { checks: [
+   ["SALA", "m2 > 0", "Superficie positiva."],
+   ["SALA_APARATOS", "tipo IN ('cardio', 'general', 'muscular')", "Clasificación de las salas con aparatos."] ],
+   triggers: ["Jerarquía exclusiva: una sala no puede ser a la vez SALA_APARATOS y PISTA_SQUASH → trigger.",
+              "Si no se quieren clases en las pistas de squash, CLASE.num_sala no debe estar en PISTA_SQUASH → trigger."] },
+ 12: { checks: [
+   ["MEDICAMENTO", "stock >= 0 AND unidades_vendidas >= 0", "No hay existencias ni ventas negativas."],
+   ["MEDICAMENTO", "precio > 0", "Precio positivo."],
+   ["MEDICAMENTO", "tipo IN ('jarabe', 'comprimido', 'pomada', 'otro')", "Dominio de tipos de medicamento del enunciado."],
+   ["COMPRA", "unidades > 0", "Se compra al menos una unidad."],
+   ["COMPRA", "fecha_pago IS NULL OR fecha_pago >= fecha_compra", "No se paga antes de comprar."] ],
+   triggers: ["fecha_pago solo puede tener valor si el cliente está en CLIENTE_CREDITO → mira otra tabla: trigger.",
+              "Un medicamento con receta solo puede venderse si se registra la receta → regla de negocio fuera del modelo."] },
+ 13: { checks: [
+   ["EMPLEADO", "salario > 0", "Salario positivo."],
+   ["BECA", "cuantia > 0", "La beca tiene un importe positivo."] ],
+   triggers: ["(2,30) empleados por departamento, (0,5) ingenieros por proyecto y (1,2) proyectos por ingeniero → contar filas: aserción o trigger.",
+              "Jerarquía: un DIRECTOR no puede estar en TECNICO (exclusiva) → trigger."] },
+ 14: { checks: [
+   ["INMUEBLE", "superficie > 0", "Superficie positiva."],
+   ["INMUEBLE", "dni_cliente IS NULL OR senal IS NOT NULL", "Si el inmueble está reservado, tiene que constar la señal."],
+   ["PISO", "habitaciones >= 1 AND banos >= 0", "Un piso tiene al menos el salón."],
+   ["PISO", "tipo_gas IN ('natural', 'ciudad', 'butano')", "Dominio del enunciado."],
+   ["EN_ALQUILER", "precio_alquiler > 0 AND fianza >= 0", "Importes válidos."],
+   ["EN_VENTA", "precio_venta > 0", "Importe válido."] ],
+   triggers: ["Un cliente tiene un solo vendedor por agencia → en ATIENDE no puede haber dos vendedores de la misma agencia para un cliente: trigger.",
+              "Jerarquía total por tipo: todo INMUEBLE debe estar en PISO o en LOCAL, y no en los dos → trigger."] },
+ 15: { checks: [
+   ["CURSO", "duracion > 0 AND coste >= 0", "Duración positiva y coste no negativo."],
+   ["EDICION", "horario IN ('intensivo', 'manana', 'tarde')", "Dominio de horarios del enunciado."],
+   ["EMPLEADO", "sexo IN ('H', 'M')", "Dominio del atributo sexo."],
+   ["EMPLEADO", "salario > 0", "Salario positivo."] ],
+   triggers: ["Restricción de exclusión: el docente de una EDICION no puede estar matriculado en ella (MATRICULA) → trigger o aserción.",
+              "Solo pueden impartir los empleados con capacitado = TRUE → mira EMPLEADO desde EDICION: trigger."] },
+ 16: { checks: [
+   ["JUGADOR", "nivel BETWEEN 1 AND 10", "«Nivel de juego en una escala de 1 a 10»."],
+   ["JUEGA", "color IN ('blancas', 'negras')", "Dominio del color."],
+   ["PARTIDA", "entradas_vendidas >= 0", "No hay ventas negativas."],
+   ["SALA", "capacidad > 0", "Capacidad positiva."],
+   ["ALOJA", "fecha_salida >= fecha_entrada", "No se sale del hotel antes de entrar."] ],
+   triggers: ["Un árbitro no puede arbitrar a jugadores de su país → cruza PARTIDA, JUEGA y PARTICIPANTE: aserción o trigger.",
+              "Exactamente dos jugadores por partida, uno con blancas y otro con negras → trigger.",
+              "entradas_vendidas no puede superar la capacidad de la sala → mira SALA: trigger."] },
+ 17: { checks: [
+   ["PRODUCTOR", "prod_media <= prod_maxima", "La producción media no puede superar la máxima."],
+   ["SOLAR", "tipo IN ('fotovoltaica', 'termodinamica')", "Dominio del enunciado."],
+   ["COMPRA", "cantidad > 0", "Cantidad de plutonio positiva."],
+   ["ENTREGA", "cantidad >= 0", "Energía entregada no negativa."],
+   ["LINEA", "longitud > 0", "Longitud positiva."],
+   ["INTERCAMBIA", "volumen > 0", "Volumen intercambiado positivo."],
+   ["CATEGORIA", "tipo_consumidor IN ('particular', 'empresa', 'institucion')", "Las tres categorías del enunciado."] ],
+   triggers: ["Cada línea abastece al menos 2 subestaciones (2,n) → contar filas: aserción o trigger.",
+              "«Los productores entregan siempre el total de su producción» → la suma de ENTREGA por productor y día debe cuadrar: aserción."] },
+ 18: { checks: [
+   ["CONFLICTO", "muertos >= 0 AND heridos >= 0", "Recuentos no negativos."],
+   ["ORGANIZACION", "tipo IN ('gubernamental', 'no gubernamental', 'internacional')", "Dominio del enunciado."],
+   ["MEDIA", "tipo_ayuda IN ('medica', 'diplomatica', 'presencial')", "«Uno y solo uno de los tres tipos»."],
+   ["MEDIA", "personas >= 0", "Personas desplegadas no negativas."],
+   ["MEDIA", "fecha_salida IS NULL OR fecha_salida >= fecha_incorporacion", "No se sale antes de entrar."],
+   ["INTERVIENE", "fecha_salida IS NULL OR fecha_salida >= fecha_incorporacion", "Igual para los grupos armados."],
+   ["JEFE_MILITAR", "cod_grupo_obedece = cod_grupo", "El líder al que obedece es de su mismo grupo armado (la clave del grupo aparece dos veces y debe coincidir)."] ],
+   triggers: ["bajas de GRUPO_ARMADO = suma de bajas de sus divisiones (atributo derivado) → trigger o, mejor, una vista que lo calcule.",
+              "(2,n) grupos por conflicto y (1,3) jefes por división → contar filas: aserción o trigger."] }
+};
+
+// =====================================================================
+//  DIAGRAMA UML (modelo lógico: una clase «table» por tabla)
+// =====================================================================
+const UML_FONT = "11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
+const UML_FONT_B = "700 12.5px -apple-system, Segoe UI, Roboto, Arial, sans-serif";
+
+function umlRows(t) {
+    const fkCols = new Set(t.fks.flatMap(f => f.cols));
+    const uq = new Set(t.uniq.filter(u => u.length === 1).flat());
+    return t.cols.map(c => {
+        const key = c.pk && fkCols.has(c.n) ? "PFK" : c.pk ? "PK" : fkCols.has(c.n) ? "FK" : uq.has(c.n) ? "UQ" : "";
+        return { key, text: `${c.n} : ${c.type}${c.nul ? " [0..1]" : ""}` };
+    });
+}
+
+function layoutUML(tables, ex) {
+    const G = {};
+    tables.forEach(t => {
+        const rws = umlRows(t);
+        let w = measure(t.name, UML_FONT_B) + 40;
+        rws.forEach(r => { w = Math.max(w, measure(r.text, UML_FONT) + 50); });
+        G[t.name] = { w: Math.ceil(w), h: 40 + rws.length * 16 + 8, rows: rws };
+    });
+    // posición de partida = la de la entidad o el rombo en el diagrama E/R
+    const SX = 1.75, SY = 1.6;
+    const pos = {};
+    ex.ents.forEach(e => { pos[e.id] = { x: e.x * SX, y: e.y * SY }; });
+    ex.rels.forEach(r => { pos[(r.table || r.n).toUpperCase()] = { x: r.x * SX, y: r.y * SY }; });
+    tables.forEach(t => {
+        let p = (ex.umlPos && ex.umlPos[t.name]) ? { x: ex.umlPos[t.name][0] * SX, y: ex.umlPos[t.name][1] * SY } : pos[t.name];
+        if (!p) { // multivaluado: junto a su entidad
+            const f = t.fks[0]; const q = f && pos[f.ref];
+            p = q ? { x: q.x + G[f.ref].w * 0.2, y: q.y + G[f.ref].h / 2 + G[t.name].h / 2 + 60 } : { x: 0, y: 0 };
+        }
+        G[t.name].x = p.x; G[t.name].y = p.y;
+    });
+    // separar cajas que se pisan (relajación simple)
+    const names = tables.map(t => t.name), M = 34;
+    for (let it = 0; it < 300; it++) {
+        let moved = false;
+        for (let i = 0; i < names.length; i++) for (let j = i + 1; j < names.length; j++) {
+            const a = G[names[i]], b = G[names[j]];
+            const ox = (a.w + b.w) / 2 + M - Math.abs(a.x - b.x);
+            const oy = (a.h + b.h) / 2 + M - Math.abs(a.y - b.y);
+            if (ox > 0 && oy > 0) {
+                moved = true;
+                if (ox / (a.w + b.w) < oy / (a.h + b.h)) { const d = (ox / 2 + 1) * (a.x <= b.x ? 1 : -1); a.x -= d; b.x += d; }
+                else { const d = (oy / 2 + 1) * (a.y <= b.y ? 1 : -1); a.y -= d; b.y += d; }
+            }
+        }
+        if (!moved) break;
+    }
+    return G;
+}
+
+function renderUML(tables, ex) {
+    const svg = el("svg", { role: "img", "aria-label": "Diagrama UML de tablas: " + ex.title });
+    const defs = el("defs", {}, svg);
+    // marcadores: triángulo hueco (generalización) y rombo relleno (composición)
+    const mk = (id, path, fill) => {
+        const m = el("marker", { id, viewBox: "0 0 20 20", refX: 19, refY: 10, markerWidth: 14, markerHeight: 14, orient: "auto-start-reverse", markerUnits: "userSpaceOnUse" }, defs);
+        el("path", { d: path, style: `fill:${fill};stroke:var(--entStroke);stroke-width:1.4` }, m);
+    };
+    mk("u-gen", "M1,2 L19,10 L1,18 Z", "var(--card2)");
+    mk("u-comp", "M1,10 L10,4 L19,10 L10,16 Z", "var(--entStroke)");
+
+    const G = layoutUML(tables, ex);
+    const gE = el("g", {}, svg), gB = el("g", {}, svg), gL = el("g", {}, svg);
+    const b = { x1: Infinity, y1: Infinity, x2: -Infinity, y2: -Infinity };
+    const grow = (x1, y1, x2, y2) => { b.x1 = Math.min(b.x1, x1); b.y1 = Math.min(b.y1, y1); b.x2 = Math.max(b.x2, x2); b.y2 = Math.max(b.y2, y2); };
+
+    // cajas
+    tables.forEach(t => {
+        const g = G[t.name]; const x0 = g.x - g.w / 2, y0 = g.y - g.h / 2;
+        el("rect", { x: x0, y: y0, width: g.w, height: g.h, rx: 4, class: "e-box" }, gB);
+        el("rect", { x: x0, y: y0, width: g.w, height: 34, rx: 4, style: "fill:var(--soft);stroke:var(--entStroke);stroke-width:1.6" }, gB);
+        txt(gB, g.x, y0 + 12, "«table»", "u-st");
+        txt(gB, g.x, y0 + 27, t.name, "e-name");
+        g.rows.forEach((r, i) => {
+            const ry = y0 + 50 + i * 16;
+            if (r.key) {
+                const kw = r.key.length * 7 + 8;
+                el("rect", { x: x0 + 7, y: ry - 10, width: kw, height: 13, rx: 3, class: "u-key u-" + r.key.toLowerCase() }, gB);
+                txt(gB, x0 + 7 + kw / 2, ry, r.key, "u-keyt");
+            }
+            txt(gB, x0 + 44, ry, r.text, "u-col" + (r.key.includes("P") ? " pk" : ""), "start");
+        });
+        grow(x0, y0, x0 + g.w, y0 + g.h);
+    });
+
+    // aristas (pares repetidos se separan)
+    const pairCount = {}, pairIdx = {};
+    tables.forEach(t => t.fks.forEach(f => { if (f.ref !== t.name) { const k = [t.name, f.ref].sort().join("|"); pairCount[k] = (pairCount[k] || 0) + 1; } }));
+    tables.forEach(t => t.fks.forEach(f => {
+        const c = G[t.name], p = G[f.ref];
+        if (!p) return;
+        if (f.ref === t.name) { // auto-referencia: lazo a la derecha
+            const x = c.x + c.w / 2, y1 = c.y - 8, y2 = c.y + 14;
+            el("path", { d: `M${x},${y1} H${x + 38} V${y2} H${x}`, class: "edge" }, gE);
+            txt(gL, x + 8, y1 - 4, f.pm, "u-mult", "start");
+            txt(gL, x + 8, y2 + 13, f.cm, "u-mult", "start");
+            txt(gL, x + 44, (y1 + y2) / 2 + 4, f.rel, "u-rel", "start");
+            grow(x, y1 - 16, x + 44 + measure(f.rel, "italic 10.5px Arial"), y2 + 16);
+            return;
+        }
+        const k = [t.name, f.ref].sort().join("|");
+        const i = pairIdx[k] = (pairIdx[k] === undefined ? 0 : pairIdx[k] + 1);
+        const off = (i - (pairCount[k] - 1) / 2) * 16;
+        let dx = p.x - c.x, dy = p.y - c.y; const L = Math.hypot(dx, dy) || 1;
+        const nx = -dy / L * off, ny = dx / L * off;
+        const cc = { x: c.x + nx, y: c.y + ny, w: c.w, h: c.h }, pc = { x: p.x + nx, y: p.y + ny, w: p.w, h: p.h };
+        const a = rectBorder(cc, pc.x, pc.y), z = rectBorder(pc, cc.x, cc.y);
+        const attrs = { x1: a.x, y1: a.y, x2: z.x, y2: z.y, class: "edge" };
+        if (f.kind === "gen") attrs["marker-end"] = "url(#u-gen)";
+        if (f.kind === "comp") attrs["marker-end"] = "url(#u-comp)";
+        el("line", attrs, gE);
+        if (f.kind !== "gen") {
+            let ux = z.x - a.x, uy = z.y - a.y; const l = Math.hypot(ux, uy) || 1; ux /= l; uy /= l;
+            const px = -uy * 11, py = ux * 11;
+            const m1 = { x: a.x + ux * 16 + px, y: a.y + uy * 16 + py + 4 };
+            const m2 = { x: z.x - ux * (f.kind === "comp" ? 30 : 16) + px, y: z.y - uy * (f.kind === "comp" ? 30 : 16) + py + 4 };
+            txt(gL, m1.x, m1.y, f.cm, "u-mult");
+            txt(gL, m2.x, m2.y, f.pm, "u-mult");
+            const mid = { x: (a.x + z.x) / 2 - px * 0.9, y: (a.y + z.y) / 2 - py * 0.9 + 4 };
+            if (f.rel && f.rel !== "multivaluado") txt(gL, mid.x, mid.y, f.rel, "u-rel");
+        }
+    }));
+
+    const pad = 24;
+    svg.setAttribute("viewBox", [b.x1 - pad, b.y1 - pad, b.x2 - b.x1 + pad * 2 + 40, b.y2 - b.y1 + pad * 2].join(" "));
+    svg.setAttribute("width", Math.round(b.x2 - b.x1 + pad * 2 + 40));
+    svg.setAttribute("height", Math.round(b.y2 - b.y1 + pad * 2));
+    return svg;
+}
+
+function plantUML(tables, ex) {
+    const out = ["@startuml", `' Ejercicio ${ex.id} - ${ex.title}`, "hide circle", "skinparam classAttributeIconSize 0", "skinparam linetype ortho", ""];
+    tables.forEach(t => {
+        const fkCols = new Set(t.fks.flatMap(f => f.cols));
+        out.push(`class ${t.name} <<table>> {`);
+        t.cols.forEach(c => {
+            const tags = [c.pk ? "PK" : "", fkCols.has(c.n) ? "FK" : ""].filter(Boolean).join(", ");
+            out.push(`  ${c.n} : ${c.type}${c.nul ? " [0..1]" : ""}${tags ? " <<" + tags + ">>" : ""}`);
+        });
+        (t.checks || []).forEach(c => out.push(`  .. CHECK (${c.expr}) ..`));
+        out.push("}");
+    });
+    out.push("");
+    tables.forEach(t => t.fks.forEach(f => {
+        if (f.kind === "gen") out.push(`${f.ref} <|-- ${t.name}`);
+        else if (f.kind === "comp") out.push(`${f.ref} "${f.pm}" *-- "${f.cm}" ${t.name}${f.rel && f.rel !== "multivaluado" ? " : " + f.rel : ""}`);
+        else out.push(`${t.name} "${f.cm}" --> "${f.pm}" ${f.ref}${f.rel ? " : " + f.rel.replace(/[()]/g, "") : ""}`);
+    }));
+    out.push("@enduml");
+    return out.join("\n") + "\n";
+}
+
+// =====================================================================
+//  FLUJO DEL TEMA 3 (5 pasos por ejercicio)
+// =====================================================================
+const FLOW_STEPS = ["Enunciado y E/R", "Claves: PK, FK, UNIQUE, NULL", "CHECK y restricciones", "Diagrama UML", "Sentencias SQL"];
+
+function buildFlowPicker() {
+    const box = document.getElementById("flow-picker"); if (!box) return;
+    box.innerHTML = "";
+    EXERCISES.forEach(ex => {
+        const b = document.createElement("button");
+        b.className = "pick" + (ex.id === STATE.ex ? " active" : "");
+        b.textContent = ex.id + "º"; b.title = ex.title;
+        b.addEventListener("click", () => selectExercise(ex.id));
+        box.appendChild(b);
+    });
+}
+
+function colExplain(t, c, fk, ex) {
+    const parts = [];
+    if (c.pk && !fk) parts.push("Identificador de la entidad");
+    if (fk) {
+        if (fk.kind === "gen") parts.push(`Hereda la clave del supertipo ${fk.ref}: es PK y FK a la vez`);
+        else if (fk.kind === "comp" && fk.rel === "multivaluado") parts.push(`Clave de ${fk.ref}: cada valor del atributo multivaluado es una fila`);
+        else if (fk.kind === "comp") parts.push(`Clave de la entidad fuerte ${fk.ref} (débil por identificación, ${fk.rel})`);
+        else if (c.pk) parts.push(`Clave de ${fk.ref} (tabla de la interrelación ${fk.rel})`);
+        else parts.push(`Interrelación ${fk.rel}: la clave de ${fk.ref} pasa a esta tabla (${fk.pm} ${fk.ref} por cada fila)`);
+    }
+    if (c.nul) parts.push(fk ? "admite nulos porque el mínimo es 0" : "opcional (0,1)");
+    return parts.join(" · ") || "Atributo";
+}
+
+function renderFlow() {
+    const ex = EXERCISES.find(e => e.id === STATE.ex) || EXERCISES[0];
+    const P = document.getElementById("flow-panel"); if (!P) return;
+    const step = Math.min(Math.max(STATE.flowStep || 0, 0), 4);
+    const tables = buildSchema(ex);
+    const extra = CONSTRAINTS[ex.id] || {};
+    P.innerHTML = "";
+
+    const head = document.createElement("div"); head.className = "ex-head";
+    head.innerHTML = `<div><h2>Ejercicio ${ex.id}º · ${esc(ex.title)}</h2><div class="badges"><span class="badge">${tables.length} tablas</span><span class="badge">${tables.reduce((s, t) => s + t.fks.length, 0)} claves ajenas</span><span class="badge">${tables.reduce((s, t) => s + (t.checks || []).length, 0)} CHECK</span></div></div>`;
+    P.appendChild(head);
+
+    // stepper
+    const st = document.createElement("ol"); st.className = "stepper";
+    FLOW_STEPS.forEach((name, i) => {
+        const li = document.createElement("li");
+        const b = document.createElement("button");
+        b.className = "step" + (i === step ? " active" : "") + (i < step ? " done" : "");
+        b.innerHTML = `<span class="n">${i + 1}</span><span class="l">${esc(name)}</span>`;
+        b.onclick = () => { STATE.flowStep = i; lsSet("er-flowstep", i); renderFlow(); };
+        li.appendChild(b); st.appendChild(li);
+    });
+    P.appendChild(st);
+
+    const body = document.createElement("div"); body.className = "flow-body";
+    P.appendChild(body);
+
+    if (step === 0) {
+        body.innerHTML = `<details class="enun"><summary>Enunciado (Tema 2, pág. ${ex.page})</summary><div class="txt">${esc(ex.text.trim())}</div></details>
+          <h3>Diagrama E/R de partida</h3>`;
+        const d = document.createElement("div"); d.className = "diagram"; d.appendChild(renderER(ex, { attrs: "keys" })); body.appendChild(d);
+        const h = document.createElement("div");
+        h.innerHTML = `<h3>Qué produce cada interrelación al pasar a tablas</h3><table class="tb"><tr><th>Interrelación</th><th>Tipo</th><th>Resultado en el modelo relacional</th></tr>${
+            ex.rels.map(r => {
+                const ty = (r.dep ? r.dep + " · " : "") + relType(r);
+                let res;
+                const fkRows = tables.flatMap(t => t.fks.filter(f => f.rel.split(" (")[0] === r.n).map(f => ({ t, f })));
+                if (r.dep === "ID") res = `${r.b} lleva la clave de ${r.a} dentro de su clave primaria (entidad débil)`;
+                else if (fkRows.length && fkRows.every(x => x.f.cols.some(c => x.t.cols.find(cc => cc.n === c).pk)) && fkRows.length > 1) res = `Nueva tabla <b>${esc(fkRows[0].t.name)}</b> con clave (${esc(fkRows[0].t.cols.filter(c => c.pk).map(c => c.n).join(", "))})`;
+                else if (fkRows.length) res = fkRows.map(x => `Clave ajena <i>${esc(x.f.cols.join(", "))}</i> en <b>${esc(x.t.name)}</b> → ${esc(x.f.ref)}${x.t.uniq.some(u => u.join() === x.f.cols.join()) ? " (UNIQUE por ser 1:1)" : ""}${x.t.cols.find(c => c.n === x.f.cols[0]).nul ? " · admite nulos" : ""}`).join("<br>");
+                else res = "—";
+                return `<tr><td><b>${esc(r.label || r.n)}</b></td><td class="mono">${esc(ty)}</td><td>${res}</td></tr>`;
+            }).join("")}${(ex.hier || []).map(h => `<tr><td><b>Jerarquía ${esc(h.sup)}</b></td><td class="mono">${h.total ? "total" : "parcial"}, ${h.excl ? "excl." : "solap."}</td><td>Una tabla por subtipo (${esc(h.subs.join(", "))}) con la clave de ${esc(h.sup)} como PK y FK</td></tr>`).join("")}</table>`;
+        body.appendChild(h);
+    }
+
+    if (step === 1) {
+        body.innerHTML = `<p class="muted">Para cada tabla: qué columnas forman la <b>clave primaria</b>, cuáles son <b>claves ajenas</b> y a qué tabla apuntan, y cuáles admiten <b>nulos</b>. La columna «Por qué» enlaza cada decisión con el diagrama E/R.</p>`;
+        tables.forEach(t => {
+            const card = document.createElement("div"); card.className = "tcard";
+            const fkOf = c => t.fks.find(f => f.cols.includes(c.n));
+            const uq = new Set(t.uniq.flat());
+            card.innerHTML = `<div class="tcard-h"><span class="tn">${esc(t.name)}</span><span class="muted">${esc(t.src)}</span></div>
+              <div class="tscroll"><table class="tb keys"><tr><th>Columna</th><th>Tipo</th><th>Restricción</th><th>Por qué</th></tr>${
+                t.cols.map(c => {
+                    const f = fkOf(c);
+                    const chips = [c.pk ? `<span class="chip pk">PK</span>` : "", f ? `<span class="chip fk">FK → ${esc(f.ref)}</span>` : "", uq.has(c.n) ? `<span class="chip uq">UNIQUE</span>` : "", c.nul ? `<span class="chip nl">NULL</span>` : `<span class="chip nn">NOT NULL</span>`].join(" ");
+                    return `<tr><td class="mono">${c.pk ? `<u><b>${esc(c.n)}</b></u>` : esc(c.n)}</td><td class="mono">${esc(c.type)}</td><td>${chips}</td><td>${esc(colExplain(t, c, f, ex))}</td></tr>`;
+                }).join("")}</table></div>${t.fks.length ? `<div class="fkl2">${t.fks.map(f => `<i>${esc(f.cols.join(", "))}</i> → ${esc(f.ref)}(${esc(f.refcols.join(", "))}) · ON DELETE ${({ C: "CASCADE", N: "SET NULL", R: "RESTRICT" })[f.del]} · ON UPDATE CASCADE`).join("<br>")}</div>` : ""}`;
+            body.appendChild(card);
+        });
+        const n = document.createElement("div"); n.className = "notes";
+        n.innerHTML = `<b>Cómo se decide el ON DELETE</b><ul><li><b>CASCADE</b> cuando la clave ajena forma parte de la clave primaria (entidad débil, tabla N:M, subtipo, multivaluado): sin el padre la fila no tiene sentido.</li><li><b>SET NULL</b> cuando la clave ajena admite nulos (mínimo 0).</li><li><b>RESTRICT</b> en el resto: no se puede borrar el padre mientras tenga hijos.</li></ul>`;
+        body.appendChild(n);
+    }
+
+    if (step === 2) {
+        const rows = tables.flatMap(t => (t.checks || []).map(c => ({ t: t.name, ...c })));
+        body.innerHTML = `<p class="muted">Un <b>CHECK</b> comprueba una condición <b>dentro de una misma fila</b>: rangos, listas de valores (dominios), fechas coherentes, columnas que van juntas… Lo que exige mirar otras filas u otras tablas no cabe en un CHECK: hace falta una <b>aserción</b> o un <b>trigger</b> (Tema 3, apartados f y g).</p>
+          <h3>Restricciones CHECK (${rows.length})</h3>
+          ${rows.length ? `<table class="tb"><tr><th>Tabla</th><th>CHECK</th><th>Por qué</th></tr>${rows.map(r => `<tr><td><b>${esc(r.t)}</b></td><td class="mono">CHECK (${esc(r.expr)})</td><td>${esc(r.why)}${r.auto ? ' <span class="chip uq">automática</span>' : ""}</td></tr>`).join("")}</table>` : `<p>Este ejercicio no tiene condiciones de fila en el enunciado.</p>`}`;
+        const card = [];
+        ex.rels.forEach(r => {
+            (r.ends ? r.ends.map(e => [e.e, e.c]) : [[r.a, r.ca], [r.b, r.cb]]).forEach(([e, c]) => {
+                const k = parseCard(c);
+                if (k.min > 1 || (k.max !== Infinity && k.max > 1)) card.push(`${r.label || r.n}: ${c} junto a ${e}`);
+            });
+        });
+        const tr = (extra.triggers || []).slice();
+        if (card.length && !tr.some(s => /\(\d+,/.test(s))) tr.unshift(`Cardinalidades numéricas del diagrama (${card.join("; ")}) → hay que contar filas: aserción o trigger.`);
+        const w = document.createElement("div");
+        w.innerHTML = `<h3>Restricciones que un CHECK no puede garantizar</h3>${tr.length ? `<ul>${tr.map(s => `<li>${esc(s)}</li>`).join("")}</ul>` : "<p>Ninguna adicional.</p>"}
+          <div class="rule">Recuerda: <b>PRIMARY KEY</b> = único + no nulo · <b>UNIQUE</b> = clave alternativa · <b>NOT NULL</b> = obligatoriedad (mínimo 1) · <b>FOREIGN KEY</b> = integridad referencial · <b>CHECK</b> = condición sobre la fila · <b>ASSERTION</b> = condición entre tablas · <b>TRIGGER</b> = acción automática ante un evento.</div>`;
+        body.appendChild(w);
+    }
+
+    if (step === 3) {
+        body.innerHTML = `<p class="muted">Modelo lógico en UML: cada tabla es una clase con el estereotipo «table». Las líneas son las claves ajenas, con la multiplicidad UML que sale de la cardinalidad del E/R.</p>
+          <div class="toolbar"><span class="sp"></span><button id="uml-zoom">${STATE.umlZoom ? "Ajustar al ancho" : "Ampliar (tamaño real)"}</button></div>`;
+        const d = document.createElement("div"); d.className = "diagram" + (STATE.umlZoom ? " zoom" : "");
+        d.appendChild(renderUML(tables, ex)); body.appendChild(d);
+        body.querySelector("#uml-zoom").onclick = () => { STATE.umlZoom = !STATE.umlZoom; renderFlow(); };
+        const lg = document.createElement("div");
+        lg.innerHTML = `<table class="tb" style="margin-top:12px"><tr><th>E/R (Tema 2)</th><th>UML</th></tr>
+          <tr><td>(0,1) · (1,1) · (0,n) · (1,n) · (2,30)</td><td class="mono">0..1 · 1 · 0..* · 1..* · 2..30</td></tr>
+          <tr><td>Entidad débil por identificación / atributo multivaluado</td><td>Composición: rombo relleno en el lado del «todo»</td></tr>
+          <tr><td>Jerarquía (subtipo «es un» supertipo)</td><td>Generalización: triángulo hueco que apunta al supertipo</td></tr>
+          <tr><td>Interrelación 1:N, 1:1 y tablas N:M</td><td>Asociación con multiplicidades en los dos extremos</td></tr>
+          <tr><td>Clave primaria / ajena / alternativa</td><td><span class="chip pk">PK</span> <span class="chip fk">FK</span> <span class="chip pfk">PFK</span> (las dos) <span class="chip uq">UQ</span> · [0..1] = admite nulos</td></tr></table>`;
+        body.appendChild(lg);
+        const code = plantUML(tables, ex);
+        const det = document.createElement("details"); det.className = "sec";
+        det.innerHTML = `<summary>Código PlantUML (para pegarlo en plantuml.com o en tu IDE)</summary><div class="toolbar"><button class="cp">Copiar</button><span class="muted msg"></span></div><pre class="sql"></pre>`;
+        det.querySelector("pre").textContent = code;
+        det.querySelector(".cp").onclick = () => copyText(code, det.querySelector(".msg"), det.querySelector("pre"));
+        body.appendChild(det);
+    }
+
+    if (step === 4) {
+        const sql = schemaSQL(tables, `Ejercicio ${ex.id}º - ${ex.title}`);
+        body.innerHTML = `<p class="muted">Script completo para MySQL 8 / MariaDB (los CHECK se aplican desde MySQL 8.0.16). Orden de creación: primero las tablas a las que apuntan otras; si dos tablas se apuntan entre sí, una clave ajena se añade al final con <code>ALTER TABLE</code>.</p>
+          <div class="toolbar"><button class="btn-primary cp">Copiar SQL</button><span class="muted msg"></span></div><pre class="sql"></pre>
+          <h3>Cómo se lee cada parte</h3>
+          <ul><li><code>PRIMARY KEY (…)</code> → paso 2, columnas PK.</li><li><code>UNIQUE (…)</code> → claves alternativas y relaciones 1:1.</li><li><code>CONSTRAINT ck_… CHECK (…)</code> → paso 3.</li><li><code>FOREIGN KEY … REFERENCES … ON DELETE …</code> → cada línea del diagrama UML.</li></ul>`;
+        body.querySelector("pre").textContent = sql;
+        body.querySelector(".cp").onclick = () => copyText(sql, body.querySelector(".msg"), body.querySelector("pre"));
+    }
+
+    const nav = document.createElement("div"); nav.className = "toolbar flow-nav";
+    const pv = document.createElement("button"); pv.textContent = "← Paso anterior"; pv.disabled = step === 0;
+    const nx = document.createElement("button"); nx.className = "btn-primary"; nx.textContent = step === 4 ? "Siguiente ejercicio →" : `Paso ${step + 2}: ${FLOW_STEPS[step + 1]} →`;
+    pv.onclick = () => { STATE.flowStep = step - 1; lsSet("er-flowstep", STATE.flowStep); renderFlow(); window.scrollTo({ top: P.offsetTop - 10 }); };
+    nx.onclick = () => {
+        if (step === 4) {
+            const i = EXERCISES.indexOf(ex);
+            if (i < EXERCISES.length - 1) { STATE.flowStep = 0; selectExercise(EXERCISES[i + 1].id); }
+        } else { STATE.flowStep = step + 1; lsSet("er-flowstep", STATE.flowStep); renderFlow(); }
+        window.scrollTo({ top: P.offsetTop - 10 });
+    };
+    if (step === 4 && EXERCISES.indexOf(ex) === EXERCISES.length - 1) nx.disabled = true;
+    nav.append(pv, document.createElement("span"), nx); nav.children[1].className = "sp";
+    P.appendChild(nav);
+}
+
+async function copyText(s, msg, pre) {
+    try { await navigator.clipboard.writeText(s); msg.textContent = "Copiado ✓"; }
+    catch (e) {
+        const r = document.createRange(); r.selectNodeContents(pre);
+        const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+        msg.textContent = "Seleccionado: pulsa Ctrl+C";
+    }
+}
 
 </script>
 <script>
@@ -1000,6 +1503,12 @@ function relType(rel) {
     const A = parseCard(rel.ca).max > 1, B = parseCard(rel.cb).max > 1;
     if (A && B) return "N:M";
     return (A ? "N" : "1") + ":" + (B ? "N" : "1");
+}
+function mult(c) {
+    const { min, max } = parseCard(c);
+    if (max === Infinity) return min + "..*";
+    if (min === max) return String(min);
+    return min + ".." + max;
 }
 function describe(c) {
     const { min, max } = parseCard(c);
@@ -1260,13 +1769,14 @@ function renderER(ex, opts) {
 function sqlType(n) {
     n = n.toLowerCase();
     if (n === "dia_hora") return "DATETIME";
-    if (/^hora/.test(n)) return "TIME";
+    if (n === "hora") return "TIME";
+    if (n === "jugada") return "CHAR(5)";
     if (/^fecha|_fecha|^antiguedad/.test(n)) return "DATE";
     if (/precio|salario|coste|cuantia|fianza|senal|importe/.test(n)) return "DECIMAL(10,2)";
     if (/^(principal|puerta_grande|hipotecado|licencia_apertura|con_receta|obligatorio|exterior|titulacion|capacitado)$/.test(n)) return "BOOLEAN";
     if (/^(dni|nif)/.test(n)) return "CHAR(9)";
     if (/^nss/.test(n)) return "CHAR(12)";
-    if (/^(num_|cod_|n_|anio|orejas|rabos|aforo|m2|stock|unidades|reactores|turbinas|hornos|habitaciones|banos|nivel|capacidad|entradas|muertos|heridos|bajas|barcos|tanques|aviones|hombres|personas|duracion|cantidad|volumen|vol_|prod_|horas_sol|superficie|ocupacion|consumo|longitud|orden_)/.test(n)) return "INT";
+    if (/^(num_|cod_|n_|anio|orejas|rabos|aforo|m2|stock|unidades|reactores|turbinas|hornos|habitaciones|banos|nivel|capacidad|entradas|muertos|heridos|bajas|barcos|tanques|aviones|hombres|personas|duracion|cantidad|volumen|vol_|prod_|horas_sol|superficie|ocupacion|consumo|longitud|orden_|plazas|total$|capacidad_destructiva)/.test(n)) return "INT";
     if (/telefono|fax/.test(n)) return "VARCHAR(15)";
     if (/descripcion|comentario|apoyos|direccion|experiencia/.test(n)) return "VARCHAR(255)";
     return "VARCHAR(100)";
@@ -1275,7 +1785,7 @@ function sqlType(n) {
 function buildSchema(ex) {
     const E = {}; ex.ents.forEach(e => { E[e.id] = e; });
     const superOf = {}; (ex.hier || []).forEach(h => h.subs.forEach(s => { superOf[s] = h.sup; }));
-    const ownerOf = {}; ex.rels.forEach(r => { if (r.dep === "ID") ownerOf[r.b] = r.a; });
+    const ownerOf = {}, ownerRel = {}; ex.rels.forEach(r => { if (r.dep === "ID") { ownerOf[r.b] = r.a; ownerRel[r.b] = r; } });
 
     const pkMemo = {};
     function pkCols(id) { // [{n, type}]
@@ -1290,7 +1800,7 @@ function buildSchema(ex) {
     }
 
     const T = {}; const order = [];
-    function table(name, src) { if (!T[name]) { T[name] = { name, cols: [], fks: [], uniq: [], src }; order.push(name); } return T[name]; }
+    function table(name, src) { if (!T[name]) { T[name] = { name, cols: [], fks: [], uniq: [], checks: [], src }; order.push(name); } return T[name]; }
     function addCol(t, c) {
         if (t.cols.some(x => x.n === c.n)) return false;
         t.cols.push(c); return true;
@@ -1311,7 +1821,8 @@ function buildSchema(ex) {
             return n;
         });
         const del = opts.pk ? "C" : opts.nul ? "N" : "R";
-        t.fks.push({ cols: names, ref: refId, refcols: ref.map(r => r.n), del, upd: "C" });
+        t.fks.push({ cols: names, ref: refId, refcols: ref.map(r => r.n), del, upd: "C",
+                     kind: opts.kind || "assoc", pm: opts.pm || (opts.nul ? "0..1" : "1"), cm: opts.cm || "0..*", rel: opts.rel || "" });
         if (opts.uniq) t.uniq.push(names);
         return names;
     }
@@ -1319,8 +1830,8 @@ function buildSchema(ex) {
     // 1) entidades
     ex.ents.forEach(e => {
         const t = table(e.id, "entidad" + (e.weak ? " débil" : "") + (superOf[e.id] ? " (subtipo de " + superOf[e.id] + ")" : ""));
-        if (superOf[e.id]) addFK(t, superOf[e.id], { pk: true });
-        else if (ownerOf[e.id]) addFK(t, ownerOf[e.id], { pk: true });
+        if (superOf[e.id]) addFK(t, superOf[e.id], { pk: true, kind: "gen", pm: "1", cm: "0..1", rel: "es un" });
+        else if (ownerOf[e.id]) addFK(t, ownerOf[e.id], { pk: true, kind: "comp", pm: "1", cm: mult(ownerRel[e.id].cb), rel: ownerRel[e.id].n });
         (e.attrs || []).map(parseAttr).forEach(a => {
             if (a.multi) return;
             addCol(t, { n: a.n, type: sqlType(a.n), pk: a.pk, nul: a.nul });
@@ -1331,7 +1842,7 @@ function buildSchema(ex) {
     ex.ents.forEach(e => {
         (e.attrs || []).map(parseAttr).filter(a => a.multi).forEach(a => {
             const t = table(e.id + "_" + a.n.toUpperCase(), "atributo multivaluado de " + e.id);
-            addFK(t, e.id, { pk: true });
+            addFK(t, e.id, { pk: true, kind: "comp", pm: "1", cm: "1..*", rel: "multivaluado" });
             addCol(t, { n: a.n, type: sqlType(a.n), pk: true });
         });
     });
@@ -1347,7 +1858,7 @@ function buildSchema(ex) {
         if (r.ends) {
             const t = table(tName, "interrelación ternaria " + r.n);
             const pkSet = r.pk || r.ends.map(e => e.e);
-            r.ends.forEach(end => addFK(t, end.e, { pk: pkSet.includes(end.e), role: end.col, rename: end.rename }));
+            r.ends.forEach(end => addFK(t, end.e, { pk: pkSet.includes(end.e), role: end.col, rename: end.rename, pm: "1", cm: "0..*", rel: r.n }));
             relAttrs(t, r, true);
             return;
         }
@@ -1355,35 +1866,41 @@ function buildSchema(ex) {
         if (r.a === r.b) {
             if (A.max > 1 && B.max > 1) {
                 const t = table(tName, "interrelación reflexiva N:M " + r.n);
-                addFK(t, r.a, { pk: true, role: r.roleA, suffix: r.roleA });
-                addFK(t, r.a, { pk: true, role: r.roleB, suffix: r.roleB });
+                const c1 = addFK(t, r.a, { pk: true, role: r.roleA, suffix: r.roleA, cm: mult(r.cb), rel: r.n + " (" + r.roleA + ")" });
+                const c2 = addFK(t, r.a, { pk: true, role: r.roleB, suffix: r.roleB, cm: mult(r.ca), rel: r.n + " (" + r.roleB + ")" });
+                if (c1.length === 1) t.checks.push({ expr: `${c1[0]} <> ${c2[0]}`, why: `Reflexiva ${r.n}: un ${r.a} no puede relacionarse consigo mismo.`, auto: true });
                 relAttrs(t, r, true);
             } else {
                 const t = T[r.a];
-                addFK(t, r.a, { nul: A.min === 0 || r.nullable, role: r.roleA, suffix: r.roleA, uniq: B.max === 1 });
+                const nulR = A.min === 0 || !!r.nullable;
+                const cR = addFK(t, r.a, { nul: nulR, role: r.roleA, suffix: r.roleA, uniq: B.max === 1, pm: mult(r.ca), cm: mult(r.cb), rel: r.n });
+                const own = pkCols(r.a);
+                if (cR.length === 1 && own.length === 1) t.checks.push({ expr: `${cR[0]} <> ${own[0].n}`, why: `Reflexiva ${r.n}: un ${r.a} no puede ser su propio ${r.roleA}.`, auto: true });
                 relAttrs(t, r, false, A.min === 0 || r.nullable);
             }
             return;
         }
         if (A.max > 1 && B.max > 1) {
             const t = table(tName, "interrelación N:M " + r.n);
-            addFK(t, r.a, { pk: true, rename: r.renameA || r.rename });
-            addFK(t, r.b, { pk: true, rename: r.renameB || r.rename });
+            addFK(t, r.a, { pk: true, rename: r.renameA || r.rename, cm: mult(r.cb), rel: r.n });
+            addFK(t, r.b, { pk: true, rename: r.renameB || r.rename, cm: mult(r.ca), rel: r.n });
             relAttrs(t, r, true);
             return;
         }
-        let inT, refId, refCard;
-        if (A.max === 1 && B.max > 1) { inT = r.b; refId = r.a; refCard = A; }
-        else if (B.max === 1 && A.max > 1) { inT = r.a; refId = r.b; refCard = B; }
-        else { inT = r.fkIn || r.b; refId = inT === r.a ? r.b : r.a; refCard = inT === r.a ? B : A; }
+        let inT, refId, refCard, refS, othS;
+        if (A.max === 1 && B.max > 1) { inT = r.b; refId = r.a; refCard = A; refS = r.ca; othS = r.cb; }
+        else if (B.max === 1 && A.max > 1) { inT = r.a; refId = r.b; refCard = B; refS = r.cb; othS = r.ca; }
+        else { inT = r.fkIn || r.b; refId = inT === r.a ? r.b : r.a; refCard = inT === r.a ? B : A; refS = inT === r.a ? r.cb : r.ca; othS = inT === r.a ? r.ca : r.cb; }
         const t = T[inT];
         const oneToOne = A.max === 1 && B.max === 1;
         const nul = refCard.min === 0 || !!r.nullable;
-        addFK(t, refId, { nul, rename: r.rename, suffix: r.n.toLowerCase(), uniq: oneToOne });
+        addFK(t, refId, { nul, rename: r.rename, suffix: r.n.toLowerCase(), uniq: oneToOne, pm: mult(refS), cm: mult(othS), rel: r.n });
         relAttrs(t, r, false, nul);
     });
     // pk primero
     order.forEach(n => { const t = T[n]; t.cols.sort((a, b) => (b.pk ? 1 : 0) - (a.pk ? 1 : 0)); });
+    const extra = (typeof CONSTRAINTS !== "undefined" && CONSTRAINTS[ex.id]) || {};
+    (extra.checks || []).forEach(([tn, expr, why]) => { if (!T[tn]) throw new Error("CHECK en tabla inexistente " + tn); T[tn].checks.push({ expr, why }); });
     return order.map(n => T[n]);
 }
 
@@ -1417,6 +1934,7 @@ function schemaSQL(tables, title) {
         const lines = t.cols.map(c => `  ${c.n} ${c.type}${c.pk || !c.nul ? " NOT NULL" : ""}`);
         lines.push(`  PRIMARY KEY (${t.cols.filter(c => c.pk).map(c => c.n).join(", ")})`);
         t.uniq.forEach(u => lines.push(`  UNIQUE (${u.join(", ")})`));
+        (t.checks || []).forEach((c, k) => lines.push(`  CONSTRAINT ck_${t.name.toLowerCase()}_${k + 1} CHECK (${c.expr})`));
         t.fks.forEach((f, k) => {
             const def = `CONSTRAINT fk_${t.name.toLowerCase()}_${k + 1} FOREIGN KEY (${f.cols.join(", ")}) REFERENCES ${f.ref} (${f.refcols.join(", ")}) ON DELETE ${DEL[f.del]} ON UPDATE CASCADE`;
             if (f.ref === t.name || done.has(f.ref)) lines.push("  " + def);
@@ -1440,22 +1958,29 @@ const STATE = {
     zoom: false,
     practice: false,
     revealed: new Set(),
-    checked: {}
+    checked: {},
+    flowStep: lsGet("er-flowstep", 0),
+    umlZoom: false
 };
 
+const TABS = ["ex", "flow", "guide"];
 function setTab(t) {
     STATE.tab = t; lsSet("er-tab", t);
-    $("view-ex").hidden = t !== "ex";
-    $("view-guide").hidden = t !== "guide";
-    $("tab-ex").classList.toggle("active", t === "ex");
-    $("tab-guide").classList.toggle("active", t === "guide");
-    $("tab-ex").setAttribute("aria-selected", t === "ex");
-    $("tab-guide").setAttribute("aria-selected", t === "guide");
+    TABS.forEach(k => {
+        $("view-" + k).hidden = t !== k;
+        $("tab-" + k).classList.toggle("active", t === k);
+        $("tab-" + k).setAttribute("aria-selected", t === k);
+    });
+    if (t === "flow" && typeof renderFlow === "function") renderFlow();
 }
-$("tab-ex").addEventListener("click", () => setTab("ex"));
-$("tab-guide").addEventListener("click", () => setTab("guide"));
+TABS.forEach(k => $("tab-" + k).addEventListener("click", () => setTab(k)));
 
+function selectExercise(id) {
+    STATE.ex = id; lsSet("er-ex", id); STATE.practice = false; STATE.revealed = new Set(); STATE.checked = {};
+    buildPicker(); renderExercise(); if (STATE.tab === "flow" && typeof renderFlow === "function") renderFlow();
+}
 function buildPicker() {
+    if (typeof buildFlowPicker === "function") buildFlowPicker();
     const box = $("picker"); box.innerHTML = "";
     const done = lsGet("er-done", {});
     EXERCISES.forEach(ex => {
@@ -1463,7 +1988,7 @@ function buildPicker() {
         b.className = "pick" + (ex.id === STATE.ex ? " active" : "") + (done[ex.id] ? " done" : "");
         b.textContent = ex.id + "º";
         b.title = ex.title + (done[ex.id] ? " · practicado ✓" : "");
-        b.addEventListener("click", () => { STATE.ex = ex.id; lsSet("er-ex", ex.id); STATE.practice = false; STATE.revealed = new Set(); STATE.checked = {}; buildPicker(); renderExercise(); });
+        b.addEventListener("click", () => selectExercise(ex.id));
         box.appendChild(b);
     });
 }
@@ -1651,7 +2176,7 @@ if (!EXERCISES.some(e => e.id === STATE.ex)) STATE.ex = 1;
 buildPicker();
 renderExercise();
 renderGuide();
-setTab(STATE.tab === "guide" ? "guide" : "ex");
+setTab(TABS.includes(STATE.tab) ? STATE.tab : "ex");
 
 </script>
 </body>

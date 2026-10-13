@@ -5,27 +5,27 @@ import java.text.Format;
 
 public class Nif {
     // attributes
-    private int num;
     private char letra;
     private int nif;
 
     //  constructor without parameters
     public Nif () {
-        this.num = 0;
-        this.letra = ' ';
     }
 
     // constructor with parameters
     public Nif(int num, char letra) {
-        this.num = num;
+        this.nif = num;
         this.letra = letra;
     }
 
-    public void read() {
-        String msg = "Please, enter your NIF number\n";
-        this.nif = Integer.parseInt(JOptionPane.showInputDialog(msg));
+    public void read(int n) {
+        //String msg = "Please, enter your NIF number\n";
+        //this.nif = Integer.parseInt(JOptionPane.showInputDialog(msg));
         //calculateLetter(this.nif);
-        calculateLetterInhanced(this.nif);
+
+        //calculateLetterEnhanced(this.nif);
+        this.nif = n;
+        calculateLetterEnhanced(n);
         System.out.printf("The complete NIF is: %d-%c", this.nif, this.letra);
     }
 
@@ -105,7 +105,7 @@ public class Nif {
         }
     }
 
-    private void calculateLetterInhanced(int n) {
+    private void calculateLetterEnhanced(int n) {
         char[] isAlphabet = {'T', 'R', 'W', 'A', 'G',
                             'M', 'Y', 'F', 'P', 'D',
                             'X', 'B', 'N', 'J', 'Z',

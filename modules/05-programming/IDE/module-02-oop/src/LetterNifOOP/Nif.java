@@ -102,6 +102,9 @@ public class Nif {
             case 22:
                 this.letra = 'E';
                 break;
+            default:
+                this.letra = ' ';
+                break;
         }
     }
 

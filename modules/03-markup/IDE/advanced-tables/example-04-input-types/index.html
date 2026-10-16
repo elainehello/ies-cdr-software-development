@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Example form</title>
+    </head>
+    <body>
+        <h1>Ejercicios de HTML. Formulario 8.</h1>
+        <p><b>Importante: Para ver mejor el funcionamiento de este ejercicio. Ejecutarlo en Chrome</b></p>
+        <h2>Formulario de Registro.</h2>
+        <table>
+            <form action="registro.php" method="get">
+                <tr>
+                    <td><label>Nombre</label></td>
+                    <td><input type="text" name="nombre"></td>
+                </tr>
+                <tr>
+                    <td><label>Correo electrónico</label></td>
+                    <td><input type="email" name="correo"></td>
+                </tr>
+                <tr>
+                    <td><label>URL</label></td>
+                    <td><input type="url" name="link" placeholder="Escribe tu URL."></td>
+                </tr>
+                <tr>
+                    <td><label>Fecha</label></td>
+                    <td><input type="date" name="fecha"></td>
+                </tr>
+                <tr>
+                    <td><label>Hora</label></td>
+                    <td><input type="time" name="hora"></td>
+                </tr>
+                <tr>
+                    <td><label>Mes</label></td>
+                    <td><input type="month" name="mes"></td>
+                </tr>
+                <tr>
+                    <td><label>Semana</label></td>
+                    <td><input type="week" name="semana"></td>
+                </tr>
+                <tr>
+                    <td><label>Número favorito</label></td>
+                    <td><input type="number" min="1" max="10"></td>
+                </tr>
+                <tr>
+                    <td><label>Teléfono</label></td>
+                    <td><input type="tel" name="telefono"></td>
+                </tr>
+                <tr>
+                    <td><label>Término de Busqueda</label></td>
+                    <td><input type="search" name="busqueda"></td>
+                </tr>
+                <tr>
+                    <td><label>Color Favorito</label></td>
+                    <td><input type="color" name="color"></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input type="submit" value="Enviar"></td>
+                </tr>
+            </form>
+        </table>
+    </body>
+</html>

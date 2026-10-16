@@ -9,7 +9,8 @@ create table tiendas (
     poblacion varchar(20),
     provincia varchar(20),
     cod_postal int(5),
-    constraint ck_tiendas_provincia check (provincia = upper(provincia))
+    constraint ck_tiendas_provincia check (provincia = upper(provincia)),
+    constraint ck_tiendas_nombre check(nombre = upper(nombre))
 );
 
 create table fabricantes (
@@ -45,8 +46,7 @@ create table pedidos (
     constraint pk_pedidos primary key (nif, articulo, cod_fabricante, peso, categoria, fecha_pedido),
     constraint fk_pedidos_fabricantes foreign key (cod_fabricante) references fabricantes(cod_fabricante),
     constraint fk_pedidos_articulos foreign key (articulo, cod_fabricante, peso, categoria) references articulos(articulo, cod_fabricante, peso, categoria)
-    on delete cascade
-    on update cascade,
+    on delete cascade,
     constraint ft_pedidos_tiendas foreign key (nif) references tiendas(nif),
     constraint ck_pedidos_unidades check (unidades_pedidas > 0),
     constraint ck_pedidos_categoria check (categoria in ('primera', 'segunda', 'tercera'))    
@@ -59,14 +59,21 @@ create table ventas(
     peso int(3) not null,
     categoria varchar(10) not null,
     fecha_venta date not null,
-    unidades_vendidas int(4),
+    unidades_vendidas int(6),
     constraint pk_ventas primary key (nif, articulo, cod_fabricante, peso, categoria, fecha_venta),
     constraint fk_ventas_fabricantes foreign key (cod_fabricante) references fabricantes(cod_fabricante),
     constraint fk_ventas_articulos foreign key (articulo, cod_fabricante, peso, categoria) references articulos(articulo, cod_fabricante, peso, categoria)
-    on delete cascade
-    on update cascade,
+    on delete cascade,
     constraint fk_ventas_tiendas foreign key (nif) references tiendas(nif),
     constraint ck_ventas_unidades check (unidades_vendidas > 0),
     constraint ck_ventas_categoria check (categoria in ('primera', 'segunda', 'tercera'))
 );
 
+SELECT *
+FROM information_schema.TABLE_CONSTRAINTS
+WHERE TABLE_SCHEMA = 'zapateria';
+
+alter table pedidos
+modify unidades_pedidas int(6);
+
+describe pedidos;

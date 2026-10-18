@@ -1438,7 +1438,7 @@ function renderFlow() {
         body.innerHTML = `<p class="muted">Script completo para MySQL 8 / MariaDB (los CHECK se aplican desde MySQL 8.0.16). Orden de creación: primero las tablas a las que apuntan otras; si dos tablas se apuntan entre sí, una clave ajena se añade al final con <code>ALTER TABLE</code>.</p>
           <div class="toolbar"><button class="btn-primary cp">Copiar SQL</button><span class="muted msg"></span></div><pre class="sql"></pre>
           <h3>Cómo se lee cada parte</h3>
-          <ul><li><code>PRIMARY KEY (…)</code> → paso 2, columnas PK.</li><li><code>UNIQUE (…)</code> → claves alternativas y relaciones 1:1.</li><li><code>CONSTRAINT ck_… CHECK (…)</code> → paso 3.</li><li><code>FOREIGN KEY … REFERENCES … ON DELETE …</code> → cada línea del diagrama UML.</li></ul>`;
+          <ul><li><code>col tipo primary key</code> si la clave es de una columna; <code>constraint pk_tabla primary key (…)</code> si es compuesta → paso 2.</li><li><code>constraint uk_tabla_campo unique (…)</code> → claves alternativas y relaciones 1:1.</li><li><code>constraint fk_tabla_tablareferenciada foreign key … references …</code> → cada línea del diagrama UML. Lleva <code>on delete cascade on update cascade</code> cuando la clave ajena forma parte de la clave primaria (débil, N:M, subtipo, multivaluado).</li><li><code>constraint ck_tabla_campo check (…)</code> → paso 3.</li></ul>`;
         body.querySelector("pre").textContent = sql;
         body.querySelector(".cp").onclick = () => copyText(sql, body.querySelector(".msg"), body.querySelector("pre"));
     }
@@ -1917,10 +1917,17 @@ function schemaHTML(tables) {
     }).join("");
 }
 
+function dbName(title) {
+    return title.replace(/^Ejercicio \d+º - /, "").normalize("NFD").replace(/[̀-ͯ]/g, "")
+        .toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 40) || "ejercicio";
+}
+
+// Convención de clase:
+//   pk_tabla · fk_tabla_tablareferenciada · ck_tabla_campo · uk_tabla_campo
+//   todo en minúsculas · PK simple en línea («col int primary key»)
+//   on delete/update cascade solo cuando la FK forma parte de la PK (débil, N:M, subtipo, multivaluado)
 function schemaSQL(tables, title) {
-    const DEL = { C: "CASCADE", N: "SET NULL", R: "RESTRICT" };
     const created = new Set(); const out = []; const later = [];
-    // orden: primero las tablas cuyas FK (no reflexivas) ya existen
     const pending = tables.slice();
     const ordered = [];
     let guard = 0;
@@ -1931,19 +1938,42 @@ function schemaSQL(tables, title) {
     }
     const done = new Set();
     ordered.forEach(t => {
-        const lines = t.cols.map(c => `  ${c.n} ${c.type}${c.pk || !c.nul ? " NOT NULL" : ""}`);
-        lines.push(`  PRIMARY KEY (${t.cols.filter(c => c.pk).map(c => c.n).join(", ")})`);
-        t.uniq.forEach(u => lines.push(`  UNIQUE (${u.join(", ")})`));
-        (t.checks || []).forEach((c, k) => lines.push(`  CONSTRAINT ck_${t.name.toLowerCase()}_${k + 1} CHECK (${c.expr})`));
-        t.fks.forEach((f, k) => {
-            const def = `CONSTRAINT fk_${t.name.toLowerCase()}_${k + 1} FOREIGN KEY (${f.cols.join(", ")}) REFERENCES ${f.ref} (${f.refcols.join(", ")}) ON DELETE ${DEL[f.del]} ON UPDATE CASCADE`;
-            if (f.ref === t.name || done.has(f.ref)) lines.push("  " + def);
-            else later.push(`ALTER TABLE ${t.name} ADD ${def};`);
+        const tn = t.name.toLowerCase();
+        const used = new Set();
+        const uniqName = base => { let n = base, k = 2; while (used.has(n)) n = base + "_" + (k++); used.add(n); return n; };
+        const pkCols = t.cols.filter(c => c.pk);
+        const inlinePk = pkCols.length === 1;
+        const fkCols = new Set(t.fks.flatMap(f => f.cols));
+        const lines = t.cols.map(c => {
+            let l = `${c.n} ${c.type.toLowerCase()}`;
+            if (c.pk && inlinePk) l += " primary key";
+            else if (!c.pk && !c.nul && fkCols.has(c.n)) l += " not null";
+            return l;
         });
-        out.push(`CREATE TABLE ${t.name} (\n${lines.join(",\n")}\n);`);
+        if (!inlinePk) lines.push(`constraint ${uniqName("pk_" + tn)} primary key (${pkCols.map(c => c.n).join(", ")})`);
+        t.uniq.forEach(u => lines.push(`constraint ${uniqName("uk_" + tn + "_" + u[0])} unique (${u.join(", ")})`));
+        t.fks.forEach(f => {
+            const ref = f.ref.toLowerCase();
+            let name = "fk_" + tn + "_" + ref;
+            if (used.has(name)) name = name + "_" + f.cols[0];
+            name = uniqName(name);
+            let def = `constraint ${name} foreign key (${f.cols.join(", ")}) references ${ref}(${f.refcols.join(", ")})`;
+            if (f.del === "C") def += "\n\ton delete cascade on update cascade";
+            else if (f.del === "N") def += "\n\ton delete set null on update cascade";
+            if (f.ref === t.name || done.has(f.ref)) lines.push(def);
+            else later.push(`alter table ${tn} add ${def};`);
+        });
+        (t.checks || []).forEach(c => {
+            const col = t.cols.map(x => x.n).filter(n => new RegExp("\\b" + n + "\\b").test(c.expr))
+                .sort((a, b) => c.expr.search(new RegExp("\\b" + a + "\\b")) - c.expr.search(new RegExp("\\b" + b + "\\b")))[0] || "chk";
+            const expr = c.expr.replace(/\b(IS NOT NULL|IS NULL|NOT|AND|OR|IN|BETWEEN)\b/g, m => m.toLowerCase());
+            lines.push(`constraint ${uniqName("ck_" + tn + "_" + col)} check (${expr})`);
+        });
+        out.push(`create table ${tn}(\n${lines.join(",\n")}\n);`);
         done.add(t.name);
     });
-    let sql = `-- ${title}\n-- Generado a partir del diagrama E/R (sintaxis MySQL / MariaDB)\n\n` + out.join("\n\n");
+    const db = dbName(title);
+    let sql = `-- ${title}\n-- Generado a partir del diagrama E/R (MySQL / MariaDB)\n\ndrop database if exists ${db};\ncreate database ${db};\nuse ${db};\n\n` + out.join("\n\n");
     if (later.length) sql += "\n\n-- Claves ajenas que forman un ciclo: se añaden al final\n" + later.join("\n");
     return sql + "\n";
 }

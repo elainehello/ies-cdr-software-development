@@ -29,6 +29,30 @@ public class Book {
         this.author = author;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public int getExemplars() {
+        return exemplars;
+    }
+
+    public void setExemplars(int exemplars) {
+        this.exemplars = exemplars;
+    }
+
     public Boolean prestamo() {
         if (borrowed < exemplars) {
             this.borrowed += 1;
@@ -54,5 +78,4 @@ public class Book {
                 "Ejemplares: " + exemplars+ "\n" +
                 "Prestados: " + borrowed;
     }
-
 }

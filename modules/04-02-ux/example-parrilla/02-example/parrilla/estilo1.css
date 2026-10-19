@@ -1,0 +1,30 @@
+div {
+    border: solid black 2px;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    margin: 2px;
+    /*padding: 10px;*/
+    float: left;
+}
+
+
+#contenedor {
+    width: 475px;
+    height: 470px;
+    clear: left;
+}
+
+.tipo1 {
+    background-color: dimgrey;
+    padding: 10px;
+}
+
+.tipo2 {
+    background-color: black;
+    padding: 10px;
+    color: white;
+    
+}
+
+/*estilo2.css*/

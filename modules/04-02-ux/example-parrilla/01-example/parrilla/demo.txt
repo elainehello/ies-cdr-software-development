@@ -1,0 +1,23 @@
+div {
+    color: black;
+    font-size: 20px;
+    background: lightblue;
+    /*border-style: groove;*/
+    border: solid black 1px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    margin-block: 1px;
+    padding: 60px;
+}
+
+#D0 {
+    background-color: yellow;
+}
+
+#contenedor {
+    color: red;
+    width: 5280px;
+    height: 5280px;
+    
+}

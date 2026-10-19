@@ -4,8 +4,8 @@ public class Book {
     // attrbutes
     private String title;
     private String author;
-    private int exemplars = 9;
-    private int borrowed = 2;
+    private int exemplars;
+    private int borrowed;
 
     // empty constructor
     public Book() {

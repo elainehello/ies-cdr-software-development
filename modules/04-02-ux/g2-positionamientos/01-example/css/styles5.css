@@ -1,0 +1,22 @@
+/* ===== Base ===== */
+body { font-family: sans-serif; margin: 20px; }
+h1::after { content: " — Opacity"; }
+.container { border: 2px dashed #888; padding: 10px; }
+.box {
+    width: 80px; height: 80px;
+    color: white; font-weight: bold;
+    display: inline-flex; align-items: center; justify-content: center;
+    margin: 5px;
+}
+.b1 { background: crimson; }
+.b2 { background: royalblue; }
+.b3 { background: seagreen; }
+.b4 { background: darkorange; }
+
+/* ===== Opacity ===== */
+.b1 { opacity: 1; }      /* fully visible */
+.b2 { opacity: 0.75; }
+.b3 { opacity: 0.5; }
+.b4 { opacity: 0.25; }   /* almost invisible, but still takes space */
+
+.box:hover { opacity: 1; transition: opacity 0.3s; }

@@ -1,0 +1,19 @@
+/* ===== Base ===== */
+body { font-family: sans-serif; margin: 20px; }
+h1::after { content: " — Display"; }
+.container { border: 2px dashed #888; padding: 10px; }
+.box {
+    width: 80px; height: 80px;
+    color: white; font-weight: bold;
+    margin: 5px;
+}
+.b1 { background: crimson; }
+.b2 { background: royalblue; }
+.b3 { background: seagreen; }
+.b4 { background: darkorange; }
+
+/* ===== Display ===== */
+.b1 { display: block; }         /* full line, respects width/height */
+.b2 { display: inline; }        /* flows like text, IGNORES width/height */
+.b3 { display: inline-block; }  /* flows like text, respects width/height */
+.b4 { display: none; }          /* removed: no box, no space */

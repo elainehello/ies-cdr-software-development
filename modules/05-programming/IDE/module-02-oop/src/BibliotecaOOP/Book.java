@@ -63,8 +63,8 @@ public class Book {
     }
 
     public Boolean devolucion() {
-        if (exemplars > 0) {
-            this.exemplars -= 1;
+        if (borrowed > 0) {
+            this.borrowed -= 1;
             return true;
         } else {
             return false;

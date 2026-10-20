@@ -26,6 +26,7 @@ public class Main {
 //        libro2.setBook(title2, author2);
 //        System.out.printf("Book borrowed %b", libro3.prestamo());
 //        System.out.printf("%s\n", libro3.toString());
+//        sc.close();
 
 
         Book libro4 = new Book("El Quijote2", "Miguel de Cervantes", 1, 0);
@@ -64,5 +65,6 @@ public class Main {
             System.out.println("no quedan ejemplares");
         }
         System.out.println(libro5.toString());
+        sc2.close();
     }
 }

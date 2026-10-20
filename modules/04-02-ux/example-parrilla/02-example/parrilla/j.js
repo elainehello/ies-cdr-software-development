@@ -5,7 +5,9 @@ window.onload = function(){
 	var contenedor=creaNodo(padre,'','contenedor','div',''); // contenedor de los cajas de colores
 	for (let j=0;j<81;j++){ // 81 cajas	
 		let clase='tipo2';
-		if ( j % 2 == 0 ){ clase='tipo1' }
+		if ( j % 2 == 0 ){
+			clase='tipo1'
+		}
 		// al estar dentro de un contenedor, float se encarga del salto de linea				
 		var ele=creaNodo(contenedor,j+(Math.floor(j/9)),'D'+j,'div',clase);// crear nodo
 		if ( j % 2 == 0 ){ ele.onmouseover=raton }	
@@ -24,8 +26,12 @@ function tecla(e){
 	// en el parametro e tenemos la informacion del evento
 	console.log(e);
 	var estilo='estilo1.css';
-	if (e.key=='2'){estilo='estilo2.css'}
-	if (e.key=='1'){estilo='estilo1.css'}
+	if (e.key=='2'){
+		estilo='estilo2.css'
+	}
+	if (e.key=='1'){
+		estilo='estilo1.css'
+	}
 	var ele=document.getElementsByTagName('link')[0]; // primero pero solo hay uno
 	ele.setAttribute('href',estilo); // modificar un atributo de un elemento
 }

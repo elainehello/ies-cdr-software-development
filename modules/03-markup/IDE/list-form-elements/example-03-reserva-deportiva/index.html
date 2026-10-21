@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Reserva de Instalaciones Deportivas</title>
+    </head>
+    <body>
+        <h2>Reserva de Instalaciones Deportivas</h2>
+
+        <form action="reserva.php">
+            <fieldset>
+                <legend>Datos Personales</legend>
+                <!--content form is table format -->
+                <table border="1" width="100%">
+                    <tr>
+                        <td>Nombre</td>
+                        <td colspan="2"><input type="text" size="50"></td>
+                        <td>Domicilio</td>
+                        <td colspan="2"><input type="text" size="50"></td>
+                    </tr>
+                    <tr>
+                        <td>Documento</td>
+                        <td>
+                            <select name="documento">
+                                <option value=""></option>
+                                <option value="dni">Documento Nacional de Identidad</option>
+                                <option value="tr">Tarjeta de Residencia</option>
+                                <option value="passp">Pasaporte</option>
+                            </select>
+                        </td>
+                        <td>Número Doc.</td>
+                        <td><input type="text" name="numdoc"></td>    
+                        <td>Sexo</td>         
+                        <td>
+                            <input type="radio" name="sexo" value="hombre" id="hombre">
+                            <label for="hombre">Hombre</label>
+                            <input type="radio" name="sexo" value="mujer" id="mujer">
+                            <label for="mujer">Mujer</label>
+                        </td>
+                    <tr>
+                        <td>Teléfono</td>
+                        <td>
+                            <input type="tel" name="telefono">
+                        </td>
+                        <td>Correo Electrónico</td>
+                        <td colspan="3">
+                            <input type="email" name="correo" size="50">
+                        </td>
+                    </tr>
+                    </tr>
+                </table>
+            </fieldset>
+            <fieldset>
+                <legend>Datos de la Instalación a Reservar</legend>
+                <!--content form is table format -->
+                <table border="1" width="100%">
+                    <tr>
+                        <td>Instalación</td>
+                        <td>
+                            <select name="instalacion">
+                                <option value=""></option>
+                                <option value="futbolSalaExt">Futbol Sala Exterior</option>
+                                <option value="futbolSalaCub">Futbol Sala Cubierta</option>
+                                <option value="baloncesto">Baloncesto</option>
+                                <option value="multiproposito">Multipropósito</option>
+                            </select>
+                        </td>
+                        <td>Fecha</td>
+                        <td>
+                            <input type="date">
+                        </td>
+                        <td>Hora Inicio</td>
+                        <td>
+                            <input type="time">
+                        </td>
+                        <td>Núm. Horas (max. 3 horas)</td>
+                        <td>
+                            <input type="number" name="horas" min="1" max="3">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Contratación de Iluminación</td>
+                        <td colspan="2">
+                            <input type="radio" name="luz" value="si" id="luzsi">
+                            <label for="luzsi">Sí</label>
+                            <input type="radio" name="luz" value="no" id="luzno">
+                            <label for="luzno">No</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="8">
+                            <input type="checkbox" name="condiciones" id="condiciones">
+                            <label for="condiciones">Acepta las condiciones del alquiles de instalaciones y normas del complejo deportivo.</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="8" align="center">
+                            <input type="submit" value="Proceder a la reserva">
+                            <input type="reset" value="Borrar Formilario">
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </form>
+    </body>
+</html>

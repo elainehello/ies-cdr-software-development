@@ -327,13 +327,29 @@ nav#tabs .grp:first-child{padding-left:0}
 .relcard p{margin:0}
 .exsteps{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:0 0 10px}
 .exsteps .lbl{font-size:.85rem;color:var(--muted);margin-right:4px}
+details.cmethod{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;background:var(--accent2);padding:10px 14px;margin:0 0 12px}
+details.cmethod summary{cursor:pointer;font-weight:700}
+details.cmethod p{margin:6px 0}
+ol.m4{margin:6px 0 2px}ol.m4 li{margin:4px 0}ol.m4 ul{margin:4px 0}
+.clegend{margin-top:8px;display:grid;gap:8px}
+.clegend .q{font-style:normal;color:var(--ink);font-size:.95rem;display:block;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.clegend .qh{font-weight:600}
+.clegend .qa{display:flex;flex-direction:column;gap:2px;margin:4px 0 4px 12px;font-size:.92rem;color:var(--muted)}
+.clegend .qa b{color:var(--ink)}
+.clegend .qr{font-size:.95rem}
+.clegend .cc{color:#7a2fb8;font-family:var(--mono)}
+.clegend .qmax{font-weight:600;padding:2px 2px}
+.clegend .qmax b{color:var(--accent);font-family:var(--mono)}
+.cases{display:flex;flex-direction:column;gap:4px}
+.case{font-size:.88rem;background:var(--bg);border-radius:6px;padding:4px 8px}
+.case .tag{font-weight:700;display:inline-block;background:var(--accent);color:#fff;border-radius:5px;padding:0 6px;margin-right:6px;font-size:.78rem}
 .legend{display:flex;gap:6px 14px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin-top:8px}
 </style>
 </head>
 <body>
 <header><h1>Modelo Entidad/Relación → Modelo Relacional</h1>
-<p>Bases de Datos · Temas 2 y 3 · Material para el examen práctico en papel: del enunciado al diagrama, las 4 restricciones, los 18 ejercicios resueltos y el paso a tablas con SQL.</p></header>
-<nav id="tabs" role="tablist"><span class="grp">Modelo E/R</span><button class="tab" id="tab-method" role="tab" aria-selected="false">1 · Método</button><button class="tab" id="tab-read" role="tab" aria-selected="false">2 · Leer el enunciado</button><button class="tab" id="tab-restr" role="tab" aria-selected="false">3 · Las 4 restricciones</button><button class="tab" id="tab-dict" role="tab" aria-selected="false">4 · Diccionario</button><button class="tab" id="tab-ex" role="tab" aria-selected="false">5 · Los 18 ejercicios</button><button class="tab" id="tab-quiz" role="tab" aria-selected="false">6 · Entrenamiento</button><span class="grp">Relacional</span><button class="tab" id="tab-tables" role="tab" aria-selected="false">7 · Paso a tablas</button><button class="tab" id="tab-flow" role="tab" aria-selected="false">8 · Claves, CHECK, UML y SQL</button><button class="tab" id="tab-guide" role="tab" aria-selected="false">9 · Resumen de apuntes</button><span class="grp">Examen</span><button class="tab" id="tab-exam" role="tab" aria-selected="false">10 · El día del examen</button></nav>
+<p>Bases de Datos · Temas 2 y 3 · Material para el examen práctico en papel: del enunciado al diagrama, las 4 restricciones, los 26 ejercicios resueltos y el paso a tablas con SQL.</p></header>
+<nav id="tabs" role="tablist"><span class="grp">Modelo E/R</span><button class="tab" id="tab-method" role="tab" aria-selected="false">1 · Método</button><button class="tab" id="tab-read" role="tab" aria-selected="false">2 · Leer el enunciado</button><button class="tab" id="tab-restr" role="tab" aria-selected="false">3 · Las 4 restricciones</button><button class="tab" id="tab-dict" role="tab" aria-selected="false">4 · Diccionario</button><button class="tab" id="tab-ex" role="tab" aria-selected="false">5 · Los 26 ejercicios</button><button class="tab" id="tab-quiz" role="tab" aria-selected="false">6 · Entrenamiento</button><span class="grp">Relacional</span><button class="tab" id="tab-tables" role="tab" aria-selected="false">7 · Paso a tablas</button><button class="tab" id="tab-flow" role="tab" aria-selected="false">8 · Claves, CHECK, UML y SQL</button><button class="tab" id="tab-guide" role="tab" aria-selected="false">9 · Resumen de apuntes</button><span class="grp">Examen</span><button class="tab" id="tab-exam" role="tab" aria-selected="false">10 · El día del examen</button></nav>
 <main>
 <section class="view xv" id="view-method"></section>
 <section class="view xv" id="view-read" hidden></section>
@@ -1151,7 +1167,7 @@ const GUIDE_HTML = `
     <tr><td><b>CHECK</b></td><td>Condición sobre los valores de la misma fila</td><td>Dominios del enunciado (tipos, escalas 1-10, fechas coherentes)</td><td class="mono">CHECK (nivel BETWEEN 1 AND 10)</td></tr>
     <tr><td><b>ASSERTION / TRIGGER</b></td><td>Condiciones entre filas o tablas</td><td>Cardinalidades numéricas (2,30), exclusividad de jerarquías, restricciones de exclusión</td><td class="mono">CREATE TRIGGER …</td></tr>
   </table>
-  <p>En UML (modelo lógico) cada tabla es una clase «table»; la cardinalidad (1,n) del E/R se escribe <span class="mono">1..*</span>, la entidad débil se dibuja como <b>composición</b> y la jerarquía como <b>generalización</b>. La pestaña «8 · Claves, CHECK, UML y SQL» recorre los 18 ejercicios en 5 pasos.</p>
+  <p>En UML (modelo lógico) cada tabla es una clase «table»; la cardinalidad (1,n) del E/R se escribe <span class="mono">1..*</span>, la entidad débil se dibuja como <b>composición</b> y la jerarquía como <b>generalización</b>. La pestaña «8 · Claves, CHECK, UML y SQL» recorre los 26 ejercicios en 5 pasos.</p>
 </div>
 
 <div class="panel">
@@ -1503,7 +1519,7 @@ function renderFlow() {
     P.appendChild(body);
 
     if (step === 0) {
-        body.innerHTML = `<details class="enun"><summary>Enunciado (Tema 2, pág. ${ex.page})</summary><div class="txt">${esc(ex.text.trim())}</div></details>
+        body.innerHTML = `<details class="enun"><summary>Enunciado ${ex.page ? `(Tema 2, pág. ${ex.page})` : ex.source ? `(${ex.source})` : "(ejercicio nuevo de práctica)"}</summary><div class="txt">${esc(ex.text.trim())}</div></details>
           <h3>Diagrama E/R de partida</h3>`;
         const d = document.createElement("div"); d.className = "diagram"; d.appendChild(renderER(ex, { attrs: "keys" })); body.appendChild(d);
         const h = document.createElement("div");
@@ -1883,6 +1899,342 @@ function drawFit(spec, opt) {
 
 if (typeof STATE !== "undefined") STATE.exStep = 99;
 // =====================================================================
+//  EJERCICIOS NUEVOS (19º–23º): restricciones entre interrelaciones,
+//  débil por existencia y atributo derivado.
+//  Atributo derivado: sufijo ~  ·  cons: { a, b, kind, mark, ent }
+// =====================================================================
+EXERCISES.push(
+{
+ id: 19, page: null, title: "Becas y proyectos de investigación", tags: ["exclusividad", "1:1", "1:N"],
+ text: `Una universidad quiere controlar la financiación de su personal investigador.
+De cada departamento se guarda su código y su nombre. Todo profesor pertenece a un único departamento y en cada departamento hay al menos un profesor. De los profesores se conoce su DNI, nombre y categoría.
+La universidad concede becas, de las que se guarda un código, el organismo que la financia y el importe. Cada beca se concede como mucho a un profesor (puede quedar vacante) y un profesor puede disfrutar como mucho de una beca. Interesa saber la fecha de inicio de la beca.
+También hay proyectos de investigación (código, título y presupuesto). En un proyecto pueden estar contratados varios profesores, o ninguno todavía, y un profesor solo puede estar contratado en un proyecto.
+Un profesor puede disfrutar de una beca o estar contratado en un proyecto, pero nunca de ambas cosas a la vez.`,
+ ents: [
+  { id: "DEPARTAMENTO", x: 120, y: 300, attrs: ["#cod_dep", "nombre"] },
+  { id: "PROFESOR", x: 480, y: 300, attrs: ["#dni", "nombre", "categoria"] },
+  { id: "BECA", x: 860, y: 160, attrs: ["#cod_beca", "organismo", "importe"] },
+  { id: "PROYECTO", x: 860, y: 440, attrs: ["#cod_proyecto", "titulo", "presupuesto"] }
+ ],
+ rels: [
+  { n: "Pertenece", a: "DEPARTAMENTO", b: "PROFESOR", ca: "(1,1)", cb: "(1,n)", x: 300, y: 300,
+    why: "«Todo profesor pertenece a <b>un único</b> departamento» → (1,1) junto a DEPARTAMENTO. «En cada departamento hay <b>al menos un</b> profesor» → (1,n) junto a PROFESOR." },
+  { n: "Disfruta", a: "BECA", b: "PROFESOR", ca: "(0,1)", cb: "(0,1)", x: 670, y: 160, fkIn: "PROFESOR", attrs: ["fecha_inicio"],
+    why: "«Un profesor puede disfrutar <b>como mucho de una</b> beca» → (0,1) junto a BECA (puede no tener ninguna). «Cada beca se concede <b>como mucho a un</b> profesor (puede quedar vacante)» → (0,1) junto a PROFESOR. Los dos máximos son 1 → 1:1." },
+  { n: "Contratado", a: "PROYECTO", b: "PROFESOR", ca: "(0,1)", cb: "(0,n)", x: 670, y: 440,
+    why: "«Un profesor solo puede estar contratado en <b>un</b> proyecto» (y puede no estarlo) → (0,1) junto a PROYECTO. «En un proyecto pueden estar contratados <b>varios</b> profesores, <b>o ninguno</b>» → (0,n) junto a PROFESOR." }
+ ],
+ cons: [ { a: "Disfruta", b: "Contratado", kind: "exclusividad", label: "exclusividad", ent: "PROFESOR" } ],
+ notes: [
+  "«Puede disfrutar de una beca o estar contratado en un proyecto, <b>pero nunca de ambas cosas</b>» → <b>restricción de exclusividad</b>. Prohíbe participar en la otra interrelación con <b>cualquier</b> ejemplar, no solo con el mismo: si tiene una beca, no puede estar en <b>ningún</b> proyecto. Se dibuja con un <b>arco</b> que corta las dos líneas que salen de PROFESOR.",
+  "Fíjate en que las cardinalidades no cambian por la restricción: cada interrelación se analiza por separado y la exclusividad se añade encima.",
+  "En tablas, las dos claves ajenas (cod_beca y cod_proyecto) acaban en PROFESOR, así que la exclusividad se garantiza con un <b>CHECK</b>: <code>cod_beca IS NULL OR cod_proyecto IS NULL</code>."
+ ]
+},
+{
+ id: 20, page: null, title: "Dirección de tesis doctorales", tags: ["inclusividad", "atributo derivado", "1:1", "N:M"],
+ text: `Un programa de doctorado quiere registrar la producción científica de sus profesores y las tesis que dirigen.
+De cada profesor se guarda su DNI, su nombre y el número de artículos publicados, que se calcula a partir de los artículos que tiene registrados.
+De los artículos se guarda el DOI, el título, la revista y el año. Un artículo puede estar firmado por uno o varios profesores, y para cada autor interesa su orden de firma. Un profesor puede no haber publicado nada todavía.
+Cada tesis (código, título, fecha de lectura y calificación, que no existen hasta que se defiende) la dirige un único profesor; un profesor puede dirigir varias tesis o ninguna.
+Cada tesis la realiza un único doctorando (DNI y nombre) y un doctorando realiza como mucho una tesis.
+Solo pueden dirigir tesis los profesores que hayan publicado al menos dos artículos.`,
+ ents: [
+  { id: "PROFESOR", x: 470, y: 110, attrs: ["#dni", "nombre", "num_articulos~"] },
+  { id: "ARTICULO", label: "ARTÍCULO", x: 170, y: 470, attrs: ["#doi", "titulo", "revista", "anio"] },
+  { id: "TESIS", x: 690, y: 470, attrs: ["#cod_tesis", "titulo", "fecha_lectura*", "calificacion*"] },
+  { id: "DOCTORANDO", x: 1030, y: 470, attrs: ["#dni_doc", "nombre"] }
+ ],
+ rels: [
+  { n: "Publica", a: "PROFESOR", b: "ARTICULO", ca: "(1,n)", cb: "(0,n)", x: 300, y: 300, attrs: ["orden_firma"], ap: "l",
+    why: "«Un artículo puede estar firmado por <b>uno o varios</b> profesores» → (1,n) junto a PROFESOR. «Un profesor puede <b>no haber publicado nada</b>» y puede tener muchos → (0,n) junto a ARTÍCULO. El orden de firma es de la pareja (profesor, artículo) → atributo del rombo." },
+  { n: "Dirige", a: "PROFESOR", b: "TESIS", ca: "(1,1)", cb: "(0,n)", x: 640, y: 300,
+    why: "«Cada tesis la dirige <b>un único</b> profesor» → (1,1) junto a PROFESOR. «Un profesor puede dirigir <b>varias tesis o ninguna</b>» → (0,n) junto a TESIS." },
+  { n: "Realiza", a: "DOCTORANDO", b: "TESIS", ca: "(1,1)", cb: "(0,1)", x: 865, y: 470, fkIn: "TESIS",
+    why: "«Cada tesis la realiza <b>un único</b> doctorando» → (1,1) junto a DOCTORANDO. «Un doctorando realiza <b>como mucho una</b> tesis» → (0,1) junto a TESIS. Máximos 1 y 1 → 1:1." }
+ ],
+ cons: [ { a: "Dirige", b: "Publica", kind: "inclusividad", label: "inclusividad", mark: "(2,n)", ent: "PROFESOR" } ],
+ notes: [
+  "«Solo pueden dirigir tesis los profesores que hayan publicado <b>al menos dos</b> artículos» → <b>restricción de inclusividad</b> con cardinalidad (2,n): para participar en Dirige, el profesor tiene que participar al menos dos veces en Publica, con <b>cualquier</b> artículo. Se dibuja con un <b>arco con flecha</b> de Dirige (la que exige) a Publica (la exigida) y la etiqueta (2,n).",
+  "No es una inclusión: no se exige «el mismo» ejemplar (no tiene sentido que la tesis sea un artículo). Cuando la frase dice «al menos N» o «haber hecho algún…», es inclusividad.",
+  "«El número de artículos <b>se calcula</b> a partir de…» → <b>atributo derivado</b> (D). En tablas no se guarda: se obtiene con una consulta o una vista (<code>COUNT(*)</code> sobre PUBLICA).",
+  "Fecha de lectura y calificación «no existen hasta que se defiende» → atributos opcionales (línea discontinua, admiten NULL)."
+ ]
+},
+{
+ id: 21, page: null, title: "Matrículas y exámenes", tags: ["inclusión", "N:M", "identificador alternativo"],
+ text: `La secretaría de un instituto quiere gestionar las matrículas y los exámenes de su alumnado.
+De cada alumno se guarda su DNI, su nombre y su email, que también es único. De cada asignatura, su código, su nombre y el número de créditos.
+Un alumno se matricula en una o varias asignaturas, y en una asignatura puede haber muchos alumnos matriculados o ninguno. De cada matrícula se guarda el curso académico.
+Los alumnos se examinan de las asignaturas: de cada examen se guarda la fecha y la nota, y un alumno puede presentarse varias veces a la misma asignatura en fechas distintas.
+Un alumno solo puede examinarse de una asignatura en la que esté matriculado.
+Cada asignatura la imparte un único profesor (código, nombre y departamento) y un profesor puede impartir varias asignaturas o ninguna.`,
+ ents: [
+  { id: "ALUMNO", x: 150, y: 300, attrs: ["#dni", "nombre", "email!"] },
+  { id: "ASIGNATURA", x: 700, y: 300, attrs: ["#cod_asig", "nombre", "creditos"] },
+  { id: "PROFESOR", x: 1070, y: 300, attrs: ["#cod_prof", "nombre", "departamento"] }
+ ],
+ rels: [
+  { n: "Matricula", a: "ALUMNO", b: "ASIGNATURA", ca: "(0,n)", cb: "(1,n)", x: 425, y: 160, attrs: ["curso_academico"], ap: "t",
+    why: "Una asignatura, ¿cuántos alumnos? «Muchos <b>o ninguno</b>» → (0,n) junto a ALUMNO. Un alumno, ¿en cuántas asignaturas? «En <b>una o varias</b>» → (1,n) junto a ASIGNATURA." },
+  { n: "Examina", a: "ALUMNO", b: "ASIGNATURA", ca: "(0,n)", cb: "(0,n)", x: 425, y: 440, attrs: ["#fecha", "nota"], ap: "b",
+    why: "Un alumno puede no haberse examinado aún o haberse examinado de muchas → (0,n) junto a ASIGNATURA; igual en el otro sentido → (0,n) junto a ALUMNO. «Puede presentarse <b>varias veces</b> a la misma asignatura en fechas distintas» → la fecha forma parte de la clave del examen." },
+  { n: "Imparte", a: "PROFESOR", b: "ASIGNATURA", ca: "(1,1)", cb: "(0,n)", x: 885, y: 300,
+    why: "«Cada asignatura la imparte <b>un único</b> profesor» → (1,1) junto a PROFESOR. «Varias asignaturas <b>o ninguna</b>» → (0,n) junto a ASIGNATURA." }
+ ],
+ cons: [ { a: "Examina", b: "Matricula", kind: "inclusion", label: "inclusión" } ],
+ notes: [
+  "«Un alumno <b>solo puede</b> examinarse de una asignatura <b>en la que esté matriculado</b>» → <b>restricción de inclusión</b>: todo par (alumno, asignatura) que aparece en Examina tiene que aparecer <b>también</b> en Matricula. Es el <b>mismo</b> par, por eso es inclusión y no inclusividad. Se dibuja con una <b>flecha discontinua</b> de Examina (incluida) a Matricula (la que la incluye).",
+  "Matricula y Examina unen las mismas entidades pero significan cosas distintas → dos rombos, nunca uno solo.",
+  "En tablas, la inclusión se garantiza con una <b>clave ajena compuesta</b>: <code>FOREIGN KEY (dni, cod_asig) REFERENCES matricula (dni, cod_asig)</code> en EXAMINA. Funciona porque la clave primaria de MATRICULA es exactamente (dni, cod_asig).",
+  "El email «también es único» → identificador alternativo (círculo medio relleno) → UNIQUE."
+ ]
+},
+{
+ id: 22, page: null, title: "Torneos de pádel", tags: ["exclusión", "débil por existencia (E)", "cardinalidad (2,4)"],
+ text: `Un club de pádel organiza torneos (código, nombre y fecha de inicio). Cada torneo consta de uno o varios partidos. Los partidos tienen un código propio, una fecha y un resultado, que se rellena al terminar. Si se elimina un torneo, sus partidos dejan de tener sentido y se eliminan con él.
+De los socios del club se guarda su número de socio, nombre y teléfono.
+En cada partido juegan como mínimo 2 y como máximo 4 socios, y para cada jugador interesa la posición en la que juega (drive o revés). Un socio puede jugar muchos partidos o ninguno.
+Cada partido lo arbitra un único socio, y un socio puede arbitrar varios partidos o ninguno.
+Un socio puede jugar unos partidos y arbitrar otros, pero nunca puede arbitrar un partido en el que juega.
+Cada partido se disputa en una pista (número, tipo —cristal o muro— y si es cubierta) y en una pista se disputan muchos partidos.`,
+ ents: [
+  { id: "TORNEO", x: 520, y: 80, attrs: ["#cod_torneo", "nombre", "fecha_inicio"] },
+  { id: "PARTIDO", x: 520, y: 330, weak: true, attrs: ["#cod_partido", "fecha", "resultado*"] },
+  { id: "SOCIO", x: 120, y: 330, attrs: ["#num_socio", "nombre", "telefono"] },
+  { id: "PISTA", x: 930, y: 330, attrs: ["#num_pista", "tipo", "cubierta"] }
+ ],
+ rels: [
+  { n: "Consta", a: "TORNEO", b: "PARTIDO", ca: "(1,1)", cb: "(1,n)", dep: "E", x: 520, y: 205,
+    why: "«Cada torneo consta de <b>uno o varios</b> partidos» → (1,n) junto a PARTIDO. Cada partido es de <b>un</b> torneo → (1,1) junto a TORNEO. Es <b>débil por existencia</b> (E): el partido tiene código propio (se identifica solo), pero «si se elimina un torneo, sus partidos se eliminan con él»." },
+  { n: "Juega", a: "SOCIO", b: "PARTIDO", ca: "(2,4)", cb: "(0,n)", x: 320, y: 220, attrs: ["posicion"], ap: "t",
+    why: "Un partido, ¿cuántos socios juegan? «Como <b>mínimo 2</b> y como <b>máximo 4</b>» → (2,4) junto a SOCIO. Un socio, ¿cuántos partidos? «Muchos <b>o ninguno</b>» → (0,n) junto a PARTIDO. El máximo 4 es mayor que 1, así que cuenta como n → N:M." },
+  { n: "Arbitra", a: "SOCIO", b: "PARTIDO", ca: "(1,1)", cb: "(0,n)", x: 320, y: 440,
+    why: "«Cada partido lo arbitra <b>un único</b> socio» → (1,1) junto a SOCIO. «Varios partidos <b>o ninguno</b>» → (0,n) junto a PARTIDO." },
+  { n: "Disputa", a: "PISTA", b: "PARTIDO", ca: "(1,1)", cb: "(0,n)", x: 735, y: 330,
+    why: "«Cada partido se disputa en <b>una</b> pista» → (1,1) junto a PISTA. «En una pista se disputan muchos partidos» (y una pista nueva puede no tener ninguno) → (0,n) junto a PARTIDO." }
+ ],
+ cons: [ { a: "Juega", b: "Arbitra", kind: "exclusion", label: "exclusión" } ],
+ notes: [
+  "«<b>Nunca puede arbitrar un partido en el que juega</b>», pero sí «jugar unos y arbitrar <b>otros</b>» → <b>restricción de exclusión</b>: prohíbe el <b>mismo</b> par (socio, partido) en Juega y en Arbitra. Se dibuja con una <b>línea discontinua</b> entre los dos rombos.",
+  "Compárala con la exclusividad del ejercicio 19º: allí, con tener una beca ya no podía estar en <b>ningún</b> proyecto; aquí solo está prohibido el <b>mismo</b> partido.",
+  "Débil por existencia (<b>E</b> en el rombo, doble rectángulo): el partido tiene identificador propio, por eso su clave es solo cod_partido; la dependencia se traduce en una clave ajena NOT NULL con <b>ON DELETE CASCADE</b>.",
+  "(2,4) jugadores por partido y la exclusión no se pueden garantizar con claves ni CHECK: hacen falta aserciones o triggers."
+ ]
+},
+{
+ id: 23, page: null, title: "Clínica veterinaria (tipo examen)", tags: ["exclusividad", "inclusión", "multivaluado", "1:1"],
+ text: `Una clínica veterinaria quiere informatizar su gestión.
+De los clientes se guarda el DNI, el nombre y sus teléfonos de contacto (pueden ser varios). Cada cliente tiene una o varias mascotas, y cada mascota pertenece a un único cliente. De las mascotas se guarda el número de chip, el nombre, la especie y la fecha de nacimiento.
+Una mascota puede tener contratada una póliza de una aseguradora (número de póliza y compañía) o estar suscrita a un plan de salud de la clínica (código, nombre y cuota mensual), pero nunca ambas cosas. Cada póliza cubre a una única mascota; a un plan de salud pueden estar suscritas muchas mascotas o ninguna.
+De los veterinarios se guarda el número de colegiado, el nombre y la especialidad. Los veterinarios atienden a las mascotas en consulta; de cada consulta se guarda la fecha y el diagnóstico, y una mascota puede ir varias veces a consulta con el mismo veterinario.
+Los veterinarios también operan a las mascotas (fecha y tipo de cirugía), pero un veterinario solo puede operar a una mascota que haya atendido antes en consulta.`,
+ ents: [
+  { id: "CLIENTE", x: 520, y: 610, attrs: ["#dni", "nombre", "telefono+"] },
+  { id: "MASCOTA", x: 520, y: 340, attrs: ["#num_chip", "nombre", "especie", "fecha_nac"] },
+  { id: "POLIZA", label: "PÓLIZA", x: 120, y: 190, attrs: ["#num_poliza", "compania"] },
+  { id: "PLAN_SALUD", x: 120, y: 490, attrs: ["#cod_plan", "nombre", "cuota"] },
+  { id: "VETERINARIO", x: 990, y: 340, attrs: ["#num_colegiado", "nombre", "especialidad"] }
+ ],
+ rels: [
+  { n: "Tiene", a: "CLIENTE", b: "MASCOTA", ca: "(1,1)", cb: "(1,n)", x: 520, y: 485,
+    why: "«Cada mascota pertenece a <b>un único</b> cliente» → (1,1) junto a CLIENTE. «Cada cliente tiene <b>una o varias</b> mascotas» → (1,n) junto a MASCOTA." },
+  { n: "Asegurada", a: "POLIZA", b: "MASCOTA", ca: "(0,1)", cb: "(1,1)", x: 320, y: 290, fkIn: "MASCOTA",
+    why: "Una mascota, ¿cuántas pólizas? <b>Puede</b> tener una → (0,1) junto a PÓLIZA. «Cada póliza cubre a <b>una única</b> mascota» → (1,1) junto a MASCOTA. Máximos 1 y 1 → 1:1." },
+  { n: "Suscrita", a: "PLAN_SALUD", b: "MASCOTA", ca: "(0,1)", cb: "(0,n)", x: 320, y: 390,
+    why: "Una mascota, ¿a cuántos planes? Como mucho a uno, y puede no estar en ninguno → (0,1) junto a PLAN_SALUD. «Muchas mascotas <b>o ninguna</b>» → (0,n) junto a MASCOTA." },
+  { n: "Consulta", a: "VETERINARIO", b: "MASCOTA", ca: "(0,n)", cb: "(0,n)", x: 745, y: 290, attrs: ["#fecha", "diagnostico"], ap: "t",
+    why: "Un veterinario atiende a muchas mascotas y una mascota puede ir a varios veterinarios (o a ninguno aún) → (0,n) en los dos lados, N:M. «Puede ir <b>varias veces</b> con el mismo veterinario» → la fecha entra en la clave." },
+  { n: "Opera", a: "VETERINARIO", b: "MASCOTA", ca: "(0,n)", cb: "(0,n)", x: 745, y: 390, attrs: ["#fecha_op", "tipo_cirugia"], ap: "b",
+    why: "Un veterinario puede operar a muchas mascotas o a ninguna, y una mascota puede ser operada por varios veterinarios o por ninguno → (0,n) en los dos lados, N:M con la fecha en la clave." }
+ ],
+ cons: [
+  { a: "Asegurada", b: "Suscrita", kind: "exclusividad", label: "exclusividad", ent: "MASCOTA" },
+  { a: "Opera", b: "Consulta", kind: "inclusion", label: "inclusión" }
+ ],
+ notes: [
+  "Este ejercicio junta dos restricciones, como puede pasar en el examen. Búscalas frase a frase:",
+  "«Póliza <b>o</b> plan de salud, <b>pero nunca ambas cosas</b>» → <b>exclusividad</b> (con cualquier póliza o plan): arco sobre las líneas de MASCOTA. En tablas, num_poliza y cod_plan acaban en MASCOTA → <code>CHECK (num_poliza IS NULL OR cod_plan IS NULL)</code>.",
+  "«<b>Solo puede</b> operar a una mascota <b>que haya atendido</b> en consulta» → <b>inclusión</b> (el mismo par veterinario–mascota): flecha discontinua de Opera a Consulta.",
+  "¡Ojo! Aquí la inclusión <b>no</b> se puede hacer con una clave ajena compuesta, porque la clave de CONSULTA incluye la fecha (num_colegiado, num_chip, fecha) y la FK tendría que apuntar a una clave completa. Se resuelve con una aserción o un trigger. Compáralo con el ejercicio 21º.",
+  "«Sus teléfonos (pueden ser varios)» → atributo multivaluado → tabla aparte CLIENTE_TELEFONO."
+ ]
+}
+);
+
+Object.assign(CONSTRAINTS, {
+ 19: { checks: [
+   ["PROFESOR", "cod_beca IS NULL OR cod_proyecto IS NULL", "Restricción de exclusividad: o beca o proyecto, nunca las dos (las dos claves ajenas están en la misma tabla)."],
+   ["BECA", "importe > 0", "Importe positivo."],
+   ["PROYECTO", "presupuesto > 0", "Presupuesto positivo."] ],
+   triggers: ["(1,n) profesores por departamento: que no quede ningún departamento vacío → contar filas: aserción o trigger."] },
+ 20: { checks: [
+   ["PUBLICA", "orden_firma > 0", "El orden de firma empieza en 1."],
+   ["TESIS", "calificacion IS NULL OR calificacion IN ('aprobado', 'notable', 'sobresaliente', 'cum laude')", "Dominio de la calificación; nula hasta la defensa."] ],
+   triggers: ["Restricción de inclusividad (2,n): antes de insertar en TESIS, comprobar que <code>(SELECT COUNT(*) FROM publica WHERE dni = NEW.dni) >= 2</code> → trigger o aserción.",
+              "num_articulos es derivado: no se guarda; se calcula con una vista <code>SELECT dni, COUNT(*) FROM publica GROUP BY dni</code>."] },
+ 21: { checks: [
+   ["ASIGNATURA", "creditos > 0", "Créditos positivos."],
+   ["EXAMINA", "nota BETWEEN 0 AND 10", "Escala de notas."] ],
+   triggers: ["La inclusión EXAMINA ⊆ MATRICULA ya la garantiza la clave ajena compuesta (dni, cod_asig) → MATRICULA: no hace falta trigger.",
+              "(1,n) asignaturas por alumno: que todo alumno tenga al menos una matrícula → aserción o trigger."] },
+ 22: { checks: [
+   ["PISTA", "tipo IN ('cristal', 'muro')", "Dominio del tipo de pista."],
+   ["JUEGA", "posicion IN ('drive', 'reves')", "Dominio de la posición."] ],
+   triggers: ["Restricción de exclusión: el árbitro de un partido (PARTIDO.num_socio) no puede aparecer en JUEGA para ese mismo partido → trigger o aserción.",
+              "(2,4) jugadores por partido → contar filas de JUEGA: aserción o trigger."] },
+ 23: { checks: [
+   ["MASCOTA", "num_poliza IS NULL OR cod_plan IS NULL", "Restricción de exclusividad: póliza o plan de salud, nunca las dos."],
+   ["PLAN_SALUD", "cuota > 0", "Cuota positiva."] ],
+   triggers: ["Restricción de inclusión OPERA ⊆ CONSULTA: como la clave de CONSULTA lleva la fecha, no vale una FK; trigger que compruebe que existe alguna fila en CONSULTA con el mismo (num_colegiado, num_chip).",
+              "(1,n) mascotas por cliente → aserción o trigger."] }
+});
+
+// =====================================================================
+//  EJERCICIOS 24º–26º (enunciados aportados en clase)
+//  Atributo compuesto: nombre(parte1,parte2,…)
+// =====================================================================
+EXERCISES.push(
+{
+ id: 24, page: null, source: "Problema 2 (*) de clase", title: "Sistema de ventas", tags: ["N:M con atributos", "atributo compuesto", "multivaluado", "histórico de precio"],
+ text: `Le contratan para hacer una BD que permita apoyar la gestión de un sistema de ventas. La empresa necesita llevar un control de proveedores, clientes, productos y ventas.
+Un proveedor tiene un RUT, nombre, dirección, teléfono y página web. Un cliente también tiene RUT, nombre, dirección, pero puede tener varios teléfonos de contacto. La dirección se entiende por calle, número, comuna y ciudad.
+Un producto tiene un id único, nombre, precio actual, stock y nombre del proveedor. Además se organizan en categorías, y cada producto va sólo en una categoría. Una categoría tiene id, nombre y descripción.
+Por razones de contabilidad, se debe registrar la información de cada venta con un id, fecha, cliente, descuento y monto final. Además se debe guardar el precio al momento de la venta, la cantidad vendida y el monto total por el producto.`,
+ ents: [
+  { id: "PROVEEDOR", x: 140, y: 110, attrs: ["#rut", "nombre", "direccion(calle,numero,comuna,ciudad)", "telefono", "pagina_web"] },
+  { id: "PRODUCTO", x: 620, y: 110, attrs: ["#id_producto", "nombre", "precio_actual", "stock"] },
+  { id: "CATEGORIA", label: "CATEGORÍA", x: 1080, y: 110, attrs: ["#id_categoria", "nombre", "descripcion"] },
+  { id: "VENTA", x: 620, y: 470, attrs: ["#id_venta", "fecha", "descuento", "monto_final"] },
+  { id: "CLIENTE", x: 140, y: 470, attrs: ["#rut", "nombre", "direccion(calle,numero,comuna,ciudad)", "telefono+"] }
+ ],
+ rels: [
+  { n: "Suministra", a: "PROVEEDOR", b: "PRODUCTO", ca: "(1,1)", cb: "(1,n)", x: 380, y: 110, rename: { rut: "rut_proveedor" },
+    why: "«Un producto tiene … <b>nombre del proveedor</b>» → el proveedor <b>no</b> es un atributo de PRODUCTO (ya es una entidad con sus datos): es una interrelación. Cada producto tiene <b>un</b> proveedor → (1,1) junto a PROVEEDOR. Supuesto: un proveedor se registra porque suministra al menos un producto → (1,n) junto a PRODUCTO." },
+  { n: "Pertenece", a: "CATEGORIA", b: "PRODUCTO", ca: "(1,1)", cb: "(0,n)", x: 860, y: 110,
+    why: "«Cada producto va <b>sólo en una</b> categoría» → (1,1) junto a CATEGORÍA. Una categoría agrupa varios productos y, recién creada, puede estar vacía → (0,n) junto a PRODUCTO." },
+  { n: "Realiza", a: "CLIENTE", b: "VENTA", ca: "(1,1)", cb: "(0,n)", x: 380, y: 470, rename: { rut: "rut_cliente" },
+    why: "«Cada venta con … <b>cliente</b>» → cada venta es de un único cliente → (1,1) junto a CLIENTE. Un cliente puede tener muchas ventas o ninguna todavía → (0,n) junto a VENTA." },
+  { n: "Detalle", a: "VENTA", b: "PRODUCTO", ca: "(0,n)", cb: "(1,n)", x: 620, y: 290, attrs: ["precio_venta", "cantidad", "monto_total"], ap: "r",
+    why: "Una venta incluye <b>uno o varios</b> productos → (1,n) junto a PRODUCTO. Un producto puede venderse en muchas ventas o en ninguna → (0,n) junto a VENTA. Máximos n y n → N:M. El precio en el momento de la venta, la cantidad y el monto total dependen de la pareja (venta, producto) → atributos del rombo." }
+ ],
+ notes: [
+  "<b>Precio actual</b> (en PRODUCTO) y <b>precio al momento de la venta</b> (en Detalle) son datos distintos: si mañana sube el precio, las ventas antiguas deben conservar el que se cobró. Por eso el enunciado dice «por razones de contabilidad».",
+  "«La dirección se entiende por calle, número, comuna y ciudad» → <b>atributo compuesto</b>. En el diagrama es una piruleta con sus componentes; en tablas se descompone en cuatro columnas.",
+  "«Puede tener <b>varios teléfonos</b>» (solo el cliente) → multivaluado (1,n) → tabla CLIENTE_TELEFONO. El proveedor tiene un único teléfono → atributo normal.",
+  "Supuesto: PROVEEDOR y CLIENTE se identifican por el RUT. Si un mismo RUT pudiera ser cliente y proveedor, se podría plantear una jerarquía solapada PERSONA → CLIENTE / PROVEEDOR; con este enunciado no hace falta.",
+  "monto_total (precio_venta × cantidad) y monto_final (suma de líneas − descuento) se pueden calcular: el enunciado pide guardarlos, pero conviene indicarlo como supuesto (atributos derivados que se almacenan)."
+ ]
+},
+{
+ id: 25, page: null, source: "Problema 1 (*) de clase", title: "Artículos y encargos", tags: ["débil (ID)", "N:M con atributo", "atributo derivado", "CHECK de rango"],
+ text: `Una base de datos para una pequeña empresa debe contener información acerca de clientes, artículos y pedidos. Hasta el momento se registran los siguientes datos en documentos varios:
+• Para cada cliente: Número de cliente (único), Direcciones de envío (varias por cliente), Saldo, Límite de crédito (depende del cliente, pero en ningún caso debe superar los 3.000.000 pts), Descuento.
+• Para cada artículo: Número de artículo (único), Fábricas que lo distribuyen, Existencias de ese artículo en cada fábrica, Descripción del artículo.
+• Para cada pedido: Cada pedido tiene una cabecera y el cuerpo del pedido. La cabecera está formada por el número de cliente, dirección de envío y fecha del pedido. El cuerpo del pedido son varias líneas, en cada línea se especifican el número del artículo pedido y la cantidad.
+Además, se ha determinado que se debe almacenar la información de las fábricas. Sin embargo, dado el uso de distribuidores, se usará: Número de la fábrica (único) y Teléfono de contacto. Y se desean ver cuántos artículos (en total) provee la fábrica. También, por información estratégica, se podría incluir información de fábricas alternativas respecto de las que ya fabrican artículos para esta empresa.
+Nota: Una dirección se entenderá como No, Calle, Comuna y Ciudad. Una fecha incluye hora.`,
+ ents: [
+  { id: "CLIENTE", x: 140, y: 110, attrs: ["#num_cliente", "saldo", "limite_credito", "descuento"] },
+  { id: "DIRECCION", label: "DIRECCIÓN", x: 140, y: 480, weak: true, attrs: ["#num_dir", "numero", "calle", "comuna", "ciudad"] },
+  { id: "PEDIDO", x: 660, y: 110, attrs: ["#num_pedido", "fecha_hora"] },
+  { id: "ARTICULO", label: "ARTÍCULO", x: 660, y: 480, attrs: ["#num_articulo", "descripcion"] },
+  { id: "FABRICA", label: "FÁBRICA", x: 1120, y: 480, attrs: ["#num_fabrica", "telefono", "total_articulos~"] }
+ ],
+ rels: [
+  { n: "Tiene", a: "CLIENTE", b: "DIRECCION", ca: "(1,1)", cb: "(1,n)", dep: "ID", x: 140, y: 295,
+    why: "«Direcciones de envío (<b>varias por cliente</b>)» → (1,n) junto a DIRECCIÓN. Cada dirección es de su cliente → (1,1) junto a CLIENTE. No basta un atributo multivaluado porque el pedido tiene que <b>apuntar</b> a una dirección concreta; por eso DIRECCIÓN es entidad, débil (se numera dentro de cada cliente)." },
+  { n: "Hace", a: "CLIENTE", b: "PEDIDO", ca: "(1,1)", cb: "(0,n)", x: 400, y: 110,
+    why: "La cabecera lleva <b>el</b> número de cliente → cada pedido es de un único cliente → (1,1) junto a CLIENTE. Un cliente puede tener muchos pedidos o ninguno → (0,n) junto a PEDIDO." },
+  { n: "Envio", label: "Se_envía", a: "DIRECCION", b: "PEDIDO", ca: "(1,1)", cb: "(0,n)", x: 400, y: 295,
+    why: "La cabecera lleva <b>la</b> dirección de envío → (1,1) junto a DIRECCIÓN. A una dirección se pueden enviar muchos pedidos o ninguno → (0,n) junto a PEDIDO." },
+  { n: "Linea", label: "Línea", a: "PEDIDO", b: "ARTICULO", ca: "(0,n)", cb: "(1,n)", x: 660, y: 295, attrs: ["cantidad"], ap: "r",
+    why: "«El cuerpo del pedido son <b>varias</b> líneas» con un artículo cada una → (1,n) junto a ARTÍCULO. Un artículo puede aparecer en muchos pedidos o en ninguno → (0,n) junto a PEDIDO. La cantidad es de la pareja (pedido, artículo) → atributo del rombo." },
+  { n: "Distribuye", a: "FABRICA", b: "ARTICULO", ca: "(1,n)", cb: "(0,n)", x: 890, y: 480, attrs: ["existencias"], ap: "b",
+    why: "«Fábricas que lo distribuyen» → un artículo lo distribuyen <b>una o varias</b> fábricas → (1,n) junto a FÁBRICA. Una fábrica provee muchos artículos, y las «fábricas <b>alternativas</b>» todavía no proveen ninguno → (0,n) junto a ARTÍCULO. «Existencias en <b>cada</b> fábrica» → depende de la pareja → atributo del rombo." }
+ ],
+ notes: [
+  "Las <b>direcciones de envío</b> son la clave del ejercicio: un cliente tiene varias y cada pedido usa una de ellas. Como el pedido tiene que referenciar una dirección concreta, se modela como entidad débil y no como atributo multivaluado.",
+  "En tablas, PEDIDO recibe num_cliente dos veces (por Hace y por la dirección de envío). Deben coincidir, porque la dirección tiene que ser del mismo cliente → CHECK <code>num_cliente = num_cliente_envio</code> (o usar una sola columna en el examen y explicarlo).",
+  "«Límite de crédito … <b>en ningún caso debe superar</b> los 3.000.000» → restricción de dominio → CHECK.",
+  "«Se desean ver <b>cuántos</b> artículos (en total) provee la fábrica» → <b>atributo derivado</b> (D): se calcula a partir de Distribuye; en tablas, una vista.",
+  "«Fábricas <b>alternativas</b>» → fábricas que existen aunque aún no provean nada → mínimo 0.",
+  "El enunciado no da identificador para el pedido: se añade num_pedido (supuesto). «Una fecha incluye hora» → fecha_hora (DATETIME)."
+ ]
+},
+{
+ id: 26, page: null, source: "Problema 3 de clase", title: "Carreteras", tags: ["débil (ID)", "inclusión", "jerarquía parcial", "dominio con CHECK"],
+ text: `Diseñar un esquema E/R que recoja la organización de una base de datos para contener la información sobre todas las carreteras del país, sabiendo que se deben cumplir las siguientes especificaciones:
+- Las carreteras están divididas en varias categorías (locales, comerciales, regionales, nacionales, autovías, etc).
+- Las carreteras se dividen en tramos. Un tramo siempre pertenece a una única carretera y no puede cambiar de carretera.
+- Un tramo puede pasar por varias comunas, interesando conocer el Km de la carretera y la comuna donde empieza el tramo y en donde termina.
+- Para los tramos que suponen principio o final de carretera, interesa saber si es que la carretera concluye físicamente o es que confluye en otra carretera. En este caso, interesa conocer con qué carretera confluye y en qué kilómetro, tramo y comuna.`,
+ ents: [
+  { id: "CARRETERA", x: 140, y: 120, attrs: ["#cod_carretera", "nombre", "categoria"] },
+  { id: "TRAMO", x: 560, y: 120, weak: true, attrs: ["#num_tramo", "km_inicio", "km_fin", "extremo*"] },
+  { id: "COMUNA", x: 560, y: 500, attrs: ["#cod_comuna", "nombre"] },
+  { id: "CONFLUYENTE", x: 1000, y: 330, attrs: ["km_confluencia"] }
+ ],
+ rels: [
+  { n: "Tiene", a: "CARRETERA", b: "TRAMO", ca: "(1,1)", cb: "(1,n)", dep: "ID", x: 350, y: 120,
+    why: "«Las carreteras se dividen en tramos» → una carretera tiene <b>uno o varios</b> → (1,n) junto a TRAMO. «Un tramo siempre pertenece a <b>una única</b> carretera» → (1,1) junto a CARRETERA. «<b>No puede cambiar</b> de carretera» → TRAMO es débil por identificación: su clave incluye la de la carretera (tramo 1 de la A-6, tramo 1 de la M-30…)." },
+  { n: "Pasa", a: "COMUNA", b: "TRAMO", ca: "(1,n)", cb: "(0,n)", x: 560, y: 310,
+    why: "«Un tramo puede pasar por <b>varias</b> comunas» → (1,n) junto a COMUNA (al menos pasa por una). Por una comuna pueden pasar muchos tramos o ninguno → (0,n) junto a TRAMO." },
+  { n: "Empieza", a: "COMUNA", b: "TRAMO", ca: "(1,1)", cb: "(0,n)", x: 360, y: 310, rename: { cod_comuna: "comuna_inicio" },
+    why: "«La comuna donde <b>empieza</b> el tramo» → una sola → (1,1) junto a COMUNA. En una comuna pueden empezar muchos tramos o ninguno → (0,n) junto a TRAMO." },
+  { n: "Termina", a: "COMUNA", b: "TRAMO", ca: "(1,1)", cb: "(0,n)", x: 760, y: 310, rename: { cod_comuna: "comuna_fin" },
+    why: "Igual que Empieza: un tramo termina en <b>una</b> comuna → (1,1) junto a COMUNA; (0,n) junto a TRAMO. Son dos rombos distintos porque tienen significados distintos." },
+  { n: "Confluye", a: "TRAMO", b: "CONFLUYENTE", ca: "(1,1)", cb: "(0,n)", x: 830, y: 30, rename: { cod_carretera: "carretera_destino", num_tramo: "tramo_destino" },
+    why: "«Con qué carretera confluye y en qué <b>tramo</b>» → el extremo confluye en <b>un</b> tramo de otra carretera → (1,1) junto a TRAMO (la carretera se deduce del tramo). En un tramo pueden confluir varias carreteras o ninguna → (0,n) junto a CONFLUYENTE." },
+  { n: "En_comuna", a: "COMUNA", b: "CONFLUYENTE", ca: "(1,1)", cb: "(0,n)", x: 1000, y: 500, rename: { cod_comuna: "comuna_confluencia" },
+    why: "«En qué … <b>comuna</b>» confluye → una → (1,1) junto a COMUNA. En una comuna puede haber varias confluencias o ninguna → (0,n) junto a CONFLUYENTE." }
+ ],
+ hier: [ { sup: "TRAMO", subs: ["CONFLUYENTE"], x: 790, y: 135, total: false, excl: false, label: "parcial",
+   why: "Solo algunos tramos (los que son principio o final y <b>confluyen</b> en otra carretera) tienen km de confluencia, tramo y comuna de destino → subtipo CONFLUYENTE, jerarquía <b>parcial</b>. Un extremo que no está en CONFLUYENTE es una carretera que <b>concluye físicamente</b>." } ],
+ cons: [
+  { a: "Empieza", b: "Pasa", kind: "inclusion", label: "inclusión" },
+  { a: "Termina", b: "Pasa", kind: "inclusion", label: "inclusión" }
+ ],
+ notes: [
+  "«Divididas en varias categorías (locales, comerciales…)» → atributo <b>categoria</b> con un dominio cerrado (CHECK). Solo haría falta una jerarquía si cada categoría tuviera datos propios.",
+  "La comuna donde empieza y la comuna donde termina un tramo tienen que estar entre las comunas por las que <b>pasa</b> → dos restricciones de <b>inclusión</b> (Empieza ⊆ Pasa, Termina ⊆ Pasa). Como Empieza y Termina acaban como claves ajenas dentro de TRAMO, se garantizan con un trigger.",
+  "«Principio o final de carretera» → atributo opcional <b>extremo</b> ('principio' / 'final'; nulo en los tramos intermedios).",
+  "«Concluye físicamente <b>o</b> confluye en otra» → se resuelve con el subtipo CONFLUYENTE: si está, confluye; si no, concluye. Así no hace falta un atributo «concluye» que podría contradecir los datos.",
+  "Supuesto: se añade nombre a CARRETERA (A-6, M-30…) y un código a COMUNA; el enunciado no los da."
+ ]
+}
+);
+
+Object.assign(CONSTRAINTS, {
+ 24: { checks: [
+   ["PRODUCTO", "precio_actual > 0 AND stock >= 0", "Precio positivo y stock no negativo."],
+   ["VENTA", "descuento BETWEEN 0 AND 100", "Descuento en porcentaje."],
+   ["VENTA", "monto_final >= 0", "El monto final no puede ser negativo."],
+   ["DETALLE", "cantidad > 0 AND precio_venta > 0", "Se vende al menos una unidad, a un precio positivo."],
+   ["DETALLE", "monto_total = precio_venta * cantidad", "Coherencia del monto de la línea (dato derivable que se almacena)."] ],
+   triggers: ["Al insertar en DETALLE, copiar precio_venta del precio_actual de PRODUCTO y descontar stock → trigger.",
+              "monto_final = suma de monto_total de sus líneas − descuento → mira otra tabla: trigger o vista."] },
+ 25: { checks: [
+   ["CLIENTE", "limite_credito BETWEEN 0 AND 3000000", "«En ningún caso debe superar los 3.000.000 pts»."],
+   ["CLIENTE", "descuento BETWEEN 0 AND 100", "Descuento en porcentaje."],
+   ["PEDIDO", "num_cliente = num_cliente_envio", "La dirección de envío tiene que ser del mismo cliente que hace el pedido."],
+   ["LINEA", "cantidad > 0", "Cada línea pide al menos una unidad."],
+   ["DISTRIBUYE", "existencias >= 0", "No hay existencias negativas."] ],
+   triggers: ["total_articulos es derivado: no se guarda; vista <code>SELECT num_fabrica, SUM(existencias) FROM distribuye GROUP BY num_fabrica</code>.",
+              "(1,n) direcciones por cliente y (1,n) líneas por pedido → contar filas: aserción o trigger."] },
+ 26: { checks: [
+   ["CARRETERA", "categoria IN ('local', 'comercial', 'regional', 'nacional', 'autovia')", "Dominio de categorías del enunciado."],
+   ["TRAMO", "km_fin > km_inicio", "Un tramo acaba en un kilómetro mayor que el de inicio."],
+   ["TRAMO", "extremo IS NULL OR extremo IN ('principio', 'final')", "Solo los tramos extremos llevan valor."],
+   ["CONFLUYENTE", "carretera_destino <> cod_carretera", "Una carretera confluye en OTRA carretera."],
+   ["CONFLUYENTE", "km_confluencia >= 0", "Kilómetro no negativo."] ],
+   triggers: ["Inclusión Empieza ⊆ Pasa y Termina ⊆ Pasa: (cod_carretera, num_tramo, comuna_inicio) y (cod_carretera, num_tramo, comuna_fin) deben existir en PASA → trigger (o FK compuestas hacia PASA, que es posible porque su clave es exactamente esa).",
+              "Solo puede estar en CONFLUYENTE un tramo con extremo no nulo → mira TRAMO: trigger.",
+              "La comuna de confluencia debe ser una de las que atraviesa el tramo destino → trigger."] }
+});
+
+// =====================================================================
 //  LOS 18 EJERCICIOS EN NOTACIÓN DE PAPEL
 //  Convierte el formato de EXERCISES (atributos dentro de la caja) al
 //  formato de drawER (piruletas), eligiendo el lado libre de cada entidad.
@@ -1890,6 +2242,9 @@ if (typeof STATE !== "undefined") STATE.exStep = 99;
 // Ajustes manuales por ejercicio: { ENTIDAD: "l" | "r" | "t" | "b" | "lr" | "tb" }
 const ATTR_SIDE = {
     2: { PERSONA: "l" },
+    19: { PROFESOR: "l" },
+    21: { ASIGNATURA: "t" },
+    23: { MASCOTA: "t" },
     16: { PARTIDA: "l", PARTICIPANTE: "b" },
     17: { SOLAR: "b", HIDROELECTRICA: "b", RED: "b" },
     18: { CONFLICTO: "l", Media: "tb" }
@@ -1898,7 +2253,7 @@ const ATTR_SIDE = {
 const SHIFT = { t: -1, b: 1, r: -1, l: 1 };
 function paperAttr(raw, side, used) {
     const a = parseAttr(raw);
-    const o = { n: a.n, pk: a.pk, opt: a.nul, multi: a.multi, ia: a.uq && !a.pk, side };
+    const o = { n: a.comp ? a.n + " (" + a.comp.join(", ") + ")" : a.n, pk: a.pk, opt: a.nul, multi: a.multi, ia: a.uq && !a.pk, der: a.der, side };
     // lado compartido con una línea: los atributos se apartan hacia el lado contrario a la cardinalidad
     if (used && used[side] >= 1) o.shift = SHIFT[side];
     return o;
@@ -1983,9 +2338,9 @@ function paperSpec(ex, mode) {
         label: h.label && /por|nivel/i.test(h.label) ? h.label : undefined }));
     const cons = (ex.cons || []).map(c => {
         const l = (c.label || "").toLowerCase();
-        const kind = l.includes("inclusividad") ? "inclusividad" : l.includes("inclus") ? "inclusion" : l.includes("exclusividad") ? "exclusividad" : "exclusion";
+        const kind = c.kind ? c.kind : l.includes("inclusividad") ? "inclusividad" : l.includes("inclus") ? "inclusion" : l.includes("exclusividad") ? "exclusividad" : "exclusion";
         const shared = c.ent || [c.a, c.b].map(n => ex.rels.find(r => (r.id || r.n) === n)).reduce((acc, r) => acc.filter(x => [r.a, r.b].includes(x)), [ex.rels.find(r => (r.id || r.n) === c.a).a, ex.rels.find(r => (r.id || r.n) === c.a).b])[0];
-        return { kind, r1: c.a, r2: c.b, ent: shared, label: c.label, lx: -2, ly: -8 };
+        return { kind, r1: c.a, r2: c.b, ent: shared, label: c.mark !== undefined ? c.mark : c.label, lx: -2, ly: -8 };
     });
     const spec = { ents, rels, hier, cons };
     C[mode] = spec;
@@ -2010,6 +2365,78 @@ function renderER(ex, opts) {
     return svg;
 }
 
+// =====================================================================
+//  LEYENDA «CÓMO SACAR LA CARDINALIDAD» (una por ejercicio)
+// =====================================================================
+function cardMethodHTML(ex) {
+    return `<details class="cmethod" open><summary>Cómo sacar la cardinalidad en este diagrama</summary>
+  <p>Hazte siempre las mismas dos preguntas, primero en un sentido de la interrelación y luego en el otro.</p>
+  <ol class="m4">
+   <li><b>Coge un ejemplar concreto</b> de una entidad. Piensa en «un ${esc(entLabel(ex, ex.rels[0] && (ex.rels[0].b || ex.rels[0].ends?.[0]?.e)))} concreto», no en «todos». Así evitas muchos errores.</li>
+   <li><b>Hazte dos preguntas sobre la otra entidad:</b>
+    <ul><li><b>Mínimo:</b> ¿puede existir sin estar relacionado con ninguno? Si la respuesta es sí, pon <b>0</b>. Si es no, pon <b>1</b> (o el número que diga el enunciado, como «al menos 6»).</li>
+    <li><b>Máximo:</b> ¿puede estar relacionado con más de uno a la vez? Si la respuesta es sí, pon <b>n</b>. Si es no, pon <b>1</b> (o el tope que diga el enunciado, como «como máximo 15»).</li></ul></li>
+   <li><b>Escribe el par (mín,máx) junto a la otra entidad</b>, la que estás contando, no la que elegiste en el paso 1. Es la convención de tus apuntes.</li>
+   <li><b>Repite en el sentido contrario y junta los máximos</b> (ignora los mínimos): 1 y 1 → <b>1:1</b> · 1 y n → <b>1:N</b> · n y n → <b>N:M</b>.</li>
+  </ol></details>`;
+}
+function entLabel(ex, id) { const e = ex.ents.find(x => x.id === id); return e ? (e.label || e.id) : (id || ""); }
+function minAns(min) {
+    if (min === 0) return `Sí, puede no tener ninguno → <b>0</b>`;
+    if (min === 1) return `No, siempre tiene al menos uno → <b>1</b>`;
+    return `No, el enunciado exige al menos ${min} → <b>${min}</b>`;
+}
+function maxAns(max) {
+    if (max === 1) return `No, como mucho uno → <b>1</b>`;
+    if (max === Infinity) return `Sí, puede tener varios → <b>n</b>`;
+    return `Sí, pero el enunciado pone un tope de ${max} → <b>${max}</b>`;
+}
+const MAXW = c => { const m = parseCard(c).max; return m === 1 ? "1" : m === Infinity ? "n" : `${m} (más de 1, cuenta como n)`; };
+function relCase(ex, r) {
+    const out = [];
+    if (r.ends) out.push(["Ternaria", "Hay tres entidades. Se fija una combinación de las otras dos y se cuenta la tercera. Cada extremo se analiza así, uno por uno."]);
+    else if (r.a === r.b) out.push(["Reflexiva", "La misma entidad aparece en los dos extremos. Haz las preguntas usando los <b>roles</b> para no mezclar los dos sentidos."]);
+    if (r.dep === "ID") out.push(["Débil por identificación", "La entidad débil no se identifica sin la fuerte, así que junto a la fuerte siempre va <b>(1,1)</b>: cada ejemplar débil pertenece a uno y solo uno."]);
+    if (r.dep === "E") out.push(["Débil por existencia", "La débil no puede existir sin la fuerte, así que junto a la fuerte va <b>(1,1)</b>, aunque tenga identificador propio."]);
+    if (r.attrs && r.attrs.length) out.push(["Atributo en la interrelación", "El dato (" + r.attrs.map(a => esc(parseAttr(a).n)).join(", ") + ") no es de ninguna entidad sola, sino de la pareja. Por eso va en el rombo."]);
+    (ex.cons || []).filter(c => c.a === (r.id || r.n) || c.b === (r.id || r.n)).forEach(c => out.push(["Restricción: " + esc(c.label), "Además de la cardinalidad, esta interrelación tiene una restricción con otra. Mira la pestaña «3 · Las 4 restricciones»."]));
+    const t = relType(r);
+    const typeTxt = { "1:1": "uno a uno", "1:N": "uno a muchos", "N:1": "uno a muchos", "N:M": "muchos a muchos" }[t];
+    if (!r.ends) out.unshift([t, "Correspondencia " + (typeTxt || t) + "."]);
+    return out;
+}
+function relLegendHTML(ex, r) {
+    const L = id => esc(entLabel(ex, id));
+    let html = `<div class="clegend">`;
+    if (r.ends) {
+        r.ends.forEach((e, k) => {
+            const others = r.ends.filter((_, j) => j !== k).map(o => L(o.e)).join(" + ");
+            const pc = parseCard(e.c);
+            html += `<div class="q"><div class="qh">Fijada UNA combinación (${others}), ¿con cuántos ejemplares de <b>${L(e.e)}</b> se relaciona por «${esc(r.label || r.n)}»?</div>
+             <div class="qa"><span>Mínimo: ¿puede no haber ninguno? ${minAns(pc.min)}</span><span>Máximo: ¿puede haber más de uno? ${maxAns(pc.max)}</span></div>
+             <div class="qr">Eso da <b class="cc">${esc(e.c)}</b>, que va junto a <b>${L(e.e)}</b>.</div></div>`;
+        });
+        html += `<div class="qmax">Máximos: ${r.ends.map(e => MAXW(e.c)).join(", ")} → <b>${esc(relType(r))}</b></div>`;
+    } else {
+        const ends = [
+            { from: r.b, fromRole: r.roleB, to: r.a, toRole: r.roleA, c: r.ca },
+            { from: r.a, fromRole: r.roleA, to: r.b, toRole: r.roleB, c: r.cb }
+        ];
+        ends.forEach(e => {
+            const pc = parseCard(e.c);
+            const fromTxt = `<b>${L(e.from)}</b>${e.fromRole ? ` (en su papel de «${esc(e.fromRole)}»)` : ""}`;
+            const toTxt = `<b>${L(e.to)}</b>${e.toRole ? ` (como «${esc(e.toRole)}»)` : ""}`;
+            html += `<div class="q"><div class="qh">Un ejemplar concreto de ${fromTxt}, ¿con cuántos ejemplares de ${toTxt} se relaciona por «${esc(r.label || r.n)}»?</div>
+             <div class="qa"><span>Mínimo: ¿puede no tener ninguno? ${minAns(pc.min)}</span><span>Máximo: ¿puede tener más de uno a la vez? ${maxAns(pc.max)}</span></div>
+             <div class="qr">Eso da <b class="cc">${esc(e.c)}</b>, que va junto a <b>${L(e.to)}</b>${e.toRole ? ` (línea «${esc(e.toRole)}»)` : ""}.</div></div>`;
+        });
+        html += `<div class="qmax">Máximos: ${MAXW(r.ca)} y ${MAXW(r.cb)} → <b>${esc(relType(r))}</b></div>`;
+    }
+    html += `<div class="cases">${relCase(ex, r).map(([t, d]) => `<span class="case"><span class="tag">${t}</span> ${d}</span>`).join("")}</div>`;
+    if (r.why) html += `<div class="why"><b>Lo que dice el enunciado:</b> ${r.why}</div>`;
+    return html + `</div>`;
+}
+
 </script>
 <script>
 
@@ -2028,14 +2455,16 @@ function parseCard(s) {
     return { min: +m[1], max: /^[nNmM*]$/.test(m[2]) ? Infinity : +m[2] };
 }
 function parseAttr(raw) {
-    let n = raw, pk = false, nul = false, multi = false, uq = false;
+    let n = raw, pk = false, nul = false, multi = false, uq = false, der = false;
     if (n.startsWith("#")) { pk = true; n = n.slice(1); }
+    if (n.endsWith("~")) { der = true; n = n.slice(0, -1); }
+    let comp = null; const cm = n.match(/^([^(]+)\(([^)]*)\)$/); if (cm) { n = cm[1]; comp = cm[2].split(",").map(x => x.trim()); }
     while (/[*+!]$/.test(n)) {
         const c = n.slice(-1);
         if (c === "*") nul = true; else if (c === "+") multi = true; else uq = true;
         n = n.slice(0, -1);
     }
-    return { n, pk, nul, multi, uq };
+    return { n, pk, nul, multi, uq, der, comp };
 }
 function relType(rel) {
     if (rel.type) return rel.type;
@@ -2317,6 +2746,20 @@ function sqlType(n) {
     if (/^fecha|_fecha|^antiguedad/.test(n)) return "DATE";
     if (/precio|salario|coste|cuantia|fianza|senal|importe/.test(n)) return "DECIMAL(10,2)";
     if (/^(principal|puerta_grande|hipotecado|licencia_apertura|con_receta|obligatorio|exterior|titulacion|capacitado)$/.test(n)) return "BOOLEAN";
+    if (/^(cuota|presupuesto)$/.test(n)) return "DECIMAL(10,2)";
+    if (n === "nota") return "DECIMAL(4,2)";
+    if (n === "fecha_hora") return "DATETIME";
+    if (/^km_/.test(n)) return "DECIMAL(7,2)";
+    if (/^(saldo|limite_credito)$/.test(n)) return "DECIMAL(12,2)";
+    if (n === "descuento") return "DECIMAL(5,2)";
+    if (/^monto/.test(n)) return "DECIMAL(10,2)";
+    if (n === "existencias") return "INT";
+    if (n === "rut") return "VARCHAR(12)";
+    if (n === "pagina_web") return "VARCHAR(255)";
+    if (n === "creditos") return "INT";
+    if (n === "cubierta") return "BOOLEAN";
+    if (n === "curso_academico") return "CHAR(9)";
+    if (n === "diagnostico") return "VARCHAR(255)";
     if (/^(dni|nif)/.test(n)) return "CHAR(9)";
     if (/^nss/.test(n)) return "CHAR(12)";
     if (/^(num_|cod_|n_|anio|orejas|rabos|aforo|m2|stock|unidades|reactores|turbinas|hornos|habitaciones|banos|nivel|capacidad|entradas|muertos|heridos|bajas|barcos|tanques|aviones|hombres|personas|duracion|cantidad|volumen|vol_|prod_|horas_sol|superficie|ocupacion|consumo|longitud|orden_|plazas|total$|capacidad_destructiva)/.test(n)) return "INT";
@@ -2363,7 +2806,7 @@ function buildSchema(ex) {
             addCol(t, { n, type: rc.type, pk: !!opts.pk, nul: !!opts.nul, fk: true });
             return n;
         });
-        const del = opts.pk ? "C" : opts.nul ? "N" : "R";
+        const del = opts.pk || opts.cascade ? "C" : opts.nul ? "N" : "R";
         t.fks.push({ cols: names, ref: refId, refcols: ref.map(r => r.n), del, upd: "C",
                      kind: opts.kind || "assoc", pm: opts.pm || (opts.nul ? "0..1" : "1"), cm: opts.cm || "0..*", rel: opts.rel || "" });
         if (opts.uniq) t.uniq.push(names);
@@ -2376,7 +2819,8 @@ function buildSchema(ex) {
         if (superOf[e.id]) addFK(t, superOf[e.id], { pk: true, kind: "gen", pm: "1", cm: "0..1", rel: "es un" });
         else if (ownerOf[e.id]) addFK(t, ownerOf[e.id], { pk: true, kind: "comp", pm: "1", cm: mult(ownerRel[e.id].cb), rel: ownerRel[e.id].n });
         (e.attrs || []).map(parseAttr).forEach(a => {
-            if (a.multi) return;
+            if (a.multi || a.der) return;
+            if (a.comp) { a.comp.forEach(c => addCol(t, { n: c, type: sqlType(c), nul: a.nul })); return; }
             addCol(t, { n: a.n, type: sqlType(a.n), pk: a.pk, nul: a.nul });
             if (a.uq) t.uniq.push([a.n]);
         });
@@ -2437,8 +2881,18 @@ function buildSchema(ex) {
         const t = T[inT];
         const oneToOne = A.max === 1 && B.max === 1;
         const nul = refCard.min === 0 || !!r.nullable;
-        addFK(t, refId, { nul, rename: r.rename, suffix: r.n.toLowerCase(), uniq: oneToOne, pm: mult(refS), cm: mult(othS), rel: r.n });
+        addFK(t, refId, { nul, rename: r.rename, suffix: r.n.toLowerCase(), uniq: oneToOne, pm: mult(refS), cm: mult(othS), rel: r.n, cascade: r.dep === "E" });
         relAttrs(t, r, false, nul);
+    });
+    // restricción de inclusión entre dos tablas → clave ajena compuesta (si la clave de la tabla incluyente coincide)
+    (ex.cons || []).filter(c => c.kind === "inclusion").forEach(c => {
+        const rA = ex.rels.find(r => (r.id || r.n) === c.a), rB = ex.rels.find(r => (r.id || r.n) === c.b);
+        const t1 = T[(rA.table || rA.n).toUpperCase()], t2 = T[(rB.table || rB.n).toUpperCase()];
+        if (!t1 || !t2) return;
+        const pk2 = t2.cols.filter(x => x.pk).map(x => x.n);
+        if (pk2.every(n => t1.cols.some(x => x.n === n))) {
+            t1.fks.push({ cols: pk2, ref: t2.name, refcols: pk2, del: "C", upd: "C", kind: "assoc", pm: "1", cm: "0..*", rel: "inclusión" });
+        }
     });
     // pk primero
     order.forEach(n => { const t = T[n]; t.cols.sort((a, b) => (b.pk ? 1 : 0) - (a.pk ? 1 : 0)); });
@@ -2591,7 +3045,7 @@ function renderExercise() {
     P.appendChild(head);
 
     const en = document.createElement("details"); en.className = "enun"; en.open = true;
-    en.innerHTML = `<summary>Enunciado (Tema 2, pág. ${ex.page})</summary><div class="txt">${esc(ex.text.trim())}</div>`;
+    en.innerHTML = `<summary>Enunciado ${ex.page ? `(Tema 2, pág. ${ex.page})` : ex.source ? `(${ex.source})` : "(ejercicio nuevo de práctica)"}</summary><div class="txt">${esc(ex.text.trim())}</div>`;
     P.appendChild(en);
 
     // barra de herramientas
@@ -2634,7 +3088,7 @@ function renderExercise() {
 
     // análisis / práctica
     const an = document.createElement("div");
-    an.innerHTML = `<h3>${STATE.practice ? "Práctica: elige la cardinalidad de cada extremo" : "Análisis de las interrelaciones"}</h3>`;
+    an.innerHTML = `<h3>${STATE.practice ? "Práctica: elige la cardinalidad de cada extremo" : "Cardinalidad de cada interrelación, paso a paso"}</h3>` + cardMethodHTML(ex);
     const list = document.createElement("div"); list.className = "rels";
     ex.rels.forEach((r, i) => {
         const c = document.createElement("div"); c.className = "relcard";
@@ -2651,15 +3105,7 @@ function renderExercise() {
                 return `<label>Junto a <b>${esc(lab)}</b> <select data-k="${k}">${["—"].concat(cardOptions(e.c)).map(o => `<option>${o}</option>`).join("")}</select></label>`;
             }).join("") + `<label>Tipo <select data-k="type">${["—", "1:1", "1:N", "N:1", "N:M"].concat(r.ends ? [relType(r)] : []).filter((v, j, a) => a.indexOf(v) === j).map(o => `<option>${o}</option>`).join("")}</select></label></div>`;
         }
-        if (showSol) {
-            html += "<ul>" + ends.map(e => {
-                if (r.ends) return `<li><b>${esc(e.c)}</b> junto a ${esc(L[e.e])}: fijada una combinación de los otros extremos → ${describe(e.c)} ${esc(L[e.e])}.</li>`;
-                const who = e.orole ? `${L[e.other]} (como ${e.orole})` : L[e.other];
-                const what = e.role ? `${L[e.e]} (como ${e.role})` : L[e.e];
-                return `<li><b>${esc(e.c)}</b> junto a ${esc(e.role ? L[e.e] + " (" + e.role + ")" : L[e.e])}: por cada ${esc(who)} → ${describe(e.c)} ${esc(what)}.</li>`;
-            }).join("") + "</ul>";
-            if (r.why) html += `<div class="why">${r.why}</div>`;
-        }
+        if (showSol) html += relLegendHTML(ex, r);
         c.innerHTML = html;
         list.appendChild(c);
     });
@@ -2704,7 +3150,7 @@ function renderExercise() {
         const h = document.createElement("div"); h.className = "rels"; h.style.marginTop = "10px";
         ex.hier.forEach(x => {
             const d = document.createElement("div"); d.className = "relcard";
-            d.innerHTML = `<div class="t">Jerarquía ${esc(x.sup)} → ${esc(x.subs.join(", "))} <span class="type" style="font-family:var(--mono);color:var(--hier)">${x.total ? "total" : "parcial"} · ${x.excl ? "exclusiva" : "solapada"}</span></div>${x.why ? `<div class="why">${x.why}</div>` : ""}`;
+            d.innerHTML = `<div class="t">Jerarquía ${esc(x.sup)} → ${esc(x.subs.join(", "))} <span class="type" style="font-family:var(--mono);color:var(--hier)">${x.total ? "total" : "parcial"} · ${x.excl ? "exclusiva" : "solapada"}</span></div><div class="clegend"><div class="q"><div class="qh">Las jerarquías no llevan (mín,máx). Se hacen otras dos preguntas:</div><div class="qa"><span>¿Todo ${esc(x.sup)} es de algún subtipo? ${x.total ? "Sí → <b>total</b> (círculo)" : "No → <b>parcial</b> (sin círculo)"}</span><span>¿Puede ser de dos subtipos a la vez? ${x.excl ? "No → <b>exclusiva</b> (arco)" : "Sí → <b>solapada</b> (sin arco)"}</span></div></div></div>${x.why ? `<div class="why"><b>Lo que dice el enunciado:</b> ${x.why}</div>` : ""}`;
             h.appendChild(d);
         });
         an.appendChild(h);
@@ -2875,7 +3321,7 @@ const PC = (extra) => Object.assign({ w: 600, h: 300,
   ] }, extra);
 
 const RESTRICTIONS = [
- { id: "exclusividad", name: "Exclusividad", fig: "fig. 2.32 – 2.34",
+ { id: "exclusividad", practice: [19, 23], name: "Exclusividad", fig: "fig. 2.32 – 2.34",
    rule: "Un ejemplar de la entidad que participa en una interrelación <b>ya no puede participar en la otra con NINGÚN ejemplar</b>.",
    cue: ["«o… o…, pero no ambas cosas»", "«si hace X, no puede hacer Y»", "«no puede ejercer ninguna otra función»"],
    example: "Un profesor puede impartir cursos de doctorado o recibirlos, pero no ambas cosas.",
@@ -2883,7 +3329,7 @@ const RESTRICTIONS = [
    spec: PC({ cons: [{ kind: "exclusividad", ent: "PROFESOR", r1: "Imparte", r2: "Recibe" }] }),
    inst: [["Ana", "imparte", "BD", true, ""], ["Ana", "recibe", "Java", false, "Ana ya imparte: no puede recibir NINGÚN curso"], ["Luis", "recibe", "BD", true, "Luis no imparte nada"]],
    sql: "Si las dos son claves ajenas en la misma tabla: <code>CHECK (cod_beca IS NULL OR cod_proyecto IS NULL)</code>. Si son tablas N:M: trigger." },
- { id: "exclusion", name: "Exclusión", fig: "fig. 2.35",
+ { id: "exclusion", practice: [15, 22], name: "Exclusión", fig: "fig. 2.35",
    rule: "Un ejemplar <b>no puede estar unido al MISMO ejemplar</b> de la otra entidad por las dos interrelaciones. Con otros ejemplares, sí.",
    cue: ["«no puede impartir y recibir el mismo curso»", "«en una misma edición o lo imparte o lo recibe»", "«nunca ambas cosas a la vez con el mismo…»"],
    example: "Un profesor doctor puede impartir unos cursos y matricularse en otros, pero no impartir y recibir el mismo curso.",
@@ -2891,7 +3337,7 @@ const RESTRICTIONS = [
    spec: PC({ cons: [{ kind: "exclusion", r1: "Imparte", r2: "Recibe", label: "" }] }),
    inst: [["Ana", "imparte", "BD", true, ""], ["Ana", "recibe", "Java", true, "otro curso: permitido"], ["Ana", "recibe", "BD", false, "el MISMO curso que imparte"]],
    sql: "No se puede con claves ni CHECK (afecta a dos tablas): aserción o trigger que compruebe que no existe la misma pareja en IMPARTE y en RECIBE." },
- { id: "inclusividad", name: "Inclusividad", fig: "fig. 2.36",
+ { id: "inclusividad", practice: [20], name: "Inclusividad", fig: "fig. 2.36",
    rule: "Todo ejemplar que participa en una interrelación <b>tiene que participar también en la otra</b> (con cualquier ejemplar, no necesariamente el mismo). Puede llevar cuántas veces: (c1,c2).",
    cue: ["«solo pueden… quienes hayan… al menos uno»", "«para poder X, debe haber hecho Y (no tiene por qué ser el mismo)»", "«haber recibido al menos 3 cursos»"],
    example: "Solo pueden impartir clases los profesores que hayan realizado al menos 3 cursos del programa (no tiene por qué ser el que imparten).",
@@ -2899,7 +3345,7 @@ const RESTRICTIONS = [
    spec: PC({ cons: [{ kind: "inclusividad", ent: "PROFESOR", r1: "Imparte", r2: "Recibe", label: "(3,n)" }] }),
    inst: [["Ana", "recibe", "Java, Redes, SO", true, "3 cursos recibidos"], ["Ana", "imparte", "BD", true, "cumple (3,n) aunque no recibió BD"], ["Luis", "imparte", "BD", false, "Luis no ha recibido ningún curso"]],
    sql: "Aserción o trigger que cuente las filas de RECIBE del profesor: <code>(SELECT COUNT(*) FROM recibe WHERE dni = NEW.dni) >= 3</code>." },
- { id: "inclusion", name: "Inclusión", fig: "fig. 2.37 y anexo",
+ { id: "inclusion", practice: [21, 23], name: "Inclusión", fig: "fig. 2.37 y anexo",
    rule: "Todo par unido por una interrelación <b>tiene que estar unido también por la otra: el MISMO par</b>.",
    cue: ["«si imparte un curso es porque ha recibido ESE curso»", "«solo puede examinarse de asignaturas en las que esté matriculado»", "«solo puede operar a pacientes que haya visitado»"],
    example: "Si un profesor imparte un curso es porque previamente ha recibido dicho curso.",
@@ -3136,6 +3582,7 @@ function renderRestr() {
      <h4>Con datos reales</h4>
      <table class="inst">${r.inst.map(i => `<tr class="${i[3] ? "ok" : "ko"}"><td>${i[3] ? "✓" : "✗"}</td><td><b>${i[0]}</b> ${i[1]} <b>${i[2]}</b></td><td>${i[4]}</td></tr>`).join("")}</table>
      <p class="sqlnote"><b>En tablas / SQL:</b> ${r.sql}</p>
+     ${r.practice ? `<p class="practice">Practícala resuelta: ${r.practice.map(n => `<button class="goex" data-ex="${n}">Ejercicio ${n}º</button>`).join(" ")}</p>` : ""}
     </div>
    </div>
   </div>`).join("")}
@@ -3148,6 +3595,7 @@ function renderRestr() {
     <tr><td>Un <b>dato</b> que puede faltar</td><td>Atributo opcional / mínimo 0</td><td>(0,1) o línea discontinua de la piruleta</td></tr>
    </table>
   </div>`;
+  box.querySelectorAll(".goex").forEach(b => b.onclick = () => { if (typeof setTab === "function") { selectExercise(+b.dataset.ex); setTab("ex"); } });
   box.querySelectorAll("[data-r]").forEach(d => d.appendChild(drawER(RESTRICTIONS.find(r => r.id === d.dataset.r).spec)));
 }
 

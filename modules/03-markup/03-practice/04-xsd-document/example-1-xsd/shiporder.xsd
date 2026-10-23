@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- Schema namespace definition 'xs' -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <!-- Root Element (parent) -->
+    <xs:element name="shiporder">
+
+        <!-- Complex type (child) -->
+        <xs:complexType>
+
+            <!-- Sequence (elements must respect the order) -->
+            <xs:sequence>
+
+                <!-- Simple element: does not hold any child elements -->
+                <xs:element name="orderperson" type="xs:string"/>
+
+                <!-- Another element: this will contain a complexType (children) and sequence (order) -->
+                <xs:element name="shipto">
+
+                    <xs:complexType>
+
+                        <xs:sequence>
+
+                            <!-- Child elements -->
+                            <xs:element name="name" type="xs:string"/>
+
+                            <xs:element name="address" type="xs:string"/>
+
+                            <xs:element name="city" type="xs:string"/>
+
+                            <xs:element name="country" type="xs:string"/>
+
+                        </xs:sequence>
+
+                    </xs:complexType>
+
+                </xs:element>
+
+                <!-- Item element: allows multiple items -->
+                <xs:element name="item" maxOccurs="unbounded">
+
+                    <xs:complexType>
+
+                        <xs:sequence>
+
+                            <!-- Simple elements describing the item -->
+                            <xs:element name="title" type="xs:string"/>
+
+                            <!-- Note is optional -->
+                            <xs:element name="note" type="xs:string" minOccurs="0"/>
+
+                            <!-- Quantity must be a positive integer -->
+                            <xs:element name="quantity" type="xs:positiveInteger"/>
+
+                            <!-- Price can contain decimal values -->
+                            <xs:element name="price" type="xs:decimal"/>
+
+                        </xs:sequence>
+
+                    </xs:complexType>
+
+                </xs:element>
+
+            </xs:sequence>
+
+            <!-- Attribute of shiporder (required) -->
+            <xs:attribute name="orderid" type="xs:string" use="required"/>
+
+        </xs:complexType>
+
+    </xs:element>
+
+</xs:schema>

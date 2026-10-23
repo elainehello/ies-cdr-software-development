@@ -343,6 +343,30 @@ ol.m4{margin:6px 0 2px}ol.m4 li{margin:4px 0}ol.m4 ul{margin:4px 0}
 .cases{display:flex;flex-direction:column;gap:4px}
 .case{font-size:.88rem;background:var(--bg);border-radius:6px;padding:4px 8px}
 .case .tag{font-weight:700;display:inline-block;background:var(--accent);color:#fff;border-radius:5px;padding:0 6px;margin-right:6px;font-size:.78rem}
+.cue{border-radius:3px;padding:0 2px;border-bottom:2.5px solid}
+.cue-c1n{background:#e5f5ea;border-color:#1f8a4c}.cue-c0n,.cue-z{background:#fff1dc;border-color:#d97706}.cue-z{border-bottom-style:dotted;background:transparent}
+.cue-num{background:#fbe7e5;border-color:#c8322b;font-weight:700}.cue-m1{background:#e9efff;border-color:#2f5bd3}
+.cue-mn{background:#f3e8ff;border-color:#7a2fb8}.cue-o{background:#e5f5ea;border-color:#1f8a4c;border-bottom-style:dotted}.cue-fix{border-color:#5d6676;border-bottom-style:dashed}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cue{background:transparent}}
+.cuebar{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:flex-start;margin:8px 0 2px}
+details.cueleg summary{cursor:pointer;font-size:.88rem;color:var(--accent)}
+.cuelegend{font-size:.86rem;line-height:2;margin-top:4px}
+.ctags{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.ctag{font-size:.75rem;font-weight:700;border:1px solid var(--accent);color:var(--accent);border-radius:20px;padding:1px 8px}
+details.catalog>summary{cursor:pointer;font-weight:700;font-size:1.05rem}
+details.catalog h4{margin:16px 0 6px}
+.catgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.catcard{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg);font-size:.9rem;display:flex;flex-direction:column;gap:4px}
+.cath{display:flex;justify-content:space-between;gap:8px}.catn{font-size:.75rem;color:var(--muted);white-space:nowrap}
+.cathow span,.catcard2 span{font-weight:600;color:var(--muted)}
+.catex{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px}.catgo{padding:2px 8px;font-size:.8rem;border-radius:6px}
+.relx h4{margin:16px 0 6px}
+table.relxt td{font-size:.86rem;vertical-align:top}table.relxt td.tn{font-family:var(--mono);font-weight:700;white-space:nowrap}
+.xk{display:inline-block;font:700 .66rem var(--mono);padding:1px 5px;border-radius:4px;margin:2px 4px 2px 0;background:var(--track);color:var(--ink)}
+.xk.fk{background:#bfdbfe;color:#1e3a8a}.xk.nl{background:#fff1dc;color:#92400e}.xk.nn{background:#e5f5ea;color:#14532d}.xk.uq{background:#ddd6fe;color:#4c1d95}
+.xk.ck{background:#fbe7e5;color:#7f1d1d}.xk.cp{background:#e0f2fe;color:#075985}.xk.dv{background:#fef9c3;color:#713f12}.xk.mv{background:#fce7f3;color:#831843}
+ul.relcheck{list-style:none;padding:0;display:grid;gap:4px}ul.relcheck li{font-size:.88rem;padding:4px 8px;border-radius:6px;background:var(--bg)}
+ul.relcheck li.no{opacity:.6}ul.relcheck li.yes b{color:var(--green)}ul.relcheck code{margin-right:4px;font-size:.8em}
 .legend{display:flex;gap:6px 14px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin-top:8px}
 </style>
 </head>
@@ -356,6 +380,7 @@ ol.m4{margin:6px 0 2px}ol.m4 li{margin:4px 0}ol.m4 ul{margin:4px 0}
 <section class="view xv" id="view-restr" hidden></section>
 <section class="view xv" id="view-dict" hidden></section>
 <section class="view" id="view-ex" hidden>
+  <details class="panel catalog" id="ex-catalog"></details>
   <div class="picker" id="picker" aria-label="Elegir ejercicio"></div>
   <div class="panel" id="ex-panel"></div>
 </section>
@@ -2235,6 +2260,182 @@ Object.assign(CONSTRAINTS, {
 });
 
 // =====================================================================
+//  1) PISTAS DE CARDINALIDAD EN EL ENUNCIADO
+//  2) CATÁLOGO DE TIPOS DE CASO (con los ejercicios donde aparece cada uno)
+// =====================================================================
+const CUES = [
+ // [clase, tooltip, expresiones]
+ ["c1n", "(1,n): mínimo 1 y máximo n", ["uno o varios", "una o varias", "uno o más", "una o más", "al menos uno", "al menos una", "como mínimo uno", "como mínimo una"]],
+ ["c0n", "mínimo 0: puede no haber ninguno", ["o ninguno", "o ninguna", "puede no", "pueden no", "puede quedar vacante", "vacante", "alternativas", "todavía no", "aún no", "o no"]],
+ ["num", "cardinalidad con número: escríbelo tal cual", []],
+ ["m1", "máximo 1", ["un único", "una única", "un solo", "una sola", "sólo en una", "solo en una", "sólo una", "solo una", "sólo un", "solo un", "como mucho una", "como mucho un", "determinada", "exactamente un", "exactamente una"]],
+ ["mn", "máximo n: varios", ["varios", "varias", "muchos", "muchas", "diversos", "diversas", "una serie de", "cuántos"]],
+ ["o", "mínimo 1: obligatorio", ["todo", "toda", "siempre", "debe", "deben", "tiene que", "tienen que", "obligatoriamente"]],
+ ["z", "suele indicar mínimo 0 (comprueba el resto de la frase)", ["puede", "pueden", "podría", "algunos", "algunas"]],
+ ["fix", "«cada» = fija UN ejemplar concreto (paso 1 del método)", ["cada"]]
+];
+const NUM_RE = "(?:como (?:mínimo|máximo|mucho) \\d[\\d.]*|\\d+ como (?:mínimo|máximo)|como (?:mínimo|máximo)|al menos \\d[\\d.]*|entre \\d+ y \\d+|no más de \\d[\\d.]*|más de \\d[\\d.]*|hasta \\d[\\d.]*|de \\d+ a \\d+)";
+const _cueAlt = (() => {
+    const all = [];
+    CUES.forEach(([k, , list]) => list.forEach(w => all.push([w, k])));
+    all.sort((a, b) => b[0].length - a[0].length);
+    return all;
+})();
+const _cueRe = new RegExp("(?<![\\p{L}\\d])(" + NUM_RE + "|" + _cueAlt.map(x => x[0].replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|") + ")(?![\\p{L}])", "giu");
+function cueClass(m) {
+    if (new RegExp("^" + NUM_RE + "$", "iu").test(m)) return "num";
+    const f = _cueAlt.find(x => x[0] === m.toLowerCase());
+    return f ? f[1] : null;
+}
+// el texto llega ya escapado (HTML)
+function cueMark(html) {
+    if (!STATE.cues) return html;
+    return html.replace(_cueRe, m => {
+        const k = cueClass(m); if (!k) return m;
+        const tip = CUES.find(c => c[0] === k)[1];
+        return `<span class="cue cue-${k}" title="${tip}">${m}</span>`;
+    });
+}
+function cueLegendHTML() {
+    return `<div class="cuelegend"><i>Son pistas automáticas: no todas hablan de cardinalidad («documentos varios», «debe contener»). Confírmalas siempre con la pregunta «para UN ejemplar de A, ¿cuántos B?».</i><br>${CUES.map(([k, tip]) => `<span class="cue cue-${k}">${{ c1n: "uno o varios", c0n: "o ninguno", num: "como máximo 15", m1: "un único", mn: "varios", o: "todo / debe", z: "puede", fix: "cada" }[k]}</span> ${tip}`).join("<br>")}</div>`;
+}
+
+// ---------------------------------------------------------------------
+//  CATÁLOGO
+// ---------------------------------------------------------------------
+const pairKey = r => [r.a, r.b].sort().join("|");
+const isNumCard = c => { const p = parseCard(c); return p.min > 1 || (p.max !== Infinity && p.max > 1); };
+const CASES = [
+ { g: "Por el número de entidades (grado)", items: [
+  { k: "bin", name: "Binaria", how: "Un verbo que une <b>dos entidades distintas</b>. Es el caso normal.", card: "Dos preguntas, una en cada sentido.", test: (ex, r) => !r.ends && r.a !== r.b },
+  { k: "refl", name: "Reflexiva (unaria o recursiva)", how: "La <b>misma entidad</b> aparece en los dos extremos: «jefe de otro empleado», «prerrequisito de otro curso», «padrino de otro torero», «mentor».", card: "Dos líneas a la misma entidad, cada una con su <b>rol</b>. Pregunta con los roles: «un empleado <i>como subordinado</i>, ¿cuántos jefes?».", test: (ex, r) => !r.ends && r.a === r.b },
+  { k: "tern", name: "Ternaria (o de grado 3)", how: "Un dato que solo tiene sentido con <b>tres entidades a la vez</b>: «qué proveedor suministra qué pieza a qué proyecto y en qué cantidad».", card: "Se fija una <b>combinación de las otras dos</b> y se cuenta la tercera. Tres cardinalidades.", test: (ex, r) => !!r.ends }
+ ] },
+ { g: "Por el tipo de correspondencia (los dos máximos)", items: [
+  { k: "1n", name: "1:N (uno a muchos)", how: "En un sentido «un único / una determinada», en el otro «varios».", card: "Máximo 1 en un lado y n en el otro. En tablas: la clave del lado 1 pasa al lado N.", test: (ex, r) => !r.ends && /^(1:N|N:1)$/.test(relType(r)) },
+  { k: "11", name: "1:1 (uno a uno)", how: "«Un único» en los <b>dos</b> sentidos: «cada departamento tiene un director distinto», «un doctorando realiza una tesis».", card: "Máximo 1 en los dos lados. En tablas: clave ajena con UNIQUE en una de las dos.", test: (ex, r) => !r.ends && relType(r) === "1:1" },
+  { k: "nm", name: "N:M (muchos a muchos)", how: "«Varios» en los <b>dos</b> sentidos: «un alumno en varias asignaturas y en cada asignatura muchos alumnos».", card: "Máximo n en los dos lados. En tablas: tabla nueva.", test: (ex, r) => !r.ends && relType(r) === "N:M" }
+ ] },
+ { g: "Casos especiales que cambian la forma de pensar la cardinalidad", items: [
+  { k: "num", name: "Cardinalidad con números", how: "«Como mínimo 2 y como máximo 30», «al menos 6 toros», «como máximo 5 ingenieros».", card: "Se escribe el número tal cual: (2,30), (6,n), (0,5). Para el tipo, un máximo mayor que 1 cuenta como n.", test: (ex, r) => r.ends ? r.ends.some(e => isNumCard(e.c)) : isNumCard(r.ca) || isNumCard(r.cb) },
+  { k: "wid", name: "Débil por identificación (ID)", how: "«Se numeran <b>dentro de</b> cada…», «no puede cambiar de…», «se identifica por su número y el de…».", card: "Junto a la entidad fuerte siempre <b>(1,1)</b>. Doble rectángulo e ID en el rombo.", test: (ex, r) => r.dep === "ID" },
+  { k: "we", name: "Débil por existencia (E)", how: "Tiene identificador propio pero «si se elimina X, desaparecen sus Y».", card: "Junto a la fuerte <b>(1,1)</b>. Doble rectángulo y E en el rombo; en tablas ON DELETE CASCADE.", test: (ex, r) => r.dep === "E" },
+  { k: "attr", name: "Interrelación con atributos", how: "Un dato que es de la <b>pareja</b>: la nota del alumno en la asignatura, la cantidad de una línea de pedido.", card: "No cambia la cardinalidad, pero el dato va en el rombo. Si es 1:N, puede bajar a la tabla del lado N.", test: (ex, r) => !!(r.attrs && r.attrs.length) },
+  { k: "hist", name: "Histórico (fecha en la clave)", how: "«Puede repetirse en fechas distintas», «puede presentarse varias veces», «alquilar la misma película otro día».", card: "N:M con un atributo de fecha que forma parte de la clave, para poder repetir la misma pareja.", test: (ex, r) => !!(r.attrs && r.attrs.some(a => a.startsWith("#"))) },
+  { k: "dup", name: "Dos interrelaciones entre las mismas entidades", how: "Dos verbos distintos entre las mismas entidades: «imparte / recibe», «juega / arbitra», «asignado ahora / ha trabajado».", card: "Dos rombos, cada uno con su propia cardinalidad. Suele venir acompañado de una restricción.", test: (ex, r) => !r.ends && r.a !== r.b && ex.rels.filter(x => !x.ends && x.a !== x.b && pairKey(x) === pairKey(r)).length > 1 }
+ ] },
+ { g: "Jerarquías (no llevan (mín,máx))", items: [
+  { k: "h-te", name: "Total y exclusiva", how: "«Todo X es A o B, nunca las dos».", card: "Círculo + arco.", testEx: ex => (ex.hier || []).some(h => h.total && h.excl) },
+  { k: "h-ts", name: "Total y solapada", how: "«Todo X es A, B o ambas».", card: "Círculo, sin arco.", testEx: ex => (ex.hier || []).some(h => h.total && !h.excl) },
+  { k: "h-pe", name: "Parcial y exclusiva", how: "«Algunos X son A o B, pero no las dos».", card: "Arco, sin círculo.", testEx: ex => (ex.hier || []).some(h => !h.total && h.excl) },
+  { k: "h-ps", name: "Parcial y solapada", how: "«Algunos X pueden ser A, B, ambas o ninguna».", card: "Ni círculo ni arco.", testEx: ex => (ex.hier || []).some(h => !h.total && !h.excl) }
+ ] },
+ { g: "Restricciones entre dos interrelaciones", items: [
+  { k: "r-xd", name: "Exclusividad", how: "«O… o…, nunca ambas» (con cualquiera).", card: "Arco sobre las líneas de la entidad común.", testEx: ex => (ex.cons || []).some(c => (c.kind || "") === "exclusividad") },
+  { k: "r-xn", name: "Exclusión", how: "«No puede X e Y con el mismo».", card: "Línea discontinua entre los rombos.", testEx: ex => (ex.cons || []).some(c => (c.kind || "exclusion") === "exclusion" && /exclusi[oó]n/i.test(c.label || "exclusión")) },
+  { k: "r-id", name: "Inclusividad", how: "«Solo puede X quien haya hecho al menos N de Y».", card: "Arco con flecha y (c1,c2).", testEx: ex => (ex.cons || []).some(c => c.kind === "inclusividad") },
+  { k: "r-in", name: "Inclusión", how: "«Solo puede X con aquel con el que ya tiene Y» (el mismo).", card: "Flecha discontinua entre los rombos.", testEx: ex => (ex.cons || []).some(c => c.kind === "inclusion") }
+ ] },
+ { g: "Tipos de atributo", items: [
+  { k: "a-m", name: "Multivaluado", how: "«Puede tener varios teléfonos».", card: "(1,n) en la piruleta → tabla aparte.", testEx: ex => ex.ents.some(e => (e.attrs || []).some(a => parseAttr(a).multi)) },
+  { k: "a-c", name: "Compuesto", how: "«La dirección se entiende por calle, número, comuna y ciudad».", card: "Una piruleta con sus partes → varias columnas.", testEx: ex => ex.ents.some(e => (e.attrs || []).some(a => parseAttr(a).comp)) },
+  { k: "a-d", name: "Derivado", how: "«Se calcula a partir de…», «cuántos… en total».", card: "D delante → no se guarda: vista o consulta.", testEx: ex => ex.ents.some(e => (e.attrs || []).some(a => parseAttr(a).der)) },
+  { k: "a-o", name: "Opcional", how: "«Puede no tener…», «se rellena al terminar».", card: "Línea discontinua → admite NULL.", testEx: ex => ex.ents.concat(ex.rels).some(e => (e.attrs || []).some(a => parseAttr(a).nul)) },
+  { k: "a-ia", name: "Identificador alternativo", how: "«…que también es único» (NIF, email).", card: "Círculo medio relleno → UNIQUE.", testEx: ex => ex.ents.some(e => (e.attrs || []).some(a => { const p = parseAttr(a); return p.uq && !p.pk; })) }
+ ] }
+];
+function caseExercises(it) {
+    return EXERCISES.filter(ex => it.testEx ? it.testEx(ex) : ex.rels.some(r => it.test(ex, r)));
+}
+function renderCatalog() {
+    const box = $("ex-catalog"); if (!box) return;
+    const total = CASES.reduce((n, g) => n + g.items.length, 0);
+    box.innerHTML = `<summary>Catálogo de casos: ${total} tipos y en qué ejercicios aparece cada uno</summary>
+     <p class="muted">Cada interrelación es a la vez de un <b>grado</b> (binaria, reflexiva, ternaria) y de un <b>tipo</b> (1:1, 1:N, N:M), y además puede tener algún caso especial. Pulsa un número para ir al ejercicio.</p>` +
+     CASES.map(g => `<h4>${g.g}</h4><div class="catgrid">${g.items.map(it => {
+        const exs = caseExercises(it);
+        return `<div class="catcard"><div class="cath"><b>${it.name}</b><span class="catn">${exs.length} ej.</span></div>
+          <div class="cathow"><span>Cómo se reconoce:</span> ${it.how}</div><div class="catcard2"><span>Qué hacer:</span> ${it.card}</div>
+          <div class="catex">${exs.length ? exs.map(e => `<button class="catgo" data-ex="${e.id}" title="${esc(e.title)}">${e.id}º</button>`).join("") : `<span class="muted">sin ejercicios</span>`}</div></div>`;
+     }).join("")}</div>`).join("");
+    box.querySelectorAll(".catgo").forEach(b => b.onclick = () => { selectExercise(+b.dataset.ex); document.getElementById("ex-panel").scrollIntoView({ behavior: "smooth" }); });
+}
+// etiquetas de caso por interrelación, usadas en la cabecera de cada tarjeta
+function relCaseTags(ex, r) {
+    const tags = [];
+    CASES.slice(0, 3).forEach(g => g.items.forEach(it => { if (it.test && it.test(ex, r)) tags.push(it.name.replace(/ \(.*\)/, "")); }));
+    return tags;
+}
+
+// =====================================================================
+//  EXPLICACIÓN DEL PASO A TABLAS (por ejercicio)
+// =====================================================================
+function relExplainHTML(ex, tables) {
+    const R = n => ex.rels.find(r => (r.id || r.n) === n);
+    const E = id => ex.ents.find(e => e.id === id);
+    const relOf = {}; ex.rels.forEach(r => relOf[(r.table || r.n).toUpperCase()] = r);
+    const weakDep = {}; ex.rels.forEach(r => { if (r.dep) weakDep[r.b] = r.dep; });
+    const rows = tables.map(t => {
+        let origin;
+        const src = t.src || "";
+        if (/multivaluado/.test(src)) origin = `<b>Atributo multivaluado</b> de ${esc(src.replace(/.* de /, ""))} → tabla aparte: clave de la entidad + el valor, todo como clave primaria.`;
+        else if (/subtipo de/.test(src)) origin = `<b>Subtipo</b> de ${esc(src.match(/subtipo de (\w+)/)[1])} → su clave es la del supertipo, que es primaria y ajena a la vez.`;
+        else if (/débil/.test(src)) origin = weakDep[t.name] === "E"
+            ? `<b>Entidad débil por existencia</b> → tabla con su propio identificador; la clave ajena a la fuerte es NOT NULL con borrado en cascada.`
+            : `<b>Entidad débil por identificación</b> → clave = clave de la fuerte + su identificador; borrado en cascada.`;
+        else if (/ternaria/.test(src)) origin = `<b>Interrelación ternaria</b> → tabla nueva con las tres claves ajenas.`;
+        else if (/reflexiva N:M/.test(src)) origin = `<b>Reflexiva N:M</b> → tabla nueva con la clave de la entidad dos veces, una por rol.`;
+        else if (/N:M/.test(src)) { const r = relOf[t.name]; origin = `<b>Interrelación N:M</b> → tabla nueva; clave = unión de las dos claves${r && r.attrs && r.attrs.some(a => a.startsWith("#")) ? " <b>+ la fecha</b> (histórico: permite repetir la pareja)" : ""}${r && r.attrs && r.attrs.length ? " + los atributos del rombo" : ""}.`; }
+        else origin = `<b>Entidad</b> → tabla con sus atributos; el identificador es la clave primaria.`;
+        const det = [];
+        // claves ajenas de interrelaciones 1:N / 1:1 / reflexivas
+        t.fks.forEach(f => {
+            const r = R(f.rel);
+            if (!r || /N:M|ternaria|multivaluado/.test(src) && !/inclusión/.test(f.rel)) return;
+            if (f.rel === "inclusión") { det.push(`<span class="xk fk">FK</span> (${esc(f.cols.join(", "))}) → ${esc(f.ref)}: <b>restricción de inclusión</b> hecha con clave ajena compuesta.`); return; }
+            if (r.dep === "ID") return;
+            const t1 = relType(r), nul = t.cols.find(c => c.n === f.cols[0])?.nul;
+            const why = r.a === r.b ? `reflexiva ${esc(r.n)} (rol ${esc(r.roleA || "")})` : `${esc(r.label || r.n)} (${t1}): ${t1 === "1:1" ? "en una 1:1 la clave pasa a una de las dos, con UNIQUE" : "la clave del lado 1 pasa al lado N"}`;
+            det.push(`<span class="xk fk">FK</span> ${esc(f.cols.join(", "))} → ${esc(f.ref)}: ${why}. ${nul ? `<span class="xk nl">NULL</span> porque junto a ${esc(f.ref)} hay mínimo 0.` : `<span class="xk nn">NOT NULL</span> porque junto a ${esc(f.ref)} hay mínimo 1.`}${r.dep === "E" ? " Borrado en cascada (débil por existencia)." : ""}`);
+        });
+        // atributos especiales de la entidad
+        const e = E(t.name);
+        (e ? e.attrs || [] : []).map(parseAttr).forEach(a => {
+            if (a.nul && !a.multi) det.push(`<span class="xk nl">NULL</span> ${esc(a.n)}: <b>atributo opcional</b> (0,1) → admite nulos.`);
+            if (a.uq && !a.pk) det.push(`<span class="xk uq">UNIQUE</span> ${esc(a.n)}: <b>identificador alternativo</b>.`);
+            if (a.comp) det.push(`<span class="xk cp">COMP</span> ${esc(a.comp.join(", "))}: <b>atributo compuesto</b> ${esc(a.n)} descompuesto en columnas.`);
+            if (a.der) det.push(`<span class="xk dv">DERIV</span> ${esc(a.n)}: <b>atributo derivado</b> → no se guarda; se calcula con una consulta o vista.`);
+            if (a.multi) det.push(`<span class="xk mv">MULTI</span> ${esc(a.n)}: <b>multivaluado</b> → no va aquí, va en la tabla ${esc(t.name + "_" + a.n.toUpperCase())}.`);
+        });
+        const r = relOf[t.name];
+        (r && r.attrs || []).map(parseAttr).forEach(a => { if (a.nul) det.push(`<span class="xk nl">NULL</span> ${esc(a.n)}: atributo opcional del rombo.`); });
+        t.uniq.filter(u => u.length > 1).forEach(u => det.push(`<span class="xk uq">UNIQUE</span> (${esc(u.join(", "))}).`));
+        t.checks.forEach(c => det.push(`<span class="xk ck">CHECK</span> <code>${esc(c.expr)}</code>${c.why ? " — " + esc(c.why).replace(/&lt;/g, "<").replace(/&gt;/g, ">") : ""}${/ IN \(/i.test(c.expr) ? " <i>(dominio / categoría cerrada)</i>" : ""}`));
+        return `<tr><td class="tn">${esc(t.name)}</td><td>${origin}</td><td>${det.length ? det.join("<br>") : '<span class="muted">—</span>'}</td></tr>`;
+    }).join("");
+    const extra = (typeof CONSTRAINTS !== "undefined" && CONSTRAINTS[ex.id]) || {};
+    // revisión de casos especiales
+    const attrsAll = ex.ents.flatMap(e => (e.attrs || []).map(a => [e, parseAttr(a)]));
+    const relAttrs = ex.rels.flatMap(r => (r.attrs || []).map(a => [r, parseAttr(a)]));
+    const allChecks = tables.flatMap(t => t.checks.map(c => [t.name, c]));
+    const checks = [
+        ["Atributos multivaluados → tabla aparte", attrsAll.filter(([, a]) => a.multi).map(([e, a]) => `${e.id}.${a.n} → ${e.id}_${a.n.toUpperCase()}`)],
+        ["Atributos compuestos → varias columnas", attrsAll.filter(([, a]) => a.comp).map(([e, a]) => `${e.id}.${a.n} → ${a.comp.join(", ")}`)],
+        ["Atributos derivados → no se guardan", attrsAll.filter(([, a]) => a.der).map(([e, a]) => `${e.id}.${a.n}`)],
+        ["Atributos opcionales → NULL", attrsAll.concat(relAttrs).filter(([, a]) => a.nul).map(([e, a]) => `${e.id || e.n}.${a.n}`)],
+        ["Identificadores alternativos → UNIQUE", attrsAll.filter(([, a]) => a.uq && !a.pk).map(([e, a]) => `${e.id}.${a.n}`)],
+        ["Claves ajenas con mínimo 0 → NULL", tables.flatMap(t => t.fks.filter(f => t.cols.find(c => c.n === f.cols[0])?.nul && !t.cols.find(c => c.n === f.cols[0])?.pk).map(f => `${t.name}.${f.cols.join(",")}`))],
+        ["Dominios y categorías cerradas → CHECK … IN (…)", allChecks.filter(([, c]) => / IN \(/i.test(c.expr)).map(([t, c]) => `${t}: ${c.expr}`)],
+        ["Otras reglas del enunciado → CHECK", allChecks.filter(([, c]) => !/ IN \(/i.test(c.expr)).map(([t, c]) => `${t}: ${c.expr}`)],
+        ["Lo que un CHECK no puede garantizar → aserción o trigger", (extra.triggers || []).map(x => x.replace(/<[^>]+>/g, ""))]
+    ];
+    return `<div class="relx"><h4>Cómo se ha obtenido cada tabla</h4>
+      <div class="tscroll"><table class="tb relxt"><tr><th>Tabla</th><th>De dónde sale</th><th>Columnas especiales y restricciones</th></tr>${rows}</table></div>
+      <h4>Revisión de casos especiales en este ejercicio</h4>
+      <ul class="relcheck">${checks.map(([t, list]) => `<li class="${list.length ? "yes" : "no"}"><b>${list.length ? "✓" : "—"} ${t}</b>${list.length ? `<div>${list.map(x => `<code>${esc(x)}</code>`).join(" ")}</div>` : ` <span class="muted">no hay en este ejercicio</span>`}</li>`).join("")}</ul></div>`;
+}
+
+// =====================================================================
 //  LOS 18 EJERCICIOS EN NOTACIÓN DE PAPEL
 //  Convierte el formato de EXERCISES (atributos dentro de la caja) al
 //  formato de drawER (piruletas), eligiendo el lado libre de cada entidad.
@@ -2988,6 +3189,7 @@ const STATE = {
     checked: {},
     flowStep: lsGet("er-flowstep", 0),
     umlZoom: false,
+    cues: lsGet("er-cues", true),
     exStep: 99
 };
 
@@ -3045,8 +3247,9 @@ function renderExercise() {
     P.appendChild(head);
 
     const en = document.createElement("details"); en.className = "enun"; en.open = true;
-    en.innerHTML = `<summary>Enunciado ${ex.page ? `(Tema 2, pág. ${ex.page})` : ex.source ? `(${ex.source})` : "(ejercicio nuevo de práctica)"}</summary><div class="txt">${esc(ex.text.trim())}</div>`;
+    en.innerHTML = `<summary>Enunciado ${ex.page ? `(Tema 2, pág. ${ex.page})` : ex.source ? `(${ex.source})` : "(ejercicio nuevo de práctica)"}</summary><div class="cuebar"><label class="switch"><input type="checkbox" id="sw-cues" ${STATE.cues ? "checked" : ""}> Resaltar las palabras que dan la cardinalidad</label>${STATE.cues ? `<details class="cueleg"><summary>¿Qué significa cada color?</summary>${cueLegendHTML()}</details>` : ""}</div><div class="txt">${cueMark(esc(ex.text.trim()))}</div>`;
     P.appendChild(en);
+    en.querySelector("#sw-cues").onchange = e => { STATE.cues = e.target.checked; lsSet("er-cues", STATE.cues); renderExercise(); };
 
     // barra de herramientas
     const tb = document.createElement("div"); tb.className = "toolbar";
@@ -3099,6 +3302,7 @@ function renderExercise() {
                    : [{ e: r.a, c: r.ca, role: r.roleA, other: r.b, orole: r.roleB }, { e: r.b, c: r.cb, role: r.roleB, other: r.a, orole: r.roleA }];
         const names = r.ends ? r.ends.map(e => L[e.e]).join(" – ") : (r.a === r.b ? `${L[r.a]} – ${L[r.a]} (reflexiva)` : `${L[r.a]} – ${L[r.b]}`);
         let html = `<div class="t">${esc(r.label || r.n)} <span class="muted">(${esc(names)})</span>${showSol ? `<span class="type">${esc((r.dep ? r.dep + " · " : "") + relType(r))}</span>` : ""}</div>`;
+        if (showSol) html += `<div class="ctags">${relCaseTags(ex, r).map(t => `<span class="ctag">${t}</span>`).join("")}</div>`;
         if (STATE.practice) {
             html += `<div class="pr-row">` + ends.map((e, k) => {
                 const lab = e.role ? `${L[e.e]} (${e.role})` : L[e.e];
@@ -3168,7 +3372,7 @@ function renderExercise() {
     const rs = document.createElement("details"); rs.className = "sec"; rs.open = !STATE.practice;
     rs.innerHTML = `<summary>Paso al modelo relacional (Tema 3) · ${tables.length} tablas</summary>
       <p class="muted" style="margin:4px 0 10px">Notación del grafo relacional: <span style="text-decoration:underline;font-weight:700">clave primaria</span> subrayada, <i style="color:var(--primary)">clave ajena</i> en cursiva (→ tabla a la que apunta), <b>clave alternativa</b> en negrita, * = admite nulos. B/M = borrado/modificación: C cascada, N nulos, R restringido.</p>
-      <div class="rschema">${schemaHTML(tables)}</div>`;
+      <div class="rschema">${schemaHTML(tables)}</div>${relExplainHTML(ex, tables)}`;
     P.appendChild(rs);
 
     const sq = document.createElement("details"); sq.className = "sec";
@@ -3726,6 +3930,7 @@ function renderExam() {
 // =====================================================================
 //  ARRANQUE DEL MATERIAL DE EXAMEN (las pestañas las gestiona setTab)
 // =====================================================================
+renderCatalog();
 renderMethod(); renderRead(); renderRestr(); renderDict(); renderQuiz(); renderTables(); renderExam();
 document.querySelectorAll("a.cell").forEach(a => a.onclick = e => { e.preventDefault(); document.querySelector(a.getAttribute("href")).scrollIntoView({ behavior: "smooth" }); });
 

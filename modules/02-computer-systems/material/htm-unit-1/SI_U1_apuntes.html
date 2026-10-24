@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SI · Unidad 1 (Parte 1)</title>
+<style>
+:root{
+ --bg:#f6f4ee;--paper:#fffdf8;--ink:#1d2433;--muted:#5d6676;--line:#d9d4c7;--accent:#2f5bd3;--accent2:#e9efff;
+ --red:#c8322b;--green:#1f8a4c;--greenbg:#e5f5ea;--redbg:#fbe7e5;--amber:#b45309;--amberbg:#fff1dc;--violet:#7a2fb8;--violetbg:#f3e8ff;
+ --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--shadow:0 1px 2px rgba(0,0,0,.06),0 4px 14px rgba(0,0,0,.05);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#14171d;--paper:#1c2028;--ink:#e7e9ee;--muted:#9aa3b2;--line:#353b47;--accent:#7ea2ff;--accent2:#232c42;
+ --red:#ff7a70;--green:#5fd18f;--greenbg:#183324;--redbg:#3a1d1b;--amber:#f5b25b;--amberbg:#3a2a12;--violet:#c4a1ff;--violetbg:#2c2140;
+}}
+:root[data-theme="dark"]{
+ --bg:#14171d;--paper:#1c2028;--ink:#e7e9ee;--muted:#9aa3b2;--line:#353b47;--accent:#7ea2ff;--accent2:#232c42;
+ --red:#ff7a70;--green:#5fd18f;--greenbg:#183324;--redbg:#3a1d1b;--amber:#f5b25b;--amberbg:#3a2a12;--violet:#c4a1ff;--violetbg:#2c2140;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{padding:22px 16px 6px;max-width:1180px;margin:auto}
+header h1{margin:0;font-size:1.55rem}header p{margin:4px 0 0;color:var(--muted)}
+nav#tabs{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px;max-width:1180px;margin:auto;border-bottom:1px solid var(--line)}
+@media (max-width:760px){nav#tabs{flex-wrap:nowrap;overflow-x:auto}nav#tabs button{flex:none}}
+main{max-width:1180px;margin:auto;padding:16px}
+button,select,input{font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:7px 12px;min-width:0;max-width:100%}
+button{cursor:pointer}button:hover:not(:disabled){border-color:var(--accent)}button:disabled{opacity:.45;cursor:default}
+button.on,button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+input{font-family:var(--mono)}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:18px;box-shadow:var(--shadow)}
+.panel h2{margin:0 0 8px;font-size:1.3rem}
+h3{margin:16px 0 6px;font-size:1.05rem}
+.lead{color:var(--muted);margin:0 0 12px}.muted{color:var(--muted);font-size:.9rem}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row.sb{justify-content:space-between}
+code,.mono{font-family:var(--mono);font-size:.92em}
+code{background:var(--accent2);padding:1px 5px;border-radius:5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.key{background:var(--accent2);border-left:4px solid var(--accent);border-radius:10px;padding:10px 14px;margin:10px 0}
+.warn{background:var(--amberbg);border-left:4px solid var(--amber);border-radius:10px;padding:10px 14px;margin:10px 0}
+.exam{background:var(--violetbg);border-left:4px solid var(--violet);border-radius:10px;padding:10px 14px;margin:10px 0}
+.exam b:first-child{color:var(--violet)}
+table.tb{width:100%;border-collapse:collapse;font-size:.92rem;margin:8px 0}
+table.tb th,table.tb td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+table.tb th{background:var(--bg)}
+.tscroll{overflow-x:auto}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}.toc a{font-size:.88rem;text-decoration:none;color:var(--accent);border:1px solid var(--line);border-radius:20px;padding:3px 10px;background:var(--paper)}
+/* línea de tiempo */
+.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:10px 0}
+.gen{border-radius:12px;padding:10px;border:2px solid var(--line);background:var(--bg);font-size:.88rem}
+.gen h4{margin:0 0 2px;font-size:1rem}.gen .yr{font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+.gen .tech{font-weight:700;margin:4px 0}.gen ul{margin:4px 0 0;padding-left:16px}
+.g1{border-color:#e9a23b}.g2{border-color:#d4c138}.g3{border-color:#4fb07a}.g4{border-color:#3d8bd8}.g5{border-color:#8b5cf6}
+.pre{display:flex;flex-wrap:wrap;gap:8px}.pre div{flex:1 1 200px;border:1px dashed var(--line);border-radius:10px;padding:8px 10px;font-size:.9rem;background:var(--bg)}
+/* diagramas svg */
+svg.dia{width:100%;height:auto;display:block;max-width:760px;margin:6px auto}
+svg.dia text{font-family:system-ui,sans-serif;fill:#1d2433}
+.diabox{background:#fffefa;border:1px dashed var(--line);border-radius:12px;padding:8px}
+/* pirámide memoria */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:4px;margin:8px 0}
+.pyr div{text-align:center;border-radius:6px;padding:6px;color:#fff;font-weight:600;font-size:.9rem}
+/* bits */
+.bits{display:inline-flex;flex-wrap:wrap;gap:2px;font-family:var(--mono);vertical-align:middle}
+.bits span{display:inline-grid;place-items:center;min-width:22px;height:26px;border:1px solid var(--line);border-radius:4px;background:var(--paper);font-weight:700}
+.bits span.s{background:#fde68a;color:#78350f}.bits span.e{background:#bfdbfe;color:#1e3a8a}.bits span.m{background:#ddd6fe;color:#4c1d95}.bits span.one{background:var(--accent2)}
+.bits span.gap{border:0;background:transparent;min-width:6px}
+/* laboratorio */
+.lab{display:grid;gap:10px}
+.lab .in{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.steps{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.92rem;overflow-x:auto}
+.steps ol{margin:4px 0;padding-left:20px}
+.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+.res div{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--paper)}
+.res b{display:block;font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.res span{font-family:var(--mono);font-size:1.05rem;word-break:break-all}
+table.div{border-collapse:collapse;font-family:var(--mono);font-size:.9rem;margin:6px 0}
+table.div td{padding:2px 10px;border-bottom:1px dotted var(--line)}table.div td.r{color:var(--red);font-weight:700}
+.err{color:var(--red)}
+/* mapa */
+.map ul{list-style:none;margin:0;padding-left:22px;border-left:2px dashed var(--line)}
+.map>ul{border-left:0;padding-left:0}
+.map li{margin:4px 0;position:relative}
+.map .lnk{font-size:.8rem;color:var(--muted);font-style:italic;display:block;margin-top:6px}
+.node{display:inline-block;border-radius:8px;padding:3px 10px;font-weight:600;font-size:.9rem;border:1px solid}
+.n0{background:#6b7280;color:#fff;border-color:#4b5563}.n1{background:#c7d2fe;color:#1e1b4b;border-color:#6366f1}
+.n2{background:#bbf7d0;color:#14532d;border-color:#22c55e}.n3{background:#fbcfe8;color:#831843;border-color:#db2777}.n4{background:#fde68a;color:#78350f;border-color:#d97706}
+details.mx>summary{cursor:pointer;list-style:none}details.mx>summary::before{content:"▸ ";color:var(--muted)}details.mx[open]>summary::before{content:"▾ "}
+.tip{font-size:.85rem;color:var(--muted);margin-left:6px}
+/* flashcards */
+.fc-wrap{perspective:1200px;max-width:640px;margin:10px auto}
+.fc{position:relative;min-height:230px;cursor:pointer;transition:transform .5s;transform-style:preserve-3d}
+.fc.flip{transform:rotateY(180deg)}
+.fc>div{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;padding:22px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;border:1px solid var(--line);box-shadow:var(--shadow)}
+.fc .front{background:var(--paper);font-size:1.2rem;font-weight:600}.fc .back{background:var(--accent2);transform:rotateY(180deg);font-size:1rem}
+.fc .cat{position:absolute;top:10px;left:14px;font-size:.75rem;font-weight:700;color:var(--accent);text-transform:uppercase}
+.track{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin:8px 0}.bar{height:100%;background:var(--accent);transition:width .3s}
+/* test */
+.opts{display:grid;gap:8px;margin-top:10px}.opt{text-align:left;padding:10px 14px}
+.opt.right{background:var(--greenbg);border-color:var(--green)}.opt.wrong{background:var(--redbg);border-color:var(--red)}
+.fb{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--bg)}
+.big{font-size:3rem;font-weight:800;color:var(--accent);text-align:center}
+.badge{display:inline-block;background:var(--accent2);color:var(--accent);font-size:.75rem;font-weight:700;padding:2px 8px;border-radius:20px}
+@media (max-width:760px){.grid2,.grid3{grid-template-columns:1fr}.timeline{grid-template-columns:1fr 1fr}.panel{padding:14px}}
+@media print{nav#tabs,.noprint{display:none}body{background:#fff}.panel{box-shadow:none;break-inside:avoid}section[hidden]{display:block!important}}
+</style>
+</head>
+<body>
+<header>
+ <h1>Sistemas Informáticos · Unidad 1 (Parte 1)</h1>
+ <p>Explotación de sistemas microinformáticos: historia, arquitectura de Von Neumann, memoria y representación de la información.</p>
+</header>
+<nav id="tabs" role="tablist"></nav>
+<main>
+<section id="v-notes"></section>
+<section id="v-map" hidden></section>
+<section id="v-lab" hidden></section>
+<section id="v-ex" hidden></section>
+<section id="v-fc" hidden></section>
+<section id="v-test" hidden></section>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+function store(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k, JSON.stringify(v)); } catch (e) { return null; } }
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const bitsHTML = (s, cls) => `<span class="bits">${[...s].map((c, i) => c === " " ? '<span class="gap"></span>' : `<span class="${cls ? cls(i) : (c === "1" ? "one" : "")}">${c}</span>`).join("")}</span>`;
+const group = (s, n) => { const out = []; for (let i = s.length; i > 0; i -= n) out.unshift(s.slice(Math.max(0, i - n), i)); return out; };
+const sub = (n, b) => `${n}<sub>(${b}</sub>`;
+
+// =====================================================================
+//  APUNTES
+// =====================================================================
+function renderNotes() {
+ const toc = [["h", "1. Historia"], ["a", "2. Arquitectura"], ["vn", "2.1 Von Neumann"], ["cpu", "2.1.1 CPU"], ["mem", "2.1.2 Memoria"], ["ri", "3. Representación"], ["med", "3.1 Medidas"], ["num", "3.2 Sistemas de numeración"], ["alf", "3.3 Codificación alfanumérica"], ["ent", "3.4 Enteros"], ["real", "3.5 Reales"]];
+ $("v-notes").innerHTML = `
+ <div class="toc">${toc.map(([id, t]) => `<a href="#n-${id}">${t}</a>`).join("")}</div>
+
+ <div class="panel" id="n-h"><h2>1. Historia de los ordenadores</h2>
+  <h3>Antes de la electrónica</h3>
+  <div class="pre">
+   <div><b>Ábaco</b><br>Primer instrumento para calcular.</div>
+   <div><b>Pascalina</b> (máquina aritmética)<br>Realizaba <b>sumas y restas</b>.</div>
+   <div><b>Máquina de Leibniz</b> (1671)<br>Realizaba las <b>cuatro operaciones</b> aritméticas.</div>
+  </div>
+  <div class="grid2" style="margin-top:8px">
+   <div><h3>Máquinas mecánicas · Charles Babbage</h3><ul>
+    <li><b>Máquina de diferencias</b>: funciones de 2.º grado con 6 cifras.</li>
+    <li><b>Máquina analítica</b>: ejecutar cualquier operación <b>sin intervención humana</b> durante el cálculo (idea de ordenador programable).</li></ul></div>
+   <div><h3>Máquinas electromecánicas</h3><ul>
+    <li><b>Máquina tabuladora</b> de Herman Hollerith: usada en el <b>censo de EE. UU.</b></li>
+    <li><b>Z1</b> de Konrad Zuse: calculadora mecánica <b>binaria</b> operada con electricidad y de programabilidad limitada.</li></ul></div>
+  </div>
+  <h3>Las cinco generaciones</h3>
+  <div class="timeline">
+   <div class="gen g1"><h4>1.ª</h4><div class="yr">1940–1959</div><div class="tech">Válvulas de vacío</div><ul><li>ENIAC, UNIVAC</li><li>Mucho calor, gran tamaño, poca capacidad</li><li>Lenguaje máquina y ensamblador</li><li>Monoprogramación, sin SO</li></ul></div>
+   <div class="gen g2"><h4>2.ª</h4><div class="yr">1960–1965</div><div class="tech">Transistores</div><ul><li>ATLAS</li><li>Menor tamaño y calor, más fiable</li><li>FORTRAN, COBOL, ALGOL</li><li>Germen del SO: procesamiento por lotes</li></ul></div>
+   <div class="gen g3"><h4>3.ª</h4><div class="yr">1965–1975</div><div class="tech">Circuitos integrados</div><ul><li>IBM 360 (primera familia compatible)</li><li>Supercomputador CDC 6600, minis PDP-8/PDP-11</li><li>Multiprogramación y tiempo compartido</li><li>Programación estructurada (Dijkstra, 1968)</li></ul></div>
+   <div class="gen g4"><h4>4.ª</h4><div class="yr">1975–1990</div><div class="tech">Microprocesador</div><ul><li>Intel 4004 (1971), Pentium</li><li>Memorias de semiconductor, memoria virtual</li><li>C y Ada · UNIX · interfaces gráficas</li><li>Supercomputadores paralelos</li></ul></div>
+   <div class="gen g5"><h4>5.ª</h4><div class="yr">1990–hoy</div><div class="tech">Paralelismo, biológica, cuántica</div><ul><li>Hardware: proceso en paralelo, computación biológica y cuántica</li><li>Software: lenguaje natural e inteligencia artificial</li><li>Caché de varios niveles</li></ul></div>
+  </div>
+  <div class="tscroll"><table class="tb">
+   <tr><th></th><th>1.ª</th><th>2.ª</th><th>3.ª</th><th>4.ª</th><th>5.ª</th></tr>
+   <tr><th>Tecnología</th><td>Válvulas de vacío</td><td>Transistor</td><td>C. integrados SSI–MSI</td><td>Microprocesadores LSI–VLSI–ULSI</td><td>Proceso en paralelo, biológica y cuántica</td></tr>
+   <tr><th>Máquinas</th><td>ENIAC, UNIVAC</td><td>ATLAS</td><td>IBM 360</td><td>Intel 4004, Pentium</td><td>—</td></tr>
+   <tr><th>Memoria</th><td>Tubos de Williams, tambores y cintas magnéticas</td><td>Núcleos de ferrita</td><td>Memorias en C.I., memoria caché</td><td>Memoria virtual</td><td>Caché de varios niveles</td></tr>
+   <tr><th>Lenguajes</th><td>Máquina, ensamblador</td><td>Alto nivel: FORTRAN, COBOL</td><td>Alto nivel estructurados</td><td>Alto nivel: POO, lógica, funcional</td><td>Lenguaje natural</td></tr>
+   <tr><th>Producto</th><td>Computador</td><td>Computador comercial</td><td>Minicomputador</td><td>Microcomputador</td><td>Multiprocesador</td></tr>
+  </table></div>
+  <div class="grid2">
+   <div><h3>Piezas clave</h3><ul>
+    <li><b>Tríodo o audión</b> (Lee de Forest, 1906): válvula con <b>cátodo</b> (filamento que emite electrones), <b>ánodo</b> (placa que los atrae) y <b>rejilla</b> entre ambos. Primer dispositivo que <b>amplificaba</b> la señal eléctrica.</li>
+    <li><b>Transistor</b>: semiconductor que actúa como <b>amplificador o conmutador</b>. Sustituye al tríodo; forma puertas lógicas y memorias.</li>
+    <li><b>Circuito integrado</b>: chip con muchos componentes (transistores, resistencias, diodos) embebidos en resina.</li>
+    <li><b>Microprocesador</b>: un C.I. que contiene <b>toda la UCP</b>; millones de transistores en una placa de silicio.</li></ul></div>
+   <div><h3>Niveles de integración (componentes por chip)</h3>
+    <table class="tb"><tr><th>Sigla</th><th>Escala</th><th>Componentes</th></tr>
+     <tr><td><b>SSI</b></td><td>Small · pequeña</td><td>&lt; 12</td></tr>
+     <tr><td><b>MSI</b></td><td>Medium · media</td><td>12 – 99</td></tr>
+     <tr><td><b>LSI</b></td><td>Large · grande</td><td>100 – 9 999</td></tr>
+     <tr><td><b>VLSI</b></td><td>Very Large · muy grande</td><td>10 000 – 99 999</td></tr>
+     <tr><td><b>ULSI</b></td><td>Ultra Large · ultra grande</td><td>≥ 100 000</td></tr></table>
+    <p class="muted">Truco: S-M-L-VL-UL como las tallas de ropa.</p></div>
+  </div>
+  <div class="exam"><b>Para el examen:</b> relaciona cada generación con su <b>tecnología</b> (válvula → transistor → C.I. → microprocesador → paralelo/cuántica) y con un hito de software (sin SO → lotes → multiprogramación → UNIX/GUI → IA).</div>
+ </div>
+
+ <div class="panel" id="n-a"><h2>2. La arquitectura de los ordenadores</h2>
+  <p>La <b>arquitectura</b> es la organización interna del ordenador. Incluye: <b>componentes y su organización</b>, <b>conjunto de instrucciones</b>, <b>estructura de las instrucciones</b> y <b>modos de direccionamiento</b>.</p>
+  <div class="grid2">
+   <div class="diabox"><b>Von Neumann</b> · una sola memoria para datos <u>e</u> instrucciones
+    <svg class="dia" viewBox="0 0 360 150"><rect x="10" y="50" width="90" height="50" rx="6" fill="#c7d2fe" stroke="#1d2433"/><text x="55" y="80" text-anchor="middle" font-weight="700">CPU</text>
+     <rect x="250" y="40" width="100" height="70" rx="6" fill="#bbf7d0" stroke="#1d2433"/><text x="300" y="70" text-anchor="middle" font-weight="700" font-size="12">MEMORIA</text><text x="300" y="88" text-anchor="middle" font-size="11">datos + instrucciones</text>
+     <line x1="100" y1="75" x2="250" y2="75" stroke="#1d2433" stroke-width="5"/><text x="175" y="66" text-anchor="middle" font-size="11">un único bus</text>
+     <text x="175" y="130" text-anchor="middle" font-size="11" fill="#c8322b">cuello de botella: datos e instrucciones se turnan</text></svg></div>
+   <div class="diabox"><b>Harvard</b> · memorias y buses separados
+    <svg class="dia" viewBox="0 0 360 150"><rect x="130" y="50" width="90" height="50" rx="6" fill="#c7d2fe" stroke="#1d2433"/><text x="175" y="80" text-anchor="middle" font-weight="700">CPU</text>
+     <rect x="5" y="45" width="95" height="60" rx="6" fill="#fde68a" stroke="#1d2433"/><text x="52" y="72" text-anchor="middle" font-size="11" font-weight="700">MEMORIA</text><text x="52" y="88" text-anchor="middle" font-size="11">de datos</text>
+     <rect x="255" y="45" width="100" height="60" rx="6" fill="#bbf7d0" stroke="#1d2433"/><text x="305" y="72" text-anchor="middle" font-size="11" font-weight="700">MEMORIA</text><text x="305" y="88" text-anchor="middle" font-size="11">de instrucciones</text>
+     <line x1="100" y1="75" x2="130" y2="75" stroke="#1d2433" stroke-width="4"/><line x1="220" y1="75" x2="255" y2="75" stroke="#1d2433" stroke-width="4"/>
+     <text x="175" y="130" text-anchor="middle" font-size="11" fill="#1f8a4c">lee instrucción y dato a la vez</text></svg></div>
+  </div>
+  <h3>RISC frente a CISC</h3>
+  <div class="grid2">
+   <table class="tb"><tr><th></th><th>RISC</th><th>CISC</th></tr>
+    <tr><th>Significado</th><td><b>R</b>educed Instruction Set Computer</td><td><b>C</b>omplex Instruction Set Computer</td></tr>
+    <tr><th>Instrucciones</th><td>Pocas y sencillas, de longitud fija</td><td>Muchas y complejas, de longitud variable</td></tr>
+    <tr><th>Qué intenta bajar</th><td><b>Nci</b> (ciclos por instrucción)</td><td><b>Ni</b> (número de instrucciones)</td></tr></table>
+   <div class="key"><b>Tiempo de ejecución de un programa</b><div style="font-size:1.4rem;text-align:center;margin:6px 0;font-family:var(--mono)">T<sub>e</sub> = N<sub>i</sub> × N<sub>ci</sub> / F</div>
+    <b>N<sub>i</sub></b> = n.º de instrucciones · <b>N<sub>ci</sub></b> = ciclos por instrucción · <b>F</b> = frecuencia del reloj (Hz).<br>
+    <span class="muted">Ej.: 10⁹ instrucciones × 2 ciclos / 2 GHz = 1 s. Lo puedes calcular en el Laboratorio.</span></div>
+  </div>
+ </div>
+
+ <div class="panel" id="n-vn"><h2>2.1 La arquitectura de Von Neumann</h2>
+  <ul><li>Estableció el <b>modelo básico</b> de los computadores digitales (<b>1946</b>).</li>
+   <li>Idea clave: <b>programa almacenado</b> en memoria (antes los programas eran <b>cableados</b>).</li>
+   <li>Las unidades están conectadas permanentemente y las coordina un <b>elemento de control</b>. Sigue vigente con modificaciones.</li></ul>
+  <div class="diabox"><svg class="dia" viewBox="0 0 720 300">
+   <rect x="20" y="20" width="250" height="200" rx="10" fill="#eef3ff" stroke="#1d2433" stroke-dasharray="6 4"/><text x="145" y="42" text-anchor="middle" font-weight="700">CPU (UCP)</text>
+   <rect x="40" y="60" width="100" height="60" rx="6" fill="#c7d2fe" stroke="#1d2433"/><text x="90" y="88" text-anchor="middle" font-weight="700">UC</text><text x="90" y="105" text-anchor="middle" font-size="11">unidad de control</text>
+   <rect x="150" y="60" width="100" height="60" rx="6" fill="#fde68a" stroke="#1d2433"/><text x="200" y="88" text-anchor="middle" font-weight="700">ALU</text><text x="200" y="105" text-anchor="middle" font-size="11">aritmético-lógica</text>
+   <rect x="40" y="140" width="210" height="55" rx="6" fill="#fff" stroke="#1d2433"/><text x="145" y="165" text-anchor="middle" font-weight="700">Registros</text><text x="145" y="182" text-anchor="middle" font-size="11">almacenamiento interno · buses internos</text>
+   <rect x="320" y="40" width="160" height="80" rx="8" fill="#bbf7d0" stroke="#1d2433"/><text x="400" y="72" text-anchor="middle" font-weight="700">Memoria principal</text><text x="400" y="92" text-anchor="middle" font-size="11">datos y programas</text>
+   <rect x="520" y="40" width="180" height="80" rx="8" fill="#fbcfe8" stroke="#1d2433"/><text x="610" y="72" text-anchor="middle" font-weight="700">Interfaces E/S</text><text x="610" y="92" text-anchor="middle" font-size="11">liberan a la CPU de los periféricos</text>
+   <line x1="270" y1="240" x2="700" y2="240" stroke="#c8322b" stroke-width="4"/><text x="300" y="234" font-size="11" fill="#c8322b">bus de control</text>
+   <line x1="270" y1="262" x2="700" y2="262" stroke="#2f5bd3" stroke-width="4"/><text x="300" y="256" font-size="11" fill="#2f5bd3">bus de datos (datos e instrucciones)</text>
+   <line x1="270" y1="284" x2="700" y2="284" stroke="#1f8a4c" stroke-width="4"/><text x="300" y="278" font-size="11" fill="#1f8a4c">bus de direcciones (memory bus)</text>
+   <line x1="145" y1="220" x2="145" y2="284" stroke="#1d2433" stroke-width="2"/><line x1="145" y1="284" x2="270" y2="284" stroke="#1d2433" stroke-width="2"/>
+   <line x1="400" y1="120" x2="400" y2="284" stroke="#1d2433" stroke-width="2"/><line x1="610" y1="120" x2="610" y2="284" stroke="#1d2433" stroke-width="2"/>
+  </svg></div>
+  <table class="tb"><tr><th>Elemento funcional</th><th>Qué hace</th></tr>
+   <tr><td><b>CPU</b> (unidad central de proceso)</td><td>El «cerebro»: controla el sistema y ejecuta las instrucciones.</td></tr>
+   <tr><td><b>Memoria principal (MP)</b></td><td>Almacena datos y programas.</td></tr>
+   <tr><td><b>Interfaces de E/S</b></td><td>Liberan a la CPU del trabajo de comunicarse con periféricos de entrada, salida y entrada-salida.</td></tr>
+   <tr><td><b>Buses</b></td><td>Interconectan lo anterior. Tres tipos: <b>control</b>, <b>datos</b> (datos e instrucciones) y <b>direcciones</b> (eligen a qué posición de memoria o dispositivo se accede).</td></tr></table>
+ </div>
+
+ <div class="panel" id="n-cpu"><h2>2.1.1 La unidad central de proceso (CPU)</h2>
+  <p>Controla todo el sistema, ejecuta las instrucciones de la memoria principal y procesa los datos. Hoy es un circuito integrado: el <b>procesador o microprocesador</b>.</p>
+  <div class="grid2">
+   <div><h3>Unidad de control (UC)</h3><ol><li><b>Busca</b> la instrucción en la MP.</li><li>La <b>interpreta</b> (decodifica).</li><li>La <b>ejecuta</b>, generando las señales de control y estado.</li></ol>
+    <div class="key">Ciclo de instrucción: <b>búsqueda → decodificación → ejecución</b>, y vuelta a empezar.</div></div>
+   <div><h3>Unidad aritmético-lógica (ALU)</h3><ul><li><b>Aritméticas</b>: suma, resta, multiplicación, división…</li><li><b>Lógicas</b>: NOT, AND, OR, XOR, comparaciones…</li></ul><p>Solo hace lo que le ordena la UC.</p></div>
+   <div><h3>Registros</h3><p>Almacenamiento <b>interno</b> de la CPU: guardan temporalmente lo necesario para ejecutar las instrucciones. Es la memoria más rápida.</p></div>
+   <div><h3>Buses internos</h3><p>Intercambian datos, direcciones y señales de control entre la UC, la ALU y los registros.</p></div>
+  </div>
+ </div>
+
+ <div class="panel" id="n-mem"><h2>2.1.2 La memoria</h2>
+  <p>Los dispositivos de almacenamiento guardan datos de forma <b>temporal o permanente</b>. <b>Cuanto más rápida, más cara</b> (y de menor capacidad).</p>
+  <div class="grid2">
+   <div><h3>Jerarquía de memoria</h3>
+    <div class="pyr">
+     <div style="width:30%;background:#7c3aed">Registros</div>
+     <div style="width:48%;background:#2f5bd3">Caché</div>
+     <div style="width:66%;background:#0f766e">RAM</div>
+     <div style="width:84%;background:#b45309">Disco duro</div>
+    </div>
+    <p class="muted" style="text-align:center">↑ más velocidad y precio por byte · ↓ más capacidad</p></div>
+   <div><table class="tb"><tr><th>Nivel</th><th>Tipo</th><th>Función</th></tr>
+    <tr><td><b>Caché</b></td><td>Volátil</td><td>Copia de datos de uso frecuente para acceso rápido; está en varios componentes.</td></tr>
+    <tr><td><b>RAM</b></td><td>Volátil</td><td>Instrucciones y datos temporales; intercambia con la CPU.</td></tr>
+    <tr><td><b>Disco duro</b></td><td>Permanente</td><td>Gran capacidad; intercambia con la RAM.</td></tr></table>
+    <p class="muted"><b>Volátil</b> = se borra al apagar.</p></div>
+  </div>
+  <h3>Organización de la memoria principal</h3>
+  <div class="grid2">
+   <div><p>Está formada por <b>celdas</b> (casillas, posiciones o <b>palabras de memoria</b>) de un número fijo de bits. Cada celda tiene:</p>
+    <ul><li><b>Dirección</b>: número que la identifica de forma única.</li><li><b>Contenido</b>: la instrucción o el dato guardado en ese momento.</li></ul>
+    <p>Está ligada a las unidades más rápidas: UC y ALU.</p></div>
+   <div class="tscroll"><table class="tb mono" style="max-width:320px"><tr><th>Dirección</th><th>Contenido</th></tr>
+    <tr><td>0x0000</td><td>1011 0010</td></tr><tr><td>0x0001</td><td>0000 1111</td></tr><tr><td>0x0002</td><td>0100 1000 <span class="muted">('H')</span></td></tr><tr><td>…</td><td>…</td></tr></table></div>
+  </div>
+ </div>
+
+ <div class="panel" id="n-ri"><h2>3. Representación de la información</h2>
+  <ul><li>Un ordenador <b>recibe datos de entrada, los transforma y produce datos de salida</b>; su función principal es <b>automatizar tareas</b>.</li>
+   <li>Sus componentes no entienden letras ni números, solo <b>corriente eléctrica</b> (u otras magnitudes físicas).</li>
+   <li>Por eso hacen falta <b>sistemas de codificación</b>. El SO, con el hardware, transforma la información en impulsos eléctricos y viceversa.</li></ul>
+ </div>
+
+ <div class="panel" id="n-med"><h2>3.1 Medidas de información</h2>
+  <div class="grid2">
+   <div><p>El <b>bit</b> (0 o 1) es la unidad mínima de información.</p>
+    <table class="tb"><tr><th>Unidad</th><th>Equivale a</th><th>Potencia</th></tr>
+     <tr><td>Nibble (cuarteto)</td><td>4 bits</td><td></td></tr><tr><td><b>Byte</b> (octeto)</td><td>8 bits</td><td></td></tr>
+     <tr><td>Kilobyte (KB)</td><td>1024 bytes</td><td>2<sup>10</sup> B</td></tr><tr><td>Megabyte (MB)</td><td>1024 KB</td><td>2<sup>20</sup> B</td></tr>
+     <tr><td>Gigabyte (GB)</td><td>1024 MB</td><td>2<sup>30</sup> B</td></tr><tr><td>Terabyte (TB)</td><td>1024 GB</td><td>2<sup>40</sup> B</td></tr>
+     <tr><td>Petabyte (PB)</td><td>1024 TB</td><td>2<sup>50</sup> B</td></tr><tr><td>Exabyte (EB)</td><td>1024 PB</td><td>2<sup>60</sup> B</td></tr></table></div>
+   <div><div class="key"><b>B mayúscula = byte · b minúscula = bit</b><br>30 MB = 30 megabytes · 30 Mbps = 30 megabits por segundo (velocidad de red).<br>Para pasar de bits a bytes: <b>÷ 8</b>.</div>
+    <div class="key"><b>Subir de unidad: ÷ 1024 · bajar: × 1024</b><br>Ej.: 3 GB = 3 × 1024 = 3072 MB = 3072 × 1024 KB.</div>
+    <div class="warn"><b>Nota:</b> en los apuntes se usa 1 KB = 1024 B. Los fabricantes de discos usan 1 KB = 1000 B (sistema decimal); la norma IEC llama KiB, MiB… a las unidades de 1024. Por eso un disco de «1 TB» aparece con unos 931 GB en el sistema operativo.</div></div>
+  </div>
+ </div>
+
+ <div class="panel" id="n-num"><h2>3.2 Sistemas de numeración</h2>
+  <p>Conjunto de símbolos y reglas para representar cantidades. La <b>base</b> es el número de símbolos. El valor de cada símbolo depende de su <b>posición</b>.</p>
+  <div class="key"><b>Teorema fundamental de la numeración (TFN)</b>: NUM = Σ X<sub>i</sub> · B<sup>i</sup> &nbsp;(X = dígito, i = posición desde la coma, B = base)<br>
+   Ej.: ${sub(98, 10)} = 9·10¹ + 8·10⁰ = 90 + 8</div>
+  <div class="tscroll"><table class="tb"><tr><th>Sistema</th><th>Base</th><th>Símbolos</th><th>Bits por símbolo</th><th>Uso</th></tr>
+   <tr><td><b>Binario</b></td><td>2</td><td>0 1</td><td>1</td><td>El que usa el ordenador internamente (hay / no hay tensión).</td></tr>
+   <tr><td><b>Octal</b></td><td>8</td><td>0–7</td><td><b>3</b></td><td>Abreviar binario.</td></tr>
+   <tr><td><b>Decimal</b></td><td>10</td><td>0–9</td><td>—</td><td>El humano.</td></tr>
+   <tr><td><b>Hexadecimal</b></td><td>16</td><td>0–9 A B C D E F (A=10 … F=15)</td><td><b>4</b></td><td>Direcciones de memoria, colores…</td></tr></table></div>
+  <p>Con <b>n bits</b> se representan <b>2<sup>n</sup></b> valores distintos (de 0 a 2<sup>n</sup>−1). Ej.: n = 2 → 00, 01, 10, 11.</p>
+  <h3>Las conversiones que tienes que dominar</h3>
+  <div class="grid2">
+   <div><b>① Base b → decimal: TFN</b> (suma de dígito × potencia)<br>
+    <code>1011(2 = 1·2³ + 0·2² + 1·2¹ + 1·2⁰ = 8+0+2+1 = 11(10</code><br>
+    <code>454(8 = 4·8² + 5·8¹ + 4·8⁰ = 256+40+4 = 300(10</code><br>
+    <code>12C(16 = 1·16² + 2·16¹ + 12·16⁰ = 256+32+12 = 300(10</code></div>
+   <div><b>② Decimal → base b: divisiones sucesivas</b><br>Se divide entre la base; los <b>restos</b> y el <b>último cociente</b>, leídos <b>de abajo arriba</b>, dan el número.
+    <table class="div"><tr><td>9 : 2 = 4</td><td class="r">1</td></tr><tr><td>4 : 2 = 2</td><td class="r">0</td></tr><tr><td>2 : 2 = 1</td><td class="r">0</td></tr><tr><td>1 : 2 = 0</td><td class="r">1</td></tr></table>
+    <code>9(10 = 1001(2</code> · <code>90(10 = 132(8</code> · <code>90(10 = 5A(16</code></div>
+   <div><b>③ Binario ↔ octal: grupos de 3 bits</b> (desde la derecha)<br>
+    <code>100 101 100(2 = 454(8</code> · <code>551(8 = 101 101 001(2</code></div>
+   <div><b>④ Binario ↔ hexadecimal: grupos de 4 bits</b><br>
+    <code>0001 0010 1100(2 = 12C(16</code> · <code>32A(16 = 0011 0010 1010(2</code></div>
+   <div><b>⑤ Octal ↔ hexadecimal: pasando por binario</b><br>
+    <code>551(8 = 101 101 001(2 = 1 0110 1001 = 169(16</code><br>
+    <code>32A(16 = 0011 0010 1010(2 = 1 452 = 1452(8</code></div>
+   <div><table class="tb mono" style="font-size:.82rem"><tr><th>Dec</th><th>Bin</th><th>Oct</th><th>Hex</th><th>Dec</th><th>Bin</th><th>Oct</th><th>Hex</th></tr>
+    ${Array.from({ length: 8 }, (_, i) => `<tr><td>${i}</td><td>${i.toString(2).padStart(4, "0")}</td><td>${i.toString(8)}</td><td>${i.toString(16).toUpperCase()}</td><td>${i + 8}</td><td>${(i + 8).toString(2)}</td><td>${(i + 8).toString(8)}</td><td>${(i + 8).toString(16).toUpperCase()}</td></tr>`).join("")}</table>
+    <p class="muted">Apréndete esta tabla: con ella las conversiones con octal y hex son inmediatas.</p></div>
+  </div>
+  <div class="exam"><b>Truco de examen:</b> para pasar binario → decimal rápido, escribe encima de cada bit su peso (…128 64 32 16 8 4 2 1) y suma los pesos donde hay un 1.</div>
+ </div>
+
+ <div class="panel" id="n-alf"><h2>3.3 Codificación alfanumérica</h2>
+  <p>Los datos alfanuméricos (letras, signos) no se operan, así que se codifican con <b>tablas</b> que asignan un número a cada carácter.</p>
+  <table class="tb"><tr><th>Código</th><th>Bits</th><th>Notas</th></tr>
+   <tr><td><b>ASCII</b> (American Standard Code for Information Interchange)</td><td>7 (128 caracteres) u 8 (ASCII extendido, 256)</td><td>El más usado. 'A' = 65 = 100 0001; 'a' = 97.</td></tr>
+   <tr><td><b>EBCDIC</b> (Extended BCD Interchange Code)</td><td>8, en 2 bloques de 4</td><td>De IBM (grandes ordenadores).</td></tr>
+   <tr><td><b>FIELDATA</b></td><td>6</td><td>Poco extendido.</td></tr>
+   <tr><td><b>UNICODE</b></td><td>16 (según los apuntes)</td><td>Pretende ser universal: todos los alfabetos.</td></tr></table>
+  <div class="key"><b>Ejemplo de los apuntes</b>: «HOLA» en ASCII de 7 bits<br>H = 1001000 · O = 1001111 · L = 1001100 · A = 1000001<br>
+   HOLA = <code>1001000 1001111 1001100 1000001</code><br><span class="muted">Puedes codificar cualquier texto en el Laboratorio.</span></div>
+  <div class="warn"><b>Ampliación:</b> Unicode empezó con 16 bits, pero hoy tiene más de un millón de posiciones y se guarda con codificaciones como <b>UTF-8</b> (de 1 a 4 bytes por carácter; los caracteres ASCII ocupan 1 byte) o UTF-16. En el examen responde con lo de los apuntes: 16 bits.</div>
+ </div>
+
+ <div class="panel" id="n-ent"><h2>3.4 Representación de números enteros</h2>
+  <p>Depende del <b>tamaño de palabra</b> (n bits).</p>
+  <div class="tscroll"><table class="tb"><tr><th>Método</th><th>Cómo funciona</th><th>+10 (n=8)</th><th>−10 (n=8)</th><th>Rango con n bits</th></tr>
+   <tr><td><b>Sin signo</b></td><td>Todos los bits son el valor absoluto.</td><td><code>0000 1010</code></td><td>—</td><td>0 … 2<sup>n</sup>−1 (n=8: 0…255)</td></tr>
+   <tr><td><b>Signo y magnitud</b></td><td>Bit de la izquierda = signo (0 +, 1 −); el resto, el valor absoluto.</td><td><code>0000 1010</code></td><td><code>1000 1010</code></td><td>−(2<sup>n−1</sup>−1) … 2<sup>n−1</sup>−1 (n=8: −127…127; dos ceros)</td></tr>
+   <tr><td><b>Complemento a 1 (C1)</b></td><td>Negativo = <b>invertir todos los bits</b> del positivo.</td><td><code>0000 1010</code></td><td><code>1111 0101</code></td><td>−127 … 127 (dos ceros)</td></tr>
+   <tr><td><b>Complemento a 2 (C2)</b></td><td>Negativo = C1 <b>+ 1</b>.</td><td><code>0000 1010</code></td><td><code>1111 0110</code></td><td>−2<sup>n−1</sup> … 2<sup>n−1</sup>−1 (n=8: −128…127; un solo cero)</td></tr></table></div>
+  <div class="grid2">
+   <div class="key"><b>Ejemplo de los apuntes (16 bits): 9503</b><br>
+    +9503 = ${bitsHTML("0010 0101 0001 1111")}<br>
+    −9503 C1 = ${bitsHTML("1101 1010 1110 0000")}<br>
+    −9503 C2 = ${bitsHTML("1101 1010 1110 0001")}</div>
+   <div><h3>Truco rápido para C2</h3><p>Copia los bits <b>de derecha a izquierda hasta el primer 1 incluido</b> e invierte el resto.<br>
+    +10 = 0000 10<b>10</b> → −10 = 1111 01<b>10</b>.</p>
+    <p>Los ordenadores usan C2 porque la resta se convierte en suma y solo hay un cero.</p></div>
+  </div>
+ </div>
+
+ <div class="panel" id="n-real"><h2>3.5 Representación de números reales: coma flotante</h2>
+  <p>El ordenador usa <b>notación exponencial</b> (coma o punto flotante): <b>N = M · B<sup>E</sup></b> (M mantisa, B base, E exponente).</p>
+  <p><code>13 257,3285 = 132 573 285 · 10⁻⁴ = 0,132573285 · 10⁵ = 1,32573285 · 10⁴</code><br>
+   Si aumentas E, divides M entre B (y al revés). Se trabaja con números <b>normalizados</b>: no empiezan por 0 (en binario, empiezan por 1): <code>0,1001(2 = 1,001 · 2⁻¹</code>.</p>
+  <h3>IEEE 754 · precisión simple (32 bits)</h3>
+  <p>${bitsHTML("S EEEEEEEE MMMMMMMMMMMMMMMMMMMMMMM", i => i === 0 ? "s" : i <= 9 && i > 1 ? "e" : i > 10 ? "m" : "")}</p>
+  <p><b>S</b> = signo (1 bit) · <b>E</b> = exponente en <b>exceso 127</b> (8 bits) · <b>M</b> = mantisa sin el 1 inicial (23 bits).</p>
+  <div class="key"><b>Ejemplo de los apuntes: 7</b><ol>
+   <li>Binario: 7<sub>(10</sub> = 111<sub>(2</sub></li><li>Normalizar: 1,11 · 2²</li><li>Signo positivo → S = 0</li>
+   <li>Exponente: 2 + 127 = 129 = 1000 0001</li><li>Mantisa: lo que va detrás de la coma (11) y ceros hasta 23 bits</li></ol>
+   7 = ${bitsHTML("0 10000001 11000000000000000000000", i => i === 0 ? "s" : i > 1 && i < 10 ? "e" : i > 10 ? "m" : "")}</div>
+  <p class="muted">Convierte cualquier número en el Laboratorio y verás cada paso.</p>
+ </div>`;
+}
+
+// =====================================================================
+//  MAPA CONCEPTUAL (interactivo)
+// =====================================================================
+const MAP = { t: "EL SISTEMA INFORMÁTICO", c: 0, k: [
+ { l: "está compuesto por", k: [{ t: "Hardware", c: 1, d: "Parte física: componentes que se pueden tocar." }, { t: "Software", c: 1, d: "Parte lógica: programas y datos." }, { t: "Elemento humano", c: 1, d: "Usuarios, técnicos y programadores." }] },
+ { l: "se encarga del", k: [{ t: "Tratamiento automático de la información", c: 1, d: "Recibe datos, los procesa y produce resultados sin intervención manual." }] },
+ { l: "más representativo y más simple es el", k: [{ t: "Ordenador personal", c: 1, k: [
+  { l: "(según la arquitectura de Von Neumann) sus componentes funcionales son", k: [
+   { t: "Unidad central de proceso", c: 2, k: [{ l: "formada por", k: [{ t: "Memoria central", c: 3 }, { t: "Procesador central", c: 3, k: [{ l: "compuesto por", k: [{ t: "Unidad de control", c: 4, d: "Busca, interpreta y ejecuta instrucciones." }, { t: "Unidad aritmético-lógica", c: 4, d: "Operaciones aritméticas y lógicas." }] }] }] }] },
+   { t: "Periféricos de entrada", c: 2, d: "Teclado, ratón, escáner…" }, { t: "Memoria auxiliar", c: 2, d: "Almacenamiento permanente: discos, USB…" }, { t: "Periféricos de salida", c: 2, d: "Monitor, impresora, altavoces…" }] },
+  { l: "(según los componentes comerciales) sus componentes físicos son", k: [
+   { t: "Microprocesador", c: 2 },
+   { t: "Dispositivos de almacenamiento", c: 2, k: [{ l: "según el método de grabación", k: [{ t: "Unidades ópticas", c: 3, d: "CD, DVD, Blu-ray (láser)." }, { t: "Unidades magnéticas", c: 3, d: "Discos duros, cintas." }, { t: "Memorias flash", c: 3, d: "SSD, USB, tarjetas SD." }] }] },
+   { t: "Placa base", c: 2 }, { t: "Módulos de memoria", c: 2 }, { t: "Tarjetas de expansión", c: 2 }, { t: "Chasis o caja del ordenador", c: 2 },
+   { t: "Dispositivos de comunicación", c: 2, k: [{ l: "según el método de transmisión", k: [{ t: "Tarjetas de red alámbricas / inalámbricas", c: 3 }, { t: "Módems ADSL", c: 3 }, { t: "Módems telefónicos", c: 3 }] }] }] },
+  { l: "para montarlo se necesitan", k: [{ t: "Normas de seguridad", c: 2 }, { t: "Herramientas", c: 2 }, { t: "Instrucciones de instalación", c: 2 }, { t: "Componentes", c: 2 }] },
+  { l: "para instalarlo", k: [{ t: "Se conectan los periféricos", c: 2 }, { t: "Se pone en marcha", c: 2, k: [{ l: "si funciona", k: [{ t: "OK", c: 3 }] }, { l: "si no funciona", k: [{ t: "Identificar el problema", c: 3, k: [{ l: "resolver", k: [{ t: "OK", c: 4 }] }] }, { t: "Revisar la instalación", c: 3 }] }] }] }
+ ] }] }
+] };
+function mapHTML(n, depth) {
+ const node = `<span class="node n${n.c}">${esc(n.t)}</span>${n.d ? `<span class="tip">${esc(n.d)}</span>` : ""}`;
+ if (!n.k) return `<li>${node}</li>`;
+ const inner = `<ul>${n.k.map(l => `<li><span class="lnk">${esc(l.l)}</span><ul>${l.k.map(c => mapHTML(c, depth + 1)).join("")}</ul></li>`).join("")}</ul>`;
+ return `<li><details class="mx" ${depth < 2 ? "open" : ""}><summary>${node}</summary>${inner}</details></li>`;
+}
+function renderMap() {
+ $("v-map").innerHTML = `<div class="panel"><div class="row sb"><h2>Mapa conceptual: el sistema informático</h2><div class="row noprint"><button id="mx-open">Desplegar todo</button><button id="mx-close">Plegar</button></div></div>
+  <p class="lead">El mismo mapa de clase, en forma de árbol. Pulsa en un nodo para desplegarlo. Los colores indican el nivel, como en el original.</p>
+  <div class="map"><ul>${mapHTML(MAP, 0)}</ul></div>
+  <div class="exam"><b>Cómo estudiarlo:</b> fíjate en que el ordenador personal se describe de <b>dos formas</b>: por sus <b>componentes funcionales</b> (Von Neumann: UCP, memoria auxiliar, periféricos de E y S) y por sus <b>componentes físicos</b> (lo que compras: micro, placa, memoria, tarjetas, caja…). Es una pregunta típica.</div></div>`;
+ $("mx-open").onclick = () => document.querySelectorAll("#v-map details").forEach(d => d.open = true);
+ $("mx-close").onclick = () => document.querySelectorAll("#v-map details").forEach((d, i) => d.open = i < 1);
+}
+
+// =====================================================================
+//  LABORATORIO
+// =====================================================================
+const DIG = "0123456789ABCDEF";
+function parseIn(s, b) {
+ s = s.trim().toUpperCase().replace(/\s+/g, "");
+ if (!s) return null;
+ if (![...s].every(c => DIG.indexOf(c) >= 0 && DIG.indexOf(c) < b)) return NaN;
+ return BigInt(s.split("").reduce((v, c) => v * b + DIG.indexOf(c), 0));
+}
+function tfnSteps(s, b) {
+ const d = s.toUpperCase().replace(/\s+/g, "").split("");
+ const terms = d.map((c, i) => `${DIG.indexOf(c)}·${b}<sup>${d.length - 1 - i}</sup>`);
+ const vals = d.map((c, i) => DIG.indexOf(c) * Math.pow(b, d.length - 1 - i));
+ return `${sub(s.toUpperCase(), b)} = ${terms.join(" + ")} = ${vals.join(" + ")} = <b>${sub(vals.reduce((a, c) => a + c, 0), 10)}</b>`;
+}
+function divSteps(n, b) {
+ if (n === 0) return `<p>0 en cualquier base es 0.</p>`;
+ const rows = []; let q = n;
+ while (q > 0) { rows.push([q, Math.floor(q / b), q % b]); q = Math.floor(q / b); }
+ const res = rows.map(r => DIG[r[2]]).reverse().join("");
+ return `<table class="div">${rows.map(r => `<tr><td>${r[0]} : ${b} = ${r[1]}</td><td class="r">resto ${r[2]}${b === 16 && r[2] > 9 ? " (" + DIG[r[2]] + ")" : ""}</td></tr>`).join("")}</table>
+  Leyendo los restos de abajo arriba: <b>${sub(n, 10)} = ${sub(res, b)}</b>`;
+}
+function renderLab() {
+ $("v-lab").innerHTML = `
+ <div class="panel"><h2>Conversor entre bases, con los pasos</h2>
+  <div class="lab"><div class="in"><input id="cv-n" value="300" size="16" aria-label="Número"><select id="cv-b"><option value="10">Decimal (10)</option><option value="2">Binario (2)</option><option value="8">Octal (8)</option><option value="16">Hexadecimal (16)</option></select></div>
+  <div id="cv-out"></div></div></div>
+ <div class="panel"><h2>Unidades de información</h2>
+  <div class="lab"><div class="in"><input id="un-n" value="2" size="10" aria-label="Cantidad"><select id="un-u">${["bit", "B", "KB", "MB", "GB", "TB", "PB", "EB"].map(u => `<option ${u === "GB" ? "selected" : ""}>${u}</option>`).join("")}</select></div><div id="un-out"></div></div></div>
+ <div class="panel"><h2>Texto → ASCII</h2>
+  <div class="lab"><div class="in"><input id="as-t" value="HOLA" size="20" aria-label="Texto"><label><input type="checkbox" id="as-8"> 8 bits</label></div><div id="as-out"></div></div></div>
+ <div class="panel"><h2>Enteros con signo: SM, C1 y C2</h2>
+  <div class="lab"><div class="in"><input id="en-n" value="-10" size="10" aria-label="Número entero"><select id="en-b"><option>8</option><option>16</option><option>4</option></select> bits</div><div id="en-out"></div></div></div>
+ <div class="panel"><h2>Coma flotante IEEE 754 (precisión simple)</h2>
+  <div class="lab"><div class="in"><input id="ie-n" value="7" size="14" aria-label="Número real"></div><div id="ie-out"></div></div></div>
+ <div class="panel"><h2>Tiempo de ejecución: T<sub>e</sub> = N<sub>i</sub> × N<sub>ci</sub> / F</h2>
+  <div class="lab"><div class="in">N<sub>i</sub> <input id="te-ni" value="1000000000" size="12"> N<sub>ci</sub> <input id="te-nc" value="2" size="4"> F (GHz) <input id="te-f" value="2" size="5"></div><div id="te-out"></div></div></div>`;
+ const cv = () => {
+  const s = $("cv-n").value, b = +$("cv-b").value, v = parseIn(s, b);
+  if (v === null) return $("cv-out").innerHTML = "";
+  if (Number.isNaN(v) || typeof v !== "bigint") return $("cv-out").innerHTML = `<p class="err">«${esc(s)}» no es un número válido en base ${b}.</p>`;
+  const n = Number(v); const bin = v.toString(2);
+  const steps = [];
+  if (b !== 10) steps.push(`<li><b>A decimal (TFN)</b>: ${tfnSteps(s, b)}</li>`);
+  if (n <= 1e7) {
+   if (b === 10 || b === 16 || b === 8) steps.push(`<li><b>Decimal → binario</b> (divisiones entre 2): ${divSteps(n, 2)}</li>`);
+   if (b !== 8) steps.push(`<li><b>Binario → octal</b> (grupos de 3): <code>${group(bin, 3).map(g => g.padStart(3, "0")).join(" ")}</code> → ${group(bin, 3).map(g => parseInt(g, 2)).join(" ")} = <b>${sub(v.toString(8), 8)}</b></li>`);
+   if (b !== 16) steps.push(`<li><b>Binario → hexadecimal</b> (grupos de 4): <code>${group(bin, 4).map(g => g.padStart(4, "0")).join(" ")}</code> → ${group(bin, 4).map(g => DIG[parseInt(g, 2)]).join(" ")} = <b>${sub(v.toString(16).toUpperCase(), 16)}</b></li>`);
+   if (b === 8) steps.push(`<li><b>Octal → binario</b> (cada dígito, 3 bits): ${s.trim().split("").map(c => `${c}→<code>${parseInt(c, 8).toString(2).padStart(3, "0")}</code>`).join(" ")}</li>`);
+   if (b === 16) steps.push(`<li><b>Hex → binario</b> (cada dígito, 4 bits): ${s.trim().toUpperCase().split("").map(c => `${c}→<code>${parseInt(c, 16).toString(2).padStart(4, "0")}</code>`).join(" ")}</li>`);
+   if (b === 10) steps.push(`<li><b>O directamente decimal → hexadecimal</b> (divisiones entre 16): ${divSteps(n, 16)}</li>`);
+  } else steps.push(`<li class="muted">Número grande: solo se muestran los resultados.</li>`);
+  $("cv-out").innerHTML = `<div class="res"><div><b>Decimal</b><span>${v.toString(10)}</span></div><div><b>Binario</b><span>${group(bin, 4).join(" ")}</span></div><div><b>Octal</b><span>${v.toString(8)}</span></div><div><b>Hexadecimal</b><span>${v.toString(16).toUpperCase()}</span></div><div><b>Bits necesarios</b><span>${bin.length}</span></div></div><div class="steps"><ol>${steps.join("")}</ol></div>`;
+ };
+ const un = () => {
+  const x = parseFloat($("un-n").value.replace(",", ".")), u = $("un-u").value;
+  if (!isFinite(x)) return $("un-out").innerHTML = "";
+  const U = ["B", "KB", "MB", "GB", "TB", "PB", "EB"];
+  const bytes = u === "bit" ? x / 8 : x * Math.pow(1024, U.indexOf(u));
+  const fmt = v => v >= 1e15 || (v < 1e-3 && v > 0) ? v.toExponential(4).replace(".", ",") : (+v.toPrecision(10)).toLocaleString("es-ES", { maximumFractionDigits: 6 });
+  $("un-out").innerHTML = `<div class="res"><div><b>bits</b><span>${fmt(bytes * 8)}</span></div>${U.map((k, i) => `<div><b>${k}</b><span>${fmt(bytes / Math.pow(1024, i))}</span></div>`).join("")}</div>
+   <div class="steps">${u === "bit" ? `${x} bits ÷ 8 = ${fmt(bytes)} B. ` : `${x} ${u} = ${x} × 1024${U.indexOf(u) > 1 ? `<sup>${U.indexOf(u)}</sup>` : ""} B = ${fmt(bytes)} B. `}Para subir de unidad se divide entre 1024; para bajar, se multiplica.</div>`;
+ };
+ const as = () => {
+  const t = $("as-t").value, w = $("as-8").checked ? 8 : 7;
+  const rows = [...t].map(ch => { const c = ch.codePointAt(0); return [ch, c, c < Math.pow(2, w) ? c.toString(2).padStart(w, "0") : null]; });
+  $("as-out").innerHTML = `<div class="tscroll"><table class="tb mono"><tr><th>Carácter</th><th>Decimal</th><th>Hex</th><th>Binario (${w} bits)</th></tr>${rows.map(r => `<tr><td>${r[0] === " " ? "␣ (espacio)" : esc(r[0])}</td><td>${r[1]}</td><td>${r[1].toString(16).toUpperCase()}</td><td>${r[2] || `<span class="err">no cabe en ASCII de ${w} bits</span>`}</td></tr>`).join("")}</table></div>
+   <div class="steps"><b>Cadena completa:</b> <code>${rows.map(r => r[2] || "????").join(" ")}</code><br><span class="muted">Ocupa ${rows.length} caracteres × ${w} bits = ${rows.length * w} bits${w === 8 ? ` = ${rows.length} bytes` : ""}. Las mayúsculas van de 65 (A) a 90 (Z); las minúsculas, de 97 (a) a 122 (z): se diferencian en 32.</span></div>`;
+ };
+ const en = () => {
+  const n = parseInt($("en-n").value, 10), bits = +$("en-b").value;
+  if (!isFinite(n)) return $("en-out").innerHTML = "";
+  const max = Math.pow(2, bits - 1);
+  const abs = Math.abs(n), absBin = abs.toString(2).padStart(bits, "0");
+  const fits = abs < max || (n === -max);
+  const sp = s => group(s, 4).join(" ");
+  if (abs >= Math.pow(2, bits)) return $("en-out").innerHTML = `<p class="err">${n} no cabe en ${bits} bits.</p>`;
+  const sm = abs <= max - 1 ? (n < 0 ? "1" : "0") + abs.toString(2).padStart(bits - 1, "0") : null;
+  const c1 = n >= 0 ? (abs <= max - 1 ? absBin : null) : (abs <= max - 1 ? [...absBin].map(c => c === "0" ? "1" : "0").join("") : null);
+  const c2 = n >= 0 ? (abs <= max - 1 ? absBin : null) : (abs <= max ? ((Math.pow(2, bits) - abs) >>> 0).toString(2).padStart(bits, "0") : null);
+  const us = n >= 0 ? absBin : null;
+  const cell = (t, s, extra) => `<div><b>${t}</b><span>${s ? sp(s) : '<span class="err">fuera de rango</span>'}</span>${extra ? `<small class="muted" style="display:block">${extra}</small>` : ""}</div>`;
+  $("en-out").innerHTML = `<div class="res">${cell("Sin signo", us, `rango 0 … ${Math.pow(2, bits) - 1}`)}${cell("Signo y magnitud", sm, `rango ±${max - 1}`)}${cell("Complemento a 1", c1, `rango ±${max - 1}`)}${cell("Complemento a 2", c2, `rango −${max} … ${max - 1}`)}</div>
+   <div class="steps"><ol>
+    <li>Valor absoluto en binario con ${bits} bits: |${n}| = <code>${sp(absBin)}</code></li>
+    ${n < 0 ? `<li><b>Signo y magnitud</b>: se pone a 1 el bit de la izquierda → <code>${sm ? sp(sm) : "no cabe"}</code></li>
+    <li><b>C1</b>: se invierten todos los bits → <code>${c1 ? sp(c1) : "no cabe"}</code></li>
+    <li><b>C2</b>: C1 + 1 → <code>${c2 ? sp(c2) : "no cabe"}</code></li>` : `<li>Al ser positivo, SM, C1 y C2 coinciden con el binario normal (bit de signo 0).</li>`}
+   </ol>${fits ? "" : `<p class="err">Fuera del rango con signo de ${bits} bits.</p>`}</div>`;
+ };
+ const ie = () => {
+  const x = parseFloat($("ie-n").value.replace(",", "."));
+  if (!isFinite(x)) return $("ie-out").innerHTML = "";
+  const f = new Float32Array([x]), u = new Uint32Array(f.buffer)[0];
+  const b = u.toString(2).padStart(32, "0"), S = b[0], E = b.slice(1, 9), M = b.slice(9);
+  const e = parseInt(E, 2), exp = e - 127;
+  const ax = Math.abs(x);
+  let intBin = Math.floor(ax).toString(2), frac = ax - Math.floor(ax), fracBin = "";
+  for (let i = 0; i < 24 && frac > 0; i++) { frac *= 2; fracBin += frac >= 1 ? "1" : "0"; if (frac >= 1) frac -= 1; }
+  const exact = f[0] === x;
+  $("ie-out").innerHTML = x === 0 ? `<p>0 se representa con todos los bits a 0 (exponente y mantisa 0).</p>` : `
+   <p>${bitsHTML(S + " " + E + " " + M, i => i === 0 ? "s" : i > 1 && i < 10 ? "e" : i > 10 ? "m" : "")}</p>
+   <div class="res"><div><b>Hexadecimal</b><span>${u.toString(16).toUpperCase().padStart(8, "0")}</span></div><div><b>Valor guardado</b><span>${f[0]}</span></div></div>
+   <div class="steps"><ol>
+    <li><b>Signo</b>: ${x < 0 ? "negativo → S = 1" : "positivo → S = 0"}</li>
+    <li><b>Binario</b>: ${ax} = <code>${intBin}${fracBin ? "," + fracBin : ""}</code><span class="muted"> (parte entera por divisiones; parte decimal multiplicando por 2)</span></li>
+    <li><b>Normalizar</b>: 1,${M.replace(/0+$/, "") || "0"} · 2<sup>${exp}</sup></li>
+    <li><b>Exponente en exceso 127</b>: ${exp} + 127 = ${e} = <code>${E}</code></li>
+    <li><b>Mantisa</b>: los bits tras la coma, completados con ceros hasta 23: <code>${M}</code></li>
+   </ol>${exact ? "" : `<p class="warn">Este número no tiene representación exacta en binario: se guarda el más cercano (${f[0]}).</p>`}</div>`;
+ };
+ const te = () => {
+  const ni = parseFloat($("te-ni").value), nc = parseFloat($("te-nc").value), F = parseFloat($("te-f").value) * 1e9;
+  if (![ni, nc, F].every(isFinite) || !F) return $("te-out").innerHTML = "";
+  const t = ni * nc / F;
+  $("te-out").innerHTML = `<div class="steps">T<sub>e</sub> = ${ni.toLocaleString("es-ES")} × ${nc} / ${(F).toExponential(2)} Hz = <b>${t >= 1 ? t.toPrecision(4) + " s" : (t * 1000).toPrecision(4) + " ms"}</b><br><span class="muted">RISC reduce N<sub>ci</sub>; CISC reduce N<sub>i</sub>; subir F (GHz) reduce el tiempo en ambos.</span></div>`;
+ };
+ [["cv-n", cv], ["cv-b", cv], ["un-n", un], ["un-u", un], ["as-t", as], ["as-8", as], ["en-n", en], ["en-b", en], ["ie-n", ie], ["te-ni", te], ["te-nc", te], ["te-f", te]].forEach(([id, fn]) => { $(id).addEventListener("input", fn); $(id).addEventListener("change", fn); });
+ cv(); un(); as(); en(); ie(); te();
+}
+
+// =====================================================================
+//  EJERCICIOS GENERADOS
+// =====================================================================
+const r = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const EXGEN = {
+ d2b: { name: "Decimal → binario", gen: () => { const n = r(5, 255); return { q: `Pasa ${sub(n, 10)} a binario`, a: n.toString(2), check: s => s.replace(/\s/g, "").replace(/^0+/, "") === n.toString(2), sol: divSteps(n, 2) }; } },
+ b2d: { name: "Binario → decimal", gen: () => { const n = r(5, 255), s = n.toString(2); return { q: `Pasa ${sub(s, 2)} a decimal`, a: String(n), check: x => +x === n, sol: tfnSteps(s, 2) }; } },
+ b2h: { name: "Binario → hexadecimal", gen: () => { const n = r(16, 4095), s = n.toString(2); return { q: `Pasa ${sub(s, 2)} a hexadecimal`, a: n.toString(16).toUpperCase(), check: x => x.trim().toUpperCase().replace(/^0+/, "") === n.toString(16).toUpperCase(), sol: `Grupos de 4 desde la derecha: <code>${group(s, 4).map(g => g.padStart(4, "0")).join(" ")}</code> → ${group(s, 4).map(g => DIG[parseInt(g, 2)]).join(" ")}` }; } },
+ h2b: { name: "Hexadecimal → binario", gen: () => { const n = r(16, 4095), h = n.toString(16).toUpperCase(); return { q: `Pasa ${sub(h, 16)} a binario`, a: n.toString(2), check: x => x.replace(/\s/g, "").replace(/^0+/, "") === n.toString(2), sol: `Cada dígito, 4 bits: ${h.split("").map(c => `${c}→<code>${parseInt(c, 16).toString(2).padStart(4, "0")}</code>`).join(" ")}` }; } },
+ b2o: { name: "Binario → octal", gen: () => { const n = r(8, 511), s = n.toString(2); return { q: `Pasa ${sub(s, 2)} a octal`, a: n.toString(8), check: x => x.trim().replace(/^0+/, "") === n.toString(8), sol: `Grupos de 3: <code>${group(s, 3).map(g => g.padStart(3, "0")).join(" ")}</code> → ${group(s, 3).map(g => parseInt(g, 2)).join(" ")}` }; } },
+ d2h: { name: "Decimal → hexadecimal", gen: () => { const n = r(20, 1000); return { q: `Pasa ${sub(n, 10)} a hexadecimal`, a: n.toString(16).toUpperCase(), check: x => x.trim().toUpperCase().replace(/^0+/, "") === n.toString(16).toUpperCase(), sol: divSteps(n, 16) }; } },
+ h2d: { name: "Hexadecimal → decimal", gen: () => { const n = r(20, 1000), h = n.toString(16).toUpperCase(); return { q: `Pasa ${sub(h, 16)} a decimal`, a: String(n), check: x => +x === n, sol: tfnSteps(h, 16) }; } },
+ o2d: { name: "Octal → decimal", gen: () => { const n = r(10, 511), o = n.toString(8); return { q: `Pasa ${sub(o, 8)} a decimal`, a: String(n), check: x => +x === n, sol: tfnSteps(o, 8) }; } },
+ c2: { name: "Complemento a 2 (8 bits)", gen: () => { const n = -r(1, 127), v = ((256 + n) >>> 0).toString(2).padStart(8, "0"), a = (-n).toString(2).padStart(8, "0"); return { q: `Representa ${n} en C2 con 8 bits`, a: v, check: x => x.replace(/\s/g, "") === v, sol: `|${n}| = <code>${a}</code> → C1 (invertir) = <code>${[...a].map(c => c === "0" ? 1 : 0).join("")}</code> → +1 = <code>${v}</code>` }; } },
+ sm: { name: "Signo y magnitud (8 bits)", gen: () => { const n = -r(1, 127), v = "1" + (-n).toString(2).padStart(7, "0"); return { q: `Representa ${n} en signo y magnitud con 8 bits`, a: v, check: x => x.replace(/\s/g, "") === v, sol: `Bit de signo 1 (negativo) + |${n}| en 7 bits (<code>${(-n).toString(2).padStart(7, "0")}</code>) = <code>${v}</code>` }; } },
+ uni: { name: "Unidades", gen: () => { const U = ["KB", "MB", "GB", "TB"], i = r(1, 3), n = r(2, 64); return { q: `¿Cuántos ${U[i - 1]} son ${n} ${U[i]}?`, a: String(n * 1024), check: x => +x.replace(/\./g, "") === n * 1024, sol: `${n} × 1024 = ${n * 1024} ${U[i - 1]} (para bajar de unidad se multiplica por 1024)` }; } },
+ bits: { name: "Bits necesarios", gen: () => { const n = r(3, 2000), k = Math.ceil(Math.log2(n)); return { q: `¿Cuántos bits hacen falta como mínimo para representar ${n} valores distintos?`, a: String(k), check: x => +x === k, sol: `Con k bits hay 2<sup>k</sup> valores: 2<sup>${k - 1}</sup> = ${Math.pow(2, k - 1)} &lt; ${n} ≤ 2<sup>${k}</sup> = ${Math.pow(2, k)} → <b>${k} bits</b>` }; } }
+};
+let EXS = null;
+function renderEx() {
+ const keys = Object.keys(EXGEN);
+ $("v-ex").innerHTML = `<div class="panel"><div class="row sb"><h2>Ejercicios de conversión (infinitos)</h2><select id="ex-k"><option value="all">Mezclados</option>${keys.map(k => `<option value="${k}">${EXGEN[k].name}</option>`).join("")}</select></div>
+  <p class="lead">Cada ejercicio es nuevo. Escribe la respuesta (los espacios dan igual) y pulsa Enter. Si fallas, verás la solución paso a paso.</p>
+  <div class="row" id="ex-score"></div><div id="ex-box" style="margin-top:10px"></div></div>`;
+ EXS = store("si1-ex") || { ok: 0, ko: 0 };
+ const next = () => {
+  const k = $("ex-k").value === "all" ? keys[r(0, keys.length - 1)] : $("ex-k").value;
+  const e = EXGEN[k].gen();
+  $("ex-score").innerHTML = `<span class="badge">Aciertos ${EXS.ok}</span><span class="badge">Fallos ${EXS.ko}</span><button id="ex-reset">Reiniciar marcador</button>`;
+  $("ex-reset").onclick = () => { EXS = { ok: 0, ko: 0 }; store("si1-ex", EXS); next(); };
+  $("ex-box").innerHTML = `<span class="badge">${EXGEN[k].name}</span><p style="font-size:1.25rem;margin:8px 0">${e.q}</p>
+   <div class="row"><input id="ex-a" size="24" autocomplete="off" aria-label="Respuesta"><button class="primary" id="ex-go">Comprobar</button><button id="ex-skip">Ver solución</button></div><div id="ex-fb"></div>`;
+  const done = (ok, shown) => {
+   if (!shown) { ok ? EXS.ok++ : EXS.ko++; store("si1-ex", EXS); }
+   $("ex-fb").innerHTML = `<div class="fb">${shown ? "" : ok ? "✓ <b>¡Correcto!</b>" : `✗ <b>No.</b> La respuesta es <code>${e.a}</code>.`}<div class="steps" style="margin-top:6px">${e.sol}</div><button class="primary" id="ex-next" style="margin-top:8px">Siguiente →</button></div>`;
+   $("ex-next").onclick = next; $("ex-next").focus();
+  };
+  $("ex-go").onclick = () => { const v = $("ex-a").value; if (!v.trim()) return; done(e.check(v), false); };
+  $("ex-skip").onclick = () => done(false, true);
+  $("ex-a").onkeydown = ev => { if (ev.key === "Enter") $("ex-go").click(); };
+  $("ex-a").focus({ preventScroll: true });
+ };
+ $("ex-k").onchange = next;
+ next();
+}
+
+// =====================================================================
+//  FLASHCARDS
+// =====================================================================
+const CARDS = [
+ ["Historia", "¿Qué operaciones hacía la Pascalina?", "Sumas y restas."],
+ ["Historia", "¿Qué aportó la máquina de Leibniz (1671)?", "Hacía las cuatro operaciones aritméticas."],
+ ["Historia", "¿Qué podía hacer la máquina de diferencias de Babbage?", "Calcular funciones de 2.º grado con 6 cifras."],
+ ["Historia", "¿Qué tenía de especial la máquina analítica de Babbage?", "Podía ejecutar cualquier operación sin intervención humana durante el cálculo."],
+ ["Historia", "¿Para qué se usó la máquina tabuladora de Hollerith?", "Para el censo de EE. UU."],
+ ["Historia", "¿Qué era la Z1 de Konrad Zuse?", "Una calculadora mecánica binaria operada con electricidad, de programabilidad limitada."],
+ ["Historia", "Tecnología de la 1.ª generación", "Válvulas de vacío (ENIAC, UNIVAC). Mucho calor, gran tamaño, lenguaje máquina, sin SO."],
+ ["Historia", "Tecnología de la 2.ª generación", "Transistores. Primeros lenguajes de alto nivel (FORTRAN, COBOL, ALGOL) y procesamiento por lotes."],
+ ["Historia", "Tecnología de la 3.ª generación", "Circuitos integrados. IBM 360, multiprogramación y tiempo compartido."],
+ ["Historia", "Tecnología de la 4.ª generación", "Microprocesador (Intel 4004, 1971). C, Ada, UNIX, interfaces gráficas."],
+ ["Historia", "Líneas de investigación de la 5.ª generación", "Hardware: paralelismo, computación biológica y cuántica. Software: lenguaje natural e IA."],
+ ["Historia", "¿Qué es el tríodo y quién lo inventó?", "Válvula con cátodo, ánodo y rejilla (Lee de Forest, 1906); primer amplificador de señal eléctrica."],
+ ["Historia", "¿Qué es un transistor?", "Un semiconductor que funciona como amplificador o conmutador; sustituyó al tríodo."],
+ ["Historia", "Niveles de integración de menor a mayor", "SSI (<12) · MSI (12–99) · LSI (100–9 999) · VLSI (10 000–99 999) · ULSI (≥100 000)."],
+ ["Arquitectura", "¿Qué incluye el concepto de arquitectura?", "Componentes y su organización, conjunto de instrucciones, estructura de las instrucciones y modos de direccionamiento."],
+ ["Arquitectura", "Diferencia entre Von Neumann y Harvard", "Von Neumann: una sola memoria y bus para datos e instrucciones. Harvard: memorias y buses separados."],
+ ["Arquitectura", "RISC frente a CISC", "RISC: pocas instrucciones sencillas, reduce Nci. CISC: muchas instrucciones complejas, reduce Ni."],
+ ["Arquitectura", "Fórmula del tiempo de ejecución", "Te = Ni × Nci / F (instrucciones × ciclos por instrucción / frecuencia)."],
+ ["Von Neumann", "¿Cuál fue la idea clave de Von Neumann (1946)?", "El programa almacenado en memoria (antes, programas cableados)."],
+ ["Von Neumann", "Los 4 elementos funcionales", "CPU, memoria principal, interfaces de E/S y buses."],
+ ["Von Neumann", "Los tres buses del sistema", "Bus de control, bus de datos (datos e instrucciones) y bus de direcciones."],
+ ["CPU", "Partes de la CPU", "Unidad de control, ALU, registros y buses internos."],
+ ["CPU", "¿Qué hace la unidad de control?", "Busca la instrucción en la MP, la interpreta y la ejecuta generando señales de control."],
+ ["CPU", "¿Qué hace la ALU?", "Operaciones aritméticas (suma, resta…) y lógicas (NOT, AND, OR, XOR, comparaciones)."],
+ ["CPU", "¿Qué son los registros?", "El almacenamiento interno de la CPU: guardan temporalmente lo necesario para ejecutar instrucciones."],
+ ["Memoria", "Jerarquía de memoria de más rápida a más lenta", "Registros → caché → RAM → disco duro."],
+ ["Memoria", "¿Qué significa que la RAM es volátil?", "Que pierde su contenido al apagar el equipo."],
+ ["Memoria", "¿Qué tiene cada celda de memoria?", "Una dirección (la identifica) y un contenido (dato o instrucción)."],
+ ["Medidas", "¿Qué es un nibble?", "Un conjunto de 4 bits (cuarteto)."],
+ ["Medidas", "¿Cuántos bytes son 1 KB según los apuntes?", "1024 bytes (2^10)."],
+ ["Medidas", "1 TB en bytes como potencia de 2", "2^40 bytes."],
+ ["Medidas", "Diferencia entre MB y Mb", "MB = megabytes; Mb = megabits. B mayúscula es byte; b minúscula, bit."],
+ ["Numeración", "Enuncia el TFN", "NUM = Σ Xi · B^i: cada dígito por la base elevada a su posición."],
+ ["Numeración", "¿Cuántos valores se representan con n bits?", "2^n valores (de 0 a 2^n − 1)."],
+ ["Numeración", "¿Cómo se pasa de decimal a binario?", "Divisiones sucesivas entre 2; los restos y el último cociente, de abajo arriba."],
+ ["Numeración", "¿Cuántos bits equivalen a un dígito octal? ¿Y a uno hexadecimal?", "Octal: 3 bits. Hexadecimal: 4 bits."],
+ ["Numeración", "¿Qué valor tiene la F en hexadecimal?", "15."],
+ ["Numeración", "1011 en binario es…", "11 en decimal (8 + 2 + 1)."],
+ ["Numeración", "90 en decimal, en octal y en hexadecimal", "132 en octal; 5A en hexadecimal."],
+ ["Codificación", "¿Cuántos bits usa ASCII?", "7 bits (ASCII extendido: 8 bits)."],
+ ["Codificación", "¿Cuántos bits usan EBCDIC, FIELDATA y UNICODE?", "EBCDIC 8 (2 bloques de 4), FIELDATA 6, UNICODE 16 (según los apuntes)."],
+ ["Codificación", "Código ASCII de la 'A'", "65 = 100 0001."],
+ ["Enteros", "Rango sin signo con 8 bits", "0 a 255 (256 valores)."],
+ ["Enteros", "−10 en signo y magnitud con 8 bits", "1000 1010."],
+ ["Enteros", "¿Cómo se obtiene el C1 de un negativo?", "Invirtiendo todos los bits del valor positivo."],
+ ["Enteros", "¿Cómo se obtiene el C2 de un negativo?", "C1 + 1 (o copiar hasta el primer 1 desde la derecha e invertir el resto)."],
+ ["Enteros", "Rango de C2 con 8 bits", "−128 a 127."],
+ ["Reales", "Fórmula de la coma flotante", "N = M · B^E (mantisa, base, exponente)."],
+ ["Reales", "Campos de IEEE 754 simple precisión", "1 bit de signo, 8 de exponente (exceso 127) y 23 de mantisa."],
+ ["Reales", "7 en IEEE 754 simple", "0 10000001 11000000000000000000000 (7 = 1,11·2², exponente 2+127 = 129)."]
+];
+let FC = null;
+function renderFC() {
+ const cats = [...new Set(CARDS.map(c => c[0]))];
+ $("v-fc").innerHTML = `<div class="panel"><div class="row sb"><h2>Flashcards</h2><div class="row"><select id="fc-cat"><option value="all">Todas (${CARDS.length})</option>${cats.map(c => `<option>${c}</option>`).join("")}</select><button id="fc-sh">Barajar</button></div></div>
+  <p class="lead">Pulsa la tarjeta (o la barra espaciadora) para darle la vuelta; usa las flechas para avanzar. Marca las que ya sabes.</p>
+  <div class="track"><div class="bar" id="fc-bar"></div></div><div class="row sb"><span class="muted" id="fc-n"></span><span class="muted" id="fc-known"></span></div>
+  <div class="fc-wrap"><div class="fc" id="fc"><div class="front"><span class="cat" id="fc-c1"></span><div id="fc-q"></div></div><div class="back"><span class="cat" id="fc-c2"></span><div id="fc-a"></div></div></div></div>
+  <div class="row" style="justify-content:center"><button id="fc-prev">← Anterior</button><button id="fc-know">✓ La sé</button><button id="fc-next" class="primary">Siguiente →</button></div></div>`;
+ const known = new Set(store("si1-known") || []);
+ const load = () => { const c = $("fc-cat").value; FC = { list: CARDS.map((x, i) => i).filter(i => c === "all" || CARDS[i][0] === c), k: 0 }; draw(); };
+ const draw = () => {
+  const i = FC.list[FC.k], c = CARDS[i];
+  $("fc").classList.remove("flip");
+  setTimeout(() => { $("fc-q").textContent = c[1]; $("fc-a").textContent = c[2]; }, 120);
+  $("fc-c1").textContent = $("fc-c2").textContent = c[0];
+  $("fc-n").textContent = `Tarjeta ${FC.k + 1} de ${FC.list.length}`;
+  $("fc-bar").style.width = ((FC.k + 1) / FC.list.length * 100) + "%";
+  $("fc-known").textContent = `Sabidas: ${FC.list.filter(x => known.has(x)).length}/${FC.list.length}`;
+  $("fc-know").textContent = known.has(i) ? "↺ Repasar" : "✓ La sé";
+ };
+ $("fc").onclick = () => $("fc").classList.toggle("flip");
+ $("fc-next").onclick = () => { FC.k = (FC.k + 1) % FC.list.length; draw(); };
+ $("fc-prev").onclick = () => { FC.k = (FC.k - 1 + FC.list.length) % FC.list.length; draw(); };
+ $("fc-know").onclick = () => { const i = FC.list[FC.k]; known.has(i) ? known.delete(i) : known.add(i); store("si1-known", [...known]); draw(); };
+ $("fc-sh").onclick = () => { FC.list = shuffle(FC.list); FC.k = 0; draw(); };
+ $("fc-cat").onchange = load;
+ document.addEventListener("keydown", e => {
+  if ($("v-fc").hidden || ["INPUT", "SELECT"].includes(e.target.tagName)) return;
+  if (e.key === " ") { e.preventDefault(); $("fc").classList.toggle("flip"); }
+  if (e.key === "ArrowRight") $("fc-next").click();
+  if (e.key === "ArrowLeft") $("fc-prev").click();
+ });
+ load();
+}
+
+// =====================================================================
+//  TEST
+// =====================================================================
+const QUIZ = [
+ ["Historia", "¿Qué máquina realizaba solo sumas y restas?", ["La Pascalina", "La máquina de Leibniz", "La máquina analítica", "La Z1"], 0, "La Pascalina sumaba y restaba; la de Leibniz ya hacía las cuatro operaciones."],
+ ["Historia", "¿Qué máquina se usó para el censo de EE. UU.?", ["La tabuladora de Hollerith", "La máquina de diferencias", "La ENIAC", "La Z1"], 0, "Herman Hollerith creó la tabuladora para el censo."],
+ ["Historia", "La 2.ª generación de ordenadores se basa en…", ["Transistores", "Válvulas de vacío", "Circuitos integrados", "Microprocesadores"], 0, "1.ª válvulas, 2.ª transistores, 3.ª C.I., 4.ª microprocesador."],
+ ["Historia", "¿En qué generación aparece el primer microprocesador (Intel 4004)?", ["4.ª", "3.ª", "2.ª", "5.ª"], 0, "Intel 4004 (1971) inicia la 4.ª generación."],
+ ["Historia", "Un chip con 5 000 componentes es de integración…", ["LSI", "MSI", "VLSI", "SSI"], 0, "LSI: de 100 a 9 999 componentes."],
+ ["Historia", "¿En qué generación aparecen la multiprogramación y el tiempo compartido?", ["3.ª", "1.ª", "2.ª", "4.ª"], 0, "Con los circuitos integrados (IBM 360)."],
+ ["Historia", "La 1.ª generación se caracteriza por…", ["Monoprogramación y sin sistema operativo", "Interfaces gráficas", "Lenguajes estructurados", "Procesamiento por lotes"], 0, "Los lotes son de la 2.ª; GUI de la 4.ª."],
+ ["Arquitectura", "En la arquitectura Harvard…", ["Datos e instrucciones tienen memorias separadas", "Hay un único bus para todo", "No hay unidad de control", "Los programas son cableados"], 0, "Esa es su diferencia con Von Neumann."],
+ ["Arquitectura", "Un procesador RISC intenta reducir…", ["Los ciclos por instrucción (Nci)", "El número de instrucciones (Ni)", "La frecuencia", "El tamaño de la memoria"], 0, "RISC baja Nci; CISC baja Ni."],
+ ["Arquitectura", "Un programa de 2·10⁹ instrucciones, 1 ciclo por instrucción, a 1 GHz tarda…", ["2 s", "0,5 s", "2 ms", "20 s"], 0, "Te = 2·10⁹ × 1 / 10⁹ = 2 s."],
+ ["Von Neumann", "La aportación principal de Von Neumann fue…", ["El programa almacenado en memoria", "El transistor", "El código ASCII", "La memoria caché"], 0, "Antes los programas se cableaban."],
+ ["Von Neumann", "¿Qué bus indica a qué posición de memoria se quiere acceder?", ["Bus de direcciones", "Bus de datos", "Bus de control", "Bus interno"], 0, "El bus de direcciones (memory bus)."],
+ ["Von Neumann", "¿Para qué sirven las interfaces de E/S?", ["Para liberar a la CPU de la comunicación con los periféricos", "Para guardar programas", "Para hacer operaciones lógicas", "Para codificar caracteres"], 0, "Gestionan la comunicación con los periféricos."],
+ ["CPU", "¿Qué componente busca, interpreta y ejecuta las instrucciones?", ["La unidad de control", "La ALU", "Los registros", "La memoria caché"], 0, "La UC; la ALU solo opera."],
+ ["CPU", "La operación XOR la realiza…", ["La ALU", "La UC", "El bus de datos", "La RAM"], 0, "Es una operación lógica."],
+ ["CPU", "El almacenamiento interno de la CPU son…", ["Los registros", "La RAM", "El disco duro", "La caché L3"], 0, "Los registros están dentro de la CPU."],
+ ["Memoria", "¿Qué memoria es permanente?", ["El disco duro", "La RAM", "La caché", "Los registros"], 0, "Las demás son volátiles."],
+ ["Memoria", "En la jerarquía de memoria, al subir de nivel…", ["Aumenta la velocidad y el precio, y baja la capacidad", "Aumenta la capacidad", "Baja el precio", "Aumenta la volatilidad del disco"], 0, "Más rápido = más caro y pequeño."],
+ ["Medidas", "¿Cuántos bits tiene un nibble?", ["4", "8", "2", "16"], 0, "Nibble = cuarteto = 4 bits."],
+ ["Medidas", "3 GB son…", ["3072 MB", "3000 MB", "300 MB", "30 720 MB"], 0, "3 × 1024 = 3072."],
+ ["Medidas", "100 Mbps significa…", ["100 megabits por segundo", "100 megabytes por segundo", "100 megabytes", "100 kilobits"], 0, "b minúscula = bit."],
+ ["Numeración", "1101 en binario es en decimal…", ["13", "11", "15", "9"], 0, "8 + 4 + 1 = 13."],
+ ["Numeración", "25 en decimal es en binario…", ["11001", "10011", "11010", "10101"], 0, "16 + 8 + 1 = 25."],
+ ["Numeración", "1111 1111 en binario es en hexadecimal…", ["FF", "EE", "F0", "255"], 0, "Cada 1111 es F."],
+ ["Numeración", "3F en hexadecimal es en binario…", ["0011 1111", "0011 1110", "1111 0011", "0111 1111"], 0, "3 = 0011, F = 1111."],
+ ["Numeración", "17 en octal es en decimal…", ["15", "17", "19", "13"], 0, "1·8 + 7 = 15."],
+ ["Numeración", "¿Cuántos valores distintos se pueden representar con 10 bits?", ["1024", "1000", "512", "100"], 0, "2^10 = 1024."],
+ ["Codificación", "¿Qué código usa bloques de 6 bits?", ["FIELDATA", "ASCII", "EBCDIC", "UNICODE"], 0, "FIELDATA, poco extendido."],
+ ["Codificación", "Según los apuntes, UNICODE usa…", ["16 bits", "7 bits", "6 bits", "4 bits"], 0, "Pretende ser universal."],
+ ["Enteros", "−5 en complemento a 2 con 8 bits es…", ["1111 1011", "1000 0101", "1111 1010", "0000 0101"], 0, "5 = 0000 0101 → C1 1111 1010 → +1 = 1111 1011."],
+ ["Enteros", "−5 en signo y magnitud con 8 bits es…", ["1000 0101", "1111 1011", "1111 1010", "0000 0101"], 0, "Bit de signo 1 + 5 en 7 bits."],
+ ["Enteros", "¿Qué representación tiene un solo cero?", ["Complemento a 2", "Signo y magnitud", "Complemento a 1", "Todas"], 0, "SM y C1 tienen +0 y −0."],
+ ["Reales", "En IEEE 754 simple precisión, el exponente…", ["Ocupa 8 bits y va en exceso 127", "Ocupa 23 bits", "Va en complemento a 2", "Ocupa 1 bit"], 0, "1 signo + 8 exponente + 23 mantisa."],
+ ["Reales", "Un número normalizado en binario empieza por…", ["1", "0", "el signo", "la base"], 0, "Por eso el 1 inicial no se guarda en la mantisa."]
+];
+let QZ = null;
+function renderTest() {
+ const cats = [...new Set(QUIZ.map(q => q[0]))];
+ $("v-test").innerHTML = `<div class="panel"><div class="row sb"><h2>Test de autoevaluación</h2><select id="qz-cat"><option value="all">Todo (${QUIZ.length})</option>${cats.map(c => `<option>${c}</option>`).join("")}</select></div>
+  <p class="lead">Las opciones se barajan en cada intento. Teclas A–D para responder y Enter para seguir.</p>
+  <div class="muted" id="qz-st"></div><div class="track"><div class="bar" id="qz-bar"></div></div><div id="qz-box"></div></div>`;
+ const start = () => { const c = $("qz-cat").value; QZ = { list: shuffle(QUIZ.filter(q => c === "all" || q[0] === c)), k: 0, ok: 0, fails: [], ans: false }; draw(); };
+ const draw = () => {
+  const n = QZ.list.length;
+  $("qz-st").textContent = `Pregunta ${Math.min(QZ.k + 1, n)} de ${n} · Aciertos ${QZ.ok}`;
+  $("qz-bar").style.width = (QZ.k / n * 100) + "%";
+  if (QZ.k >= n) {
+   const best = store("si1-best") || 0, nota = QZ.ok / n * 10; if (nota > best) store("si1-best", nota);
+   $("qz-box").innerHTML = `<div class="big">${nota.toFixed(1).replace(".", ",")}</div><p style="text-align:center">${QZ.ok} de ${n} · mejor nota: ${Math.max(best, nota).toFixed(1).replace(".", ",")}</p>${QZ.fails.length ? `<h3>Repasa:</h3><ul>${QZ.fails.map(q => `<li>${esc(q[1])} → <b>${esc(q[2][q[3]])}</b></li>`).join("")}</ul>` : ""}<div class="row" style="justify-content:center"><button class="primary" id="qz-again">Repetir</button></div>`;
+   $("qz-again").onclick = start; return;
+  }
+  const q = QZ.list[QZ.k], ord = shuffle(q[2].map((_, i) => i)); QZ.ans = false;
+  $("qz-box").innerHTML = `<span class="badge">${q[0]}</span><p style="font-size:1.15rem;margin:8px 0">${esc(q[1])}</p><div class="opts">${ord.map((o, p) => `<button class="opt" data-o="${o}"><b>${"ABCD"[p]}</b> ${esc(q[2][o])}</button>`).join("")}</div><div id="qz-fb"></div>`;
+  document.querySelectorAll("#qz-box .opt").forEach(b => b.onclick = () => {
+   if (QZ.ans) return; QZ.ans = true;
+   const good = +b.dataset.o === q[3]; good ? QZ.ok++ : QZ.fails.push(q);
+   document.querySelectorAll("#qz-box .opt").forEach(x => { x.disabled = true; if (+x.dataset.o === q[3]) x.classList.add("right"); else if (x === b) x.classList.add("wrong"); });
+   $("qz-fb").innerHTML = `<div class="fb">${good ? "✓ <b>Correcto.</b>" : "✗ <b>No.</b>"} ${esc(q[4])}</div><div class="row" style="justify-content:flex-end;margin-top:8px"><button class="primary" id="qz-next">Siguiente →</button></div>`;
+   $("qz-next").onclick = () => { QZ.k++; draw(); }; $("qz-next").focus();
+  });
+ };
+ $("qz-cat").onchange = start;
+ document.addEventListener("keydown", e => {
+  if ($("v-test").hidden || !QZ || ["INPUT", "SELECT"].includes(e.target.tagName)) return;
+  const i = "ABCD".indexOf(e.key.toUpperCase()), b = document.querySelectorAll("#qz-box .opt");
+  if (i >= 0 && b[i] && !QZ.ans) b[i].click();
+ });
+ start();
+}
+
+// =====================================================================
+//  PESTAÑAS
+// =====================================================================
+const VIEWS = [["notes", "1 · Apuntes"], ["map", "2 · Mapa conceptual"], ["lab", "3 · Laboratorio"], ["ex", "4 · Ejercicios"], ["fc", "5 · Flashcards"], ["test", "6 · Test"]];
+function show(v) {
+ VIEWS.forEach(([k]) => { $("v-" + k).hidden = k !== v; $("t-" + k).classList.toggle("on", k === v); $("t-" + k).setAttribute("aria-selected", k === v); });
+ store("si1-view", v); window.scrollTo({ top: 0 });
+}
+$("tabs").innerHTML = VIEWS.map(([k, n]) => `<button id="t-${k}" role="tab">${n}</button>`).join("");
+VIEWS.forEach(([k]) => $("t-" + k).onclick = () => show(k));
+renderNotes(); renderMap(); renderLab(); renderEx(); renderFC(); renderTest();
+document.querySelectorAll(".toc a").forEach(a => a.onclick = e => { e.preventDefault(); document.querySelector(a.getAttribute("href")).scrollIntoView({ behavior: "smooth" }); });
+const sv = store("si1-view"); show(VIEWS.some(v => v[0] === sv) ? sv : "notes");
+</script>
+</body>
+</html>

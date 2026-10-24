@@ -1,0 +1,816 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entornos de Desarrollo · UT1 y UT2</title>
+<style>
+:root{
+ --bg:#f6f4ee;--paper:#fffdf8;--ink:#1d2433;--muted:#5d6676;--line:#d9d4c7;--accent:#2f5bd3;--accent2:#e9efff;
+ --red:#c8322b;--green:#1f8a4c;--greenbg:#e5f5ea;--redbg:#fbe7e5;--amber:#b45309;--amberbg:#fff1dc;--violet:#7a2fb8;--violetbg:#f3e8ff;
+ --term:#1e1e2e;--termink:#e6e6e6;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--shadow:0 1px 2px rgba(0,0,0,.06),0 4px 14px rgba(0,0,0,.05);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#14171d;--paper:#1c2028;--ink:#e7e9ee;--muted:#9aa3b2;--line:#353b47;--accent:#7ea2ff;--accent2:#232c42;
+ --red:#ff7a70;--green:#5fd18f;--greenbg:#183324;--redbg:#3a1d1b;--amber:#f5b25b;--amberbg:#3a2a12;--violet:#c4a1ff;--violetbg:#2c2140;--term:#0d0f14;
+}}
+:root[data-theme="dark"]{
+ --bg:#14171d;--paper:#1c2028;--ink:#e7e9ee;--muted:#9aa3b2;--line:#353b47;--accent:#7ea2ff;--accent2:#232c42;
+ --red:#ff7a70;--green:#5fd18f;--greenbg:#183324;--redbg:#3a1d1b;--amber:#f5b25b;--amberbg:#3a2a12;--violet:#c4a1ff;--violetbg:#2c2140;--term:#0d0f14;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{padding:22px 16px 6px;max-width:1180px;margin:auto}header h1{margin:0;font-size:1.55rem}header p{margin:4px 0 0;color:var(--muted)}
+nav#tabs{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px;max-width:1180px;margin:auto;border-bottom:1px solid var(--line)}
+nav#tabs .grp{align-self:center;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:0 2px 0 8px}
+@media (max-width:760px){nav#tabs{flex-wrap:nowrap;overflow-x:auto}nav#tabs>*{flex:none}}
+main{max-width:1180px;margin:auto;padding:16px}
+button,select,input{font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:7px 12px;min-width:0;max-width:100%}
+button{cursor:pointer}button:hover:not(:disabled){border-color:var(--accent)}button:disabled{opacity:.45;cursor:default}
+button.on,button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:18px;box-shadow:var(--shadow)}
+.panel h2{margin:0 0 8px;font-size:1.3rem}h3{margin:16px 0 6px;font-size:1.05rem}
+.lead{color:var(--muted);margin:0 0 12px}.muted{color:var(--muted);font-size:.9rem}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row.sb{justify-content:space-between}
+code{font-family:var(--mono);font-size:.9em;background:var(--accent2);padding:1px 5px;border-radius:5px}
+pre{font-family:var(--mono);font-size:.86rem;background:var(--term);color:var(--termink);border-radius:10px;padding:12px 14px;overflow-x:auto;line-height:1.5;margin:8px 0}
+pre .c{color:#7fd1a8}pre .p{color:#8ab4ff}pre .k{color:#f5b25b}pre .o{color:#a7a7b8}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.key{background:var(--accent2);border-left:4px solid var(--accent);border-radius:10px;padding:10px 14px;margin:10px 0}
+.warn{background:var(--amberbg);border-left:4px solid var(--amber);border-radius:10px;padding:10px 14px;margin:10px 0}
+.exam{background:var(--violetbg);border-left:4px solid var(--violet);border-radius:10px;padding:10px 14px;margin:10px 0}.exam>b:first-child{color:var(--violet)}
+.bad{background:var(--redbg);border-left:4px solid var(--red);border-radius:10px;padding:10px 14px;margin:10px 0}
+.good{background:var(--greenbg);border-left:4px solid var(--green);border-radius:10px;padding:10px 14px;margin:10px 0}
+table.tb{width:100%;border-collapse:collapse;font-size:.92rem;margin:8px 0}
+table.tb th,table.tb td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}table.tb th{background:var(--bg)}
+.tscroll{overflow-x:auto}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}.toc a{font-size:.86rem;text-decoration:none;color:var(--accent);border:1px solid var(--line);border-radius:20px;padding:3px 10px;background:var(--paper)}
+.card{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--bg)}.card h4{margin:0 0 4px}
+.card p{margin:4px 0;font-size:.92rem}
+.pill{display:inline-block;font-size:.75rem;font-weight:700;border-radius:20px;padding:1px 8px;margin:1px 2px 1px 0}
+.pl{background:var(--greenbg);color:var(--green)}.pp{background:var(--redbg);color:var(--red)}.pn{background:var(--accent2);color:var(--accent)}
+/* flujos */
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:stretch;margin:10px 0}
+.flow .st{flex:1 1 140px;border-radius:10px;padding:10px;border:2px solid;font-size:.88rem;background:var(--paper)}
+.flow .st b{display:block;font-size:.95rem;margin-bottom:2px}
+.flow .ar{align-self:center;color:var(--muted);font-size:1.4rem}
+.s1{border-color:#3d8bd8}.s2{border-color:#22c55e}.s3{border-color:#d4a72c}.s4{border-color:#e05252}.s5{border-color:#8b5cf6}.s6{border-color:#0f766e}
+/* diagramas */
+svg.dia{width:100%;height:auto;display:block;max-width:760px;margin:6px auto}
+svg.dia text{font-family:system-ui,sans-serif;fill:#1d2433}
+.diabox{background:#fffefa;border:1px dashed var(--line);border-radius:12px;padding:8px}
+/* interactivos */
+.in{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.in label{display:flex;flex-direction:column;font-size:.82rem;color:var(--muted)}
+.in input{width:120px;font-family:var(--mono)}
+.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-top:8px}
+.res div{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--paper)}
+.res b{display:block;font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}.res span{font-family:var(--mono);font-size:1.05rem}
+table.cmp td,table.cmp th{font-size:.9rem}
+table.cmp td.code{font-family:var(--mono);white-space:pre}
+.chk{display:flex;gap:4px;flex-wrap:wrap}.chk button{padding:3px 8px;font-size:.82rem}
+.chk button.sel{background:var(--accent);color:#fff;border-color:var(--accent)}
+tr.ok td{background:var(--greenbg)}tr.ko td{background:var(--redbg)}
+.sol{font-size:.85rem;color:var(--muted)}
+/* revisión */
+.rev{display:grid;gap:8px}.rev .it{display:grid;grid-template-columns:28px 1fr;gap:8px;align-items:start;padding:8px 10px;border-radius:10px;background:var(--bg)}
+.rev .ic{font-size:1.1rem;line-height:1.4}
+.score{display:inline-block;font-weight:800;border-radius:8px;padding:2px 10px;background:var(--accent2);color:var(--accent)}
+/* kanban mini */
+.kb{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0}
+.kb .col{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px;min-height:120px}
+.kb .col h5{margin:0 0 6px;font-size:.85rem;display:flex;justify-content:space-between}
+.kb .t{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-size:.8rem;margin-bottom:4px;cursor:pointer}
+.kb .col.full{border-color:var(--red)}
+/* flashcards / test */
+.fc-wrap{perspective:1200px;max-width:640px;margin:10px auto}
+.fc{position:relative;min-height:230px;cursor:pointer;transition:transform .5s;transform-style:preserve-3d}.fc.flip{transform:rotateY(180deg)}
+.fc>div{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;padding:22px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;border:1px solid var(--line);box-shadow:var(--shadow)}
+.fc .front{background:var(--paper);font-size:1.15rem;font-weight:600}.fc .back{background:var(--accent2);transform:rotateY(180deg)}
+.fc .cat{position:absolute;top:10px;left:14px;font-size:.75rem;font-weight:700;color:var(--accent);text-transform:uppercase}
+.track{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin:8px 0}.bar{height:100%;background:var(--accent);transition:width .3s}
+.opts{display:grid;gap:8px;margin-top:10px}.opt{text-align:left;padding:10px 14px}
+.opt.right{background:var(--greenbg);border-color:var(--green)}.opt.wrong{background:var(--redbg);border-color:var(--red)}
+.fb{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--bg)}
+.big{font-size:3rem;font-weight:800;color:var(--accent);text-align:center}
+.badge{display:inline-block;background:var(--accent2);color:var(--accent);font-size:.75rem;font-weight:700;padding:2px 8px;border-radius:20px}
+@media (max-width:760px){.grid2,.grid3,.grid4,.kb{grid-template-columns:1fr}.panel{padding:14px}.flow .ar{display:none}}
+@media print{nav#tabs,.noprint{display:none}body{background:#fff}.panel{box-shadow:none;break-inside:avoid}section[hidden]{display:block!important}}
+</style>
+</head>
+<body>
+<header>
+ <h1>Entornos de Desarrollo · UT1 y UT2</h1>
+ <p>Módulo 0487 · Desarrollo de software (UT1) e Instalación y uso de IDE (UT2): apuntes, metodologías ágiles, ejercicios resueltos, revisión de tus prácticas, flashcards y test.</p>
+</header>
+<nav id="tabs" role="tablist"></nav>
+<main>
+<section id="v-ut1"></section>
+<section id="v-agil" hidden></section>
+<section id="v-ut2" hidden></section>
+<section id="v-ej" hidden></section>
+<section id="v-rev" hidden></section>
+<section id="v-fc" hidden></section>
+<section id="v-test" hidden></section>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+function store(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k, JSON.stringify(v)); } catch (e) { return null; } }
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const toc = list => `<div class="toc">${list.map(([id, t]) => `<a href="#${id}">${t}</a>`).join("")}</div>`;
+
+// =====================================================================
+//  UT1
+// =====================================================================
+function renderUT1() {
+ $("v-ut1").innerHTML = toc([["u1-sw", "Software"], ["u1-lic", "Distribución y licencias"], ["u1-cal", "Calidad y métricas"], ["u1-hw", "Hardware y UC"], ["u1-cod", "Tipos de código"], ["u1-len", "Lenguajes"], ["u1-comp", "Compilación"], ["u1-ciclo", "Ciclo de vida"], ["u1-mod", "Modelos"], ["u1-case", "CASE y frameworks"]]) + `
+ <div class="panel" id="u1-sw"><h2>1. Software y programa</h2>
+  <div class="grid2">
+   <div><p><b>Software</b>: conjunto de componentes <b>lógicos</b> que hacen posible realizar tareas específicas en un sistema informático. Actúa sobre el <b>hardware</b> y lo necesita para ejecutarse.</p>
+    <p><b>Programa</b>: conjunto de <b>instrucciones</b> escritas en un lenguaje de programación que indican a la máquina qué operaciones ejecutar sobre unos datos.</p></div>
+   <div class="key"><b>Objetivos de la unidad</b><ul style="margin:4px 0"><li>Relacionar los programas con los componentes del sistema.</li><li>Diferenciar código <b>fuente, objeto y ejecutable</b>.</li><li>Identificar las <b>fases</b> de desarrollo.</li><li>Clasificar los <b>lenguajes</b> de programación.</li></ul></div>
+  </div>
+  <h3>Taxonomía del software</h3>
+  <div class="tscroll"><table class="tb"><tr><th>Criterio</th><th>Tipos</th></tr>
+   <tr><td><b>Según su función / uso</b></td><td><b>Sistemas</b>: SO, drivers, BIOS, gestión de redes; mucha interacción con el hardware. · <b>Programación</b>: editores, compiladores. · <b>Aplicación</b>: resuelve problemas de negocio o de usuario (ofimática, navegadores, ERP Odoo).</td></tr>
+   <tr><td><b>Según su ámbito</b></td><td><b>Ingeniería / ciencias</b>: algoritmos y simulación (clima). · <b>Incrustado o embebido</b>: dentro de un producto (termostato, coche). · <b>Línea de producto</b>: funcionalidad para el consumidor. · <b>Web / nube / IA</b>: móvil, Google Cloud, redes neuronales.</td></tr>
+   <tr><td><b>Según su distribución</b></td><td><b>Shareware</b> (prueba por tiempo) · <b>Freeware</b> (gratis con restricciones) · <b>Adware</b> (gratis con publicidad).</td></tr>
+   <tr><td><b>Según su licencia</b></td><td><b>Libre</b> · <b>Propietario</b> · <b>Dominio público</b>.</td></tr></table></div>
+ </div>
+
+ <div class="panel" id="u1-lic"><h2>2. Distribución y licencias</h2>
+  <div class="grid3">
+   <div class="card"><h4>Shareware</h4><p>Gratis durante un <b>periodo de prueba</b>; después hay que comprarlo o dejar de usarlo (WinZip, WinRAR).</p></div>
+   <div class="card"><h4>Freeware</h4><p>Totalmente <b>gratuito</b>, pero normalmente <b>no se puede modificar</b> su código.</p></div>
+   <div class="card"><h4>Adware</h4><p>Gratuito pero muestra <b>publicidad</b> mientras no compres la licencia.</p></div>
+  </div>
+  <p>Una <b>licencia</b> es un contrato entre desarrollador y usuario con derechos y deberes.</p>
+  <div class="grid3">
+   <div class="card"><h4>Software libre · 4 libertades</h4><p>0. <b>Usar</b> con cualquier fin.<br>1. <b>Estudiar y adaptar</b> el código.<br>2. <b>Distribuir</b> copias.<br>3. <b>Mejorar</b> y publicar las mejoras.</p></div>
+   <div class="card"><h4>Propietario</h4><p>Se distribuye en <b>binario</b>, sin código fuente. Prohíbe copia, modificación o redistribución.</p></div>
+   <div class="card"><h4>Dominio público</h4><p><b>Sin derechos de autor</b>: el autor renunció o los derechos caducaron.</p></div>
+  </div>
+  <div class="warn"><b>¡No confundir!</b> <b>Freeware</b> habla del <b>precio</b> (gratis) y <b>libre</b> habla de la <b>libertad</b> (código accesible y modificable). Un programa puede ser gratis y propietario (freeware) o libre y de pago.</div>
+ </div>
+
+ <div class="panel" id="u1-cal"><h2>3. Calidad del software y métricas</h2>
+  <div class="grid4">${[["Corrección", "Cumple las especificaciones."], ["Fiabilidad", "Pocos fallos en ejecución."], ["Eficiencia", "Buen uso de recursos."], ["Seguridad", "Protege los datos de accesos no autorizados."], ["Usabilidad", "Fácil de aprender y usar."], ["Mantenibilidad", "Fácil de corregir y mejorar."], ["Portabilidad", "Fácil de llevar a otros entornos."], ["Interoperabilidad", "Funciona junto a otros sistemas."]].map(([a, b]) => `<div class="card"><h4>${a}</h4><p>${b}</p></div>`).join("")}</div>
+  <h3>Métricas</h3>
+  <p>La <b>ingeniería del software</b> pasa del proceso artesanal a procesos industriales que se pueden medir.</p>
+  <div class="grid2">
+   <div class="key"><b>Orientadas al tamaño (KLDC = miles de líneas de código)</b><br>
+    Calidad = <b>errores / KLDC</b><br>Productividad = <b>KLDC / persona-mes</b><br>Coste = <b>€ / KLDC</b></div>
+   <div class="key"><b>Puntos de función (PF)</b>: valoran la funcionalidad que se ofrece al usuario<br>
+    Calidad = <b>errores / PF</b><br>Productividad = <b>PF / persona-mes</b><br>Coste = <b>€ / PF</b></div>
+  </div>
+  <div class="exam"><b>Para el examen:</b> en las tres fórmulas, la medida (KLDC o PF) va <b>abajo</b> en calidad y coste, y <b>arriba</b> en productividad. Calidad: <b>menos es mejor</b>. Practica con la calculadora del Ejercicio 1.1.</div>
+ </div>
+
+ <div class="panel" id="u1-hw"><h2>4. Hardware, Von Neumann y la unidad de control</h2>
+  <div class="grid2">
+   <div><p><b>Hardware</b>: componentes físicos y tangibles: monitor, placa base, CPU, RAM, ranuras de expansión, fuente de alimentación, disco duro / SSD y periféricos.</p>
+    <h3>Arquitectura de Von Neumann (1945)</h3>
+    <ul><li><b>UC</b>: interpreta y ejecuta las instrucciones de la memoria y genera señales de control.</li>
+     <li><b>ALU</b>: operaciones aritméticas y comparaciones lógicas.</li>
+     <li><b>Registros</b>: memoria muy rápida dentro de la CPU.</li>
+     <li><b>Memoria principal (RAM)</b>: instrucciones <b>y</b> datos.</li>
+     <li><b>E/S</b>: transferencia entre CPU/memoria y el exterior.</li></ul>
+    <p class="muted">En Sistemas Informáticos verás «1946»: en 1945 Von Neumann publicó el informe que describe el modelo, y en 1946 se presentó el diseño del ordenador IAS. Las dos fechas se refieren a lo mismo.</p></div>
+   <div><h3>Registros de la UC</h3>
+    <table class="tb"><tr><th>Registro</th><th>Contiene</th></tr>
+     <tr><td><b>PC</b> · contador de programa</td><td>Dirección de la <b>siguiente</b> instrucción.</td></tr>
+     <tr><td><b>IR</b> · registro de instrucción</td><td>La instrucción que se ejecuta <b>ahora</b>.</td></tr>
+     <tr><td><b>MAR</b> · registro de dirección de memoria</td><td>La <b>dirección</b> a la que se quiere acceder.</td></tr>
+     <tr><td><b>MBR</b> · registro de intercambio de memoria</td><td>El <b>dato</b> leído o que se va a escribir en esa dirección.</td></tr></table>
+    <p><b>Decodificador (ID)</b>: analiza la instrucción del IR. · <b>Reloj</b>: marca el ritmo con impulsos. · <b>Secuenciador</b>: genera las órdenes elementales sincronizadas con el reloj.</p></div>
+  </div>
+  <div class="key"><b>Ciclo de una instrucción</b>: PC → MAR (dirección) → memoria → MBR (instrucción) → IR → decodificador → secuenciador ejecuta → PC + 1.</div>
+  <h3>Relación hardware–software</h3>
+  <div class="flow"><div class="st s1"><b>Aplicaciones</b>Programas que el hardware interpreta y ejecuta.</div><div class="ar">↕</div><div class="st s2"><b>Sistema operativo</b>Intermediario: coordina el hardware y reparte recursos.</div><div class="ar">↕</div><div class="st s3"><b>Hardware</b>Disco (guarda binarios y datos) · RAM (código en ejecución) · CPU (lee y ejecuta) · E/S.</div></div>
+ </div>
+
+ <div class="panel" id="u1-cod"><h2>5. Tipos de código</h2>
+  <div class="flow"><div class="st s1"><b>Código fuente</b>Texto legible escrito por personas: <code>.java</code>, <code>.c</code>, <code>.py</code></div><div class="ar">→ compilador →</div>
+   <div class="st s3"><b>Código objeto / intermedio</b>Binario <b>no</b> ejecutable directamente por el SO. En Java: <b>bytecode</b> <code>.class</code></div><div class="ar">→ enlazador / JVM →</div>
+   <div class="st s4"><b>Código ejecutable</b>Código máquina listo para cargarse en RAM y ejecutarse en la CPU.</div></div>
+  <div class="grid2"><div class="key"><b>Compilados</b> (C, C++): la compilación genera directamente el ejecutable para una plataforma concreta.</div>
+   <div class="key"><b>Interpretados</b> (JavaScript, PHP, Python): un intérprete ejecuta el código sin generar un ejecutable independiente.</div></div>
+  <div class="warn"><b>Java es híbrido:</b> se <b>compila</b> (<code>javac</code>) a bytecode y la JVM lo <b>interpreta</b> (y lo compila al vuelo con JIT). Los apuntes lo colocan entre los interpretados porque no genera un ejecutable nativo; en el examen puedes decir «compilado a bytecode e interpretado por la JVM».</div>
+ </div>
+
+ <div class="panel" id="u1-len"><h2>6. Lenguajes de programación</h2>
+  <p>Idioma artificial (símbolos + normas) para comunicarnos con el hardware. El lenguaje se <b>elige en el diseño</b> y se <b>usa en la codificación</b>.</p>
+  <h3>Evolución: de menor a mayor abstracción</h3>
+  <div class="flow"><div class="st s4"><b>Máquina</b>0 y 1. Lo único que entiende el hardware. Depende del procesador.</div><div class="ar">→</div><div class="st s3"><b>Ensamblador</b>Mnemotécnicos (MOV, ADD). Necesita traducción; ligado a la arquitectura.</div><div class="ar">→</div><div class="st s2"><b>Alto nivel</b>Cercano al inglés. Portable. Necesita traducción.</div><div class="ar">→</div><div class="st s1"><b>Entornos visuales</b>Se programa gráficamente y se genera el código.</div></div>
+  <h3>Clasificación</h3>
+  <div class="tscroll"><table class="tb"><tr><th>Criterio</th><th>Tipos</th><th>Ejemplos</th></tr>
+   <tr><td>Traducción</td><td>Compilados · interpretados</td><td>C++ · Python, JavaScript (Java: híbrido)</td></tr>
+   <tr><td>Paradigma</td><td><b>Imperativo</b>: dice <b>cómo</b>, paso a paso · <b>Declarativo</b>: dice <b>qué</b></td><td>C, Java · SQL, Prolog, Haskell</td></tr>
+   <tr><td>Técnica</td><td>Estructurada · modular · <b>orientada a objetos</b></td><td>C · Java, C++, C#</td></tr></table></div>
+  <div class="grid2">
+   <div class="card"><h4>Programación estructurada</h4><p>Solo 3 estructuras: <b>secuencial</b>, <b>selectiva</b> (if) y <b>repetitiva</b> (bucles).</p>
+    <p><span class="pill pl">+</span>Fácil de leer, rápida, mantenimiento sencillo.<br><span class="pill pp">−</span>Todo en un único bloque; poca reutilización. La sustituyó la <b>modular</b>.</p></div>
+   <div class="card"><h4>Programación orientada a objetos (POO)</h4><p><b>Clase</b>: molde (Persona). <b>Objeto</b>: ejemplar concreto (Noa). <b>Atributos</b>: datos (edad). <b>Métodos</b>: acciones (saludar). Los objetos se comunican por <b>mensajes</b> (llamadas a métodos).</p>
+    <p><span class="pill pl">+</span>Código reutilizable y errores más fáciles de localizar.</p></div>
+  </div>
+<pre><span class="k">public class</span> Persona {            <span class="c">// clase</span>
+    <span class="k">int</span> edad; String nombre;      <span class="c">// atributos</span>
+    <span class="k">void</span> saludar() {               <span class="c">// método</span>
+        System.out.println(<span class="p">"Buenos días, soy "</span> + nombre);
+    }
+}
+Persona noa = <span class="k">new</span> Persona();   <span class="c">// objeto</span>
+noa.saludar();                   <span class="c">// envío de mensaje</span></pre>
+ </div>
+
+ <div class="panel" id="u1-comp"><h2>7. Compilación: las tres fases de análisis</h2>
+  <div class="flow"><div class="st s1"><b>Código fuente</b><code>suma = 5 + 3</code></div><div class="ar">→</div>
+   <div class="st s2"><b>1. Léxico</b>Identifica <b>símbolos</b> y genera <b>tokens</b>: <code>suma</code> <code>=</code> <code>5</code> <code>+</code> <code>3</code>. Error si un símbolo no existe en el lenguaje.</div><div class="ar">→</div>
+   <div class="st s3"><b>2. Sintáctico</b>Revisa la <b>gramática</b>: el orden de los tokens. Construye el <b>árbol sintáctico</b>.</div><div class="ar">→</div>
+   <div class="st s4"><b>3. Semántico</b>Revisa el <b>significado</b>: variables declaradas, tipos compatibles. Genera el ejecutable o bytecode.</div></div>
+  <p class="muted">Si falla cualquier fase, la compilación se detiene (gestión de errores).</p>
+  <div class="tscroll"><table class="tb"><tr><th>Fase</th><th>Pregunta que se hace</th><th>Ejemplo de error en Java</th></tr>
+   <tr><td><b>Léxico</b></td><td>¿Existe esta palabra o símbolo?</td><td><code>int x = 5 # 2;</code> → <code>#</code> no es un símbolo de Java</td></tr>
+   <tr><td><b>Sintáctico</b></td><td>¿Están bien colocadas?</td><td><code>int x = 5</code> (falta <code>;</code>) · <code>x = = 5;</code></td></tr>
+   <tr><td><b>Semántico</b></td><td>¿Tiene sentido?</td><td><code>int x = "hola";</code> (tipos) · <code>y = 3;</code> sin declarar <code>y</code></td></tr></table></div>
+  <div class="exam"><b>Truco:</b> léxico = <b>palabras</b>, sintáctico = <b>gramática</b>, semántico = <b>significado</b>. Como en español: «gato el ¿» (léxico), «el come gato» (sintáctico), «el gato pilota un avión» (bien construida pero sin sentido). Practícalo en el Ejercicio 1.2.</div>
+ </div>
+
+ <div class="panel" id="u1-ciclo"><h2>8. Desarrollo de software: el ciclo de vida</h2>
+  <p>Proceso desde la idea hasta el programa funcionando. <b>Invertir en análisis y diseño</b> evita que los errores se propaguen (cuanto más tarde se detecta un error, más caro es).</p>
+  <div class="tscroll"><table class="tb"><tr><th>Fase</th><th>Qué se hace</th><th>Entregable</th></tr>
+   <tr><td><b>1. Análisis</b></td><td>Necesidades del cliente y <b>requisitos</b> (funcionales y no funcionales), sin ambigüedades. Estimación de tiempos (Gantt).</td><td><b>ERS</b>: especificación de requisitos software</td></tr>
+   <tr><td><b>2. Diseño</b></td><td>Arquitectura, descomposición en módulos, diseño detallado, de datos y de interfaz.</td><td>Documento de diseño + <b>plan de pruebas</b></td></tr>
+   <tr><td><b>3. Codificación</b></td><td>Escribir el código (C, Java… y también HTML, XML, JSON) con IDE; <b>pruebas unitarias</b>.</td><td>Código fuente y módulos probados</td></tr>
+   <tr><td><b>4. Pruebas</b></td><td><b>Unitarias</b> (cada parte por separado, JUnit) e <b>integración</b> (todo junto). Se comparan resultados obtenidos y esperados.</td><td>Sistema integrado + informe de pruebas</td></tr>
+   <tr><td><b>5. Mantenimiento</b></td><td>Control, mejora y optimización tras la implantación.</td><td>Parches y nuevas versiones</td></tr></table></div>
+  <div class="grid2">
+   <div><h3>Una buena ERS es…</h3><p>Completa · concisa · <b>sin ambigüedades</b> · sin detalles de diseño · entendible por el cliente · separa requisitos <b>funcionales</b> y <b>no funcionales</b> · jerarquizada · con criterios de validación.</p>
+    <div class="key"><b>Funcional</b> = <b>qué hace</b> el sistema (dar de alta, consultar, calcular).<br><b>No funcional</b> = <b>cómo es / con qué condiciones</b> (rendimiento, seguridad, hardware, legislación, usabilidad, disponibilidad).</div></div>
+   <div><h3>Tipos de mantenimiento</h3>
+    <table class="tb"><tr><td><b>Correctivo</b></td><td>Corrige un error.</td></tr><tr><td><b>Perfectivo</b></td><td>Mejora lo que ya hay (rendimiento, funcionalidad).</td></tr><tr><td><b>Evolutivo</b></td><td>El cliente pide mejoras: <b>nuevos requisitos</b>.</td></tr><tr><td><b>Adaptativo</b></td><td>Se adapta a cambios externos: hardware, normativa, mercado.</td></tr></table></div>
+  </div>
+ </div>
+
+ <div class="panel" id="u1-mod"><h2>9. Modelos de ciclo de vida</h2>
+  <div class="grid3">
+   <div class="card"><h4>Cascada</h4><p>Secuencial: cada fase termina antes de empezar la siguiente.</p><p><span class="pill pl">+</span>Fácil de planificar. <span class="pill pp">−</span>Inflexible; requisitos 100 % definidos al inicio.</p><p class="muted">Para proyectos pequeños y requisitos estables.</p></div>
+   <div class="card"><h4>Cascada con retroalimentación</h4><p>Permite <b>volver a fases anteriores</b> si se detectan errores o pequeños cambios.</p><p><span class="pill pl">+</span>Más flexible. <span class="pill pp">−</span>Costes difíciles de estimar si hay muchos cambios.</p></div>
+   <div class="card"><h4>Modelo en V</h4><p>Cada fase de desarrollo tiene su <b>fase de pruebas</b> enfrente.</p><p><b>Verificación</b>: ¿cumple el diseño? («¿lo hemos construido bien?»). <b>Validación</b>: ¿satisface al cliente? («¿hemos construido lo correcto?»).</p></div>
+   <div class="card"><h4>Iterativo incremental</h4><p>Versiones parciales que crecen en cada iteración.</p><p><span class="pill pl">+</span>Entregas tempranas y feedback rápido. <span class="pill pp">−</span>Riesgo de que el alcance crezca sin control.</p></div>
+   <div class="card"><h4>Espiral (Boehm)</h4><p>4 cuadrantes por vuelta: <b>objetivos → análisis de riesgos → desarrollo → planificación</b>.</p><p><span class="pill pl">+</span>Gestión de riesgos. <span class="pill pp">−</span>Caro y complejo.</p></div>
+   <div class="card"><h4>Ágiles: XP, Scrum, Kanban</h4><p><b>XP</b> (Kent Beck): 4 valores: sencillez, comunicación, retroalimentación y valentía; cliente presente y refactorización.</p><p><b>Scrum y Kanban</b>: tableros, iteraciones cortas, reuniones de sincronización y valor continuo. Ver la pestaña «Metodologías ágiles».</p></div>
+  </div>
+  <h3>Matriz de decisión</h3>
+  <table class="tb"><tr><th>Dimensión</th><th>Cascada (tradicional)</th><th>Metodologías ágiles</th></tr>
+   <tr><td>Requisitos</td><td>Rígidos, definidos al inicio</td><td>Flexibles, cambian durante el proyecto</td></tr>
+   <tr><td>Ejecución de fases</td><td>Secuencial: hay que acabar la anterior</td><td>Solapadas: iteraciones cortas y continuas</td></tr>
+   <tr><td>Implicación del cliente</td><td>Al inicio (análisis) y al final (entrega)</td><td>Constante, durante todo el ciclo</td></tr>
+   <tr><td>Producto</td><td>Una única entrega final</td><td>Versiones parciales funcionales (incrementos)</td></tr></table>
+  <div class="exam"><b>Cómo justificar un modelo</b> (te lo piden en las prácticas): requisitos <b>claros y cerrados</b> → cascada (con retroalimentación si puede haber ajustes); requisitos que <b>cambian</b> o cliente disponible → ágil o incremental; proyecto <b>grande y con riesgo</b> → espiral; pruebas muy importantes → V.</div>
+ </div>
+
+ <div class="panel" id="u1-case"><h2>10. Herramientas CASE y frameworks</h2>
+  <div class="grid2">
+   <div><h3>CASE (Computer Aided Software Engineering)</h3><p>Automatizan fases del desarrollo para reducir costes y tiempo y aumentar la fiabilidad.</p>
+    <table class="tb"><tr><td><b>U-CASE</b> (upper)</td><td>Fases iniciales: planificación y análisis de requisitos.</td></tr><tr><td><b>M-CASE</b> (medium)</td><td>Análisis detallado y diseño.</td></tr><tr><td><b>L-CASE</b> (lower)</td><td>Codificación, errores, pruebas y documentación automática.</td></tr></table>
+    <p class="muted">Truco: Upper = arriba = inicio del ciclo; Lower = abajo = final.</p></div>
+   <div><h3>Frameworks</h3><p>Estructura de soporte (bibliotecas, programas, entorno) para no empezar desde cero.</p>
+    <p><span class="pill pl">+</span>Desarrollo rápido, reutilización, diseño uniforme. <span class="pill pp">−</span>Dependencia del framework y más consumo de recursos.</p>
+    <table class="tb"><tr><td><b>.NET</b></td><td>Aplicaciones Windows (C#)</td></tr><tr><td><b>Spring</b></td><td>Java profesional</td></tr><tr><td><b>Qt</b></td><td>C++ multiplataforma</td></tr><tr><td><b>Angular</b></td><td>Web con JavaScript/TypeScript</td></tr></table></div>
+  </div>
+ </div>`;
+}
+
+// =====================================================================
+//  METODOLOGÍAS ÁGILES (vídeos)
+// =====================================================================
+function renderAgil() {
+ $("v-agil").innerHTML = `
+ <div class="panel"><h2>Metodologías ágiles: Scrum y Kanban</h2>
+  <p class="lead">Resumen de los dos vídeos del aula virtual: <b>«SCRUM vs KANBAN – Conceptos, desarrollo, similitudes, diferencias y aplicaciones»</b> (Asier Balduz, UPNA) y <b>«Metodologías ágiles: principios, scrum y kanban»</b> (Programación en español: manifiesto Agile, Scrum, Kanban, Trello/Jira y tabla comparativa).</p>
+  <h3>Ágil frente a tradicional</h3>
+  <p>Las metodologías tradicionales (cascada) planifican todo al principio y entregan al final. Las <b>ágiles</b> trabajan en <b>ciclos cortos</b>, entregan software funcionando pronto y aceptan el cambio.</p>
+  <h3>Manifiesto Ágil (2001): 4 valores</h3>
+  <div class="grid2">${[["Individuos e interacciones", "procesos y herramientas"], ["Software funcionando", "documentación exhaustiva"], ["Colaboración con el cliente", "negociación contractual"], ["Respuesta ante el cambio", "seguir un plan"]].map(([a, b]) => `<div class="card"><h4>${a}</h4><p class="muted">por encima de ${b}</p></div>`).join("")}</div>
+  <p class="muted">Lo de la derecha también tiene valor, pero se valora más lo de la izquierda.</p>
+  <details><summary><b>Los 12 principios (resumidos)</b></summary><ol>
+   <li>Satisfacer al cliente con entregas tempranas y continuas.</li><li>Aceptar cambios de requisitos, incluso tarde.</li><li>Entregar software funcional con frecuencia (semanas).</li><li>Negocio y desarrolladores trabajan juntos a diario.</li><li>Equipos motivados con confianza y apoyo.</li><li>Comunicación cara a cara.</li><li>El software funcionando es la medida del progreso.</li><li>Ritmo de trabajo sostenible.</li><li>Excelencia técnica y buen diseño.</li><li>Simplicidad: maximizar el trabajo no hecho.</li><li>Equipos autoorganizados.</li><li>Reflexión periódica para mejorar.</li></ol></details>
+ </div>
+
+ <div class="panel"><h2>Scrum</h2>
+  <p>Marco de trabajo con <b>iteraciones de duración fija</b> llamadas <b>sprints</b> (normalmente 1–4 semanas). Cada sprint entrega un <b>incremento</b> del producto.</p>
+  <div class="grid3">
+   <div class="card"><h4>3 roles</h4><p><b>Product Owner</b>: representa al cliente; prioriza el Product Backlog (el «qué»).</p><p><b>Scrum Master</b>: facilita el proceso y elimina impedimentos.</p><p><b>Equipo de desarrollo</b>: autoorganizado; construye el incremento (el «cómo»).</p></div>
+   <div class="card"><h4>3 artefactos</h4><p><b>Product Backlog</b>: lista priorizada de todo lo que necesita el producto (historias de usuario).</p><p><b>Sprint Backlog</b>: lo elegido para este sprint.</p><p><b>Incremento</b>: el producto funcionando al final del sprint.</p></div>
+   <div class="card"><h4>5 eventos</h4><p><b>Sprint</b> · <b>Sprint Planning</b> (qué y cómo) · <b>Daily Scrum</b> (15 min: qué hice, qué haré, qué me bloquea) · <b>Sprint Review</b> (se enseña al cliente) · <b>Retrospectiva</b> (cómo mejorar el equipo).</p></div>
+  </div>
+  <div class="flow"><div class="st s1"><b>Product Backlog</b>priorizado por el PO</div><div class="ar">→</div><div class="st s2"><b>Sprint Planning</b></div><div class="ar">→</div><div class="st s3"><b>Sprint</b> (2–4 sem.) con Daily Scrum cada día</div><div class="ar">→</div><div class="st s4"><b>Review</b> + <b>Retrospectiva</b></div><div class="ar">→</div><div class="st s5"><b>Incremento</b> entregable ↺</div></div>
+ </div>
+
+ <div class="panel"><h2>Kanban</h2>
+  <p>Método de <b>gestión visual del flujo</b> continuo (nació en Toyota). No hay sprints: las tareas entran y salen del tablero de forma continua.</p>
+  <div class="grid2"><div><ul>
+   <li><b>Visualizar el flujo</b> en un tablero con columnas (Por hacer · En curso · Revisión · Hecho).</li>
+   <li><b>Limitar el trabajo en curso (WIP)</b>: máximo de tareas por columna; obliga a terminar antes de empezar otra.</li>
+   <li><b>Sistema pull</b>: se «tira» de una tarea nueva cuando hay hueco.</li>
+   <li><b>Gestionar y medir el flujo</b>: <i>lead time</i> (desde que se pide hasta que se entrega) y <i>cycle time</i> (desde que se empieza).</li>
+   <li><b>Mejora continua</b>; no impone roles fijos.</li></ul></div>
+   <div><p class="muted">Pruébalo: pulsa una tarea para moverla a la siguiente columna. La columna «En curso» tiene un <b>límite WIP de 2</b>.</p>
+    <div class="kb" id="kb"></div><button id="kb-reset" class="noprint">Reiniciar tablero</button></div></div>
+ </div>
+
+ <div class="panel"><h2>Scrum frente a Kanban</h2>
+  <div class="tscroll"><table class="tb"><tr><th></th><th>Scrum</th><th>Kanban</th></tr>
+   <tr><td><b>Ritmo</b></td><td>Sprints de duración fija</td><td>Flujo continuo</td></tr>
+   <tr><td><b>Roles</b></td><td>Product Owner, Scrum Master, equipo</td><td>No hay roles obligatorios</td></tr>
+   <tr><td><b>Entregas</b></td><td>Al final de cada sprint</td><td>Continuas, cuando la tarea está lista</td></tr>
+   <tr><td><b>Cambios</b></td><td>No se cambia el sprint en curso</td><td>En cualquier momento</td></tr>
+   <tr><td><b>Límite de trabajo</b></td><td>Lo que cabe en el sprint</td><td>Límite WIP por columna</td></tr>
+   <tr><td><b>Métricas</b></td><td>Velocidad (puntos por sprint), burndown</td><td>Lead time, cycle time</td></tr>
+   <tr><td><b>Ideal para</b></td><td>Producto nuevo con entregas planificadas</td><td>Soporte, mantenimiento, peticiones continuas</td></tr></table></div>
+  <div class="good"><b>En común:</b> ágiles, tablero visual, mejora continua, equipos autoorganizados y entrega de valor frecuente. <b>Herramientas</b>: Trello (tableros sencillos) y Jira (Scrum y Kanban profesionales).</div>
+  <div class="exam"><b>Pregunta típica:</b> «¿Scrum o Kanban para un equipo de soporte que recibe incidencias a diario?» → <b>Kanban</b> (trabajo continuo e imprevisible). «¿Y para desarrollar una app nueva con entregas cada dos semanas?» → <b>Scrum</b>.</div>
+ </div>`;
+ const COLS = ["Por hacer", "En curso", "Revisión", "Hecho"], WIP = { 1: 2 };
+ let tasks;
+ const reset = () => { tasks = [["Login", 0], ["Carrito", 0], ["Facturas", 0], ["Stock", 0], ["Informe ventas", 0]]; draw(); };
+ const draw = () => {
+  $("kb").innerHTML = COLS.map((c, i) => { const n = tasks.filter(t => t[1] === i).length; return `<div class="col ${WIP[i] && n >= WIP[i] ? "full" : ""}"><h5>${c}<span>${WIP[i] ? n + "/" + WIP[i] : n}</span></h5>${tasks.map((t, k) => t[1] === i ? `<div class="t" data-k="${k}">${t[0]}</div>` : "").join("")}</div>`; }).join("");
+  $("kb").querySelectorAll(".t").forEach(el => el.onclick = () => {
+   const t = tasks[+el.dataset.k]; if (t[1] >= 3) return;
+   const nx = t[1] + 1; if (WIP[nx] && tasks.filter(x => x[1] === nx).length >= WIP[nx]) { el.animate([{ transform: "translateX(-4px)" }, { transform: "translateX(4px)" }, { transform: "none" }], { duration: 250 }); alert("Límite WIP alcanzado en «" + COLS[nx] + "»: termina una tarea antes de empezar otra."); return; }
+   t[1] = nx; draw();
+  });
+ };
+ $("kb-reset").onclick = reset; reset();
+}
+
+// =====================================================================
+//  UT2
+// =====================================================================
+function renderUT2() {
+ $("v-ut2").innerHTML = toc([["u2-ide", "Qué es un IDE"], ["u2-fun", "Funciones"], ["u2-lista", "IDE libres y propietarios"], ["u2-java", "JDK, JRE y JVM"], ["u2-ecl", "Eclipse"], ["u2-plug", "Plugins"], ["u2-term", "Compilar en terminal"], ["u2-sem", "Proyecto semáforo"], ["u2-jar", "Archivos .jar"], ["u2-err", "Erratas"]]) + `
+ <div class="panel" id="u2-ide"><h2>1. ¿Qué es un IDE?</h2>
+  <p>Un <b>Entorno de Desarrollo Integrado</b> reúne en una sola interfaz gráfica las herramientas para <b>escribir, probar y depurar</b> software. Se usa en la fase de <b>codificación</b>, sea cual sea el modelo de ciclo de vida. Los hay para un solo lenguaje o para varios.</p>
+  <div class="key">Ventajas: ahorra tiempo, gestiona proyectos grandes, automatiza tareas repetitivas y <b>detecta errores en tiempo real</b>.</div>
+ </div>
+
+ <div class="panel" id="u2-fun"><h2>2. Funciones de un entorno de desarrollo</h2>
+  <div class="grid3">${[["Editor de código", "El corazón del IDE: resaltado de sintaxis y autocompletado."], ["Compilador", "Traduce el fuente a código máquina o intermedio (léxico → sintáctico → semántico → generación de código)."], ["Enlazador (linker)", "En C/C++: une los archivos objeto y las bibliotecas en el ejecutable final."], ["Intérprete", "Ejecuta el código línea a línea sin generar ejecutable (Python)."], ["Depurador (debugger)", "Ejecución paso a paso, ver variables y localizar la línea del fallo."], ["Control de versiones", "Integración con Git: historial, colaboración y vuelta atrás."], ["Gestor de proyectos", "Organiza archivos y carpetas, bibliotecas y rutas."], ["Automatización", "Compilar, ejecutar pruebas o generar informes con un clic."], ["Simuladores y emuladores", "Probar en otros dispositivos sin el hardware real."], ["Plugins", "Conectar con bases de datos, servidores o despliegue continuo."]].map(([a, b]) => `<div class="card"><h4>${a}</h4><p>${b}</p></div>`).join("")}</div>
+  <div class="exam"><b>Diferencia clave:</b> el <b>compilador</b> traduce todo el programa antes de ejecutarlo; el <b>intérprete</b> traduce y ejecuta línea a línea; el <b>enlazador</b> junta los trozos compilados en un ejecutable; el <b>depurador</b> no traduce nada: sirve para encontrar errores.</div>
+ </div>
+
+ <div class="panel" id="u2-lista"><h2>3. Principales IDE</h2>
+  <div class="grid2">
+   <div><h3>Libres / gratuitos</h3><table class="tb"><tr><th>IDE</th><th>Lenguajes</th></tr>
+    <tr><td><b>Visual Studio Code</b></td><td>Muchos, mediante extensiones</td></tr><tr><td><b>Eclipse</b></td><td>Java, C/C++, Python, PHP, JS…</td></tr><tr><td><b>NetBeans</b> (Apache)</td><td>Java, C/C++, PHP, HTML5…</td></tr><tr><td><b>IntelliJ IDEA Community</b></td><td>Java, Kotlin, Groovy, Scala…</td></tr><tr><td><b>CodeLite</b></td><td>C/C++, PHP, Node.js</td></tr><tr><td><b>PyCharm Community</b></td><td>Python, HTML, CSS, JS</td></tr></table></div>
+   <div><h3>Propietarios (de pago)</h3><table class="tb"><tr><th>IDE</th><th>Lenguajes</th></tr>
+    <tr><td><b>IntelliJ IDEA Ultimate</b></td><td>Java, Kotlin, SQL, Ruby…</td></tr><tr><td><b>Microsoft Visual Studio</b></td><td>C++, C#, VB, .NET…</td></tr><tr><td><b>CLion</b></td><td>C, C++, Rust</td></tr><tr><td><b>PyCharm Professional</b></td><td>Python, web, SQL</td></tr><tr><td><b>C++ Builder</b></td><td>C++</td></tr><tr><td><b>Qt Creator</b></td><td>C++ con Qt</td></tr></table></div>
+  </div>
+  <p>Hoy el más usado en general es <b>VS Code</b>; para Java, <b>IntelliJ IDEA</b> es el preferido y <b>Eclipse</b> sigue fuerte en empresas; <b>Visual Studio</b> lidera en C#/.NET. <b>Android Studio</b> sustituyó en 2015 a Eclipse como IDE oficial de Android.</p>
+  <div class="warn"><b>Matiz:</b> IntelliJ Community, VS Code y NetBeans son de código abierto. JetBrains ha ido unificando sus ediciones en los últimos años, así que comprueba la edición disponible al instalar; para el examen vale la clasificación de los apuntes.</div>
+ </div>
+
+ <div class="panel" id="u2-java"><h2>4. Entorno Java: JDK, JRE y JVM</h2>
+  <div class="diabox"><svg class="dia" viewBox="0 0 640 230">
+   <rect x="10" y="10" width="620" height="210" rx="12" fill="#e9efff" stroke="#2f5bd3" stroke-width="2"/><text x="24" y="36" font-weight="700" font-size="16">JDK · Java Development Kit (para programar)</text>
+   <text x="24" y="58" font-size="12">javac (compilar) · jar (empaquetar) · javadoc (documentar) · jshell, jdb…</text>
+   <rect x="30" y="72" width="580" height="136" rx="10" fill="#e5f5ea" stroke="#1f8a4c" stroke-width="2"/><text x="44" y="96" font-weight="700" font-size="15">JRE · Java Runtime Environment (para ejecutar)</text>
+   <rect x="50" y="110" width="260" height="84" rx="8" fill="#fde68a" stroke="#b45309"/><text x="180" y="140" text-anchor="middle" font-weight="700">JVM</text><text x="180" y="160" text-anchor="middle" font-size="11">Máquina virtual: interpreta el bytecode</text><text x="180" y="176" text-anchor="middle" font-size="11">«escribe una vez, ejecuta en cualquier sitio»</text>
+   <rect x="330" y="110" width="260" height="84" rx="8" fill="#fff" stroke="#1d2433"/><text x="460" y="140" text-anchor="middle" font-weight="700">Biblioteca estándar</text><text x="460" y="160" text-anchor="middle" font-size="11">Clases ya hechas: ficheros, colecciones,</text><text x="460" y="176" text-anchor="middle" font-size="11">red, interfaces gráficas…</text>
+  </svg></div>
+  <div class="flow"><div class="st s1"><b>Hola.java</b>código fuente</div><div class="ar">→ <code>javac</code> →</div><div class="st s3"><b>Hola.class</b>bytecode</div><div class="ar">→ <code>java</code> (JVM) →</div><div class="st s4"><b>Ejecución</b>en Windows, Linux o macOS sin recompilar</div></div>
+  <div class="exam"><b>Resumen:</b> el <b>usuario</b> que solo ejecuta programas necesita el <b>JRE</b>; el <b>programador</b> necesita el <b>JDK</b> (que ya incluye el JRE). JDK ⊃ JRE ⊃ JVM.</div>
+ </div>
+
+ <div class="panel" id="u2-ecl"><h2>5. Eclipse IDE</h2>
+  <div class="grid2">
+   <div><p>Muy usado para Java, pero multilenguaje gracias a <b>plugins</b>. Muy personalizable.</p>
+    <table class="tb"><tr><th>Función</th><th>Cómo</th></tr>
+     <tr><td>Autocompletar</td><td><code>Ctrl</code> + <code>Espacio</code></td></tr><tr><td>Autocorrección</td><td>Subrayado rojo + sugerencias (<code>Ctrl</code> + <code>1</code>)</td></tr>
+     <tr><td>Refactorización</td><td>Renombrar o mover en todo el proyecto a la vez</td></tr><tr><td>Comparar archivos</td><td>Dos versiones en paralelo</td></tr><tr><td>Formatear código</td><td>Sangrías y colores configurables (<code>Ctrl</code> + <code>Mayús</code> + <code>F</code>)</td></tr></table></div>
+   <div><h3>Perspectivas y vistas</h3><p>Una <b>perspectiva</b> es una configuración de ventanas adaptada a una tarea (Java, Depuración, Git…). Se cambia en <b>Ventana › Perspectiva</b>.</p>
+    <ul><li><b>Zona de edición</b>: el código, con pestañas.</li><li><b>Vistas</b>: ventanas de apoyo (Explorador de paquetes, Consola, Problemas). <b>Ventana › Mostrar vista</b>.</li><li><b>Barra de herramientas</b>: crear, compilar, depurar, refactorizar…</li></ul>
+    <p><b>Actualizar</b>: Ayuda › Check for Updates. <b>Idioma</b>: paquete <b>Babel</b> desde Ayuda › Install New Software (repositorio de Babel).</p></div>
+  </div>
+ </div>
+
+ <div class="panel" id="u2-plug"><h2>6. Plugins en Eclipse (y en IntelliJ)</h2>
+  <div class="grid2">
+   <div><h3>Desde el Marketplace</h3><ol><li><b>Ayuda › Eclipse Marketplace</b>.</li><li>Buscar el plugin e instalar.</li><li>Reiniciar Eclipse.</li><li>Gestionar o desinstalar en la pestaña <b>Installed</b>.</li></ol>
+    <table class="tb"><tr><td><b>Enhanced Class Decompiler</b></td><td>Ver el código de un <code>.class</code> sin fuente. Asociarlo en Preferencias › General › Editores › Asociaciones de archivo › <i>*.class without source</i>.</td></tr>
+     <tr><td><b>JBC</b> (Java ByteCode)</td><td>Ver el bytecode: clic derecho › Open JBC.</td></tr>
+     <tr><td><b>ECalculator</b></td><td>Calculadora integrada (Práctica 2.3).</td></tr></table></div>
+   <div><h3>Manual (copiando el .jar)</h3><p>Ejemplo: <b>UMLet</b> (diagramas UML).</p>
+<pre><span class="o">$</span> cp com.umlet.plugin_15.0.0.jar ~/eclipse/java-2023-09/eclipse/<span class="k">dropins</span>/
+<span class="o">$</span> chmod +r ~/eclipse/java-2023-09/eclipse/dropins/com.umlet.plugin_15.0.0.jar
+<span class="c"># reiniciar Eclipse · comprobar en Help › About › Installation Details</span>
+<span class="c"># desinstalar = borrar el .jar</span></pre>
+    <h3>IntelliJ IDEA (Práctica 2.4)</h3><p><b>File › Settings › Plugins › Marketplace</b>, instalar (p. ej. <b>Rainbow Brackets</b>), reiniciar, configurar en Settings › Editor › Color Scheme y desinstalar en la pestaña <b>Installed</b>. IntelliJ <b>compila automáticamente</b> y se ejecuta con el botón ▶ junto al <code>main</code>.</p></div>
+  </div>
+ </div>
+
+ <div class="panel" id="u2-term"><h2>7. Crear, compilar y ejecutar desde la terminal</h2>
+<pre><span class="o">$</span> nano Hola.java
+<span class="k">public class</span> Hola {
+    <span class="k">public static void</span> main(String[] args) {
+        System.out.println(<span class="p">"Hola"</span>);
+    }
+}
+<span class="o">$</span> javac Hola.java     <span class="c"># compila → genera Hola.class (sin mensajes = todo bien)</span>
+<span class="o">$</span> java Hola           <span class="c"># ejecuta: se escribe el nombre de la CLASE, sin .class</span>
+Hola</pre>
+  <div class="key"><b>Preparar Java en Ubuntu</b> (Práctica 2.1):</div>
+<pre><span class="o">$</span> sudo apt update && sudo apt install openjdk-17-jdk
+<span class="o">$</span> java -version && javac -version
+<span class="o">$</span> sudo nano /etc/environment     <span class="c"># añadir la línea:</span>
+JAVA_HOME=<span class="p">"/usr/lib/jvm/java-17-openjdk-amd64"</span>
+<span class="o">$</span> source /etc/environment
+<span class="o">$</span> echo $JAVA_HOME && ls $JAVA_HOME   <span class="c"># comprobar que la carpeta EXISTE</span></pre>
+ </div>
+
+ <div class="panel" id="u2-sem"><h2>8. Proyecto con paquetes: el semáforo</h2>
+  <div class="grid2">
+   <div><p>Un profesor pregunta el color del semáforo; el estudiante consulta el ordenador y responde. Tres actores → tres clases (más <code>persona</code>, de la que heredan).</p>
+<pre>EDSemaforo/
+├── clases/                 <span class="c"># package clases;</span>
+│   ├── persona.java        <span class="c"># Edad, Nombre</span>
+│   ├── estudiante.java     <span class="c"># extends persona</span>
+│   ├── profesor.java       <span class="c"># extends persona</span>
+│   └── ordenador.java      <span class="c"># color() aleatorio</span>
+├── principal/
+│   └── clasecolor.java     <span class="c"># main · import clases.profesor;</span>
+└── META-INF/MANIFEST.MF</pre></div>
+   <div><div class="flow" style="flex-direction:column"><div class="st s1"><b>clasecolor.main()</b>crea un profesor y llama a <code>preguntacolor()</code></div><div class="st s2"><b>profesor.preguntacolor()</b>crea un estudiante y le pregunta</div><div class="st s3"><b>estudiante.preguntacolor()</b>se presenta y consulta el ordenador</div><div class="st s4"><b>ordenador.color()</b>devuelve «rojo», «amarillo» o «verde» al azar</div></div></div>
+  </div>
+  <ul><li><code>package</code> indica a qué paquete (carpeta) pertenece la clase; <code>import</code> permite usar clases de otro paquete.</li><li><code>extends</code> = herencia: estudiante y profesor heredan Edad y Nombre de persona.</li></ul>
+<pre><span class="o">~/eclipse-workspace/EDSemaforo$</span> javac clases/*.java                 <span class="c"># genera los .class de clases/</span>
+<span class="o">~/eclipse-workspace/EDSemaforo$</span> javac principal/clasecolor.java
+<span class="o">~/eclipse-workspace/EDSemaforo$</span> java principal.clasecolor          <span class="c"># paquete.Clase, con punto</span>
+Soy Luis Alumno de 1º y tengo una edad de: 25
+La respuesta recibida es:amarillo</pre>
+ </div>
+
+ <div class="panel" id="u2-jar"><h2>9. Empaquetar en un archivo .jar</h2>
+  <p>Un <b>.jar</b> (Java ARchive) reúne todos los <code>.class</code> y recursos en un único archivo comprimido, fácil de distribuir.</p>
+<pre><span class="o">$</span> mkdir -p META-INF
+<span class="o">$</span> printf <span class="p">'Main-Class: principal.clasecolor\n'</span> > META-INF/MANIFEST.MF   <span class="c"># ¡con salto de línea final!</span>
+<span class="o">$</span> jar cmf META-INF/MANIFEST.MF semaforo.jar clases/*.class principal/*.class
+<span class="o">$</span> java -jar semaforo.jar    <span class="c"># ejecutar</span>
+<span class="o">$</span> jar tf semaforo.jar        <span class="c"># ver contenido sin descomprimir</span>
+<span class="o">$</span> jar xf semaforo.jar        <span class="c"># descomprimir (mejor en otra carpeta)</span></pre>
+  <table class="tb"><tr><th>Opción de <code>jar</code></th><th>Significa</th></tr><tr><td><code>c</code></td><td><b>c</b>rear un archivo</td></tr><tr><td><code>m</code></td><td>incluir el <b>m</b>anifiesto indicado</td></tr><tr><td><code>f</code></td><td>el nombre del archivo (<b>f</b>ile) va a continuación</td></tr><tr><td><code>t</code></td><td>lis<b>t</b>ar el contenido</td></tr><tr><td><code>x</code></td><td>e<b>x</b>traer</td></tr></table>
+  <h3>Script para automatizar</h3>
+<pre><span class="o">$</span> cat compilar.sh
+<span class="k">#!/bin/bash</span>
+javac clases/*.java principal/clasecolor.java
+jar cmf META-INF/MANIFEST.MF semaforo.jar clases/*.class principal/*.class
+<span class="o">$</span> chmod +x compilar.sh && ./compilar.sh</pre>
+ </div>
+
+ <div class="panel" id="u2-err"><h2>10. Erratas de las diapositivas (para que no te confundan)</h2>
+  <div class="bad"><b>Script <code>compilar.sh</code>:</b> las diapositivas escriben <code>META-INF/MANIFEST.mf</code> (en minúsculas), pero el archivo se creó como <code>MANIFEST.MF</code>. En Linux las mayúsculas importan, así que el script fallaría con «No such file». Usa siempre <code>MANIFEST.MF</code> y añade la primera línea <code>#!/bin/bash</code>.</div>
+  <div class="bad"><b>Carpeta de plugins:</b> la diapositiva dice «dropings»; la carpeta real de Eclipse se llama <code>dropins</code>.</div>
+  <div class="warn"><b>Nombres de clases:</b> en el ejemplo las clases van en minúsculas (<code>clasecolor</code>, <code>ordenador</code>). Funciona, pero la convención de Java es <b>PascalCase</b> para clases (<code>ClaseColor</code>, <code>Ordenador</code>) y camelCase para variables (<code>edad</code>, no <code>Edad</code>). En tus programas usa la convención.</div>
+  <div class="warn"><b>«Interpretador»:</b> en español lo correcto es <b>intérprete</b>.</div>
+ </div>`;
+}
+
+// =====================================================================
+//  EJERCICIOS RESUELTOS
+// =====================================================================
+const E12 = [
+ ["alf alfa1;", "ok", "Declaración correcta de una variable alfanumérica."],
+ ["int ent1;", "ok", "Declaración correcta."],
+ ["int ent2;", "ok", "Declaración correcta."],
+ ["int ent3", "sin", "Falta el <code>;</code> final: la instrucción no sigue la gramática."],
+ ["ent ent4;", "lex", "<code>ent</code> no es una palabra reservada (el tipo es <code>int</code>) ni una variable: es un símbolo desconocido. Como consecuencia, <code>ent4</code> no queda declarada."],
+ ["ent1 = 3;", "ok", "Asignación correcta de un entero."],
+ ["ent2 = 2;", "ok", "Correcta."],
+ ["ent3 = 5;", "ok", "Correcta (ent3 se considera declarada en la línea 4, aunque a esa línea le faltara el <code>;</code>)."],
+ ["ent3 = ent1 + alfa1;", "sem", "Suma de un entero con un alfanumérico: los tipos no son compatibles."],
+ ["ent4 = ent1 + ent2 + ent3;", "sem", "<code>ent4</code> no está declarada (la línea 5 falló). La suma de tres valores es una expresión válida que da un entero."],
+ ["ent5 = ent1 + ent2;", "sem", "<code>ent5</code> no se ha declarado nunca."],
+ ["alfa1 = 5;", "sem", "Se asigna un número a una variable alfanumérica: tipos incompatibles (habría que usar <code>alfa1 &lt;= ent</code> o una cadena entre comillas)."],
+ ["impr(alfa1);", "ok", "Correcta: los espacios no cuentan."],
+ ["impr (ent4);", "sem", "<code>impr</code> solo admite alfanuméricos y además <code>ent4</code> no está declarada."],
+ ["alfa1 <= ent3;", "ok", "Conversión de entero a alfanumérico: correcta."],
+ ["impr (alfa1);", "ok", "Correcta."],
+ ["impr (tierra);", "sem", "<code>tierra</code> no es una variable declarada (y tampoco es una cadena, porque no lleva comillas)."]
+];
+const E13 = [
+ ["Se podrán consultar los usuarios.", "F", "Es una función que el sistema hace."],
+ ["El coordinador deberá dar de alta a los usuarios manualmente.", "F", "Describe una operación del sistema (alta de usuarios)."],
+ ["Trimestralmente, se revisará el software para evaluar la necesidad de evoluciones.", "NF", "Es una condición del proceso de mantenimiento, no una función del programa."],
+ ["Cuando se elimine un usuario, también se deberá eliminar su histórico.", "F", "Comportamiento del sistema ante una acción."],
+ ["Será necesario que las máquinas cuenten con 16 GB de RAM.", "NF", "Requisito de hardware."],
+ ["El máximo de usuarios será de 100.", "NF", "Capacidad / rendimiento."],
+ ["La lectura de los productos se realizará mediante códigos de barras.", "F", "Cómo recibe el sistema la entrada de datos (función de lectura de productos)."],
+ ["La empresa deberá hacer sus desarrollos conforme a algún tipo de certificación.", "NF", "Calidad del proceso / normativa."],
+ ["Se detallarán las facturas de compra y sus formatos.", "F", "El sistema genera facturas con un contenido concreto."],
+ ["Si los trabajadores trabajan a comisión, se tendrá que gestionar la información de las ventas.", "F", "Función de gestión de ventas."],
+ ["La venta online deberá garantizar un servicio ininterrumpido (24/7).", "NF", "Disponibilidad."],
+ ["El sistema deberá controlar el stock en almacén.", "F", "Función de gestión de inventario."],
+ ["La interfaz debe ser fácil de usar para usuarios con pocos conocimientos.", "NF", "Usabilidad."],
+ ["Los PCs suministrados deberán ser de color azul, acorde al color corporativo.", "NF", "Restricción física / estética, no una función."],
+ ["Los materiales entregables deberán cumplir la normativa europea del comercio.", "NF", "Legislación."]
+];
+function renderEj() {
+ $("v-ej").innerHTML = `
+ <div class="panel"><h2>Ejercicio 1.1 · Métricas de calidad, productividad y coste</h2>
+  <div class="grid2">
+   <div><h3>Proyecto 1 (KLDC)</h3><p class="muted">Inversión 20 000 €, 800 KLDC, 10 personas-mes, 23 errores.</p>
+    <table class="tb"><tr><th>Métrica</th><th>Cálculo</th><th>Resultado</th></tr>
+     <tr><td>Calidad</td><td>23 / 800</td><td><b>0,02875 errores/KLDC</b> (≈ 0,029)</td></tr>
+     <tr><td>Productividad</td><td>800 / 10</td><td><b>80 KLDC/persona-mes</b></td></tr>
+     <tr><td>Coste</td><td>20 000 / 800</td><td><b>25 €/KLDC</b></td></tr></table></div>
+   <div><h3>Proyecto 2 (puntos de función)</h3><p class="muted">200 PF, 120 personas-mes, 12 000 €, 50 errores.</p>
+    <table class="tb"><tr><th>Métrica</th><th>Cálculo</th><th>Resultado</th></tr>
+     <tr><td>Calidad</td><td>50 / 200</td><td><b>0,25 errores/PF</b></td></tr>
+     <tr><td>Productividad</td><td>200 / 120</td><td><b>1,67 PF/persona-mes</b></td></tr>
+     <tr><td>Coste</td><td>12 000 / 200</td><td><b>60 €/PF</b></td></tr></table></div>
+  </div>
+  <h3>Calculadora (pruébala con otros datos)</h3>
+  <div class="in"><label>Medida<select id="m-t"><option value="KLDC">KLDC</option><option value="PF">Puntos de función</option></select></label><label>Tamaño<input id="m-s" value="800"></label><label>Errores<input id="m-e" value="23"></label><label>Personas-mes<input id="m-p" value="10"></label><label>Coste (€)<input id="m-c" value="20000"></label></div>
+  <div class="res" id="m-out"></div>
+ </div>
+
+ <div class="panel"><h2>Ejercicio 1.2 · Actividad de compilación</h2>
+  <p class="lead">Lenguaje del enunciado: <code>int</code> y <code>alf</code> declaran variables · <code>=</code> asigna (número, cadena entre comillas o expresión) · <code>+</code> y <code>-</code> entre enteros · <code>alf &lt;= ent</code> convierte · <code>impr(alfa)</code> imprime un alfanumérico · toda instrucción termina en <code>;</code> y empieza por una palabra reservada o una variable ya definida.</p>
+  <p class="muted">Primero marca tú el tipo de error de cada línea y después pulsa «Corregir».</p>
+  <div class="tscroll"><table class="tb cmp" id="e12"><tr><th>#</th><th>Código</th><th>Tu respuesta</th><th class="sol-h">Solución</th></tr>
+   ${E12.map((r, i) => `<tr data-i="${i}"><td>${i + 1}</td><td class="code">${esc(r[0])}</td><td><div class="chk">${[["ok", "Sin error"], ["lex", "Léxico"], ["sin", "Sintáctico"], ["sem", "Semántico"]].map(([k, n]) => `<button data-k="${k}">${n}</button>`).join("")}</div></td><td class="sol" data-sol></td></tr>`).join("")}</table></div>
+  <div class="row"><button class="primary" id="e12-chk">Corregir</button><button id="e12-sol">Ver solución</button><button id="e12-reset">Borrar</button><span id="e12-score" class="score" hidden></span></div>
+  <div class="warn"><b>Casos discutibles:</b> la línea 5 también se puede considerar <b>sintáctica</b> si tu profesor entiende que <code>ent</code> es un identificador válido mal colocado. Y las líneas que usan variables no declaradas (10, 11, 14, 17) son <b>semánticas</b> en la teoría de compiladores, aunque el enunciado diga que «las instrucciones siempre inician con una variable ya definida». En el examen, <b>justifica</b> siempre tu elección en una línea.</div>
+ </div>
+
+ <div class="panel"><h2>Ejercicio 1.3 · ¿Requisito funcional o no funcional?</h2>
+  <div class="key"><b>Pregunta para decidir:</b> ¿describe algo que el sistema <b>hace</b> (una acción, un cálculo, una respuesta a una entrada)? → <b>funcional</b>. ¿Describe <b>cómo debe ser</b> o <b>en qué condiciones</b> (rendimiento, capacidad, hardware, normas, usabilidad, disponibilidad, aspecto)? → <b>no funcional</b>.</div>
+  <div class="tscroll"><table class="tb cmp" id="e13"><tr><th>Requisito</th><th>Tu respuesta</th><th>Solución</th></tr>
+   ${E13.map((r, i) => `<tr data-i="${i}"><td>${esc(r[0])}</td><td><div class="chk"><button data-k="F">Funcional</button><button data-k="NF">No funcional</button></div></td><td class="sol" data-sol></td></tr>`).join("")}</table></div>
+  <div class="row"><button class="primary" id="e13-chk">Corregir</button><button id="e13-sol">Ver solución</button><button id="e13-reset">Borrar</button><span id="e13-score" class="score" hidden></span></div>
+  <p class="muted">Casos que suelen dudarse: «códigos de barras» (funcional: es la forma de introducir productos; algunos lo ven como restricción de interfaz) y «revisión trimestral» (no funcional: es del proceso, no del programa).</p>
+ </div>`;
+ // métricas
+ const met = () => {
+  const t = $("m-t").value, s = +$("m-s").value.replace(",", "."), e = +$("m-e").value.replace(",", "."), p = +$("m-p").value.replace(",", "."), c = +$("m-c").value.replace(",", ".");
+  const f = v => isFinite(v) ? (+v.toFixed(4)).toLocaleString("es-ES") : "—";
+  $("m-out").innerHTML = `<div><b>Calidad</b><span>${f(e / s)}</span><small class="muted" style="display:block">errores/${t} = ${e} / ${s}</small></div><div><b>Productividad</b><span>${f(s / p)}</span><small class="muted" style="display:block">${t}/persona-mes = ${s} / ${p}</small></div><div><b>Coste</b><span>${f(c / s)} €</span><small class="muted" style="display:block">€/${t} = ${c} / ${s}</small></div>`;
+ };
+ ["m-t", "m-s", "m-e", "m-p", "m-c"].forEach(id => $(id).addEventListener("input", met)); met();
+ // tablas de práctica
+ const NAMES = { ok: "Sin error", lex: "Léxico", sin: "Sintáctico", sem: "Semántico", F: "Funcional", NF: "No funcional" };
+ const setup = (tid, data, ansIdx, whyIdx) => {
+  const ans = {};
+  document.querySelectorAll(`#${tid} tr[data-i]`).forEach(tr => tr.querySelectorAll(".chk button").forEach(b => b.onclick = () => { ans[tr.dataset.i] = b.dataset.k; tr.querySelectorAll(".chk button").forEach(x => x.classList.toggle("sel", x === b)); tr.classList.remove("ok", "ko"); }));
+  const show = (grade) => {
+   let ok = 0;
+   document.querySelectorAll(`#${tid} tr[data-i]`).forEach(tr => {
+    const i = +tr.dataset.i, d = data[i];
+    tr.querySelector("[data-sol]").innerHTML = `<b>${NAMES[d[ansIdx]]}</b> · ${d[whyIdx]}`;
+    if (grade) { const good = ans[i] === d[ansIdx]; good && ok++; tr.classList.toggle("ok", good); tr.classList.toggle("ko", !good); }
+   });
+   if (grade) { $(tid + "-score").hidden = false; $(tid + "-score").textContent = `${ok} / ${data.length}`; }
+  };
+  $(tid + "-chk").onclick = () => show(true);
+  $(tid + "-sol").onclick = () => show(false);
+  $(tid + "-reset").onclick = () => { Object.keys(ans).forEach(k => delete ans[k]); document.querySelectorAll(`#${tid} tr[data-i]`).forEach(tr => { tr.classList.remove("ok", "ko"); tr.querySelector("[data-sol]").innerHTML = ""; tr.querySelectorAll("button").forEach(b => b.classList.remove("sel")); }); $(tid + "-score").hidden = true; };
+ };
+ setup("e12", E12, 1, 2); setup("e13", E13, 1, 2);
+}
+
+// =====================================================================
+//  REVISIÓN DE TUS PRÁCTICAS
+// =====================================================================
+const REV = [
+ { t: "Práctica 1.1 · Desarrollo de software (tienda de videojuegos)", v: "Muy buena", items: [
+  ["✅", "Requisitos bien separados en <b>funcionales</b> y <b>no funcionales</b>, y cada no funcional etiquetado con su atributo de calidad (eficiencia, fiabilidad)."],
+  ["✅", "Elección del modelo <b>bien justificada</b>: cascada con retroalimentación, y además explicas por qué descartas el incremental y la espiral. Es exactamente lo que se pide."],
+  ["✅", "Tabla de herramientas completa y coherente con el requisito de software libre (OpenJDK, PostgreSQL, Maven, Git, JUnit, jPOS)."],
+  ["⚠️", "En <b>Mantenimiento</b> nombras el correctivo, el evolutivo y el adaptativo, pero falta el <b>perfectivo</b> (los apuntes enumeran los cuatro)."],
+  ["⚠️", "«La JVM … <i>genera el código ejecutable</i>» es impreciso: la JVM <b>interpreta</b> el bytecode (y lo compila al vuelo con JIT); no genera un archivo ejecutable. Mejor: «interpreta y ejecuta el bytecode en cada equipo»."],
+  ["⚠️", "La fase de análisis menciona el Gantt, pero no das ninguna estimación de tiempos. Una tabla breve de semanas por fase reforzaría la planificación."],
+  ["✏️", "Erratas: «almacén <b>cen</b> tiempo real» → «en tiempo real»; «IntelliJ community edition · <b>Gratuitos</b>» → «Gratuito»; escribe «Community Edition» con mayúsculas."]
+ ] },
+ { t: "Práctica 2.0 · Instalación y personalización de la MV", v: "Revisar", items: [
+  ["❌", "<b>La red está en «Adaptador puente» (Bridged)</b>, pero el enunciado pide <b>NAT</b> («Captura de la configuración de la MV (modo NAT incluido)»). Se ve en la ficha de VirtualBox: <i>Adapter 1: Bridged Adapter</i>. Cámbialo en Configuración › Red › Conectado a: <b>NAT</b> y repite la captura."],
+  ["⚠️", "El enunciado pide el usuario <code>nombre.apellido</code> (con <b>punto</b>: <code>elaine.parra</code>) y tú creaste <code>elaine-parra</code> (con guion). El hostname con guion sí es correcto."],
+  ["⚠️", "La captura final muestra <code>elaine-parra@elaine-parra:/home/elaine$</code>: estás en la carpeta del usuario <code>elaine</code>, señal de que cambiaste con <code>su</code> en lugar de <b>iniciar sesión</b> con el usuario nuevo, que es lo que pide el paso 3. Cierra sesión, entra como el usuario nuevo y la captura mostrará <code>~$</code>."],
+  ["⚠️", "En <code>adduser</code> las contraseñas no coincidieron tres veces; no es un error de la práctica, pero queda feo en la captura. Mejor repetir la captura limpia."],
+  ["✅", "RAM 4 GB, 4 procesadores, disco VDI de 25 GB (≥ 20 GB), ping a 8.8.8.8 correcto y hostname cambiado."]
+ ] },
+ { t: "Práctica 2.1 · Instalación de Eclipse en Ubuntu", v: "Revisar", items: [
+  ["❌", `<b>JAVA_HOME está mal escrito</b>: <code>echo $JAVA_HOME</code> devuelve <code>/usr/lib/jvm/java-17-open<b>jsk</b>-amd64</code> (con «jsk» en vez de «jdk»). Esa carpeta no existe. Eclipse funcionó porque el instalador encontró Java por su cuenta, pero cualquier herramienta que use JAVA_HOME (Maven, Gradle) fallará. Corrígelo así:<pre><span class="o">$</span> sudo nano /etc/environment   <span class="c"># JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"</span>
+<span class="o">$</span> source /etc/environment && echo $JAVA_HOME && ls $JAVA_HOME</pre>`],
+  ["⚠️", "Toda la práctica está hecha con el usuario <code>elaine@elaine</code> y no con el usuario personalizado de la Práctica 2.0 (<code>elaine-parra@elaine-parra</code>). La 2.0 dice que esa personalización sirve para <b>validar la autoría</b> de las prácticas siguientes; hazlas con ese usuario."],
+  ["⚠️", "Los dos primeros <code>wget</code> fallaron por una URL mal escrita (<code>ftp-yz-yamagata-uc</code>, <code>yamagata-uc</code>). Al final lo resolviste; si repites la captura, deja solo la descarga correcta."],
+  ["✅", "OpenJDK 17 instalado, instalador descomprimido, Eclipse IDE for Java Developers instalado y arrancado con su workspace."]
+ ] },
+ { t: "Práctica 2.3 · Uso de Eclipse IDE (Calculadora + ECalculator)", v: "Casi completa", items: [
+  ["✅", "Proyecto <b>Calculadora</b> creado, clase con <code>import java.util.Scanner</code> y ejecución correcta (2 + 5 = 7) en la consola."],
+  ["✅", "Plugin <b>ECalculator</b> localizado en el Marketplace."],
+  ["⚠️", "En el PDF no aparecen las evidencias de los pasos finales del enunciado: la <b>vista del plugin</b> añadida a la perspectiva, la <b>comparación</b> del resultado con ECalculator, la <b>búsqueda de actualizaciones</b> y la <b>desinstalación</b> del plugin. Si los hiciste, añade una captura de cada uno: la rúbrica los puntúa."],
+  ["✏️", "Mejora opcional: el <code>Scanner</code> no se cierra y Eclipse muestra el aviso <i>Resource leak</i>. Añade <code>miScan.close();</code> al final del <code>main</code> para dejar el proyecto sin avisos (la rúbrica valora «proyecto creado sin errores»)."]
+ ] },
+ { t: "Práctica 2.4 · Primeros pasos con IntelliJ IDEA y plugins", v: "Revisar", items: [
+  ["❌", "El enunciado pide hacerla en una <b>máquina virtual con Windows</b> («Asegúrate de que tu máquina virtual con Windows tenga instalado el JDK e IntelliJ IDEA Community»). Las capturas son de tu <b>Ubuntu</b> (equipo propio, con tus proyectos personales visibles en la lista). Hazla en la MV de Windows con el equipo y usuario personalizados (nombre del equipo <code>ELAINE-PARRA</code>)."],
+  ["⚠️", "El título del PDF que tenías abierto dice «Práctica 2.3 – Uso de IntelliJ IDEA», pero la práctica es la <b>2.4</b>. Revisa también el nombre del archivo que entregas (<code>…Practica_2.4-2.pdf</code>)."],
+  ["⚠️", "En la pantalla de inicio de IntelliJ se ven <b>tus proyectos personales</b> (order-management, iot-ccvt-platform…). No es un error, pero en una entrega conviene una instalación limpia o cerrar la lista de proyectos."],
+  ["⚠️", "El paso 6 pide <b>documentar brevemente qué cambios propone la actualización</b>. Tu captura solo muestra «All plugins are up to date… IntelliJ IDEA updates are managed by Snap». Añade una línea explicándolo y, si quieres, la actualización por terminal: <code>sudo snap refresh intellij-idea-community</code> (o <code>snap refresh --list</code> para ver si hay versiones nuevas)."],
+  ["✅", "Proyecto CalculadoraIntelliJ con JDK 17 (Temurin) y código correcto, plugin <b>Rainbow Brackets</b> instalado, configurado en Color Scheme y desinstalado desde la pestaña Installed."]
+ ] }
+];
+function renderRev() {
+ $("v-rev").innerHTML = `<div class="panel"><h2>Revisión de tus prácticas</h2><p class="lead">He leído tus entregas (las de la UT2 son capturas: las he revisado imagen a imagen) y las he comparado con lo que pide cada enunciado. ❌ = no cumple lo pedido · ⚠️ = mejorable · ✏️ = forma · ✅ = bien.</p>
+  <div class="key"><b>Lo más urgente:</b> (1) red en <b>NAT</b> en la MV (P2.0), (2) <b>JAVA_HOME</b> mal escrito (P2.1) y (3) hacer la P2.4 en la <b>MV de Windows</b> y las prácticas con tu <b>usuario personalizado</b>. Son los fallos que más pueden restar, porque el profesor los comprueba en las capturas.</div></div>` +
+  REV.map(r => `<div class="panel"><div class="row sb"><h2>${r.t}</h2><span class="score">${r.v}</span></div><div class="rev">${r.items.map(([i, t]) => `<div class="it"><span class="ic">${i}</span><div>${t}</div></div>`).join("")}</div></div>`).join("");
+}
+
+// =====================================================================
+//  FLASHCARDS
+// =====================================================================
+const CARDS = [
+ ["UT1", "¿Qué es el software?", "El conjunto de componentes lógicos que hacen posible realizar tareas específicas en un sistema informático."],
+ ["UT1", "¿Qué es un programa?", "Un conjunto de instrucciones en un lenguaje de programación que dicen a la máquina qué operaciones ejecutar sobre unos datos."],
+ ["UT1", "Tipos de software según su uso", "De sistemas, de aplicación, de ingeniería/ciencias, embebido y otros (línea de producto, web/nube, IA)."],
+ ["UT1", "Shareware, freeware y adware", "Shareware: prueba por tiempo. Freeware: gratis con restricciones. Adware: gratis con publicidad."],
+ ["UT1", "Las 4 libertades del software libre", "Usar, estudiar y adaptar, distribuir, y mejorar y publicar las mejoras."],
+ ["UT1", "¿Qué es el software de dominio público?", "El que no tiene derechos de autor, por renuncia del autor o por caducidad."],
+ ["UT1", "Fórmula de la calidad (KLDC)", "Errores / KLDC."],
+ ["UT1", "Fórmula de la productividad (KLDC)", "KLDC / personas-mes."],
+ ["UT1", "Fórmula del coste (PF)", "Euros / puntos de función."],
+ ["UT1", "8 indicadores de calidad del software", "Corrección, fiabilidad, eficiencia, seguridad, usabilidad, mantenibilidad, portabilidad e interoperabilidad."],
+ ["UT1", "¿Qué guarda el contador de programa (PC)?", "La dirección de la siguiente instrucción que se va a ejecutar."],
+ ["UT1", "¿Qué guarda el registro de instrucción (IR)?", "La instrucción que se está ejecutando en ese momento."],
+ ["UT1", "MAR frente a MBR", "MAR: la dirección de memoria a la que se accede. MBR: el dato leído o que se va a escribir."],
+ ["UT1", "Código fuente, objeto y ejecutable", "Fuente: texto legible (.java). Objeto: binario intermedio no ejecutable (.class). Ejecutable: código máquina listo para la CPU."],
+ ["UT1", "Imperativo frente a declarativo", "Imperativo: cómo, paso a paso (C, Java). Declarativo: qué se quiere (SQL, Prolog)."],
+ ["UT1", "Las 3 estructuras de la programación estructurada", "Secuencial, selectiva y repetitiva."],
+ ["UT1", "Clase, objeto, atributo y método", "Clase: molde. Objeto: ejemplar. Atributo: dato. Método: acción. Se comunican por mensajes."],
+ ["UT1", "Las 3 fases de análisis de la compilación", "Léxico (tokens), sintáctico (gramática, árbol sintáctico) y semántico (significado y tipos)."],
+ ["UT1", "¿Qué error es «int x = \"hola\";»?", "Semántico: tipos incompatibles."],
+ ["UT1", "¿Qué error es olvidar el punto y coma?", "Sintáctico."],
+ ["UT1", "Las fases del ciclo de vida", "Análisis, diseño, codificación, pruebas y mantenimiento."],
+ ["UT1", "¿Qué documento sale del análisis?", "La ERS: especificación de requisitos software."],
+ ["UT1", "¿Qué sale de la fase de diseño?", "El documento de diseño y el plan de pruebas."],
+ ["UT1", "Pruebas unitarias frente a de integración", "Unitarias: cada parte por separado (JUnit). Integración: todas las partes juntas."],
+ ["UT1", "Los 4 tipos de mantenimiento", "Correctivo, perfectivo, evolutivo y adaptativo."],
+ ["UT1", "Requisito funcional frente a no funcional", "Funcional: lo que el sistema hace. No funcional: cómo es o en qué condiciones (rendimiento, seguridad, normas…)."],
+ ["UT1", "Ventaja e inconveniente del modelo en cascada", "Fácil de planificar; inflexible ante cambios."],
+ ["UT1", "Verificación frente a validación (modelo en V)", "Verificación: cumple el diseño. Validación: satisface al cliente."],
+ ["UT1", "Los 4 cuadrantes del modelo en espiral", "Objetivos, análisis de riesgos, desarrollo y planificación."],
+ ["UT1", "Los 4 valores de XP", "Sencillez, comunicación, retroalimentación y valentía."],
+ ["UT1", "U-CASE, M-CASE y L-CASE", "U: planificación y análisis. M: análisis detallado y diseño. L: codificación, pruebas y documentación."],
+ ["Ágil", "Los 4 valores del Manifiesto Ágil", "Individuos e interacciones, software funcionando, colaboración con el cliente y respuesta al cambio."],
+ ["Ágil", "Roles de Scrum", "Product Owner, Scrum Master y equipo de desarrollo."],
+ ["Ágil", "Artefactos de Scrum", "Product Backlog, Sprint Backlog e Incremento."],
+ ["Ágil", "Eventos de Scrum", "Sprint, Sprint Planning, Daily Scrum, Sprint Review y Retrospectiva."],
+ ["Ágil", "¿Qué es el límite WIP en Kanban?", "El número máximo de tareas en curso por columna."],
+ ["Ágil", "Diferencia principal entre Scrum y Kanban", "Scrum trabaja en sprints de duración fija; Kanban en flujo continuo."],
+ ["UT2", "¿Qué es un IDE?", "Un entorno que integra en una interfaz las herramientas para escribir, probar y depurar software."],
+ ["UT2", "¿Qué hace el enlazador (linker)?", "Une los archivos objeto y las bibliotecas en el ejecutable final (C/C++)."],
+ ["UT2", "¿Para qué sirve el depurador?", "Para ejecutar paso a paso, ver variables y localizar la línea del fallo."],
+ ["UT2", "JDK frente a JRE", "JRE: para ejecutar (JVM + biblioteca estándar). JDK: para desarrollar (JRE + javac, jar, javadoc)."],
+ ["UT2", "¿Qué hace la JVM?", "Interpreta el bytecode y permite ejecutar el mismo programa en cualquier sistema operativo."],
+ ["UT2", "¿Qué hacen javac, jar y javadoc?", "javac compila a bytecode, jar empaqueta y javadoc genera documentación."],
+ ["UT2", "¿Qué es una perspectiva en Eclipse?", "Una configuración de ventanas y vistas adaptada a una tarea (Java, depuración…)."],
+ ["UT2", "Atajo de autocompletar en Eclipse", "Ctrl + Espacio."],
+ ["UT2", "¿Dónde se instalan los plugins en Eclipse?", "En Ayuda › Eclipse Marketplace (o copiando el .jar en la carpeta dropins)."],
+ ["UT2", "¿Cómo se cambia el idioma de Eclipse?", "Instalando el paquete Babel desde Ayuda › Install New Software."],
+ ["UT2", "Comando para compilar y ejecutar Hola.java", "javac Hola.java y después java Hola."],
+ ["UT2", "¿Cómo se ejecuta una clase dentro de un paquete?", "java paquete.Clase (por ejemplo, java principal.clasecolor)."],
+ ["UT2", "¿Qué indica el MANIFEST.MF?", "La clase principal del .jar: Main-Class: paquete.Clase."],
+ ["UT2", "Crear y ejecutar un .jar", "jar cmf META-INF/MANIFEST.MF app.jar … y después java -jar app.jar."],
+ ["UT2", "Ver y extraer el contenido de un .jar", "jar tf app.jar (ver) y jar xf app.jar (extraer)."]
+];
+let FC = null;
+function renderFC() {
+ const cats = [...new Set(CARDS.map(c => c[0]))];
+ $("v-fc").innerHTML = `<div class="panel"><div class="row sb"><h2>Flashcards</h2><div class="row"><select id="fc-cat"><option value="all">Todas (${CARDS.length})</option>${cats.map(c => `<option>${c}</option>`).join("")}</select><button id="fc-sh">Barajar</button></div></div>
+  <p class="lead">Pulsa la tarjeta (o la barra espaciadora) para darle la vuelta; flechas para avanzar.</p>
+  <div class="track"><div class="bar" id="fc-bar"></div></div><div class="row sb"><span class="muted" id="fc-n"></span><span class="muted" id="fc-known"></span></div>
+  <div class="fc-wrap"><div class="fc" id="fc"><div class="front"><span class="cat" id="fc-c1"></span><div id="fc-q"></div></div><div class="back"><span class="cat" id="fc-c2"></span><div id="fc-a"></div></div></div></div>
+  <div class="row" style="justify-content:center"><button id="fc-prev">← Anterior</button><button id="fc-know">✓ La sé</button><button id="fc-next" class="primary">Siguiente →</button></div></div>`;
+ const known = new Set(store("ed-known") || []);
+ const load = () => { const c = $("fc-cat").value; FC = { list: CARDS.map((x, i) => i).filter(i => c === "all" || CARDS[i][0] === c), k: 0 }; draw(); };
+ const draw = () => {
+  const i = FC.list[FC.k], c = CARDS[i];
+  $("fc").classList.remove("flip");
+  setTimeout(() => { $("fc-q").textContent = c[1]; $("fc-a").textContent = c[2]; }, 120);
+  $("fc-c1").textContent = $("fc-c2").textContent = c[0];
+  $("fc-n").textContent = `Tarjeta ${FC.k + 1} de ${FC.list.length}`;
+  $("fc-bar").style.width = ((FC.k + 1) / FC.list.length * 100) + "%";
+  $("fc-known").textContent = `Sabidas: ${FC.list.filter(x => known.has(x)).length}/${FC.list.length}`;
+  $("fc-know").textContent = known.has(i) ? "↺ Repasar" : "✓ La sé";
+ };
+ $("fc").onclick = () => $("fc").classList.toggle("flip");
+ $("fc-next").onclick = () => { FC.k = (FC.k + 1) % FC.list.length; draw(); };
+ $("fc-prev").onclick = () => { FC.k = (FC.k - 1 + FC.list.length) % FC.list.length; draw(); };
+ $("fc-know").onclick = () => { const i = FC.list[FC.k]; known.has(i) ? known.delete(i) : known.add(i); store("ed-known", [...known]); draw(); };
+ $("fc-sh").onclick = () => { FC.list = shuffle(FC.list); FC.k = 0; draw(); };
+ $("fc-cat").onchange = load;
+ document.addEventListener("keydown", e => {
+  if ($("v-fc").hidden || ["INPUT", "SELECT"].includes(e.target.tagName)) return;
+  if (e.key === " ") { e.preventDefault(); $("fc").classList.toggle("flip"); }
+  if (e.key === "ArrowRight") $("fc-next").click();
+  if (e.key === "ArrowLeft") $("fc-prev").click();
+ });
+ load();
+}
+
+// =====================================================================
+//  TEST
+// =====================================================================
+const QUIZ = [
+ ["UT1", "Un programa gratuito que no permite modificar su código es…", ["Freeware", "Software libre", "Shareware", "De dominio público"], 0, "Freeware = gratis pero normalmente cerrado."],
+ ["UT1", "Un programa que puedes usar 30 días y después debes pagar es…", ["Shareware", "Freeware", "Adware", "Libre"], 0, "Periodo de prueba."],
+ ["UT1", "¿Cuál NO es una de las 4 libertades del software libre?", ["Usarlo sin pagar nunca", "Estudiar el código", "Distribuir copias", "Publicar mejoras"], 0, "Libre no significa gratis: puede venderse."],
+ ["UT1", "Un sistema de 500 KLDC con 10 errores tiene una calidad de…", ["0,02 errores/KLDC", "50 errores/KLDC", "5 000", "0,5"], 0, "10 / 500 = 0,02."],
+ ["UT1", "200 PF desarrollados por 50 personas-mes dan una productividad de…", ["4 PF/persona-mes", "0,25", "10 000", "250"], 0, "200 / 50 = 4."],
+ ["UT1", "¿Qué registro contiene la dirección de la siguiente instrucción?", ["PC", "IR", "MBR", "ALU"], 0, "Contador de programa."],
+ ["UT1", "¿Qué registro contiene el dato leído de memoria?", ["MBR", "MAR", "PC", "IR"], 0, "MAR = dirección; MBR = dato."],
+ ["UT1", "En Java, el código objeto se llama…", ["Bytecode (.class)", "Ensamblador", "Código fuente", "Ejecutable .exe"], 0, "javac genera .class."],
+ ["UT1", "SQL es un lenguaje…", ["Declarativo", "Imperativo", "Ensamblador", "Máquina"], 0, "Dice qué se quiere, no cómo."],
+ ["UT1", "La programación estructurada usa…", ["Secuencia, selección y repetición", "Clases y objetos", "Herencia y polimorfismo", "Solo saltos goto"], 0, "Las 3 estructuras de control."],
+ ["UT1", "Escribir «x = 5 # 3» donde # no existe en el lenguaje es un error…", ["Léxico", "Sintáctico", "Semántico", "De ejecución"], 0, "Símbolo no reconocido."],
+ ["UT1", "Sumar un número y una cadena donde no está permitido es un error…", ["Semántico", "Léxico", "Sintáctico", "De enlazado"], 0, "Los tipos no son compatibles."],
+ ["UT1", "¿En qué fase de la compilación se construye el árbol sintáctico?", ["Análisis sintáctico", "Análisis léxico", "Análisis semántico", "Enlazado"], 0, "El sintáctico revisa la gramática."],
+ ["UT1", "La ERS se obtiene en la fase de…", ["Análisis", "Diseño", "Codificación", "Pruebas"], 0, "Especificación de requisitos."],
+ ["UT1", "El plan de pruebas se elabora en…", ["Diseño", "Pruebas", "Mantenimiento", "Análisis"], 0, "Salida del diseño junto al documento de diseño."],
+ ["UT1", "Adaptar un programa a una nueva ley es mantenimiento…", ["Adaptativo", "Correctivo", "Perfectivo", "Evolutivo"], 0, "Cambios externos: normativa, hardware."],
+ ["UT1", "El cliente pide una nueva funcionalidad: mantenimiento…", ["Evolutivo", "Correctivo", "Adaptativo", "Preventivo"], 0, "Nuevos requisitos."],
+ ["UT1", "«El sistema responderá en menos de 2 segundos» es un requisito…", ["No funcional", "Funcional", "De diseño", "De dominio"], 0, "Rendimiento."],
+ ["UT1", "«El sistema emitirá facturas» es un requisito…", ["Funcional", "No funcional", "De hardware", "Legal"], 0, "Es algo que el sistema hace."],
+ ["UT1", "Modelo que asocia una fase de pruebas a cada fase de desarrollo:", ["Modelo en V", "Cascada", "Espiral", "Incremental"], 0, "Verificación y validación."],
+ ["UT1", "Modelo especializado en el análisis de riesgos:", ["Espiral", "Cascada", "V", "XP"], 0, "Boehm, 4 cuadrantes."],
+ ["UT1", "Una herramienta CASE para el análisis de requisitos es…", ["U-CASE", "L-CASE", "M-CASE", "IDE"], 0, "Upper = fases iniciales."],
+ ["UT1", "Spring es un framework para…", ["Java", "C#", "C++", "JavaScript"], 0, ".NET → C#, Qt → C++, Angular → JS/TS."],
+ ["Ágil", "En Scrum, quién prioriza el Product Backlog es…", ["El Product Owner", "El Scrum Master", "El equipo", "El cliente final directamente"], 0, "El PO representa al cliente."],
+ ["Ágil", "La reunión diaria de 15 minutos de Scrum es…", ["Daily Scrum", "Sprint Review", "Retrospectiva", "Sprint Planning"], 0, "Qué hice, qué haré, qué me bloquea."],
+ ["Ágil", "¿Qué limita el WIP en Kanban?", ["Las tareas en curso por columna", "La duración del sprint", "El número de roles", "El presupuesto"], 0, "Work In Progress."],
+ ["Ágil", "Para un equipo de soporte con incidencias continuas conviene…", ["Kanban", "Scrum", "Cascada", "Espiral"], 0, "Flujo continuo e imprevisible."],
+ ["UT2", "¿Qué componente une archivos objeto y bibliotecas en un ejecutable?", ["El enlazador", "El intérprete", "El depurador", "El editor"], 0, "Linker."],
+ ["UT2", "Para ejecutar programas Java (sin desarrollar) basta con…", ["El JRE", "El JDK", "javac", "Eclipse"], 0, "JRE = JVM + biblioteca."],
+ ["UT2", "¿Qué herramienta del JDK genera documentación?", ["javadoc", "jar", "javac", "java"], 0, "A partir de los comentarios."],
+ ["UT2", "Tras «javac Hola.java», para ejecutar se escribe…", ["java Hola", "java Hola.class", "javac Hola", "run Hola.java"], 0, "Nombre de la clase, sin extensión."],
+ ["UT2", "Para ejecutar principal/clasecolor.class del paquete principal:", ["java principal.clasecolor", "java principal/clasecolor.class", "java clasecolor", "jar clasecolor"], 0, "paquete.Clase."],
+ ["UT2", "En «jar cmf», la m indica…", ["Que se incluye un manifiesto", "Modo silencioso", "Modificar", "Máquina virtual"], 0, "c crear, m manifiesto, f archivo."],
+ ["UT2", "¿Cómo se ejecuta un jar con Main-Class?", ["java -jar app.jar", "jar app.jar", "javac app.jar", "./app.jar siempre"], 0, "java -jar."],
+ ["UT2", "En Eclipse, una perspectiva es…", ["Una configuración de vistas para una tarea", "Un plugin", "Un proyecto", "Un tipo de archivo"], 0, "Java, Depuración, Git…"],
+ ["UT2", "El paquete para cambiar el idioma de Eclipse se llama…", ["Babel", "Lingua", "UMLet", "JBC"], 0, "Ayuda › Install New Software."],
+ ["UT2", "¿Qué plugin muestra el código fuente de un .class sin fuente?", ["Enhanced Class Decompiler", "UMLet", "ECalculator", "Babel"], 0, "Descompilador."]
+];
+let QZ = null;
+function renderTest() {
+ const cats = [...new Set(QUIZ.map(q => q[0]))];
+ $("v-test").innerHTML = `<div class="panel"><div class="row sb"><h2>Test de autoevaluación</h2><select id="qz-cat"><option value="all">Todo (${QUIZ.length})</option>${cats.map(c => `<option>${c}</option>`).join("")}</select></div>
+  <p class="lead">Opciones barajadas en cada intento. Teclas A–D para responder.</p>
+  <div class="muted" id="qz-st"></div><div class="track"><div class="bar" id="qz-bar"></div></div><div id="qz-box"></div></div>`;
+ const start = () => { const c = $("qz-cat").value; QZ = { list: shuffle(QUIZ.filter(q => c === "all" || q[0] === c)), k: 0, ok: 0, fails: [], ans: false }; draw(); };
+ const draw = () => {
+  const n = QZ.list.length;
+  $("qz-st").textContent = `Pregunta ${Math.min(QZ.k + 1, n)} de ${n} · Aciertos ${QZ.ok}`;
+  $("qz-bar").style.width = (QZ.k / n * 100) + "%";
+  if (QZ.k >= n) {
+   const best = store("ed-best") || 0, nota = QZ.ok / n * 10; if (nota > best) store("ed-best", nota);
+   $("qz-box").innerHTML = `<div class="big">${nota.toFixed(1).replace(".", ",")}</div><p style="text-align:center">${QZ.ok} de ${n} · mejor nota: ${Math.max(best, nota).toFixed(1).replace(".", ",")}</p>${QZ.fails.length ? `<h3>Repasa:</h3><ul>${QZ.fails.map(q => `<li>${esc(q[1])} → <b>${esc(q[2][q[3]])}</b></li>`).join("")}</ul>` : ""}<div class="row" style="justify-content:center"><button class="primary" id="qz-again">Repetir</button></div>`;
+   $("qz-again").onclick = start; return;
+  }
+  const q = QZ.list[QZ.k], ord = shuffle(q[2].map((_, i) => i)); QZ.ans = false;
+  $("qz-box").innerHTML = `<span class="badge">${q[0]}</span><p style="font-size:1.15rem;margin:8px 0">${esc(q[1])}</p><div class="opts">${ord.map((o, p) => `<button class="opt" data-o="${o}"><b>${"ABCD"[p]}</b> ${esc(q[2][o])}</button>`).join("")}</div><div id="qz-fb"></div>`;
+  document.querySelectorAll("#qz-box .opt").forEach(b => b.onclick = () => {
+   if (QZ.ans) return; QZ.ans = true;
+   const good = +b.dataset.o === q[3]; good ? QZ.ok++ : QZ.fails.push(q);
+   document.querySelectorAll("#qz-box .opt").forEach(x => { x.disabled = true; if (+x.dataset.o === q[3]) x.classList.add("right"); else if (x === b) x.classList.add("wrong"); });
+   $("qz-fb").innerHTML = `<div class="fb">${good ? "✓ <b>Correcto.</b>" : "✗ <b>No.</b>"} ${esc(q[4])}</div><div class="row" style="justify-content:flex-end;margin-top:8px"><button class="primary" id="qz-next">Siguiente →</button></div>`;
+   $("qz-next").onclick = () => { QZ.k++; draw(); }; $("qz-next").focus();
+  });
+ };
+ $("qz-cat").onchange = start;
+ document.addEventListener("keydown", e => {
+  if ($("v-test").hidden || !QZ || ["INPUT", "SELECT"].includes(e.target.tagName)) return;
+  const i = "ABCD".indexOf(e.key.toUpperCase()), b = document.querySelectorAll("#qz-box .opt");
+  if (i >= 0 && b[i] && !QZ.ans) b[i].click();
+ });
+ start();
+}
+
+// =====================================================================
+//  PESTAÑAS
+// =====================================================================
+const GROUPS = [["Teoría", [["ut1", "UT1 · Desarrollo de software"], ["agil", "Metodologías ágiles"], ["ut2", "UT2 · IDE"]]], ["Práctica", [["ej", "Ejercicios 1.1–1.3"], ["rev", "Revisión de tus prácticas"]]], ["Repaso", [["fc", "Flashcards"], ["test", "Test"]]]];
+const VIEWS = GROUPS.flatMap(g => g[1]);
+function show(v) {
+ VIEWS.forEach(([k]) => { $("v-" + k).hidden = k !== v; $("t-" + k).classList.toggle("on", k === v); $("t-" + k).setAttribute("aria-selected", k === v); });
+ store("ed-view", v); window.scrollTo({ top: 0 });
+}
+$("tabs").innerHTML = GROUPS.map(([g, items]) => `<span class="grp">${g}</span>` + items.map(([k, n]) => `<button id="t-${k}" role="tab">${n}</button>`).join("")).join("");
+VIEWS.forEach(([k]) => $("t-" + k).onclick = () => show(k));
+renderUT1(); renderAgil(); renderUT2(); renderEj(); renderRev(); renderFC(); renderTest();
+document.querySelectorAll(".toc a").forEach(a => a.onclick = e => { e.preventDefault(); document.querySelector(a.getAttribute("href")).scrollIntoView({ behavior: "smooth" }); });
+const sv = store("ed-view"); show(VIEWS.some(v => v[0] === sv) ? sv : "ut1");
+</script>
+</body>
+</html>

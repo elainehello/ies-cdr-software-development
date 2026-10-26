@@ -49,5 +49,7 @@ public class ProbarCajero {
             }
 
         } while (option != 5);
+        // buffer closed
+        sc.close();
     }
 }

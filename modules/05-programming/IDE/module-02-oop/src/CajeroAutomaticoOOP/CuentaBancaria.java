@@ -31,6 +31,8 @@ public class CuentaBancaria {
         if (saldo >= cantidad) {
             saldo -= cantidad;
             System.out.printf("Current balance after retirar(): %.2f", this.saldo);
+        } else if (cantidad > saldo) {
+            System.out.println("Insufficient balance\n");
         }
     }
 

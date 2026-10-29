@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<contactos>
+  <contacto agenda="personal">
+    <nombre>Juan Perez</nombre>
+    <telefonos>
+      <telefono tipo="casa">914702812</telefono>
+      <telefono tipo="movil">674895125</telefono>
+      <telefono tipo="trabajo">915471256</telefono>
+    </telefonos>
+  </contacto>
+  <contacto agenda="profesional">
+    <nombre>Ana Martínez</nombre>
+    <telefonos>
+      <telefono tipo="casa">917415962</telefono>
+      <telefono tipo="movil">694157845</telefono>
+    </telefonos>
+  </contacto>
+</contactos>

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<vehiculos>
+  <vehiculo categoria="utilitario">
+    <nombre>Fiat Panda 1.2</nombre>
+    <!-- El símbolo < no se permite en la información. Hay que poner &lt, -->
+    <velocidadMaxima>&lt;120</velocidadMaxima>
+  </vehiculo>
+</vehiculos>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE mascotas [
+<!ELEMENT mascotas (mascota)*>
+<!ELEMENT mascota (#PCDATA)>
+<!ATTLIST mascota fechNac CDATA "">
+<!ATTLIST mascota especie CDATA "">
+<!ATTLIST mascota sexo (macho | hembra) "macho">
+]>
+<mascotas>
+  <mascota fechNac="06/05/2015" especie="perro" sexo="macho">Canelo</mascota>
+</mascotas>

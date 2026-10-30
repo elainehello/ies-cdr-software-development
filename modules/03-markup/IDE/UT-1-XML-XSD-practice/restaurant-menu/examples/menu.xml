@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<menu>
+
+    <principal>
+        <pizza>Macario Pizza Hawaiana</pizza>
+    </principal>
+
+    <acompanamiento>
+        <cebolla>Cebolla de Cambolla XXL</cebolla>
+    </acompanamiento>
+
+    <postre>
+        <helado>Macario Helado de Chokochuff</helado>
+    </postre>
+    
+</menu>

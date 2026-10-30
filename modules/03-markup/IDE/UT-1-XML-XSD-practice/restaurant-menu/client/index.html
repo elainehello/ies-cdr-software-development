@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Macario Restaurant</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main class="container">
+        <h1>Macario Restaurant</h1>
+        <h2>Create Your Menu</h2>
+
+        <form id="menuForm">
+            <label for="principal">Main Course</label>
+            <select id="principal" required>
+                <option value="hamburguesa">Macario Burger</option>
+                <option value="pizza">Macario Pizza Hawaiana</option>
+            </select>
+
+            <label for="acompanamiento">Side Dish</label>
+            <select id="acompanamiento" required>
+                <option value="patatas">Macario Patatas</option>
+                <option value="cebolla">Cebolla de Camboya XXL</option>
+            </select>
+
+            <label for="postre">Dessert</label>
+            <select id="postre" required>
+                <option value="helado">Macario Helado de Chokochuff</option>
+                <option value="dulce">Macario Dulce</option>
+            </select>
+
+            <button type="submit">Submit Menu</button>
+        </form>
+
+        <h2>Generated XML</h2>
+        <pre id="xmlOutput"></pre>
+
+        <h2>Server Response</h2>
+        <pre id="serverResponse"></pre>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

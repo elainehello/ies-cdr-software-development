@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="menu">
+        <xs:complexType>
+            <xs:sequence>
+
+                <xs:element name="principal">
+                    <xs:complexType>
+                        <xs:choice>
+                            <xs:element
+                                name="hamburguesa"
+                                type="xs:string"/>
+
+                            <xs:element
+                                name="pizza"
+                                type="xs:string"/>
+                        </xs:choice>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="acompanamiento">
+                    <xs:complexType>
+                        <xs:choice>
+                            <xs:element
+                                name="patatas"
+                                type="xs:string"/>
+
+                            <xs:element
+                                name="cebolla"
+                                type="xs:string"/>
+                        </xs:choice>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="postre">
+                    <xs:complexType>
+                        <xs:choice>
+                            <xs:element
+                                name="helado"
+                                type="xs:string"/>
+
+                            <xs:element
+                                name="dulce"
+                                type="xs:string"/>
+                        </xs:choice>
+                    </xs:complexType>
+                </xs:element>
+
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Definitiva de Estudio - IPE I 360° (PRL y Empleabilidad)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #05182c;
+            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .main-card {
+            background-color: #0a062e;
+            border-radius: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .highlight-text {
+            color: #F4D35E;
+        }
+
+        .question-card {
+            background-color: #834D9B;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-option {
+            background-color: #1E5F74;
+            color: white;
+            font-weight: bold;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-option:hover, .btn-option.selected {
+            background-color: #F4D35E;
+            color: #5D3E8C;
+            transform: scale(1.02);
+        }
+
+        .btn-primary-action {
+            background-color: #eb9b07;
+            color: #000;
+            font-weight: bold;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary-action:hover {
+            background-color: #E8C14E;
+            transform: scale(1.03);
+        }
+
+        .btn-dark-nav {
+            background-color: #000000;
+            color: white;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-dark-nav:hover:not(:disabled) {
+            background-color: #F4D35E;
+            color: #000000;
+        }
+
+        /* 3D Flip Styles */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #1E5F74;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header / Navbar -->
+    <header class="bg-[#0a062e] border-b border-indigo-950/80 shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col lg:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-shield-halved text-2xl highlight-text"></i>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold tracking-wide highlight-text">IPE I 360° | Guía Definitiva de PRL</h1>
+                    <p class="text-xs text-slate-300">Preparación Intensiva Parcial Temas 2, 3 y 4 (Editex)</p>
+                </div>
+            </div>
+            <nav class="flex flex-wrap justify-center gap-2">
+                <button onclick="switchTab('info')" id="tab-info" class="px-3 py-2 text-xs md:text-sm font-bold rounded-lg btn-option selected">
+                    <i class="fa-solid fa-circle-info mr-1"></i>Aviso & Normas
+                </button>
+                <button onclick="switchTab('teoria')" id="tab-teoria" class="px-3 py-2 text-xs md:text-sm font-bold rounded-lg btn-option">
+                    <i class="fa-solid fa-book-open mr-1"></i>Resumen Teórico
+                </button>
+                <button onclick="switchTab('diferencias')" id="tab-diferencias" class="px-3 py-2 text-xs md:text-sm font-bold rounded-lg btn-option">
+                    <i class="fa-solid fa-scale-balanced mr-1"></i>Diferencias
+                </button>
+                <button onclick="switchTab('matriz')" id="tab-matriz" class="px-3 py-2 text-xs md:text-sm font-bold rounded-lg btn-option">
+                    <i class="fa-solid fa-calculator mr-1"></i>Matriz Riesgos
+                </button>
+                <button onclick="switchTab('organismos')" id="tab-organismos" class="px-3 py-2 text-xs md:text-sm font-bold rounded-lg btn-option">
+                    <i class="fa-solid fa-building-columns mr-1"></i>Organismos
+                </button>
+                <button onclick="switchTab('retos')" id="tab-retos" class="px-3 py-2 text-xs md:text-sm font-bold rounded-lg btn-option">
+                    <i class="fa-solid fa-briefcase mr-1"></i>Casos Prácticos
+                </button>
+                <button onclick="switchTab('flashcards')" id="tab-flashcards" class="px-3 py-2 text-xs md:text-sm font-bold rounded-lg btn-option">
+                    <i class="fa-solid fa-clone mr-1"></i>Flashcards 3D
+                </button>
+                <button onclick="switchTab('quiz')" id="tab-quiz" class="px-3 py-2 text-xs md:text-sm font-bold rounded-lg btn-option">
+                    <i class="fa-solid fa-list-check mr-1"></i>Test Parcial
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-8">
+
+        <!-- SECTION 1: AVISO & NORMAS -->
+        <section id="sec-info" class="space-y-6">
+            <div class="main-card p-6 md:p-8 space-y-6">
+                <div class="flex items-center space-x-3 border-b border-indigo-950 pb-4">
+                    <i class="fa-solid fa-calendar-check text-3xl highlight-text"></i>
+                    <div>
+                        <h2 class="text-2xl font-bold highlight-text">Directrices del Examen Parcial IPE I</h2>
+                        <p class="text-xs text-slate-300">Marco Oficial de Cátedra y Normas de Evaluación</p>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6 text-sm">
+                    <div class="question-card p-5 space-y-3">
+                        <h3 class="font-bold text-lg text-white border-b border-indigo-400/30 pb-2">
+                            <i class="fa-solid fa-clock text-amber-300 mr-2"></i>Fecha y Temario
+                        </h3>
+                        <ul class="space-y-2 text-slate-100 text-xs leading-relaxed">
+                            <li><b>Fecha oficial del parcial:</b> Lunes 25 de noviembre (a última hora de clase).</li>
+                            <li><b>Contenido evaluado:</b> Temas 2, 3 y 4 íntegros del manual de Editex.</li>
+                            <li><b>Exclusión de Tema 5:</b> NO se evalúa en el parcial (se evaluará en el Aula Virtual).</li>
+                        </ul>
+                    </div>
+
+                    <div class="question-card p-5 space-y-3">
+                        <h3 class="font-bold text-lg text-white border-b border-indigo-400/30 pb-2">
+                            <i class="fa-solid fa-pen-ruler text-amber-300 mr-2"></i>Estructura y Criterios
+                        </h3>
+                        <ul class="space-y-2 text-slate-100 text-xs leading-relaxed">
+                            <li><b>Parte 1 (Tipo Test):</b> Respuestas incorrectas restan puntos. Se evita el abuso de la opción "todas son correctas".</li>
+                            <li><b>Parte 2 (Casos Teórico-Prácticos):</b> Máxima ponderación. Exige fundamentar jurídicamente con la LPRL (Ley 31/1995) y Reales Decretos. No se admiten respuestas cortas ni telegráficas.</li>
+                        </ul>
+                    </div>
+
+                    <div class="question-card p-5 space-y-3">
+                        <h3 class="font-bold text-lg text-white border-b border-indigo-400/30 pb-2">
+                            <i class="fa-solid fa-bullseye text-amber-300 mr-2"></i>Aspectos Clave a Dominar
+                        </h3>
+                        <ul class="space-y-2 text-slate-100 text-xs leading-relaxed">
+                            <li><b>Organismos Públicos:</b> Identificar definiciones y competencias (INSST, ITSS, OIT, EU-OSHA).</li>
+                            <li><b>Señales de Seguridad en Panel:</b> Identificar significado, tipo, formas, colores de seguridad/contraste y pictogramas.</li>
+                            <li><b>Gestión Preventiva (Tema 4):</b> Evaluación, planificación, modalidades de organización y órganos de representación.</li>
+                        </ul>
+                    </div>
+
+                    <div class="question-card p-5 space-y-3">
+                        <h3 class="font-bold text-lg text-white border-b border-indigo-400/30 pb-2">
+                            <i class="fa-solid fa-triangle-exclamation text-amber-300 mr-2"></i>Asistencia y Recuperación
+                        </h3>
+                        <ul class="space-y-2 text-slate-100 text-xs leading-relaxed">
+                            <li><b>No presentación:</b> Pasa directamente a la convocatoria ordinaria final.</li>
+                            <li><b>Prueba de recuperación:</b> Disponible para quienes hayan realizado el parcial y hayan suspendido.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: RESUMEN TEÓRICO COMPLETO -->
+        <section id="sec-teoria" class="hidden space-y-6">
+            <div class="main-card p-6 md:p-8 space-y-8">
+                <h2 class="text-3xl font-bold highlight-text text-center">Resumen Teórico Completo (Temas 2, 3 y 4 - Editex)</h2>
+                
+                <!-- TEMA 2 -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold text-amber-300 border-b border-indigo-900 pb-2">TEMA 2: Seguridad y Salud en el Trabajo (Unidad 2)</h3>
+                    
+                    <div class="grid md:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-[#05182c] p-4 rounded-xl border border-indigo-900 space-y-2">
+                            <h4 class="font-bold highlight-text">Conceptos Fundamentales</h4>
+                            <p><b>Salud (OMS):</b> Estado de completo bienestar físico, mental y social, no solo la ausencia de afecciones.</p>
+                            <p><b>Peligro:</b> Fuente, situación o acto con potencial de causar daño.</p>
+                            <p><b>Riesgo Laboral:</b> Posibilidad de que un trabajador sufra un determinado daño derivado del trabajo.</p>
+                            <p><b>Riesgo Grave e Inminente:</b> Racionalmente probable que se materialice en un futuro inmediato causando un daño grave.</p>
+                        </div>
+
+                        <div class="bg-[#05182c] p-4 rounded-xl border border-indigo-900 space-y-2">
+                            <h4 class="font-bold highlight-text">Locales y Equipos (RD 486/1997 & RD 1215/1997)</h4>
+                            <p><b>Altura libre:</b> Mínimo 3 metros en industria/talleres; 2,5 metros en oficinas.</p>
+                            <p><b>Espacio libre:</b> Mínimo 2 m² de superficie libre y 10 m³ de volumen no ocupado por trabajador.</p>
+                            <p><b>Equipos de Trabajo:</b> Marcado CE obligatorio. Prohibido usar escaleras de madera pintadas que oculten defectos.</p>
+                        </div>
+                    </div>
+
+                    <!-- Tabla Ruido -->
+                    <div class="bg-[#05182c] p-4 rounded-xl border border-indigo-900 text-xs overflow-x-auto">
+                        <h4 class="font-bold highlight-text mb-2">Valores Límite de Exposición al Ruido (RD 286/2006)</h4>
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-[#1E5F74] text-white">
+                                    <th class="p-2 border border-indigo-950">Nivel Diario / Pico</th>
+                                    <th class="p-2 border border-indigo-950">Obligaciones Empresariales</th>
+                                    <th class="p-2 border border-indigo-950">Uso de EPIs Auditivos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="p-2 border border-indigo-950">&lt; 80 dBA / &lt; 135 dBC</td>
+                                    <td class="p-2 border border-indigo-950">Nivel seguro. Sin obligación de evaluación periódica.</td>
+                                    <td class="p-2 border border-indigo-950">Opcional</td>
+                                </tr>
+                                <tr class="bg-indigo-950/40">
+                                    <td class="p-2 border border-indigo-950">≥ 80 dBA / ≥ 135 dBC</td>
+                                    <td class="p-2 border border-indigo-950">Evaluar riesgos, formar e informar, poner protectores a disposición.</td>
+                                    <td class="p-2 border border-indigo-950">A disposición (Voluntario)</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 border border-indigo-950 font-bold text-amber-300">≥ 85 dBA / ≥ 137 dBC</td>
+                                    <td class="p-2 border border-indigo-950">Señalizar zonas, plan de medidas técnicas y control médico periódico.</td>
+                                    <td class="p-2 border border-indigo-950 font-bold text-amber-300">USO OBLIGATORIO</td>
+                                </tr>
+                                <tr class="bg-rose-950/40">
+                                    <td class="p-2 border border-indigo-950 font-bold text-rose-300">≥ 87 dBA / ≥ 140 dBC</td>
+                                    <td class="p-2 border border-indigo-950">LÍMITE MÁXIMO ABSOLUTO (con atenuación de EPI). Reducción urgente.</td>
+                                    <td class="p-2 border border-indigo-950 font-bold text-rose-300">OBLIGATORIO + Reducción de urgencia</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Ambientales, Biológicos, Psicosociales -->
+                    <div class="grid md:grid-cols-3 gap-4 text-xs">
+                        <div class="bg-[#05182c] p-4 rounded-xl border border-indigo-900 space-y-1">
+                            <h4 class="font-bold highlight-text">Ambiente de Trabajo</h4>
+                            <p><b>Temperaturas:</b> Sedentarios (17-27°C); Ligeros (14-25°C).</p>
+                            <p><b>Humedad:</b> 30% - 70% (mín. 50% con electricidad estática).</p>
+                            <p><b>Iluminación (Lux):</b> Vías (50 lx), Almacenes (100 lx), Oficinas (500 lx), Joyería/Precisión (1000 lx).</p>
+                        </div>
+
+                        <div class="bg-[#05182c] p-4 rounded-xl border border-indigo-900 space-y-1">
+                            <h4 class="font-bold highlight-text">Agentes Biológicos (RD 664/1997)</h4>
+                            <p><b>Grupo 1:</b> Poco probable que cause enfermedad.</p>
+                            <p><b>Grupo 2:</b> Enfermedad, poco probable de propagar, EXISTE tratamiento (sarampión).</p>
+                            <p><b>Grupo 3:</b> Enfermedad grave, riesgo de propagación, EXISTE tratamiento (COVID-19, TB).</p>
+                            <p><b>Grupo 4:</b> Enfermedad grave, alta propagación, NO EXISTE tratamiento (Ébola).</p>
+                        </div>
+
+                        <div class="bg-[#05182c] p-4 rounded-xl border border-indigo-900 space-y-1">
+                            <h4 class="font-bold highlight-text">Ergonomía y Psicosociología</h4>
+                            <p><b>Carga Física:</b> Origina Trastornos Musculoesqueléticos (TME).</p>
+                            <p><b>Carga Mental:</b> Ocasiona fatiga intelectual.</p>
+                            <p><b>Riesgos Psicosociales:</b> Estrés laboral, Burnout (síndrome de estar quemado) y Mobbing (acoso hostil y sistemático).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TEMA 3 -->
+                <div class="space-y-4 pt-4 border-t border-indigo-950">
+                    <h3 class="text-xl font-bold text-amber-300 border-b border-indigo-900 pb-2">TEMA 3: Prevención de Riesgos Laborales (Unidad 3)</h3>
+
+                    <div class="bg-[#05182c] p-4 rounded-xl border border-indigo-900 text-xs space-y-2">
+                        <h4 class="font-bold highlight-text">Los 9 Principios de la Acción Preventiva (Art. 15 LPRL)</h4>
+                        <ol class="list-decimal list-inside space-y-1 text-slate-200">
+                            <li><b>Evitar los riesgos:</b> Eliminación total del peligro en origen independientemente del coste.</li>
+                            <li><b>Evaluar los riesgos que no se puedan evitar.</b></li>
+                            <li><b>Combatir los riesgos en el origen (foco).</b></li>
+                            <li><b>Adaptar el trabajo a la persona</b> (concepción de puestos, equipos y métodos).</li>
+                            <li><b>Tener en cuenta la evolución de la técnica.</b></li>
+                            <li><b>Sustituir lo peligroso</b> por lo que entrañe poco o ningún peligro.</li>
+                            <li><b>Planificar la prevención</b> integrando técnica, organización y factores sociales.</li>
+                            <li><b>Anteponer la protección colectiva a la individual (EPI).</b></li>
+                            <li><b>Dar las debidas instrucciones a los trabajadores.</b></li>
+                        </ol>
+                    </div>
+
+                    <!-- Tabla Señales Panel -->
+                    <div class="bg-[#05182c] p-4 rounded-xl border border-indigo-900 text-xs overflow-x-auto">
+                        <h4 class="font-bold highlight-text mb-2">Tabla Técnica de Señales de Panel (RD 485/1997)</h4>
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-[#1E5F74] text-white">
+                                    <th class="p-2 border border-indigo-950">Tipo</th>
+                                    <th class="p-2 border border-indigo-950">Forma</th>
+                                    <th class="p-2 border border-indigo-950">Color Seguridad</th>
+                                    <th class="p-2 border border-indigo-950">Contraste</th>
+                                    <th class="p-2 border border-indigo-950">Pictograma</th>
+                                    <th class="p-2 border border-indigo-950">Significado / Ejemplos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="p-2 border border-indigo-950 font-bold text-rose-400">Prohibición</td>
+                                    <td class="p-2 border border-indigo-950">Circular</td>
+                                    <td class="p-2 border border-indigo-950">Rojo (Mín. 35%)</td>
+                                    <td class="p-2 border border-indigo-950">Blanco</td>
+                                    <td class="p-2 border border-indigo-950">Negro</td>
+                                    <td class="p-2 border border-indigo-950">Prohíbe comportamientos peligrosos. Ej. Prohibido fumar.</td>
+                                </tr>
+                                <tr class="bg-indigo-950/40">
+                                    <td class="p-2 border border-indigo-950 font-bold text-amber-300">Advertencia</td>
+                                    <td class="p-2 border border-indigo-950">Triangular</td>
+                                    <td class="p-2 border border-indigo-950">Amarillo (Mín. 50%)</td>
+                                    <td class="p-2 border border-indigo-950">Negro</td>
+                                    <td class="p-2 border border-indigo-950">Negro</td>
+                                    <td class="p-2 border border-indigo-950">Advierte de un peligro. Ej. Riesgo eléctrico.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 border border-indigo-950 font-bold text-cyan-300">Obligación</td>
+                                    <td class="p-2 border border-indigo-950">Circular</td>
+                                    <td class="p-2 border border-indigo-950">Azul (Mín. 50%)</td>
+                                    <td class="p-2 border border-indigo-950">Blanco</td>
+                                    <td class="p-2 border border-indigo-950">Blanco</td>
+                                    <td class="p-2 border border-indigo-950">Obliga a un comportamiento/EPI. Ej. Protección ocular.</td>
+                                </tr>
+                                <tr class="bg-indigo-950/40">
+                                    <td class="p-2 border border-indigo-950 font-bold text-emerald-300">Salvamento</td>
+                                    <td class="p-2 border border-indigo-950">Rectangular / Cuadrada</td>
+                                    <td class="p-2 border border-indigo-950">Verde (Mín. 50%)</td>
+                                    <td class="p-2 border border-indigo-950">Blanco</td>
+                                    <td class="p-2 border border-indigo-950">Blanco</td>
+                                    <td class="p-2 border border-indigo-950">Salidas de emergencia, primeros auxilios, duchas.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 border border-indigo-950 font-bold text-rose-300">Incendios</td>
+                                    <td class="p-2 border border-indigo-950">Rectangular / Cuadrada</td>
+                                    <td class="p-2 border border-indigo-950">Rojo (Mín. 50%)</td>
+                                    <td class="p-2 border border-indigo-950">Blanco</td>
+                                    <td class="p-2 border border-indigo-950">Blanco</td>
+                                    <td class="p-2 border border-indigo-950">Ubicación de extintores, mangueras, alarmas.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TEMA 4 -->
+                <div class="space-y-4 pt-4 border-t border-indigo-950">
+                    <h3 class="text-xl font-bold text-amber-300 border-b border-indigo-900 pb-2">TEMA 4: La Organización y Gestión de la Prevención (Unidad 4)</h3>
+
+                    <div class="grid md:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-[#05182c] p-4 rounded-xl border border-indigo-900 space-y-2">
+                            <h4 class="font-bold highlight-text">Plan, Evaluación y Planificación</h4>
+                            <p><b>Plan de Prevención:</b> Documento marco que integra la prevención en la estructura y actividad general de la empresa.</p>
+                            <p><b>Evaluación de Riesgos:</b> Proceso para identificar peligros y estimar/valorar los riesgos que no hayan podido evitarse.</p>
+                            <p><b>Planificación Preventiva:</b> Fija medidas, responsables, plazos, recursos económicos y seguimiento de la ejecución.</p>
+                        </div>
+
+                        <div class="bg-[#05182c] p-4 rounded-xl border border-indigo-900 space-y-2">
+                            <h4 class="font-bold highlight-text">Modalidades de Organización Preventiva</h4>
+                            <p><b>Asunción por el Empresario:</b> Hasta 10 trabajadores (hasta 25 en 1 solo centro), sin actividades del Anexo I.</p>
+                            <p><b>Trabajadores Designados:</b> Uno o varios trabajadores capacitados nombrados por el empresario.</p>
+                            <p><b>Servicio de Prevención Propio (SPP):</b> Obligatorio en >500 trabajadores, o entre 250-500 en Anexo I, o por decisión de la Autoridad Laboral.</p>
+                            <p><b>Servicio de Prevención Ajeno (SPA):</b> Contratación con entidad especializada acreditada.</p>
+                            <p><b>Servicio de Prevención Mancomunado (SPM):</b> Entre empresas del mismo grupo o polígono industrial.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-[#05182c] p-4 rounded-xl border border-indigo-900 space-y-2">
+                            <h4 class="font-bold highlight-text">Representación de los Trabajadores</h4>
+                            <p><b>Delegados de Prevención:</b> Representantes de los trabajadores con funciones específicas en PRL (designados por y entre los delegados de personal):</p>
+                            <ul class="list-disc list-inside text-slate-200">
+                                <li>De 1 a 30 trabajadores: 1 Delegado de Personal que asume PRL.</li>
+                                <li>De 31 a 49 trabajadores: 1 Delegado de Prevención.</li>
+                                <li>De 50 a 100 trabajadores: 2 Delegados de Prevención.</li>
+                            </ul>
+                            <p><b>Comité de Seguridad y Salud:</b> Órgano colegiado y paritario de participación en empresas de 50 o más trabajadores. Formado por los Delegados de Prevención y el Empresario/sus representantes en igual número.</p>
+                        </div>
+
+                        <div class="bg-[#05182c] p-4 rounded-xl border border-indigo-900 space-y-2">
+                            <h4 class="font-bold highlight-text">Capacitación y Auditorías</h4>
+                            <p><b>Niveles de Formación en PRL:</b></p>
+                            <ul class="list-disc list-inside text-slate-200">
+                                <li><b>Nivel Básico:</b> 30 a 50 horas (promotores de seguridad, recurso preventivo).</li>
+                                <li><b>Nivel Intermedio:</b> 300 horas (evaluaciones y propuestas de medidas).</li>
+                                <li><b>Nivel Superior:</b> Titulación universitaria + 600 horas (técnico superior especialista en Seguridad, Higiene o Ergonomía).</li>
+                            </ul>
+                            <p><b>Auditoría de Prevención:</b> Evaluación externa sistemática e independiente del sistema de prevención para verificar su eficacia.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: DIFERENCIAS CONCEPTUALES -->
+        <section id="sec-diferencias" class="hidden space-y-6">
+            <div class="main-card p-6 md:p-8 space-y-6">
+                <div class="text-center space-y-2">
+                    <h2 class="text-3xl font-bold highlight-text">Diferencias Conceptuales Clave</h2>
+                    <p class="text-slate-300 text-sm">Contraste de términos afines para evitar fallos frecuentes en preguntas tipo test y casos prácticos.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4 text-xs">
+                    <div class="question-card p-4 space-y-2">
+                        <div class="flex justify-between items-center border-b border-indigo-400/30 pb-2">
+                            <span class="font-bold text-amber-300 text-sm">Peligro</span>
+                            <span class="text-slate-300">vs</span>
+                            <span class="font-bold text-cyan-300 text-sm">Riesgo Laboral</span>
+                        </div>
+                        <p><b>Peligro:</b> Propiedad o aptitud intrínseca de algo (máquina, sustancia, situación) para causar daño.</p>
+                        <p><b>Riesgo:</b> Posibilidad concreta y calculada de que un trabajador sufra un daño bajo determinadas condiciones de exposición.</p>
+                    </div>
+
+                    <div class="question-card p-4 space-y-2">
+                        <div class="flex justify-between items-center border-b border-indigo-400/30 pb-2">
+                            <span class="font-bold text-amber-300 text-sm">Prevención</span>
+                            <span class="text-slate-300">vs</span>
+                            <span class="font-bold text-cyan-300 text-sm">Protección</span>
+                        </div>
+                        <p><b>Prevención:</b> Actúa ANTES de que se produzca el riesgo para evitarlo o reducir la probabilidad.</p>
+                        <p><b>Protección:</b> Actúa SOBRE las consecuencias del riesgo cuando no se ha podido eliminar, minimizando los daños.</p>
+                    </div>
+
+                    <div class="question-card p-4 space-y-2">
+                        <div class="flex justify-between items-center border-b border-indigo-400/30 pb-2">
+                            <span class="font-bold text-amber-300 text-sm">Protección Colectiva</span>
+                            <span class="text-slate-300">vs</span>
+                            <span class="font-bold text-cyan-300 text-sm">Protección Individual (EPI)</span>
+                        </div>
+                        <p><b>Protección Colectiva:</b> Protege simultáneamente a múltiples trabajadores en el medio o centro (barandillas, redes, extracciones).</p>
+                        <p><b>Protección Individual:</b> Protege únicamente al trabajador que porta el equipo (gafas, casco, arnés). Es siempre el último recurso.</p>
+                    </div>
+
+                    <div class="question-card p-4 space-y-2">
+                        <div class="flex justify-between items-center border-b border-indigo-400/30 pb-2">
+                            <span class="font-bold text-amber-300 text-sm">Accidente de Trabajo</span>
+                            <span class="text-slate-300">vs</span>
+                            <span class="font-bold text-cyan-300 text-sm">Enfermedad Profesional</span>
+                        </div>
+                        <p><b>Accidente:</b> Lesión corporal súbita, violenta e imprevista con ocasión o por consecuencia del trabajo.</p>
+                        <p><b>Enfermedad Profesional:</b> Deterioro paulatino de la salud por exposición continuada a un agente nocivo regulado en el cuadro oficial.</p>
+                    </div>
+
+                    <div class="question-card p-4 space-y-2">
+                        <div class="flex justify-between items-center border-b border-indigo-400/30 pb-2">
+                            <span class="font-bold text-amber-300 text-sm">Evaluación de Riesgos</span>
+                            <span class="text-slate-300">vs</span>
+                            <span class="font-bold text-cyan-300 text-sm">Planificación Preventiva</span>
+                        </div>
+                        <p><b>Evaluación:</b> Diagnóstico inicial o periódico que identifica peligros, estima y valora la gravedad del riesgo.</p>
+                        <p><b>Planificación:</b> Plan de acción operativo que asigna medidas, responsabilidades, plazos y presupuesto para corregir los riesgos evaluados.</p>
+                    </div>
+
+                    <div class="question-card p-4 space-y-2">
+                        <div class="flex justify-between items-center border-b border-indigo-400/30 pb-2">
+                            <span class="font-bold text-amber-300 text-sm">Delegado de Prevención</span>
+                            <span class="text-slate-300">vs</span>
+                            <span class="font-bold text-cyan-300 text-sm">Servicio de Prevención</span>
+                        </div>
+                        <p><b>Delegado de Prevención:</b> Representante sindical de los trabajadores en materia de seguridad y salud.</p>
+                        <p><b>Servicio de Prevención:</b> Estructura técnica organizada (propia o ajena) encargada de asesorar y colaborar con la empresa en la gestión preventiva.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: MATRIZ DE EVALUACIÓN DE RIESGOS -->
+        <section id="sec-matriz" class="hidden space-y-6">
+            <div class="main-card p-6 md:p-8 space-y-6">
+                <div class="text-center space-y-2">
+                    <h2 class="text-3xl font-bold highlight-text">Calculadora de Evaluación de Riesgos</h2>
+                    <p class="text-slate-300 text-sm">Selecciona la probabilidad y consecuencia para obtener la estimación cualitativa del riesgo según la metodología INSST.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="question-card p-5 space-y-4">
+                        <h3 class="font-bold text-lg text-white border-b border-indigo-400/30 pb-2">Parámetros de Entrada</h3>
+                        
+                        <div>
+                            <label class="block text-xs font-bold text-slate-200 mb-2">1. Probabilidad del Daño:</label>
+                            <select id="mat-prob" onchange="calculateRisk()" class="w-full bg-[#1E5F74] text-white p-3 rounded-lg text-sm outline-none border-none">
+                                <option value="Baja">Baja (El daño ocurrirá raras veces)</option>
+                                <option value="Media">Media (El daño ocurrirá en algunas ocasiones)</option>
+                                <option value="Alta">Alta (El daño ocurrirá siempre o casi siempre)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-200 mb-2">2. Severidad de las Consecuencias:</label>
+                            <select id="mat-cons" onchange="calculateRisk()" class="w-full bg-[#1E5F74] text-white p-3 rounded-lg text-sm outline-none border-none">
+                                <option value="Ligeramente Dañino">Ligeramente Dañino (Cortes pequeños, molestias, magulladuras)</option>
+                                <option value="Dañino">Dañino (Quemaduras, fracturas menores, sordera, lumbalgias)</option>
+                                <option value="Extremadamente Dañino">Extremadamente Dañino (Amputaciones, fracturas graves, muertes, cáncer)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="risk-result-box" class="main-card p-6 border-2 border-indigo-800 flex flex-col justify-between space-y-4">
+                        <div>
+                            <span class="text-xs uppercase font-bold text-slate-400">Valoración Estimada del Riesgo</span>
+                            <h3 id="risk-level-title" class="text-2xl font-bold highlight-text mt-1">RIESGO MODERADO</h3>
+                            <p id="risk-action-text" class="text-xs text-slate-200 mt-3 leading-relaxed">
+                                Se deben hacer esfuerzos para reducir el riesgo. Las medidas para reducir el riesgo deben implantarse en un periodo determinado.
+                            </p>
+                        </div>
+                        <div class="bg-[#05182c] p-3 rounded-lg text-[11px] text-slate-300">
+                            <b>Prioridad de Intervención:</b> <span id="risk-priority">Media</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: ORGANISMOS PÚBLICOS -->
+        <section id="sec-organismos" class="hidden space-y-6">
+            <div class="main-card p-6 md:p-8 space-y-6">
+                <div class="text-center space-y-2">
+                    <h2 class="text-3xl font-bold highlight-text">Entrenador de Organismos Públicos en PRL</h2>
+                    <p class="text-slate-300 text-sm">Relaciona cada función o definición con el organismo público correspondiente.</p>
+                </div>
+
+                <div id="org-trainer-container" class="space-y-4"></div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: CASOS PRÁCTICOS -->
+        <section id="sec-retos" class="hidden space-y-6">
+            <div class="main-card p-6 text-center space-y-2">
+                <h2 class="text-3xl font-bold highlight-text">Batería de Casos Teórico-Prácticos Resueltos</h2>
+                <p class="text-slate-300 text-sm">Resuelve los supuestos fundamentando jurídicamente con la LPRL y Reales Decretos siguiendo la plantilla oficial de redacción.</p>
+            </div>
+
+            <!-- Plantilla de redacción -->
+            <div class="question-card p-5 text-xs space-y-2">
+                <h3 class="font-bold text-amber-300 text-sm">Plantilla de Redacción Exigida en el Examen:</h3>
+                <ol class="list-decimal list-inside space-y-1 text-slate-100">
+                    <li><b>Identificación del Peligro:</b> Identificar la fuente, equipo o situación de peligro.</li>
+                    <li><b>Identificación del Riesgo:</b> Señalar el riesgo específico y la probabilidad de daño.</li>
+                    <li><b>Consecuencias Posibles:</b> Describir las lesiones o patologías resultantes.</li>
+                    <li><b>Principios Preventivos Aplicables:</b> Citar los principios del Art. 15 de la LPRL involucrados.</li>
+                    <li><b>Propuesta de Medidas:</b> Ordenar medidas de prevención en origen, protección colectiva y EPIs.</li>
+                    <li><b>Fundamentación Legal y Obligaciones:</b> Concluir con la norma vulnerada (LPRL, RD) y deberes del empresario/trabajador.</li>
+                </ol>
+            </div>
+
+            <div id="retos-container" class="grid md:grid-cols-2 gap-6"></div>
+        </section>
+
+        <!-- SECTION 7: FLASHCARDS 3D -->
+        <section id="sec-flashcards" class="hidden space-y-6">
+            <div class="main-card p-6 text-center space-y-4">
+                <h2 class="text-3xl font-bold highlight-text">Tarjetas de Memoria Interactivas (3D)</h2>
+                <p class="text-slate-300 text-sm">Filtra por Tema y haz clic en la tarjeta para voltearla y repasar la teoría.</p>
+                
+                <div class="flex justify-center items-center gap-3 pt-2">
+                    <label for="filter-topic" class="text-sm font-bold highlight-text">Filtrar por Tema:</label>
+                    <select id="filter-topic" onchange="filterFlashcards()" class="bg-[#1E5F74] text-white font-semibold rounded-lg px-3 py-2 text-sm outline-none border-none">
+                        <option value="all">Todos los Temas (2, 3 y 4)</option>
+                        <option value="2">Tema 2: Seguridad y Salud</option>
+                        <option value="3">Tema 3: Prevención de Riesgos</option>
+                        <option value="4">Tema 4: Organización y Gestión</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="max-w-xl mx-auto flex flex-col items-center">
+                <div id="flashcard-container" class="w-full h-80 perspective-1000 cursor-pointer" onclick="flipCard()">
+                    <div id="flashcard" class="relative w-full h-full duration-500 transform-style-3d question-card p-6 flex flex-col justify-between items-center text-center">
+                        <div class="absolute inset-0 backface-hidden p-8 flex flex-col justify-between items-center text-center rounded-2xl">
+                            <span id="fc-category" class="px-3 py-1 bg-[#0a062e] highlight-text text-xs font-bold rounded-full uppercase tracking-wider">Categoría</span>
+                            <div class="my-auto">
+                                <h3 id="fc-question" class="text-xl md:text-2xl font-bold text-white">Cargando tarjeta...</h3>
+                            </div>
+                            <p class="text-xs text-indigo-200"><i class="fa-solid fa-rotate mr-1"></i>Haz clic para voltear</p>
+                        </div>
+                        <div class="absolute inset-0 backface-hidden rotate-y-180 p-8 flex flex-col justify-between items-center text-center rounded-2xl bg-[#0a062e] border-2 border-[#834D9B]">
+                            <span class="px-3 py-1 bg-[#1E5F74] text-white text-xs font-bold rounded-full uppercase tracking-wider">Respuesta</span>
+                            <div class="my-auto overflow-y-auto max-h-48 custom-scrollbar px-2">
+                                <p id="fc-answer" class="text-base md:text-lg highlight-text font-semibold">Cargando respuesta...</p>
+                            </div>
+                            <p class="text-xs text-indigo-300"><i class="fa-solid fa-rotate mr-1"></i>Haz clic para volver a la pregunta</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between w-full mt-6">
+                    <button onclick="prevCard()" class="px-6 py-3 btn-dark-nav font-bold text-sm flex items-center">
+                        <i class="fa-solid fa-chevron-left mr-2"></i> Anterior
+                    </button>
+                    <span id="fc-counter" class="text-sm font-bold highlight-text">1 / 10</span>
+                    <button onclick="nextCard()" class="px-6 py-3 btn-primary-action text-sm flex items-center">
+                        Siguiente <i class="fa-solid fa-chevron-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 8: TEST PARCIAL -->
+        <section id="sec-quiz" class="hidden space-y-6">
+            <div id="quiz-start-screen" class="main-card p-8 text-center space-y-6">
+                <h2 class="text-3xl font-bold highlight-text">Test Evaluativo del Parcial (Temas 2, 3 y 4)</h2>
+                <p class="text-slate-300 text-sm max-w-xl mx-auto">Preguntas tipo test con penalización por respuesta errónea y explicaciones fundamentadas al instante.</p>
+                
+                <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
+                    <button onclick="startQuiz(5, 5)" class="btn-primary-action px-8 py-4 text-lg">
+                        MODO RÁPIDO<br><span class="text-xs font-normal">5 preguntas - 5 minutos</span>
+                    </button>
+                    <button onclick="startQuiz(10, 12)" class="btn-primary-action px-8 py-4 text-lg">
+                        EXAMEN COMPLETO<br><span class="text-xs font-normal">10 preguntas - 12 minutos</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="quiz-container" class="main-card p-6 md:p-8 hidden space-y-6">
+                <div class="flex justify-between items-center text-sm font-bold border-b border-indigo-950 pb-4">
+                    <div id="timer" class="highlight-text text-lg">
+                        <i class="fa-solid fa-clock mr-1"></i> Tiempo: <span id="timeLeft">00:00</span>
+                    </div>
+                    <div id="quiz-progress-text" class="text-slate-300">
+                        Pregunta 1 de 10
+                    </div>
+                </div>
+
+                <div class="w-full bg-[#05182c] h-3 rounded-full overflow-hidden">
+                    <div id="progressBar" class="bg-[#4CAF50] h-full w-0% transition-all duration-300"></div>
+                </div>
+
+                <div class="question-card p-6">
+                    <h3 id="questionText" class="text-lg md:text-xl font-bold text-white">Pregunta...</h3>
+                </div>
+
+                <div id="optionsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+
+                <div id="answerScreen" class="hidden space-y-4">
+                    <div id="answerExplanation" class="question-card p-4 text-center">
+                        <p id="feedbackText" class="text-xl font-bold mb-2"></p>
+                        <p id="correctAnswerText" class="text-sm text-slate-100 leading-relaxed"></p>
+                    </div>
+                    <div class="flex justify-between gap-4">
+                        <button id="previousQuestionBtn" onclick="loadPreviousQuestion()" class="btn-dark-nav px-6 py-3 font-bold text-sm hidden">
+                            &lt;&lt;&lt; Anterior
+                        </button>
+                        <button onclick="loadNextQuestion()" class="btn-primary-action px-8 py-3 text-sm ml-auto">
+                            Siguiente &gt;&gt;&gt;
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="finalScreen" class="main-card p-8 text-center hidden space-y-6">
+                <div id="finalScore" class="text-4xl font-bold highlight-text">0%</div>
+                <div id="finalMessage" class="text-2xl font-bold highlight-text"></div>
+                
+                <div class="pt-4 max-w-md mx-auto text-left space-y-2">
+                    <label for="questionReview" class="text-sm font-bold text-slate-300">Revisar preguntas:</label>
+                    <select id="questionReview" onchange="showQuestionReview(this.value)" class="w-full bg-[#1E5F74] text-white font-semibold rounded-lg p-3 text-sm outline-none border-none">
+                        <option value="">Selecciona una opción</option>
+                        <option value="incorrect">Respuestas incorrectas</option>
+                        <option value="correct">Respuestas correctas</option>
+                    </select>
+                </div>
+
+                <div id="questionDetails" class="space-y-4 text-left max-h-80 overflow-y-auto custom-scrollbar p-2"></div>
+
+                <button onclick="restartQuiz()" class="btn-primary-action px-8 py-4 text-lg w-full max-w-md">
+                    REPETIR TEST
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#0a062e] border-t border-indigo-950 py-4 text-center text-xs text-slate-400">
+        <div class="max-w-7xl mx-auto px-4">
+            Guía de Estudio IPE I (Temas 2, 3 y 4 - Editex) — Preparación Parcial 25 de Noviembre
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- DATA ORGANISMOS PÚBLICOS ---
+        const organismosData = [
+            {
+                desc: "Órgano científico-técnico de las Administraciones Públicas que realiza estudios, investigación y asesoramiento en PRL.",
+                options: ["INSST", "ITSS", "OIT", "EU-OSHA"],
+                correct: "INSST",
+                exp: "El INSST es el órgano científico-técnico asesor de referencia a nivel estatal."
+            },
+            {
+                desc: "Órgano administrativo encargado de vigilar el cumplimiento de la normativa laboral y de PRL, con capacidad sancionadora.",
+                options: ["INSST", "ITSS", "OIT", "EU-OSHA"],
+                correct: "ITSS",
+                exp: "La ITSS (Inspección de Trabajo) fiscaliza, requiere y sanciona los incumplimientos en las empresas."
+            },
+            {
+                desc: "Organismo internacional tripartito dependiente de la ONU que fija convenios laborales internacionales.",
+                options: ["INSST", "ITSS", "OIT", "EU-OSHA"],
+                correct: "OIT",
+                exp: "La OIT (Organización Internacional del Trabajo) promueve el trabajo decente en todo el mundo."
+            },
+            {
+                desc: "Agencia europea de la Unión Europea que recoge y difunde información técnica para promover entornos de trabajo seguros.",
+                options: ["INSST", "ITSS", "OIT", "EU-OSHA"],
+                correct: "EU-OSHA",
+                exp: "La EU-OSHA es la Agencia Europea para la Seguridad y la Salud en el Trabajo."
+            }
+        ];
+
+        // --- DATA FLASHCARDS ---
+        const flashcardsData = [
+            { topic: "2", cat: "Tema 2: Salud", q: "¿Cómo define la OMS el concepto de 'Salud'?", a: "Estado de completo bienestar físico, mental y social, y no solo la ausencia de afecciones o enfermedades." },
+            { topic: "2", cat: "Tema 2: Riesgo Laboral", q: "¿Qué es un 'Riesgo Grave e Inminente'?", a: "Aquel que resulta racionalmente probable que se materialice en un futuro inmediato y pueda suponer un daño grave para la salud." },
+            { topic: "2", cat: "Tema 2: Locales", q: "Dimensiones mínimas de locales de trabajo según el RD 486/1997.", a: "3 metros de altura libre (2,5 m en oficinas), 2 m² de superficie libre por trabajador y 10 m³ de volumen libre no ocupado." },
+            { topic: "2", cat: "Tema 2: Ruido", q: "¿Cuál es el límite máximo absoluto de exposición al ruido (RD 286/2006)?", a: "87 dBA de nivel diario y/o 140 dBC de pico (teniendo en cuenta la atenuación de protectores auditivos). Reducción de urgencia." },
+            { topic: "2", cat: "Tema 2: Iluminación", q: "Niveles de iluminación en Lux recomendados para oficinas y joyerías.", a: "Oficinas y aulas: 500 lx. Joyería, montaje fino y trabajos de precisión: 1000 lx." },
+            { topic: "2", cat: "Tema 2: Biológicos", q: "Diferencia entre Agente Biológico Grupo 3 y Grupo 4.", a: "Grupo 3: Enfermedad grave y propagación, pero EXISTE tratamiento o profilaxis (COVID-19). Grupo 4: Enfermedad grave, alta propagación y NO existe tratamiento (Ébola)." },
+            { topic: "3", cat: "Tema 3: Principios", q: "¿Cuál es el primer principio de la acción preventiva (Art. 15 LPRL)?", a: "Evitar los riesgos en su origen (eliminación total del peligro independientemente del coste económico)." },
+            { topic: "3", cat: "Tema 3: Organismos", q: "Diferencia entre el INSST y la ITSS.", a: "INSST: Órgano científico-técnico asesor. ITSS: Órgano ejecutivo de vigilancia, control, requerimiento y sanción." },
+            { topic: "3", cat: "Tema 3: Señales", q: "Características técnicas de una señal de Advertencia.", a: "Forma triangular, color de seguridad amarillo (mínimo 50%), contraste negro y pictograma negro." },
+            { topic: "3", cat: "Tema 3: Señales", q: "Características técnicas de una señal de Obligación.", a: "Forma circular, color de seguridad azul (mínimo 50%), contraste blanco y pictograma blanco." },
+            { topic: "4", cat: "Tema 4: Organización", q: "¿Cuándo es obligatorio constituir un Comité de Seguridad y Salud?", a: "En todas las empresas o centros de trabajo que cuenten con 50 o más trabajadores. Es un órgano colegiado y paritario." },
+            { topic: "4", cat: "Tema 4: Representación", q: "¿Cuántos Delegados de Prevención corresponden a una plantilla de 60 trabajadores?", a: "Le corresponden 2 Delegados de Prevención (rango de 50 a 100 trabajadores)." },
+            { topic: "4", cat: "Tema 4: Vigilancia", q: "¿Es obligatoria la vigilancia de la salud para el trabajador?", a: "Regla general: VOLUNTARIA. Excepciones: indispensable para evaluar efectos, verificar si constituye peligro para sí o terceros, o por ley en riesgos específicos." }
+        ];
+
+        // --- DATA QUIZ ---
+        const quizData = [
+            {
+                q: "1. En una imprenta con un nivel de ruido diario de 86 dBA, ¿cuál es la obligación legal del empresario según el RD 286/2006?",
+                options: ["A. Uso opcional de protectores auditivos.", "B. Señalizar la zona, realizar control médico periódico y exigir el USO OBLIGATORIO de EPI auditivo.", "C. Parar la producción de inmediato por superar el límite absoluto.", "D. No requiere ninguna medida por no llegar a 87 dBA."],
+                correctAnswer: "B. Señalizar la zona, realizar control médico periódico y exigir el USO OBLIGATORIO de EPI auditivo.",
+                explanation: "Al alcanzar o superar los 85 dBA (o 137 dBC de pico), el uso de EPIs auditivos pasa a ser estrictamente OBLIGATORIO y se exige evaluación médica periódica."
+            },
+            {
+                q: "2. Una señal triangular con fondo amarillo (mínimo 50%), borde negro y pictograma negro es una señal de:",
+                options: ["A. Prohibición.", "B. Advertencia o peligro.", "C. Obligación de uso de EPI.", "D. Salvamento o rescate."],
+                correctAnswer: "B. Advertencia o peligro.",
+                explanation: "Las señales triangulares amarillas advierten de un riesgo o peligro concreto (ej. riesgo eléctrico, materias inflamables)."
+            },
+            {
+                q: "3. Según el Art. 15 de la LPRL, ¿cuál es el ORDEN prioritario de actuación preventiva?",
+                options: ["A. Dar EPIs -> Formar -> Evitar riesgo.", "B. Evitar riesgos -> Combatir en origen -> Anteponer protección colectiva a la individual.", "C. Evaluar -> Dar EPIs -> Sustituir lo peligroso.", "D. Insonorizar la sala -> Dar tapones -> Eliminar la máquina."],
+                correctAnswer: "B. Evitar riesgos -> Combatir en origen -> Anteponer protección colectiva a la individual.",
+                explanation: "El orden jerárquico exige evitar los riesgos en origen en 1er lugar y anteponer la protección colectiva (8º) a la individual (EPIs)."
+            },
+            {
+                q: "4. ¿Qué documento recibe el empresario tras la revisión médica periódica de un trabajador?",
+                options: ["A. El expediente con el diagnóstico detallado de la enfermedad.", "B. Únicamente el Certificado de Aptitud (Apto, No Apto, Apto con limitaciones o adaptación).", "C. Una copia de la analítica de sangre completa.", "D. Ningún documento por confidencialidad médica."],
+                correctAnswer: "B. Únicamente el Certificado de Aptitud (Apto, No Apto, Apto con limitaciones o adaptación).",
+                explanation: "Por confidencialidad médica absoluta (Art. 22 LPRL), los diagnósticos solo se entregan al trabajador. El empresario solo recibe las conclusiones de aptitud."
+            },
+            {
+                q: "5. Un trabajador de 17 años contratado en un almacén es asignado a conducir un 'toro' (carretilla elevadora). Esta situación es:",
+                options: ["A. Legal si el menor firma una autorización.", "B. Infracción GRAVE de la empresa usuaria, al estar prohibida la conducción de maquinaria peligrosa a menores.", "C. Legal si realiza una formación de 2 horas.", "D. Permitida solo si trabaja en turno de noche."],
+                correctAnswer: "B. Infracción GRAVE de la empresa usuaria, al estar prohibida la conducción de maquinaria peligrosa a menores.",
+                explanation: "La normativa prohíbe expresamente encomendar a menores de 18 años el manejo de maquinaria peligrosa como carretillas elevadoras."
+            },
+            {
+                q: "6. ¿En qué modalidad de organización preventiva se requiere constituir obligatoriamente un Servicio de Prevención Propio (SPP)?",
+                options: ["A. En empresas de más de 10 trabajadores.", "B. En empresas que tengan más de 500 trabajadores, o entre 250 y 500 si realizan actividades del Anexo I.", "C. Siempre que lo soliciten los Delegados de Prevención.", "D. En empresas de menos de 25 trabajadores."],
+                correctAnswer: "B. En empresas que tengan más de 500 trabajadores, o entre 250 y 500 si realizan actividades del Anexo I.",
+                explanation: "El Servicio de Prevención Propio es obligatorio legalmente al superar los 500 trabajadores o entre 250 y 500 en sectores de especial peligrosidad (Anexo I)."
+            },
+            {
+                q: "7. ¿En qué se diferencian principalmente la Evaluación de Riesgos y la Planificación Preventiva?",
+                options: ["A. La evaluación es voluntaria y la planificación obligatoria.", "B. La evaluación identifica y valora los riesgos; la planificación organiza las medidas, responsables y plazos.", "C. La evaluación la hace la ITSS y la planificación el Comité.", "D. Son exactamente el mismo concepto con distinto nombre."],
+                correctAnswer: "B. La evaluación identifica y valora los riesgos; la planificación organiza las medidas, responsables y plazos.",
+                explanation: "La evaluación constituye el diagnóstico del estado de riesgo; la planificación es el plan operativo para erradicar o controlar dichos riesgos."
+            },
+            {
+                q: "8. ¿Cuántos Delegados de Prevención corresponden en una empresa con 80 trabajadores?",
+                options: ["A. 1 Delegado.", "B. 2 Delegados.", "C. 3 Delegados.", "D. Se constituye un Comité de 10 miembros."],
+                correctAnswer: "B. 2 Delegados.",
+                explanation: "La escala legal establece 2 Delegados de Prevención para centros de trabajo de entre 50 y 100 trabajadores."
+            },
+            {
+                q: "9. ¿Cuál de los siguientes agentes biológicos pertenece al Grupo 4 según el RD 664/1997?",
+                options: ["A. Virus de la gripe común.", "B. Virus del Ébola.", "C. Bacteria de la Tuberculosis.", "D. Virus del Sarampión."],
+                correctAnswer: "B. Virus del Ébola.",
+                explanation: "El virus del Ébola pertenece al Grupo 4 ya que causa enfermedad grave en el ser humano, presenta un gran peligro de propagación y no existe profilaxis o tratamiento eficaz."
+            },
+            {
+                q: "10. La sanción económica que impone la Seguridad Social a una empresa cuando un accidente ocurre por falta de medidas de seguridad se denomina:",
+                options: ["A. Responsabilidad Penal.", "B. Sanción de la ITSS.", "C. Recargo de Prestaciones (30% al 50%).", "D. Indemnización Civil."],
+                correctAnswer: "C. Recargo de Prestaciones (30% al 50%).",
+                explanation: "El Recargo de Prestaciones es una sanción impuesta por el INSS que incrementa todas las prestaciones derivadas del accidente entre un 30% y un 50% a costa exclusiva de la empresa."
+            }
+        ];
+
+        // --- DATA CASOS PRÁCTICOS Y EDGE-CASES ---
+        const retosData = [
+            {
+                title: "Caso 1: Beatriz y Francisco (EPIs y Deberes)",
+                desc: "Beatriz trabaja en un laboratorio químico y decide quitarse las gafas y guantes de protección por prisa. Su compañero Francisco la regaña recriminándole su actitud de riesgo.",
+                tasks: [
+                    "¿Ha actuado bien Beatriz conforme a la LPRL?",
+                    "¿Tiene potestad Francisco para recriminarle la conducta?"
+                ],
+                solution: "<b>Fundamentación Jurídica Completa:</b><br>1. <b>Beatriz:</b> Ha actuado MAL. Incumple el <b>Art. 29 de la LPRL</b>, que impone al trabajador el deber de velar por su propia seguridad y utilizar correctamente los equipos de protección (EPIs) facilitados por el empresario.<br>2. <b>Francisco:</b> SÍ ha actuado bien. El <b>Art. 29.2.4º LPRL</b> establece que es deber de cada trabajador velar por la seguridad de sus compañeros. Sin embargo, la potestad disciplinaria formal corresponde únicamente al empresario."
+            },
+            {
+                title: "Caso 2: Evaluación y Planificación en Carpintería",
+                desc: "Una carpintería instala una nueva cepilladora que genera elevado polvo de madera de pino y un ruido de 88 dBA. El empresario compra tapones auditivos pero no redacta ningún documento ni actualiza la evaluación de riesgos.",
+                tasks: [
+                    "¿Qué incumplimientos comete el empresario en la gestión preventiva?",
+                    "Aplica la jerarquía de medidas de protección."
+                ],
+                solution: "<b>Fundamentación Jurídica Completa:</b><br>1. <b>Incumplimientos:</b> Incumple el <b>Art. 16 de la LPRL</b> por no actualizar la <b>Evaluación de Riesgos</b> ante la introducción de nueva maquinaria y omitir la <b>Planificación Preventiva</b>.<br>2. <b>Jerarquía de Medidas:</b> Vulneración de los principios 3º y 8º del Art. 15 LPRL. Debió instalar un sistema de <b>aspiración localizada en origen</b> (foco) e insonorización (medio) antes de recurrir a los tapones (EPI individual)."
+            },
+            {
+                title: "Caso 3: Elección de Modalidad Preventiva",
+                desc: "Empresa de construcción de 350 trabajadores que realiza trabajos de excavación e infraestructuras con riesgo grave de sepultamiento (Anexo I).",
+                tasks: [
+                    "Determinar la modalidad de organización preventiva obligatoria.",
+                    "Órganos de representación laboral exigidos."
+                ],
+                solution: "<b>Fundamentación Jurídica Completa:</b><br>1. <b>Modalidad Preventiva:</b> Obligación de constituir un <b>Servicio de Prevención Propio (SPP)</b> de acuerdo con el Art. 14 del Real Decreto 39/1997, al contar con más de 250 trabajadores y desarrollar actividades de especial peligrosidad incluidas en el Anexo I.<br>2. <b>Representación:</b> Al superar los 50 trabajadores, es obligatorio constituir un <b>Comité de Seguridad y Salud</b> paritario y elegir <b>3 Delegados de Prevención</b> (para el tramo de 251 a 500 trabajadores)."
+            },
+            {
+                title: "Caso 4: María y Elisa (Gratuidad Absoluta de EPIs)",
+                desc: "El jefe de María le exige comprarse sus propias orejeras protectoras para el taller ruidoso. Asimismo, el jefe de Elisa le ordena traer mañana su propia pantalla de soldar comprada en la tienda.",
+                tasks: [
+                    "Evaluar la legalidad de la orden patronal.",
+                    "Indicar el marco normativo sobre la financiación de la PRL."
+                ],
+                solution: "<b>Fundamentación Jurídica Completa:</b><br>La orden patronal es <b>COMPLETAMENTE ILEGAL</b>. De acuerdo con el <b>Art. 14.5 de la LPRL</b> y el <b>RD 773/1997</b>, el coste de las medidas relativas a la seguridad y la salud en el trabajo (incluidos la totalidad de los EPIs) no podrá recaer en modo alguno sobre los trabajadores. El empresario tiene la obligación legal de seleccionar, entregar gratis y mantener todos los equipos de protección."
+            },
+            {
+                title: "Caso 5: Examen Complejo — ETT, Alergias, Maternidad y Menores",
+                desc: "Trabajo mediante ETT en azulejera. Rodrigo sufre alergia severa al esmalte; Lucía padece riesgo de desprendimiento en embarazo; Jorge (17 años) conduce un 'toro' sin carnet y casi atropella a Rodrigo.",
+                tasks: [
+                    "Pasos legales a seguir con Rodrigo y Lucía.",
+                    "Infracción legal en la situación de Jorge (menor)."
+                ],
+                solution: "<b>Fundamentación Jurídica Completa:</b><br>1. <b>Rodrigo (Alergia):</b> Debe comunicar su dolencia. La empresa usuaria debió informarle previamente. Se aplica el 6º principio preventivo (sustituir el agente) o cambiarle de puesto.<br>2. <b>Lucía (Embarazo):</b> Procedimiento en 3 fases: Adaptación -> Cambio de puesto -> Suspensión de contrato por riesgo durante el embarazo (cobrando el 100% de la base reguladora).<br>3. <b>Jorge (Menor):</b> <b>Infracción GRAVE</b> de la empresa usuaria. Está categóricamente prohibido encomendar a menores de 18 años la conducción de carretillas elevadoras o maquinaria peligrosa."
+            },
+            {
+                title: "Caso 6: Juan (Secreto Médico y Aptitud Laboral)",
+                desc: "Juan realiza trabajos en altura y padece vértigos. La médica detecta Síndrome de Ménière tras las pruebas.",
+                tasks: [
+                    "¿Se envía el diagnóstico al jefe de Juan?",
+                    "Resultado del Certificado de Aptitud y obligatoriedad."
+                ],
+                solution: "<b>Fundamentación Jurídica Completa:</b><br>1. <b>Confidencialidad:</b> NO se envía el diagnóstico al jefe. Por secreto médico absoluto (Art. 22 LPRL), los informes son confidenciales.<br>2. <b>Certificado de Aptitud:</b> El jefe solo recibe el certificado con la calificación de <b>'No Apto'</b> o <b>'Apto con limitaciones'</b> (prohibición de trabajos en altura).<br>3. <b>Obligatoriedad:</b> Juan no podía negarse al reconocimiento porque realizar trabajos en altura with vértigos supone un riesgo grave para sí mismo y terceros."
+            },
+            {
+                title: "Caso Límite A: Teletrabajo y Accidente 'In Labore'",
+                desc: "Un programador en modalidad de teletrabajo regulado Tropieza y se fractura la muñeca en su cocina mientras iba a por agua a las 11:30 h (dentro de su jornada laboral pactada).",
+                tasks: [
+                    "¿Existe presunción de Accidente de Trabajo?",
+                    "Límites de la Evaluación de Riesgos en el domicilio privado."
+                ],
+                solution: "<b>Fundamentación Jurídica Completa:</b><br>1. <b>Accidente de Trabajo:</b> Opera la presunción del <b>Art. 156.3 de la LGSS</b> al haberse producido en tiempo y lugar de trabajo. Corresponde a la mutua/empresa probar la ruptura del nexo causal.<br>2. <b>Evaluación de Riesgos (Ley 10/2021):</b> La empresa debe evaluar el puesto delimitado de teletrabajo. El acceso al domicilio privado requiere consentimiento del trabajador debido al derecho constitucional a la inviolabilidad del domicilio (Art. 18.2 CE)."
+            },
+            {
+                title: "Caso Límite B: Coordinación de Actividades Empresariales (CAE)",
+                desc: "En una fábrica de pintura (riesgo de atmósfera explosiva - ATEX), una empresa contratista externa realiza trabajos de soldadura. Un chispazo provoca una deflagración e incendios.",
+                tasks: [
+                    "Obligaciones de Coordinación Preventiva (Art. 24 LPRL).",
+                    "Nombramiento y función del Recurso Preventivo."
+                ],
+                solution: "<b>Fundamentación Jurídica Completa:</b><br>1. <b>Coordinación (RD 171/2004):</b> La empresa titular debe informar previamente de los riesgos del centro y dar instrucciones escritas relativas a trabajos en caliente/explosivos.<br>2. <b>Recurso Preventivo:</b> La presencia de recursos preventivos es <b>OBLIGATORIA (Art. 32 bis LPRL)</b> al realizarse trabajos con riesgos especialmente graves de explosión o incendio, debiendo vigilar el cumplimiento estricto de las medidas de seguridad."
+            },
+            {
+                title: "Caso Límite C: Maternidad y Lactancia Natural con Agentes Químicos",
+                desc: "Una técnica de laboratorio en periodo de lactancia natural está expuesta a vapores de xileno (disolvente neurotóxico y mutágeno). La empresa argumenta que al no estar embarazada no existe riesgo.",
+                tasks: [
+                    "Analizar la posición legal del empresario.",
+                    "Secuencia obligatoria de actuación en lactancia natural."
+                ],
+                solution: "<b>Fundamentación Jurídica Completa:</b><br>1. <b>Postura Patronal:</b> ILEGAL. La protección del <b>Art. 26 LPRL</b> ampara explícitamente tanto el embarazo como la <b>lactancia natural</b> frente a sustancias tóxicas transmisibles por la leche materna.<br>2. <b>Secuencia Obligatoria:</b> 1º Adaptar condiciones de trabajo -> 2º Si no es posible, cambio a puesto exento de xileno -> 3º Si no existe puesto compatible, suspensión del contrato por <b>Riesgo Durante la Lactancia Natural</b> cobrando el 100% de la base reguladora a cargo del INSS/Mutua."
+            },
+            {
+                title: "Caso Límite D: Imprudencia del Trabajador vs. Falta de Medidas Colectivas",
+                desc: "La empresa retiró la carcasa protectora de una prensa para agilizar la producción. Un operario introduce la mano para desatascar una pieza en marcha y sufre la amputación de tres dedos.",
+                tasks: [
+                    "Evaluar la defensa de la empresa ('imprudencia del trabajador').",
+                    "Implicaciones en el Recargo de Prestaciones."
+                ],
+                solution: "<b>Fundamentación Jurídica Completa:</b><br>1. <b>Defensa Patronal:</b> RECHAZADA. Se trata de una <i>imprudencia profesional</i> derivada del conocimiento de la tarea, la cual no exime de responsabilidad a la empresa. La causa directa fue la eliminación deliberada de la <b>protección colectiva (Art. 15.1.h LPRL)</b>.<br>2. <b>Sanciones:</b> Infracción MUY GRAVE de la ITSS, responsabilidad penal (Arts. 316-318 CP) y aplicación del <b>Recargo de Prestaciones de la Seguridad Social del 30% al 50%</b>, el cual recae con carácter <b>INASEGURABLE</b> sobre el empresario."
+            }
+        ];
+
+        // --- CALCULADORA MATRIZ RIESGOS ---
+        function calculateRisk() {
+            const prob = document.getElementById('mat-prob').value;
+            const cons = document.getElementById('mat-cons').value;
+
+            let level = "TOLERABLE";
+            let desc = "No se requiere mejorar la acción preventiva. Sin embargo, se deben considerar soluciones más rentables o mejoras que no supongan una carga económica importante.";
+            let priority = "Baja";
+
+            if (prob === "Baja" && cons === "Ligeramente Dañino") {
+                level = "TRIVIAL";
+                desc = "No se requiere acción específica.";
+                priority = "Nula";
+            } else if ((prob === "Baja" && cons === "Dañino") || (prob === "Media" && cons === "Ligeramente Dañino")) {
+                level = "TOLERABLE";
+                priority = "Baja";
+            } else if ((prob === "Baja" && cons === "Extremadamente Dañino") || (prob === "Media" && cons === "Dañino") || (prob === "Alta" && cons === "Ligeramente Dañino")) {
+                level = "RIESGO MODERADO";
+                desc = "Se deben hacer esfuerzos para reducir el riesgo. Las medidas deben implantarse en un periodo determinado de tiempo.";
+                priority = "Media";
+            } else if ((prob === "Media" && cons === "Extremadamente Dañino") || (prob === "Alta" && cons === "Dañino")) {
+                level = "RIESGO IMPORTANTE";
+                desc = "No debe comenzarse el trabajo hasta que se haya reducido el riesgo. Puede que se precisen recursos considerables para controlar el riesgo.";
+                priority = "Alta";
+            } else if (prob === "Alta" && cons === "Extremadamente Dañino") {
+                level = "RIESGO INTOLERABLE";
+                desc = "No se debe comenzar ni continuar el trabajo hasta que se reduzca el riesgo. Si no es posible reducir el riesgo, debe prohibirse el trabajo.";
+                priority = "Urgente / Inmediata";
+            }
+
+            document.getElementById('risk-level-title').innerText = level;
+            document.getElementById('risk-level-title').style.color = level === "RIESGO INTOLERABLE" ? "#ff4d4d" : "#F4D35E";
+            document.getElementById('risk-action-text').innerText = desc;
+            document.getElementById('risk-priority').innerText = priority;
+        }
+
+        // --- ORGANISMOS TRAINER LOGIC ---
+        function renderOrganismosTrainer() {
+            const container = document.getElementById('org-trainer-container');
+            container.innerHTML = '';
+
+            organismosData.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = "question-card p-5 space-y-3";
+                div.innerHTML = `
+                    <p class="text-xs text-slate-100 font-semibold leading-relaxed"><b>Situación/Función ${idx + 1}:</b> ${item.desc}</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        ${item.options.map(opt => `
+                            <button onclick="checkOrgAnswer(${idx}, '${opt}')" class="btn-option p-2 text-xs font-bold">${opt}</button>
+                        `).join('')}
+                    </div>
+                    <div id="org-ans-${idx}" class="hidden text-xs p-3 rounded-lg mt-2"></div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function checkOrgAnswer(idx, selected) {
+            const item = organismosData[idx];
+            const ansDiv = document.getElementById(`org-ans-${idx}`);
+            ansDiv.classList.remove('hidden');
+
+            if (selected === item.correct) {
+                ansDiv.className = "text-xs p-3 rounded-lg mt-2 bg-emerald-900/80 text-emerald-200 border border-emerald-500";
+                ansDiv.innerHTML = `<b>¡Correcto!</b> ${item.exp}`;
+            } else {
+                ansDiv.className = "text-xs p-3 rounded-lg mt-2 bg-rose-900/80 text-rose-200 border border-rose-500";
+                ansDiv.innerHTML = `<b>Incorrecto.</b> El organismo correcto es <b>${item.correct}</b>. ${item.exp}`;
+            }
+        }
+
+        // --- FLASHCARDS LOGIC ---
+        let currentFlashcards = [...flashcardsData];
+        let currentFcIndex = 0;
+        let isFlipped = false;
+
+        function filterFlashcards() {
+            const topic = document.getElementById('filter-topic').value;
+            currentFlashcards = topic === 'all' ? [...flashcardsData] : flashcardsData.filter(c => c.topic === topic);
+            currentFcIndex = 0;
+            isFlipped = false;
+            document.getElementById('flashcard').classList.remove('rotate-y-180');
+            renderFlashcard();
+        }
+
+        function renderFlashcard() {
+            if (currentFlashcards.length === 0) return;
+            const card = currentFlashcards[currentFcIndex];
+            document.getElementById('fc-category').innerText = card.cat;
+            document.getElementById('fc-question').innerText = card.q;
+            document.getElementById('fc-answer').innerText = card.a;
+            document.getElementById('fc-counter').innerText = `${currentFcIndex + 1} / ${currentFlashcards.length}`;
+        }
+
+        function flipCard() {
+            const fc = document.getElementById('flashcard');
+            isFlipped = !isFlipped;
+            if (isFlipped) fc.classList.add('rotate-y-180');
+            else fc.classList.remove('rotate-y-180');
+        }
+
+        function nextCard() {
+            if (currentFlashcards.length === 0) return;
+            isFlipped = false;
+            document.getElementById('flashcard').classList.remove('rotate-y-180');
+            setTimeout(() => {
+                currentFcIndex = (currentFcIndex + 1) % currentFlashcards.length;
+                renderFlashcard();
+            }, 150);
+        }
+
+        function prevCard() {
+            if (currentFlashcards.length === 0) return;
+            isFlipped = false;
+            document.getElementById('flashcard').classList.remove('rotate-y-180');
+            setTimeout(() => {
+                currentFcIndex = (currentFcIndex - 1 + currentFlashcards.length) % currentFlashcards.length;
+                renderFlashcard();
+            }, 150);
+        }
+
+        // --- QUIZ LOGIC ---
+        let currentQuestionIndex = 0;
+        let correctAnswersCount = 0;
+        let currentQuizQuestions = [];
+        let timer;
+        let timeLeft;
+        let selectedOption = null;
+        let incorrectQuestions = [];
+        let correctQuestions = [];
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function startQuiz(numberOfQuestions, duration) {
+            clearInterval(timer);
+            currentQuestionIndex = 0;
+            correctAnswersCount = 0;
+            incorrectQuestions = [];
+            correctQuestions = [];
+
+            document.getElementById('quiz-start-screen').classList.add('hidden');
+            document.getElementById('finalScreen').classList.add('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
+
+            const shuffled = shuffleArray([...quizData]);
+            currentQuizQuestions = shuffled.slice(0, Math.min(numberOfQuestions, shuffled.length));
+            timeLeft = duration * 60;
+
+            loadQuestion(currentQuestionIndex);
+            startTimer();
+        }
+
+        function loadQuestion(index) {
+            const question = currentQuizQuestions[index];
+            selectedOption = null;
+            
+            document.getElementById('questionText').innerText = question.q;
+            document.getElementById('quiz-progress-text').innerText = `Pregunta ${index + 1} de ${currentQuizQuestions.length}`;
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+
+            question.options.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'btn-option p-4 text-left font-semibold text-sm w-full';
+                button.innerText = option;
+                button.onclick = () => selectOption(option, button);
+                optionsContainer.appendChild(button);
+            });
+
+            const confirmBtn = document.createElement('button');
+            confirmBtn.id = 'confirmButton';
+            confirmBtn.className = 'btn-primary-action py-3 px-6 text-base font-bold col-span-full hidden mt-2';
+            confirmBtn.innerText = 'CONFIRMAR RESPUESTA';
+            confirmBtn.onclick = () => checkAnswer(question.correctAnswer, question.explanation);
+            optionsContainer.appendChild(confirmBtn);
+
+            document.getElementById('answerScreen').classList.add('hidden');
+            document.getElementById('previousQuestionBtn').classList.toggle('hidden', index === 0);
+            updateProgress();
+        }
+
+        function selectOption(option, buttonEl) {
+            selectedOption = option;
+            const buttons = document.querySelectorAll('#optionsContainer .btn-option');
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            buttonEl.classList.add('selected');
+            document.getElementById('confirmButton').classList.remove('hidden');
+        }
+
+        function checkAnswer(correctAnswer, explanation) {
+            const isCorrect = selectedOption === correctAnswer;
+            const question = currentQuizQuestions[currentQuestionIndex];
+
+            const answerCard = document.getElementById('answerExplanation');
+            const feedbackText = document.getElementById('feedbackText');
+
+            if (isCorrect) {
+                correctAnswersCount++;
+                feedbackText.innerText = "¡CORRECTO!";
+                feedbackText.className = "text-xl font-bold text-emerald-400 mb-2";
+                answerCard.style.backgroundColor = "#00008B";
+                correctQuestions.push(question);
+            } else {
+                feedbackText.innerText = "¡INCORRECTO!";
+                feedbackText.className = "text-xl font-bold text-rose-300 mb-2";
+                answerCard.style.backgroundColor = "#8B0000";
+                incorrectQuestions.push(question);
+            }
+
+            document.getElementById('correctAnswerText').innerHTML = `<b>Respuesta correcta:</b> ${correctAnswer}<br><br><span class="italic text-xs">${explanation}</span>`;
+            document.getElementById('answerScreen').classList.remove('hidden');
+            document.getElementById('confirmButton').classList.add('hidden');
+
+            currentQuestionIndex++;
+            updateProgress();
+        }
+
+        function loadNextQuestion() {
+            if (currentQuestionIndex < currentQuizQuestions.length) {
+                loadQuestion(currentQuestionIndex);
+            } else {
+                endQuiz();
+            }
+        }
+
+        function loadPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+            }
+        }
+
+        function updateProgress() {
+            const percent = Math.round((currentQuestionIndex / currentQuizQuestions.length) * 100);
+            document.getElementById('progressBar').style.width = `${percent}%`;
+        }
+
+        function startTimer() {
+            timer = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            const mins = Math.floor(timeLeft / 60);
+            const secs = timeLeft % 60;
+            document.getElementById('timeLeft').textContent = `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                endQuiz();
+            }
+            timeLeft--;
+        }
+
+        function endQuiz() {
+            clearInterval(timer);
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('finalScreen').classList.remove('hidden');
+            showFinalMessage();
+        }
+
+        function showFinalMessage() {
+            const percentage = ((correctAnswersCount / currentQuizQuestions.length) * 100).toFixed(1);
+            document.getElementById('finalScore').innerText = `Puntuación Final: ${percentage}%`;
+            
+            const msg = percentage >= 70 
+                ? "¡ENHORABUENA! HAS DEMOSTRADO UN DOMINIO ÓPTIMO PARA EL PARCIAL."
+                : "¡REVISA LA TEORÍA! EL REPASO CONSTANTE ASEGURA EL ÉXITO EN EL PARCIAL.";
+            document.getElementById('finalMessage').innerText = msg;
+        }
+
+        function showQuestionReview(reviewType) {
+            const container = document.getElementById('questionDetails');
+            container.innerHTML = '';
+
+            let list = [];
+            if (reviewType === 'incorrect') list = incorrectQuestions;
+            else if (reviewType === 'correct') list = correctQuestions;
+
+            list.forEach(q => {
+                const item = document.createElement('div');
+                item.className = "question-card p-4 text-xs space-y-2";
+                item.innerHTML = `
+                    <p class="font-bold text-sm highlight-text">${q.q}</p>
+                    <p><b>Correcta:</b> ${q.correctAnswer}</p>
+                    <p class="italic text-slate-200">${q.explanation}</p>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function restartQuiz() {
+            document.getElementById('finalScreen').classList.add('hidden');
+            document.getElementById('quiz-start-screen').classList.remove('hidden');
+            document.getElementById('questionDetails').innerHTML = '';
+        }
+
+        // --- RETOS LOGIC ---
+        function renderRetos() {
+            const container = document.getElementById('retos-container');
+            container.innerHTML = '';
+
+            retosData.forEach((reto, idx) => {
+                const card = document.createElement('div');
+                card.className = "main-card p-6 flex flex-col justify-between space-y-4";
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <span class="px-3 py-1 bg-[#1E5F74] text-white text-xs font-bold rounded-full">${reto.title}</span>
+                        <p class="text-sm text-slate-300 leading-relaxed">${reto.desc}</p>
+                        <div class="question-card p-4 text-xs space-y-2">
+                            <p class="font-bold highlight-text">Análisis Requerido:</p>
+                            <ul class="list-disc list-inside space-y-1 text-slate-100">
+                                ${reto.tasks.map(t => `<li>${t}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <button onclick="toggleSolution(${idx})" id="btn-sol-${idx}" class="w-full py-3 btn-dark-nav font-bold text-xs">
+                            VER FUNDAMENTACIÓN Y SOLUCIÓN DEL PARCIAL
+                        </button>
+                        <div id="sol-${idx}" class="hidden mt-3 p-4 bg-[#05182c] border border-indigo-900 rounded-lg text-xs leading-relaxed text-slate-200 space-y-2">
+                            ${reto.solution}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function toggleSolution(idx) {
+            const sol = document.getElementById(`sol-${idx}`);
+            const btn = document.getElementById(`btn-sol-${idx}`);
+            if (sol.classList.contains('hidden')) {
+                sol.classList.remove('hidden');
+                btn.innerText = "OCULTAR SOLUCIÓN";
+            } else {
+                sol.classList.add('hidden');
+                btn.innerText = "VER FUNDAMENTACIÓN Y SOLUCIÓN DEL PARCIAL";
+            }
+        }
+
+        // --- TAB SWITCHING ---
+        function switchTab(tab) {
+            ['info', 'teoria', 'diferencias', 'matriz', 'organismos', 'retos', 'flashcards', 'quiz'].forEach(t => {
+                const sec = document.getElementById(`sec-${t}`);
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === tab) {
+                    sec.classList.remove('hidden');
+                    btn.classList.add('selected');
+                } else {
+                    sec.classList.add('hidden');
+                    btn.classList.remove('selected');
+                }
+            });
+        }
+
+        // --- INIT ---
+        window.onload = function() {
+            renderFlashcard();
+            renderOrganismosTrainer();
+            renderRetos();
+            calculateRisk();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,1580 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSS paso a paso</title>
+<style>
+:root{
+ --bg:#f6f4ee;--paper:#fffdf8;--ink:#1d2433;--muted:#5d6676;--line:#d9d4c7;--accent:#4f46e5;--accent2:#eef0ff;
+ --green:#16a34a;--greenbg:#e5f5ea;--red:#c8322b;--redbg:#fbe7e5;--amber:#b45309;--amberbg:#fff1dc;
+ --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--shadow:0 1px 2px rgba(0,0,0,.06),0 4px 14px rgba(0,0,0,.05);
+ --code:#1e1e2e;--codeink:#e6e6f0;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14171d;--paper:#1c2028;--ink:#e7e9ee;--muted:#9aa3b2;--line:#353b47;--accent:#8b8cff;--accent2:#252a44;--green:#5fd18f;--greenbg:#183324;--red:#ff7a70;--redbg:#3a1d1b;--amber:#f5b25b;--amberbg:#3a2a12;--code:#0f1117}}
+:root[data-theme="dark"]{--bg:#14171d;--paper:#1c2028;--ink:#e7e9ee;--muted:#9aa3b2;--line:#353b47;--accent:#8b8cff;--accent2:#252a44;--green:#5fd18f;--greenbg:#183324;--red:#ff7a70;--redbg:#3a1d1b;--amber:#f5b25b;--amberbg:#3a2a12;--code:#0f1117}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header.top{padding:20px 16px 4px;max-width:1280px;margin:auto}header.top h1{margin:0;font-size:1.55rem}header.top p{margin:4px 0 0;color:var(--muted)}
+nav#tabs{position:sticky;top:0;z-index:20;background:var(--bg);display:flex;gap:6px;flex-wrap:wrap;padding:10px 16px;max-width:1280px;margin:auto;border-bottom:1px solid var(--line)}
+@media(max-width:760px){nav#tabs{flex-wrap:nowrap;overflow-x:auto}nav#tabs button{flex:none}}
+main.wrap{max-width:1280px;margin:auto;padding:16px}
+button,select,input,textarea{font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:7px 12px;min-width:0;max-width:100%}
+button{cursor:pointer}button:hover:not(:disabled){border-color:var(--accent)}button:disabled{opacity:.45;cursor:default}
+button.on,button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}button.ghost{border-style:dashed}
+.mono{font-family:var(--mono);font-size:.9rem}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.panel h2{margin:4px 0 8px;font-size:1.3rem}.panel h3{margin:0 0 6px}
+.lead{color:var(--muted);margin:0 0 12px}.muted{color:var(--muted);font-size:.9rem}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row.sb{justify-content:space-between}
+code{font-family:var(--mono);font-size:.88em;background:var(--accent2);padding:1px 5px;border-radius:5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.badge{display:inline-block;background:var(--accent2);color:var(--accent);font-size:.78rem;font-weight:700;padding:2px 10px;border-radius:20px}
+.score{font-weight:700;color:var(--accent);background:var(--accent2);border-radius:8px;padding:2px 10px;font-size:.9rem}
+.warn{background:var(--amberbg);border-left:4px solid var(--amber);border-radius:10px;padding:10px 14px;margin-top:10px}
+.tip{background:var(--accent2);border-left:4px solid var(--accent);border-radius:10px;padding:10px 14px;margin-top:10px}
+.track{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin:8px 0}.bar{height:100%;background:var(--accent);transition:width .3s}
+table.tb{width:100%;border-collapse:collapse;font-size:.92rem}table.tb th,table.tb td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}table.tb th{background:var(--bg)}table.tb tr.win td{background:var(--greenbg);font-weight:700}
+.tscroll{overflow-x:auto}
+pre.codeblock{background:var(--code);color:var(--codeink);border-radius:10px;padding:12px;overflow-x:auto;font-family:var(--mono);font-size:.84rem;line-height:1.5;margin:8px 0}
+/* ruta */
+.cycle{display:flex;gap:6px;flex-wrap:wrap;align-items:stretch}.cycle>div{flex:1 1 150px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px}.cycle b{display:block}.cycle span{font-size:.88rem;color:var(--muted)}.cycle .ar{flex:0;align-self:center;border:0;background:none;color:var(--muted);padding:0}
+.groups{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;margin-top:10px}
+.gcard{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--bg)}.gcard.full{border-color:var(--green)}.gcard p{margin:4px 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}.chip{font-size:.78rem;padding:3px 8px;border-radius:20px}.chip.ok{background:var(--greenbg);border-color:var(--green)}
+.mini{font-size:.82rem;padding:4px 10px}.projlink.ok{background:var(--greenbg);border-color:var(--green)}
+/* lecciones */
+.lec{display:grid;grid-template-columns:250px 1fr;gap:16px;align-items:start}
+#lec-nav{position:sticky;top:64px;max-height:calc(100vh - 80px);overflow:auto;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:8px}
+#lec-nav .lgh{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:10px 6px 4px}
+#lec-nav button{display:block;width:100%;text-align:left;border:0;background:none;padding:4px 8px;font-size:.88rem;border-radius:8px}
+#lec-nav button.on{background:var(--accent);color:#fff}#lec-nav button.ok:not(.on){color:var(--green)}
+#lec-sel{display:none;width:100%;margin-bottom:10px}
+.intro{font-size:1.05rem}.points li{margin:4px 0}
+@media(max-width:900px){.lec{grid-template-columns:1fr}#lec-nav{display:none}#lec-sel{display:block}.grid2{grid-template-columns:1fr}}
+/* editor */
+.pg{display:grid;grid-template-columns:1fr 1fr;gap:10px}.pg .pg-ed,.pg .pg-out{display:flex;flex-direction:column;min-width:0}
+.pg-bar{display:flex;gap:4px;align-items:center;margin-bottom:6px}.pg-bar .sp{flex:1}.pg-bar button{padding:3px 12px;font-size:.85rem}.pg-bar .lbl{font-size:.85rem;font-weight:700;color:var(--muted)}
+.pg-bar label{display:flex;gap:4px;align-items:center;cursor:pointer}
+textarea.code{flex:1;min-height:300px;resize:vertical;background:var(--code);color:var(--codeink);border:0;font-family:var(--mono);font-size:.86rem;line-height:1.55;padding:12px;tab-size:2;white-space:pre;overflow:auto}
+.pg.tall textarea.code{min-height:480px}
+.pg-frame{position:relative;flex:1;min-height:300px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.pg.tall .pg-frame{min-height:480px}
+.pg-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
+.pg-ov{position:absolute;inset:0;pointer-events:none}
+.pg-ov>div{position:absolute}.ovm{background:rgba(246,178,107,.45)}.ovb{background:rgba(255,229,153,.55)}.ovp{background:rgba(147,196,125,.55)}.ovc{background:rgba(111,168,220,.6)}
+.ovt{background:#1e293b;color:#fff;font:11px/1.6 var(--mono);padding:0 6px;border-radius:4px;white-space:nowrap}
+.ovsel{outline:2px solid #db2777;background:rgba(219,39,119,.15)}
+.pg-checks{margin-top:10px;border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--bg);font-size:.92rem}
+.pg-checks .pg-ch-h{font-weight:700;margin-bottom:4px}.pg-checks .ok{color:var(--green)}.pg-checks .ko{color:var(--muted)}
+.pg-info{margin-top:10px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg)}
+.insp-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:14px}.insp-grid h4{margin:6px 0}
+.dompath{font-family:var(--mono);font-size:.82rem;background:var(--paper);border-radius:6px;padding:4px 8px}
+.rule{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:6px 8px;margin-bottom:6px;font-family:var(--mono);font-size:.8rem}
+.rule.top{border-color:var(--green)}.rule.inl{border-color:var(--amber)}.rule .spec{font-family:system-ui;color:var(--muted);font-size:.75rem}
+.bm{font-family:var(--mono);font-size:.75rem;text-align:center;background:rgba(246,178,107,.4);border:1px dashed #b45309;padding:4px;border-radius:6px;color:#1d2433}
+.bm-b{background:rgba(255,229,153,.8);border:2px solid #1d2433;padding:4px;flex:1}.bm-p{background:rgba(147,196,125,.7);border:1px dashed #1d2433;padding:4px;flex:1}
+.bm-c{background:rgba(111,168,220,.8);border:1px solid #1d2433;padding:8px;flex:1}
+.bm-row{display:flex;align-items:center;gap:4px}.bm .t{display:block;text-align:left;font-size:.65rem;opacity:.8}.bm .v{display:block}
+.bm.big{font-size:.9rem;padding:14px}.bm.big .bm-b,.bm.big .bm-p{padding:14px}.bm.big .bm-c{padding:22px}
+details.tree{margin-top:10px}details.tree summary{cursor:pointer;font-weight:600}
+.tree-in ul{list-style:none;margin:0;padding-left:16px;border-left:1px dashed var(--line)}.tree-in>ul{padding-left:0;border:0}
+.tree-in button{font-family:var(--mono);font-size:.78rem;padding:1px 6px;border:0;background:none;color:var(--accent)}.tree-in button.on{background:var(--accent);color:#fff}
+@media(max-width:900px){.pg{grid-template-columns:1fr}.insp-grid{grid-template-columns:1fr}textarea.code,.pg-frame{min-height:240px}.pg.tall textarea.code,.pg.tall .pg-frame{min-height:340px}}
+/* proyecto */
+.steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px}
+.steps button{text-align:left;font-size:.85rem;display:flex;gap:8px;align-items:center}
+.steps span{flex:none;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--line);font-size:.75rem;font-weight:700}
+.steps button.done span{background:var(--green);color:#fff}.steps button.on span{background:#fff;color:var(--accent)}
+ol.todo li{margin:6px 0}details.soldet{margin-top:10px}details.soldet summary{cursor:pointer;color:var(--muted)}
+/* test */
+#spec-in{display:block;width:100%;margin-top:4px}
+.qtext{font-size:1.15rem;margin:10px 0}.opts{display:grid;gap:8px}.opt{text-align:left;padding:10px 14px}.opt b{color:var(--accent);margin-right:6px}
+.opt.right{background:var(--greenbg);border-color:var(--green)}.opt.wrong{background:var(--redbg);border-color:var(--red)}
+.big{font-size:3rem;font-weight:800;color:var(--accent);text-align:center}
+@media print{nav#tabs,.noprint{display:none}}
+</style>
+</head>
+<body>
+<header class="top"><h1>CSS paso a paso</h1><p>De cero a maquetar tu propio portfolio: 10 bloques, lecciones con editor en vivo, retos que se corrigen solos, inspector del DOM y un proyecto real.</p></header>
+<nav id="tabs"></nav>
+<main class="wrap">
+ <section id="v-ruta"></section>
+ <section id="v-lec" hidden><div class="lec"><nav id="lec-nav" aria-label="Lecciones"></nav><div><select id="lec-sel" aria-label="Lección"></select><div id="lec-main"></div></div></div></section>
+ <section id="v-proj" hidden></section>
+ <section id="v-lab" hidden></section>
+ <section id="v-chuleta" hidden></section>
+ <section id="v-test" hidden></section>
+</main>
+<script>
+// =====================================================================
+//  NÚCLEO: utilidades, imágenes de ejemplo, editor en vivo e inspector
+// =====================================================================
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+function store(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem("css-" + k)); localStorage.setItem("css-" + k, JSON.stringify(v)); } catch (e) { return null; } }
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+// ---------- imágenes de ejemplo (SVG generados, funcionan sin conexión) ----------
+// En el HTML se escriben como img/nombre.svg y se sustituyen al mostrar el resultado.
+function svgURI(svg) { return "data:image/svg+xml," + encodeURIComponent(svg).replace(/[()']/g, ch => "%" + ch.charCodeAt(0).toString(16).toUpperCase()); }
+function picture(label, c1, c2, w = 400, h = 260) {
+    return svgURI(`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs><rect width="100%" height="100%" fill="url(#g)"/><circle cx="${w * .78}" cy="${h * .28}" r="${h * .12}" fill="#fff" opacity=".5"/><path d="M0 ${h * .82} L${w * .3} ${h * .5} L${w * .55} ${h * .75} L${w * .72} ${h * .6} L${w} ${h * .85} V${h} H0Z" fill="#000" opacity=".22"/><text x="50%" y="${h * .93}" font-family="sans-serif" font-size="${Math.round(h * .08)}" fill="#fff" text-anchor="middle">${label}</text></svg>`, w, h);
+}
+const IMGS = {
+    foto: picture("foto", "#60a5fa", "#7c3aed"),
+    paisaje: picture("paisaje 600×300", "#34d399", "#0ea5e9", 600, 300),
+    vertical: picture("vertical", "#f472b6", "#f59e0b", 260, 400),
+    avatar: svgURI(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="#c7d2fe"/><circle cx="100" cy="80" r="40" fill="#4f46e5"/><rect x="40" y="130" width="120" height="80" rx="60" fill="#4f46e5"/></svg>`),
+    sprite: svgURI(`<svg xmlns="http://www.w3.org/2000/svg" width="96" height="32"><rect width="32" height="32" rx="6" fill="#ef4444"/><path d="M8 16h16M16 8v16" stroke="#fff" stroke-width="4"/><rect x="32" width="32" height="32" rx="6" fill="#22c55e"/><path d="M40 16l5 5 10-10" stroke="#fff" stroke-width="4" fill="none"/><rect x="64" width="32" height="32" rx="6" fill="#3b82f6"/><circle cx="80" cy="16" r="7" fill="#fff"/></svg>`),
+    proyecto1: picture("API REST · Spring Boot", "#1e3a8a", "#7c3aed"),
+    proyecto2: picture("Despliegue en AWS", "#0f766e", "#22d3ee"),
+    proyecto3: picture("Modelo E/R", "#b45309", "#f472b6"),
+    galeria1: picture("1", "#f87171", "#fbbf24"), galeria2: picture("2", "#34d399", "#3b82f6"), galeria3: picture("3", "#a78bfa", "#ec4899"),
+    galeria4: picture("4", "#22d3ee", "#6366f1"), galeria5: picture("5", "#fde047", "#f97316"), galeria6: picture("6", "#4ade80", "#0d9488")
+};
+const withImgs = s => s.replace(/img\/([\w-]+)\.svg/g, (m, k) => IMGS[k] || m);
+
+// ---------- especificidad ----------
+function specificity(sel) {
+    let s = String(sel).replace(/"[^"]*"|'[^']*'/g, "");
+    let a = 0, b = 0, c = 0;
+    s = s.replace(/:where\((?:[^()]|\([^()]*\))*\)/g, " ");
+    s = s.replace(/:(?:not|is|has)\(((?:[^()]|\([^()]*\))*)\)/g, (m, x) => {
+        const best = x.split(",").map(specificity).sort((p, q) => q[0] - p[0] || q[1] - p[1] || q[2] - p[2])[0] || [0, 0, 0];
+        a += best[0]; b += best[1]; c += best[2]; return " ";
+    });
+    s = s.replace(/::[\w-]+(\([^)]*\))?/g, () => { c++; return " "; });
+    s = s.replace(/:(before|after|first-line|first-letter)\b/g, () => { c++; return " "; });
+    s = s.replace(/#[\w-]+/g, () => { a++; return " "; });
+    s = s.replace(/\.[\w-]+|\[[^\]]*\]|:[\w-]+(\([^)]*\))?/g, () => { b++; return " "; });
+    (s.match(/[a-zA-Z][\w-]*/g) || []).forEach(() => c++);
+    return [a, b, c];
+}
+const specTxt = s => `(${s.join(", ")})`;
+
+// ---------- helpers que reciben las comprobaciones ----------
+function makeH(win, css, html) {
+    const d = win.document;
+    const q = s => d.querySelector(s);
+    const cs = (s, p, ps) => { const e = typeof s === "string" ? q(s) : s; return e ? win.getComputedStyle(e, ps || null)[p] : ""; };
+    const n = (s, p, ps) => parseFloat(cs(s, p, ps));
+    const rules = [];
+    const sheet = d.getElementById("u");
+    (function walk(list) { for (const r of list) { if (r.selectorText) rules.push(r); else if (r.cssRules) walk(r.cssRules); } })(sheet && sheet.sheet ? sheet.sheet.cssRules : []);
+    const norm = s => s.replace(/\s+/g, " ").replace(/\s*([>+~,])\s*/g, "$1").replace(/"/g, "'").trim();
+    const rule = sel => { const t = norm(sel); const r = rules.find(r => norm(r.selectorText).split(",").includes(t)); return r ? r.style : null; };
+    return {
+        d, win, q, cs, n, rule, css, html,
+        all: s => [...d.querySelectorAll(s)],
+        has: re => re.test(css.replace(/\/\*[\s\S]*?\*\//g, "")),
+        rect: s => { const e = q(s); return e ? e.getBoundingClientRect() : { width: 0, height: 0, left: 0, top: 0, right: 0, bottom: 0 }; },
+        v: name => win.getComputedStyle(d.documentElement).getPropertyValue(name).trim(),
+        near: (a, b, t = 1) => Math.abs(a - b) <= t
+    };
+}
+
+// ---------- editor en vivo ----------
+// o: { key, html, css, solCss, solHtml, checks:[[texto, h=>bool]], onPass, tabs:"css"|"html", tall, onChange }
+const PG = {};
+function mountPG(box, o) {
+    const saved = (store("pg") || {})[o.key] || {};
+    const st = { html: saved.html ?? o.html, css: saved.css ?? o.css, tab: o.tabs || "css", insp: false, sel: null };
+    box.innerHTML = `<div class="pg ${o.tall ? "tall" : ""}">
+   <div class="pg-ed"><div class="pg-bar"><button data-t="css">CSS</button><button data-t="html">HTML</button><span class="sp"></span>
+     <button class="mini" data-a="reset" title="Volver al código inicial">↺ Inicio</button>${o.solCss !== undefined ? `<button class="mini" data-a="sol">Ver solución</button>` : ""}</div>
+     <textarea class="code" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Código"></textarea></div>
+   <div class="pg-out"><div class="pg-bar"><span class="lbl">Resultado</span><span class="sp"></span><label class="mini"><input type="checkbox" class="insp"> 🔍 Inspeccionar</label></div>
+     <div class="pg-frame"><iframe title="Vista previa"></iframe><div class="pg-ov"></div></div></div>
+  </div>
+  ${o.checks ? `<div class="pg-checks"></div>` : ""}
+  <div class="pg-info" hidden></div>`;
+    const ta = box.querySelector("textarea"), ifr = box.querySelector("iframe"), ov = box.querySelector(".pg-ov"), info = box.querySelector(".pg-info"), chk = box.querySelector(".pg-checks");
+    const setTab = t => { st.tab = t; ta.value = st[t]; box.querySelectorAll("[data-t]").forEach(b => b.classList.toggle("on", b.dataset.t === t)); };
+    const save = () => { const all = store("pg") || {}; all[o.key] = { html: st.html, css: st.css }; store("pg", all); };
+    let timer;
+    const render = () => {
+        ifr.srcdoc = `<!doctype html><html lang="es"><head><meta charset="utf-8"><base target="_blank"><style id="u">${withImgs(st.css)}</style></head><body>${withImgs(st.html)}</body></html>`;
+    };
+    const runChecks = () => {
+        if (!chk) return;
+        let h; try { h = makeH(ifr.contentWindow, st.css, st.html); } catch (e) { return; }
+        const res = o.checks.map(([t, f]) => { let ok = false; try { ok = !!f(h); } catch (e) { ok = false; } return [t, ok]; });
+        const all = res.every(r => r[1]);
+        chk.innerHTML = `<div class="pg-ch-h">${all ? "✅ ¡Reto superado!" : `Reto · ${res.filter(r => r[1]).length}/${res.length}`}</div>` + res.map(([t, ok]) => `<div class="${ok ? "ok" : "ko"}">${ok ? "✓" : "○"} ${t}</div>`).join("");
+        if (all && o.onPass) o.onPass();
+    };
+    ifr.addEventListener("load", () => { runChecks(); hookInspector(); if (st.sel) inspect(null); if (o.onChange) o.onChange(ifr); });
+    ta.addEventListener("input", () => { st[st.tab] = ta.value; save(); clearTimeout(timer); timer = setTimeout(render, 350); });
+    ta.addEventListener("keydown", e => {
+        if (e.key === "Tab") { e.preventDefault(); const s = ta.selectionStart; ta.setRangeText("  ", s, ta.selectionEnd, "end"); ta.dispatchEvent(new Event("input")); }
+    });
+    box.querySelectorAll("[data-t]").forEach(b => b.onclick = () => setTab(b.dataset.t));
+    box.querySelector('[data-a="reset"]').onclick = () => { if (!confirm("¿Volver al código inicial? Se perderán tus cambios.")) return; st.html = o.html; st.css = o.css; save(); setTab(st.tab); render(); };
+    const sb = box.querySelector('[data-a="sol"]');
+    if (sb) sb.onclick = () => { if (!confirm("¿Sustituir tu código por la solución? (Inténtalo antes tú)")) return; st.css = o.solCss; if (o.solHtml !== undefined) st.html = o.solHtml; save(); setTab(st.tab); render(); };
+    // ---- inspector ----
+    const cb = box.querySelector(".insp");
+    cb.onchange = () => { st.insp = cb.checked; ov.innerHTML = ""; info.hidden = !cb.checked; if (cb.checked) { info.innerHTML = `<p class="muted">Pasa el ratón por el resultado y haz clic en un elemento para ver su <b>caja</b>, su <b>lugar en el DOM</b> y las <b>reglas CSS</b> que le afectan.</p>`; treePanel(); } };
+    function boxes(el, keep) {
+        const w = ifr.contentWindow, r = el.getBoundingClientRect(), c = w.getComputedStyle(el), p = x => parseFloat(c[x]) || 0;
+        const m = [p("marginTop"), p("marginRight"), p("marginBottom"), p("marginLeft")], b = [p("borderTopWidth"), p("borderRightWidth"), p("borderBottomWidth"), p("borderLeftWidth")], pd = [p("paddingTop"), p("paddingRight"), p("paddingBottom"), p("paddingLeft")];
+        const d = (x, y, wd, ht, cls) => `<div class="${cls}" style="left:${x}px;top:${y}px;width:${Math.max(0, wd)}px;height:${Math.max(0, ht)}px"></div>`;
+        return d(r.left - m[3], r.top - m[0], r.width + m[1] + m[3], r.height + m[0] + m[2], "ovm") + d(r.left, r.top, r.width, r.height, "ovb") +
+            d(r.left + b[3], r.top + b[0], r.width - b[1] - b[3], r.height - b[0] - b[2], "ovp") + d(r.left + b[3] + pd[3], r.top + b[0] + pd[0], r.width - b[1] - b[3] - pd[1] - pd[3], r.height - b[0] - b[2] - pd[0] - pd[2], "ovc") +
+            `<div class="ovt" style="left:${r.left}px;top:${Math.max(0, r.top - 20)}px">${esc(label(el))} · ${Math.round(r.width)}×${Math.round(r.height)}</div>`;
+    }
+    const label = el => el.tagName.toLowerCase() + (el.id ? "#" + el.id : "") + [...el.classList].map(c => "." + c).join("");
+    function hookInspector() {
+        const d = ifr.contentDocument; if (!d) return;
+        d.addEventListener("mouseover", e => { if (!st.insp) return; ov.innerHTML = boxes(e.target); });
+        d.addEventListener("mouseleave", () => { if (st.insp && st.selEl && st.selEl.isConnected) ov.innerHTML = boxes(st.selEl); });
+        d.addEventListener("click", e => { if (!st.insp) return; e.preventDefault(); e.stopPropagation(); st.selEl = e.target; st.sel = pathOf(e.target); inspect(e.target); }, true);
+        d.addEventListener("scroll", () => { if (st.insp && st.selEl) ov.innerHTML = boxes(st.selEl); });
+        if (st.insp) treePanel();
+    }
+    function pathOf(el) { const p = []; while (el && el.tagName && el.tagName !== "HTML") { p.unshift([...el.parentNode.children].indexOf(el)); el = el.parentNode; } return p; }
+    function byPath(p) { let el = ifr.contentDocument.documentElement; for (const i of p) { el = el && el.children[i]; } return el; }
+    function inspect(el) {
+        if (!el) { el = byPath(st.sel); if (!el) return; st.selEl = el; }
+        ov.innerHTML = boxes(el);
+        const w = ifr.contentWindow, c = w.getComputedStyle(el), p = x => Math.round((parseFloat(c[x]) || 0) * 10) / 10;
+        const chain = []; let e = el; while (e && e.tagName) { chain.unshift(label(e)); e = e.parentElement; }
+        const matched = [];
+        const sheet = ifr.contentDocument.getElementById("u").sheet; let order = 0;
+        (function walk(list, media) { for (const r of list) { order++; if (r.selectorText) { r.selectorText.split(",").forEach(part => { try { const base = part.replace(/::?(before|after|first-line|first-letter|selection|placeholder|marker)\b.*$/, ""); if (base.trim() && el.matches(base)) matched.push({ sel: part.trim(), sp: specificity(part), o: order, txt: r.style.cssText, media, pseudo: base !== part }); } catch (x) { } }); } else if (r.cssRules) walk(r.cssRules, r.conditionText || media); } })(sheet.cssRules, "");
+        matched.sort((x, y) => (x.pseudo - y.pseudo) || y.sp[0] - x.sp[0] || y.sp[1] - x.sp[1] || y.sp[2] - x.sp[2] || y.o - x.o);
+        const inl = el.getAttribute("style");
+        info.hidden = false;
+        info.innerHTML = `<div class="insp-grid">
+      <div><h4>Lugar en el DOM</h4><div class="dompath">${chain.map(esc).join(" › ")}</div>
+       <h4>Modelo de caja</h4>
+       <div class="bm"><span class="t">margin</span><span class="v">${p("marginTop")}</span>
+        <div class="bm-row"><span class="v">${p("marginLeft")}</span><div class="bm-b"><span class="t">border</span><span class="v">${p("borderTopWidth")}</span>
+          <div class="bm-row"><span class="v">${p("borderLeftWidth")}</span><div class="bm-p"><span class="t">padding</span><span class="v">${p("paddingTop")}</span>
+            <div class="bm-row"><span class="v">${p("paddingLeft")}</span><div class="bm-c">${(() => { const r = el.getBoundingClientRect(); return Math.round(r.width - p("paddingLeft") - p("paddingRight") - p("borderLeftWidth") - p("borderRightWidth")) + " × " + Math.round(r.height - p("paddingTop") - p("paddingBottom") - p("borderTopWidth") - p("borderBottomWidth")); })()}</div><span class="v">${p("paddingRight")}</span></div>
+            <span class="v">${p("paddingBottom")}</span></div><span class="v">${p("borderRightWidth")}</span></div><span class="v">${p("borderBottomWidth")}</span></div>
+        <span class="v">${p("marginRight")}</span></div><span class="v">${p("marginBottom")}</span></div>
+       <p class="muted">box-sizing: <b>${c.boxSizing}</b> · display: <b>${c.display}</b> · position: <b>${c.position}</b></p></div>
+      <div><h4>Reglas que le afectan</h4>
+       ${inl ? `<div class="rule inl"><code>style="…"</code> <span class="spec">en línea · gana a todo salvo !important</span><div>${esc(inl)}</div></div>` : ""}
+       ${matched.length ? matched.map((m, i) => `<div class="rule ${i === 0 && !m.pseudo ? "top" : ""}"><code>${esc(m.sel)}</code> <span class="spec">especificidad ${specTxt(m.sp)}${m.media ? " · @media " + esc(m.media) : ""}</span><div>${esc(m.txt).replace(/; /g, ";<br>")}</div></div>`).join("") : `<p class="muted">Ninguna regla tuya selecciona este elemento: solo le llegan los estilos por defecto del navegador y lo que <b>hereda</b> de sus padres (color, fuente…).</p>`}
+       <p class="muted">Ordenadas de más a menos fuerte: primero gana la <b>especificidad</b> y, si empatan, la que está <b>más abajo</b> en el CSS.</p></div></div>`;
+        treePanel();
+    }
+    function treePanel() {
+        const d = ifr.contentDocument; if (!d || !d.body || !st.insp) return;
+        let t = info.querySelector(".tree"); if (!t) { info.insertAdjacentHTML("beforeend", `<details class="tree" open><summary>Árbol DOM (haz clic en un nodo)</summary><div class="tree-in"></div></details>`); t = info.querySelector(".tree"); }
+        const nodeHTML = (el, depth) => { if (depth > 8) return ""; const kids = [...el.children]; return `<li><button data-p="${pathOf(el).join(".")}" class="${el === st.selEl ? "on" : ""}">&lt;${esc(label(el))}&gt;</button>${kids.length ? `<ul>${kids.map(k => nodeHTML(k, depth + 1)).join("")}</ul>` : ""}</li>`; };
+        t.querySelector(".tree-in").innerHTML = `<ul>${nodeHTML(d.body, 0)}</ul>`;
+        t.querySelectorAll("[data-p]").forEach(b => b.onclick = () => { st.sel = b.dataset.p ? b.dataset.p.split(".").map(Number) : []; st.selEl = byPath(st.sel); inspect(st.selEl); });
+    }
+    setTab(st.tab); render();
+    PG[o.key] = { st, ifr, render, ov };
+    return PG[o.key];
+}
+
+// =====================================================================
+//  LECCIONES · G1 a G5
+//  i = explicación · p = puntos clave · h/c = código inicial · s = solución CSS
+//  task = reto · k = comprobaciones · x = error típico
+// =====================================================================
+const GROUPS = [
+ ["G1", "Introducción", "Qué es CSS, cómo se escribe, cómo se conecta al HTML y cómo lo lee el navegador (DOM)."],
+ ["G2", "Posicionamiento", "display, position, z-index, float y opacity: dónde y cómo se coloca cada caja."],
+ ["G3", "Unidades, colores, fondos y selectores", "Medidas, colores, modelo de caja, fondos, la cascada y todos los selectores."],
+ ["G4", "La caja", "Bordes, márgenes, relleno, tamaños, outline y desbordamiento."],
+ ["G5", "Texto", "Propiedades de texto, fuentes, iconos, enlaces y cómo centrar cualquier cosa."],
+ ["G6", "Listas y tablas", "Listas personalizadas y tablas legibles."],
+ ["G7", "Flexbox", "El sistema moderno para alinear y repartir elementos en una dirección."],
+ ["G8", "Componentes y layout", "Barras de navegación, menús desplegables, galerías, sprites, contadores, layout de página, especificidad y funciones matemáticas."],
+ ["G9", "Formularios", "Campos, foco, validación visual y botones."],
+ ["G10", "CSS avanzado", "Transformaciones, transiciones, animaciones, tooltips, object-fit, máscaras, botones, paginación, columnas, box-sizing, interfaz y variables."]
+];
+const LESSONS = [];
+const L = o => LESSONS.push(o);
+const W3 = p => "https://www.w3schools.com/css/" + p;
+
+// ------------------------------------------------------------------ G1
+L({ id: "intro", g: "G1", t: "¿Qué es CSS?", w3: W3("css_intro.asp"),
+ i: "<b>HTML</b> dice <b>qué es</b> cada cosa (un título, un párrafo, una lista). <b>CSS</b> (Cascading Style Sheets, hojas de estilo en cascada) dice <b>cómo se ve</b>: colores, tamaños, posiciones. Separar contenido y presentación permite cambiar el aspecto de toda una web tocando un solo archivo.",
+ p: ["Una hoja de estilos es una lista de <b>reglas</b>.", "Cada regla elige elementos (<b>selector</b>) y les da <b>declaraciones</b> <code>propiedad: valor;</code>.", "«Cascada» significa que, si varias reglas chocan, hay un orden para decidir cuál gana (lo verás en G3).", "Muchas propiedades se <b>heredan</b>: si pones <code>color</code> en <code>body</code>, todo el texto lo recibe."],
+ h: `<h1>Mi primera página con estilo</h1>\n<p>HTML pone el contenido.</p>\n<p>CSS lo hace bonito.</p>`,
+ c: `/* Esto es una regla: selector { propiedad: valor; } */\nbody {\n  font-family: sans-serif;\n}\n`,
+ s: `body {\n  font-family: sans-serif;\n}\nh1 {\n  color: tomato;\n}\np {\n  color: gray;\n}\n`,
+ task: "Pon el <code>h1</code> de color <code>tomato</code> y los párrafos de color <code>gray</code>.",
+ k: [["El h1 es de color tomato", h => h.cs("h1", "color") === "rgb(255, 99, 71)"], ["Los párrafos son grises", h => h.all("p").every(p => h.cs(p, "color") === "rgb(128, 128, 128)")]],
+ x: "Olvidar el <code>;</code> entre declaraciones: la siguiente línea deja de funcionar sin dar ningún error." });
+
+L({ id: "sintaxis", g: "G1", t: "Sintaxis y comentarios", w3: W3("css_syntax.asp"),
+ i: "Una regla tiene un <b>selector</b> y un <b>bloque de declaraciones</b> entre llaves. Cada declaración es <code>propiedad: valor;</code>. Los <b>comentarios</b> van entre <code>/*</code> y <code>*/</code> y el navegador los ignora.",
+ p: ["<code>p { color: red; font-size: 20px; }</code> → selector <code>p</code>, dos declaraciones.", "Los espacios y saltos de línea dan igual: escribe una declaración por línea para leerlo mejor.", "En CSS <b>no</b> existen los comentarios <code>//</code>: solo <code>/* … */</code>.", "Si un valor no es válido, el navegador <b>ignora esa declaración</b> y sigue con las demás."],
+ h: `<p>Texto de prueba</p>\n<p class="nota">Una nota</p>`,
+ c: `p {\n  color: navy\n  font-size: 20px;\n}\n`,
+ s: `/* Párrafos: azul marino y 20px */\np {\n  color: navy;\n  font-size: 20px;\n}\n`,
+ task: "El código tiene un error: los párrafos no se ven a 20px. Arréglalo y añade un comentario que explique la regla.",
+ k: [["Los párrafos miden 20px", h => h.n("p", "fontSize") === 20], ["Son de color navy", h => h.cs("p", "color") === "rgb(0, 0, 128)"], ["Hay un comentario /* … */", h => /\/\*[\s\S]*?\*\//.test(h.css)]],
+ x: "Un <code>;</code> que falta rompe la declaración siguiente: el navegador lee <code>color: navy font-size: 20px</code> como un único valor inválido." });
+
+L({ id: "selectores", g: "G1", t: "Selectores básicos", w3: W3("css_selectors.asp"),
+ i: "El selector decide <b>a qué elementos</b> se aplica la regla. Los cinco básicos cubren el 80 % de los casos.",
+ p: ["<code>p</code> → por <b>etiqueta</b>: todos los párrafos.", "<code>.destacado</code> → por <b>clase</b>: todos los que tengan <code>class=\"destacado\"</code> (se puede repetir).", "<code>#principal</code> → por <b>id</b>: el único elemento con <code>id=\"principal\"</code>.", "<code>*</code> → <b>universal</b>: todos los elementos.", "<code>h2, h3</code> → <b>agrupación</b>: la misma regla para varios selectores.", "Un elemento puede tener varias clases: <code>class=\"btn grande\"</code> y se seleccionan juntas con <code>.btn.grande</code>."],
+ h: `<div id="principal">\n  <h2>Título h2</h2>\n  <h3>Título h3</h3>\n  <p>Un párrafo normal.</p>\n  <p class="destacado">Un párrafo destacado.</p>\n  <p class="destacado">Otro destacado.</p>\n</div>`,
+ c: `\n`,
+ s: `#principal {\n  border: 2px solid black;\n}\n.destacado {\n  background-color: yellow;\n}\nh2, h3 {\n  color: purple;\n}\n`,
+ task: "Con una regla por selector: pon un borde <code>2px solid black</code> al <code>#principal</code>, fondo <code>yellow</code> a los <code>.destacado</code> y color <code>purple</code> a <code>h2</code> y <code>h3</code> con <b>una sola regla agrupada</b>.",
+ k: [["#principal tiene borde de 2px", h => h.n("#principal", "borderTopWidth") === 2], ["Los .destacado tienen fondo amarillo", h => h.all(".destacado").every(e => h.cs(e, "backgroundColor") === "rgb(255, 255, 0)")], ["h2 y h3 son morados", h => h.cs("h2", "color") === "rgb(128, 0, 128)" && h.cs("h3", "color") === "rgb(128, 0, 128)"], ["Usas un selector agrupado (con coma)", h => /[\w\]\)]\s*,\s*[\w.#]/.test(h.css.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\([^)]*\)/g, ""))]],
+ x: "Escribir <code>destacado { }</code> sin el punto: eso busca una etiqueta &lt;destacado&gt; que no existe." });
+
+L({ id: "howto", g: "G1", t: "Cómo se añade CSS (y en qué orden gana)", w3: W3("css_howto.asp"),
+ i: "Hay tres formas de poner CSS: <b>externa</b> (archivo <code>.css</code> enlazado con <code>&lt;link&gt;</code>), <b>interna</b> (etiqueta <code>&lt;style&gt;</code> en el <code>&lt;head&gt;</code>) y <b>en línea</b> (atributo <code>style</code>). Lo profesional es la externa.",
+ p: ["Externa: <code>&lt;link rel=\"stylesheet\" href=\"styles.css\"&gt;</code> en el <code>&lt;head&gt;</code>. Una hoja para todas las páginas.", "Interna: <code>&lt;style&gt; p { color: red; } &lt;/style&gt;</code>.", "En línea: <code>&lt;p style=\"color: red\"&gt;</code>. Gana a las otras dos, pero mezcla HTML y diseño: úsala solo para pruebas.", "Entre externa e interna gana la que aparece <b>más tarde</b> en el documento.", "En este editor, la pestaña CSS equivale a un <code>&lt;style&gt;</code>; para lo en línea, escribe en la pestaña HTML."],
+ h: `<p>Este párrafo sale verde por la hoja de estilos.</p>\n<p id="especial">Y este quiero que salga azul.</p>`,
+ c: `p {\n  color: green;\n}\n`,
+ s: `p {\n  color: green;\n}\n`,
+ sh: `<p>Este párrafo sale verde por la hoja de estilos.</p>\n<p id="especial" style="color: blue">Y este quiero que salga azul.</p>`,
+ tabs: "html",
+ task: "Sin tocar el CSS, en la pestaña <b>HTML</b>, haz que el segundo párrafo salga azul con un estilo <b>en línea</b>.",
+ k: [["El segundo párrafo es azul", h => h.cs("#especial", "color") === "rgb(0, 0, 255)"], ["Lo has hecho con el atributo style", h => /blue/.test(h.q("#especial").getAttribute("style") || "")], ["El primero sigue verde", h => h.cs("p", "color") === "rgb(0, 128, 0)"]],
+ x: "Poner el <code>&lt;link&gt;</code> con una ruta equivocada: no da error, simplemente la página sale sin estilos. Comprueba la pestaña Red (F12)." });
+
+L({ id: "dom", g: "G1", t: "El DOM: cómo lee el navegador tu página", w3: "https://developer.mozilla.org/es/docs/Web/API/Document_Object_Model/Introduction",
+ i: "El navegador convierte el HTML en un <b>árbol de nodos</b>: el <b>DOM</b> (Document Object Model). Cada etiqueta es un nodo con <b>padre</b>, <b>hijos</b> y <b>hermanos</b>. CSS selecciona nodos de ese árbol, y la herencia baja de padres a hijos.",
+ p: ["Proceso: HTML → <b>DOM</b> · CSS → <b>CSSOM</b> · los dos juntos → árbol de render → <b>layout</b> (calcula tamaños y posiciones) → <b>paint</b> (dibuja).", "Pensar en el árbol te dice qué selector usar: <code>.tarjeta p span</code> es «un span dentro de un p dentro de .tarjeta».", "Las propiedades de texto (<code>color</code>, <code>font-*</code>, <code>line-height</code>) se heredan; las de caja (<code>margin</code>, <code>border</code>, <code>padding</code>) no.", "<b>Usa el inspector</b>: activa «🔍 Inspeccionar», haz clic en un elemento y verás su ruta en el árbol, su caja y las reglas que le afectan. Es lo mismo que hacen las DevTools del navegador (F12)."],
+ h: `<article class="tarjeta">\n  <h2>Tarjeta</h2>\n  <p>Texto con una <span>palabra</span> importante.</p>\n  <ul>\n    <li>Uno</li>\n    <li>Dos <span>con span</span></li>\n  </ul>\n</article>`,
+ c: `.tarjeta {\n  color: #334155;\n}\n`,
+ s: `.tarjeta {\n  color: #334155;\n}\n.tarjeta p span {\n  color: crimson;\n  font-weight: bold;\n}\n`,
+ task: "Activa el inspector y mira el árbol. Después pon en <code>crimson</code> y negrita <b>solo</b> el span que está dentro del párrafo (no el de la lista). Fíjate en que el <code>ul</code> hereda el color de <code>.tarjeta</code>.",
+ k: [["El span del párrafo es crimson", h => h.cs("p span", "color") === "rgb(220, 20, 60)"], ["…y está en negrita", h => +h.cs("p span", "fontWeight") >= 700], ["El span de la lista no cambia", h => h.cs("li span", "color") !== "rgb(220, 20, 60)"]],
+ x: "Escribir <code>span { … }</code> a secas: afecta a todos los span del documento. Sube por el árbol hasta un antepasado que los distinga." });
+
+// ------------------------------------------------------------------ G2
+L({ id: "display", g: "G2", t: "display", w3: W3("css_display_visibility.asp"),
+ i: "<code>display</code> decide <b>cómo se comporta la caja</b> respecto a las demás. Es la propiedad más importante de maquetación.",
+ p: ["<b>block</b>: ocupa todo el ancho y empieza en línea nueva (div, p, h1, section). Acepta width, height y márgenes verticales.", "<b>inline</b>: va en la línea del texto y solo ocupa su contenido (span, a, strong). <b>Ignora width y height</b> y los márgenes verticales.", "<b>inline-block</b>: va en línea pero acepta width, height y márgenes. Ideal para botones.", "<b>none</b>: el elemento desaparece y <b>no ocupa espacio</b>. <code>visibility: hidden</code> lo oculta pero <b>deja su hueco</b>.", "También existen <b>flex</b> y <b>grid</b> (G7 y G8)."],
+ h: `<p>Texto con <span class="chip">chip 1</span> y <span class="chip">chip 2</span> en medio.</p>\n<p class="oculto">Este párrafo debería desaparecer sin dejar hueco.</p>\n<p>Fin.</p>`,
+ c: `.chip {\n  background: #dbeafe;\n  width: 120px;   /* ¿por qué no funciona? */\n  height: 40px;\n}\n`,
+ s: `.chip {\n  background: #dbeafe;\n  width: 120px;\n  height: 40px;\n  display: inline-block;\n}\n.oculto {\n  display: none;\n}\n`,
+ task: "Haz que los <code>.chip</code> respeten su width (sin salir de la línea) y que <code>.oculto</code> desaparezca sin dejar hueco.",
+ k: [["Los chips miden 120px de ancho", h => h.near(h.rect(".chip").width, 120)], ["Siguen en la misma línea que el texto", h => h.cs(".chip", "display") === "inline-block"], [".oculto no ocupa espacio", h => h.cs(".oculto", "display") === "none"]],
+ x: "Poner <code>width</code> a un <code>span</code> o un <code>a</code> y no entender por qué no cambia: son inline." });
+
+L({ id: "position", g: "G2", t: "position", w3: W3("css_positioning.asp"),
+ i: "<code>position</code> saca o desplaza una caja de su sitio normal. Con <code>top</code>, <code>right</code>, <code>bottom</code> y <code>left</code> indicas a dónde.",
+ p: ["<b>static</b> (por defecto): flujo normal; top/left no hacen nada.", "<b>relative</b>: se desplaza respecto a <b>su propia posición</b>, pero su hueco original se mantiene. Su uso estrella: ser la <b>referencia</b> de un hijo absolute.", "<b>absolute</b>: sale del flujo (no ocupa hueco) y se coloca respecto al <b>antepasado posicionado más cercano</b> (el primero que no es static). Si no hay, respecto a la página.", "<b>fixed</b>: respecto a la <b>ventana</b>; no se mueve al hacer scroll.", "<b>sticky</b>: normal hasta que, al hacer scroll, llega a su <code>top</code> y se queda pegado (cabeceras)."],
+ h: `<div class="tarjeta">\n  <span class="badge">NUEVO</span>\n  <h3>Zapatillas</h3>\n  <p>Una tarjeta de producto con una etiqueta en la esquina.</p>\n</div>`,
+ c: `.tarjeta {\n  width: 260px;\n  padding: 16px;\n  border: 1px solid #ccc;\n  margin: 30px;\n}\n.badge {\n  background: crimson;\n  color: white;\n  padding: 2px 8px;\n}\n`,
+ s: `.tarjeta {\n  width: 260px;\n  padding: 16px;\n  border: 1px solid #ccc;\n  margin: 30px;\n  position: relative;\n}\n.badge {\n  background: crimson;\n  color: white;\n  padding: 2px 8px;\n  position: absolute;\n  top: 10px;\n  right: 10px;\n}\n`,
+ task: "Coloca la <code>.badge</code> en la esquina superior derecha de la tarjeta, a 10px de cada borde. Pista: el padre necesita ser la referencia.",
+ k: [["La tarjeta es la referencia (relative)", h => h.cs(".tarjeta", "position") === "relative"], ["La badge es absolute", h => h.cs(".badge", "position") === "absolute"], ["Está a 10px de arriba y de la derecha de la tarjeta", h => { const t = h.rect(".tarjeta"), b = h.rect(".badge"); return h.near(b.top - t.top - 1, 10, 1.5) && h.near(t.right - b.right - 1, 10, 1.5); }]],
+ x: "Poner <code>absolute</code> al hijo y olvidar el <code>relative</code> del padre: la badge se va a la esquina de la página." });
+
+L({ id: "zindex", g: "G2", t: "z-index", w3: W3("css_z-index.asp"),
+ i: "Cuando dos cajas se solapan, <code>z-index</code> decide cuál queda <b>encima</b> (número mayor = más arriba). Solo funciona en elementos <b>posicionados</b> (relative, absolute, fixed, sticky) o hijos de flex/grid.",
+ p: ["Sin z-index, gana el que aparece <b>después</b> en el HTML.", "Puede ser negativo para mandar algo detrás.", "Cada elemento con position + z-index crea un <b>contexto de apilamiento</b>: sus hijos no pueden salir de él aunque tengan z-index: 9999.", "Usa valores con margen (1, 10, 100) para no tener que renumerar."],
+ h: `<div class="escena">\n  <div class="caja rojo">rojo</div>\n  <div class="caja azul">azul</div>\n</div>`,
+ c: `.escena { position: relative; height: 160px; }\n.caja { width: 120px; height: 120px; color: white; padding: 8px; }\n.rojo { background: crimson; position: absolute; top: 0; left: 0; }\n.azul { background: royalblue; position: absolute; top: 30px; left: 60px; }\n`,
+ s: `.escena { position: relative; height: 160px; }\n.caja { width: 120px; height: 120px; color: white; padding: 8px; }\n.rojo { background: crimson; position: absolute; top: 0; left: 0; z-index: 2; }\n.azul { background: royalblue; position: absolute; top: 30px; left: 60px; z-index: 1; }\n`,
+ task: "Ahora el azul tapa al rojo porque va después en el HTML. Pon el <b>rojo encima</b> usando z-index.",
+ k: [["El rojo tiene un z-index mayor que el azul", h => (+h.cs(".rojo", "zIndex") || 0) > (+h.cs(".azul", "zIndex") || 0)], ["En el punto de solape se ve el rojo", h => { const b = h.rect(".azul"); const e = h.d.elementFromPoint(b.left + 10, b.top + 10); return e && e.classList.contains("rojo"); }]],
+ x: "Poner <code>z-index</code> a un elemento <code>static</code>: no hace nada." });
+
+L({ id: "float", g: "G2", t: "float y clear", w3: W3("css_float.asp"),
+ i: "<code>float</code> manda una caja a la izquierda o a la derecha y hace que el <b>texto la rodee</b>, como una foto en un periódico. Hoy se usa sobre todo para eso; para maquetar columnas se usa flex o grid.",
+ p: ["<code>float: left | right | none</code>.", "<code>clear: both</code> obliga a un elemento a ponerse <b>debajo</b> de los flotantes.", "Problema clásico: un padre que solo contiene flotantes <b>se encoge a altura 0</b> (no los «ve»).", "Solución moderna: <code>display: flow-root</code> en el padre (antes se usaba el «clearfix»)."],
+ h: `<div class="contenedor">\n  <img src="img/foto.svg" alt="Foto" width="160">\n  <p>Este texto debería rodear la imagen por la izquierda. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>\n</div>\n<p class="despues">Esto va después del contenedor.</p>`,
+ c: `.contenedor {\n  border: 2px dashed #94a3b8;\n}\nimg {\n  margin: 0 0 8px 12px;\n}\n`,
+ s: `.contenedor {\n  border: 2px dashed #94a3b8;\n  display: flow-root;\n}\nimg {\n  margin: 0 0 8px 12px;\n  float: right;\n}\n`,
+ task: "Haz flotar la imagen a la <b>derecha</b> para que el texto la rodee y consigue que el borde del <code>.contenedor</code> la envuelva entera.",
+ k: [["La imagen flota a la derecha", h => h.cs("img", "float") === "right"], ["El contenedor envuelve la imagen", h => h.rect(".contenedor").bottom >= h.rect("img").bottom]],
+ x: "Usar float para hacer columnas y pelearse con alturas y clear: para eso está flexbox." });
+
+L({ id: "opacity", g: "G2", t: "opacity y transparencia", w3: W3("css_image_transparency.asp"),
+ i: "<code>opacity</code> (de 0 a 1) hace transparente <b>el elemento entero, con todos sus hijos</b>. Si solo quieres un <b>fondo</b> transparente, usa un color con canal alfa: <code>rgba()</code> o <code>hsl(… / 0.5)</code>.",
+ p: ["<code>opacity: 0.5</code> → todo al 50 %, también el texto.", "<code>background: rgba(0, 0, 0, 0.5)</code> → solo el fondo al 50 %; el texto sigue opaco.", "<code>opacity: 0</code> oculta pero el elemento sigue ocupando sitio y recibiendo clics.", "Muy usado en efectos :hover con transition (G10)."],
+ h: `<div class="foto">\n  <img src="img/paisaje.svg" alt="" width="300">\n  <p class="velo">Texto sobre fondo semitransparente</p>\n</div>\n<img class="apagada" src="img/foto.svg" alt="" width="140">`,
+ c: `.foto { position: relative; width: 300px; }\n.velo {\n  position: absolute; left: 0; right: 0; bottom: 0; margin: 0;\n  padding: 8px; color: white;\n  background: black;\n}\n`,
+ s: `.foto { position: relative; width: 300px; }\n.velo {\n  position: absolute; left: 0; right: 0; bottom: 0; margin: 0;\n  padding: 8px; color: white;\n  background: rgba(0, 0, 0, 0.5);\n}\n.apagada {\n  opacity: 0.4;\n}\n`,
+ task: "Haz el fondo del <code>.velo</code> negro al 50 % <b>sin</b> que el texto se vuelva transparente, y deja la imagen <code>.apagada</code> con opacity 0.4.",
+ k: [["El fondo del velo es negro con alfa 0.5", h => /rgba\(0, 0, 0, 0\.5\)/.test(h.cs(".velo", "backgroundColor"))], ["El texto del velo no es transparente", h => h.cs(".velo", "opacity") === "1"], ["La imagen apagada tiene opacity 0.4", h => h.cs(".apagada", "opacity") === "0.4"]],
+ x: "Poner <code>opacity</code> al contenedor y que el texto también se desvanezca." });
+
+// ------------------------------------------------------------------ G3
+L({ id: "unidades", g: "G3", t: "Unidades", w3: W3("css_units.asp"),
+ i: "Las medidas pueden ser <b>absolutas</b> (px) o <b>relativas</b> (a la fuente, al padre o a la ventana). Las relativas hacen que el diseño se adapte.",
+ p: ["<b>px</b>: píxel. Fijo.", "<b>%</b>: porcentaje <b>del padre</b> (en width, del ancho del padre).", "<b>em</b>: relativo al font-size <b>del propio elemento</b> (o del padre si es font-size). Se acumula al anidar.", "<b>rem</b>: relativo al font-size del <b>html</b> (16px por defecto). No se acumula: el más recomendable para tipografía.", "<b>vw / vh</b>: 1 % del ancho / alto de la <b>ventana</b>.", "<b>ch</b>: ancho del carácter «0»; <code>max-width: 65ch</code> da líneas cómodas de leer."],
+ h: `<div class="padre">\n  <h2 class="titulo">Título en rem</h2>\n  <div class="caja">Mitad del padre</div>\n  <p class="anidado">Texto en em <span>y más em dentro</span></p>\n</div>`,
+ c: `.padre { width: 400px; border: 1px solid #ccc; }\n.caja { background: #e0e7ff; }\n.anidado { font-size: 1.25em; }\n.anidado span { font-size: 1.25em; }\n`,
+ s: `.padre { width: 400px; border: 1px solid #ccc; }\n.titulo { font-size: 2rem; }\n.caja { background: #e0e7ff; width: 50%; }\n.anidado { font-size: 1.25em; }\n.anidado span { font-size: 1.25em; }\n`,
+ task: "Pon el <code>.titulo</code> a <code>2rem</code> y la <code>.caja</code> al 50 % del padre. Luego usa el inspector en el span: ¿por qué mide 25px y no 20px?",
+ k: [["El título mide 2rem (32px)", h => h.n(".titulo", "fontSize") === 32], ["La caja mide la mitad del padre (200px)", h => h.near(h.rect(".caja").width, 200)], ["Lo has hecho con unidades relativas", h => h.has(/2rem/) && h.has(/50%/)]],
+ x: "Anidar elementos en <code>em</code> y que el texto crezca sin control (1.25 × 1.25 × …). Con <code>rem</code> no pasa." });
+
+L({ id: "colores", g: "G3", t: "Colores", w3: W3("css_colors.asp"),
+ i: "Un color se puede escribir de varias formas; el navegador las convierte todas a <code>rgb()</code>.",
+ p: ["<b>Nombre</b>: <code>red</code>, <code>tomato</code>, <code>navy</code> (unos 140).", "<b>Hexadecimal</b>: <code>#ff0000</code> (rojo-verde-azul de 00 a ff) o corto <code>#f00</code>.", "<b>rgb / rgba</b>: <code>rgb(255, 0, 0)</code>, con transparencia <code>rgba(255, 0, 0, 0.5)</code>.", "<b>hsl</b>: tono (0–360°), saturación %, luminosidad %. Muy cómodo para crear variaciones: <code>hsl(220, 80%, 40%)</code> → <code>hsl(220, 80%, 90%)</code>.", "<b>currentColor</b>: el color de texto actual (útil en bordes e iconos SVG)."],
+ h: `<p class="a">Rojo en hexadecimal</p>\n<p class="b">Fondo verde con hsl</p>\n<p class="c">Borde del mismo color que el texto</p>`,
+ c: `p { padding: 8px; }\n`,
+ s: `p { padding: 8px; }\n.a { color: #ff0000; }\n.b { background-color: hsl(120, 100%, 25%); color: white; }\n.c { color: purple; border: 3px solid currentColor; }\n`,
+ task: "<code>.a</code>: color <code>#ff0000</code>. <code>.b</code>: fondo <code>hsl(120, 100%, 25%)</code> y texto blanco. <code>.c</code>: texto purple y un borde de 3px del mismo color usando <code>currentColor</code>.",
+ k: [[".a es rojo (#ff0000)", h => h.cs(".a", "color") === "rgb(255, 0, 0)"], [".b tiene fondo hsl(120, 100%, 25%) = rgb(0, 128, 0)", h => h.cs(".b", "backgroundColor") === "rgb(0, 128, 0)"], [".c tiene borde del color del texto con currentColor", h => h.cs(".c", "borderTopColor") === h.cs(".c", "color") && h.has(/currentcolor/i)]],
+ x: "Escribir <code>#ff00</code> (4 dígitos, que significa otra cosa) o hex sin la almohadilla." });
+
+L({ id: "boxmodel", g: "G3", t: "Modelo de caja", w3: W3("css_boxmodel.asp"),
+ i: "Todo elemento es una <b>caja</b> con cuatro capas: <b>contenido</b> → <b>padding</b> (relleno interior) → <b>border</b> → <b>margin</b> (espacio exterior). Entenderlo es la base de todo el layout.",
+ p: ["Por defecto (<code>box-sizing: content-box</code>), <code>width</code> es solo el <b>contenido</b>: ancho real = width + padding × 2 + border × 2.", "Con <code>box-sizing: border-box</code>, <code>width</code> incluye padding y borde: mucho más intuitivo. Casi todos los proyectos empiezan con <code>*, *::before, *::after { box-sizing: border-box; }</code>.", "El margin no tiene color: se ve el fondo del padre.", "Los márgenes verticales de dos bloques seguidos <b>se fusionan</b> (margin collapse): se queda el mayor, no la suma.", "Activa el inspector: verás las cuatro capas en colores, como en las DevTools."],
+ h: `<div class="caja">Caja</div>`,
+ c: `.caja {\n  width: 200px;\n  padding: 20px;\n  border: 5px solid #4f46e5;\n  margin: 20px;\n  background: #e0e7ff;\n}\n`,
+ s: `.caja {\n  width: 200px;\n  padding: 20px;\n  border: 5px solid #4f46e5;\n  margin: 20px;\n  background: #e0e7ff;\n  box-sizing: border-box;\n}\n`,
+ task: "La caja tiene <code>width: 200px</code> pero mide 250px en pantalla. Inspecciónala para ver de dónde salen los 50px y consigue que mida <b>exactamente 200px</b> sin quitar el padding ni el borde.",
+ k: [["La caja mide 200px de ancho total", h => h.near(h.q(".caja").offsetWidth, 200)], ["Mantiene padding 20px y borde 5px", h => h.n(".caja", "paddingLeft") === 20 && h.n(".caja", "borderLeftWidth") === 5]],
+ x: "Poner dos cajas de <code>width: 50%</code> con padding y que no quepan en la misma fila: el padding se suma. Solución: border-box." });
+
+L({ id: "fondos", g: "G3", t: "Fondos", w3: W3("css_background.asp"),
+ i: "Un fondo puede ser un color, una imagen o un <b>degradado</b> (que CSS trata como imagen). Se controla cómo se repite, su tamaño y su posición.",
+ p: ["<code>background-color</code>: color de fondo (siempre ponlo como respaldo de una imagen).", "<code>background-image: url(foto.jpg)</code> o <code>linear-gradient(135deg, #1e3a8a, #7c3aed)</code>, <code>radial-gradient(…)</code>.", "<code>background-repeat: no-repeat | repeat-x | repeat</code>.", "<code>background-size: cover</code> (llena recortando) · <code>contain</code> (cabe entera).", "<code>background-position: center</code>, <code>top right</code>, <code>50% 20%</code>.", "Abreviatura: <code>background: #1e3a8a url(f.jpg) no-repeat center / cover;</code>"],
+ h: `<section class="hero">\n  <h1>Portada</h1>\n  <p>Fondo con degradado e imagen</p>\n</section>`,
+ c: `.hero {\n  height: 220px;\n  color: white;\n  padding: 24px;\n}\n`,
+ s: `.hero {\n  height: 220px;\n  color: white;\n  padding: 24px;\n  background-color: #1e3a8a;\n  background-image: linear-gradient(135deg, rgba(30, 58, 138, 0.8), rgba(124, 58, 237, 0.6)), url(img/paisaje.svg);\n  background-size: cover;\n  background-position: center;\n}\n`,
+ task: "Dale al <code>.hero</code> un color de respaldo y un fondo con un <code>linear-gradient</code> encima de la imagen <code>img/paisaje.svg</code> (separados por coma), que la cubra entera (<code>cover</code>) y centrada.",
+ k: [["Tiene un linear-gradient", h => /linear-gradient/.test(h.cs(".hero", "backgroundImage"))], ["…y la imagen paisaje", h => /url\(/.test(h.cs(".hero", "backgroundImage"))], ["background-size: cover", h => h.cs(".hero", "backgroundSize").includes("cover")], ["Tiene color de respaldo", h => h.cs(".hero", "backgroundColor") !== "rgba(0, 0, 0, 0)"]],
+ x: "Escribir <code>background: url(…)</code> después de <code>background-color</code>: la abreviatura reinicia el color." });
+
+L({ id: "cascada", g: "G3", t: "La cascada, la especificidad y !important", w3: W3("css_important.asp"),
+ i: "Si dos reglas dan valores distintos a la misma propiedad, gana: <b>1)</b> la que tenga <code>!important</code>; <b>2)</b> la más <b>específica</b>; <b>3)</b> si empatan, la que esté <b>más abajo</b>. La especificidad se cuenta como (ids, clases, etiquetas).",
+ p: ["<code>p</code> = (0,0,1) · <code>.nota</code> = (0,1,0) · <code>#aviso</code> = (1,0,0) · <code>#aviso .nota p</code> = (1,1,1).", "Un id gana a cualquier número de clases; una clase gana a cualquier número de etiquetas.", "Un estilo en línea gana a todas; <code>!important</code> gana incluso a ese.", "<code>!important</code> rompe la cascada y obliga a usar más !important después: úsalo solo como último recurso (o para utilidades).", "En el inspector verás cada regla con su especificidad y cuál gana."],
+ h: `<div id="panel">\n  <p class="aviso">Este aviso debería ser rojo.</p>\n</div>`,
+ c: `#panel p {\n  color: gray;\n}\n.aviso {\n  color: red;   /* ¿por qué no se aplica? */\n}\n`,
+ s: `#panel p {\n  color: gray;\n}\n#panel .aviso {\n  color: red;\n}\n`,
+ task: "El aviso sale gris aunque <code>.aviso</code> dice rojo. Inspecciónalo, mira las especificidades y arréglalo <b>sin usar !important</b> ni tocar el HTML.",
+ k: [["El aviso es rojo", h => h.cs(".aviso", "color") === "rgb(255, 0, 0)"], ["Sin !important", h => !h.has(/!important/)]],
+ x: "Responder a un estilo que no se aplica añadiendo !important en vez de entender qué regla gana." });
+
+L({ id: "combinadores", g: "G3", t: "Combinadores", w3: W3("css_combinators.asp"),
+ i: "Los combinadores seleccionan según la <b>relación en el árbol DOM</b>.",
+ p: ["<code>A B</code> (espacio) → <b>descendiente</b>: B en cualquier nivel dentro de A.", "<code>A &gt; B</code> → <b>hijo directo</b>: B justo debajo de A.", "<code>A + B</code> → <b>hermano adyacente</b>: el B que va <b>inmediatamente después</b> de A.", "<code>A ~ B</code> → <b>hermanos siguientes</b>: todos los B que van después de A con el mismo padre."],
+ h: `<ul class="menu">\n  <li>Inicio</li>\n  <li>Productos\n    <ul><li>Sub 1</li><li>Sub 2</li></ul>\n  </li>\n  <li>Contacto</li>\n</ul>\n<h2>Título</h2>\n<p>Primer párrafo tras el título.</p>\n<p>Segundo párrafo.</p>\n<p>Tercer párrafo.</p>`,
+ c: `\n`,
+ s: `.menu > li {\n  border-left: 4px solid orange;\n}\nh2 + p {\n  font-style: italic;\n}\nh2 ~ p {\n  color: teal;\n}\n`,
+ task: "Un borde izquierdo naranja de 4px <b>solo</b> en los <code>li</code> hijos directos de <code>.menu</code> (no en los del submenú); en cursiva <b>solo</b> el primer párrafo tras el <code>h2</code>, y en <code>teal</code> todos los párrafos que siguen al h2.",
+ k: [["Los li directos tienen el borde", h => h.n(".menu > li", "borderLeftWidth") === 4], ["Los del submenú no", h => h.n(".menu ul li", "borderLeftWidth") === 0], ["Solo el primer párrafo en cursiva", h => { const p = h.all("p"); return h.cs(p[0], "fontStyle") === "italic" && h.cs(p[1], "fontStyle") === "normal"; }], ["Todos los párrafos son teal", h => h.all("p").every(p => h.cs(p, "color") === "rgb(0, 128, 128)")]],
+ x: "Usar descendiente (<code>.menu li</code>) cuando querías hijo directo: el estilo baja también a los submenús. Ojo: si usas <code>font-weight</code> en vez de un borde, los li del submenú lo <b>heredan</b> de su li padre aunque el selector no los elija." });
+
+L({ id: "atributos", g: "G3", t: "Selectores de atributo", w3: W3("css_attribute_selectors.asp"),
+ i: "Seleccionan elementos según sus <b>atributos</b> y su valor. Muy útiles en formularios y enlaces.",
+ p: ["<code>[title]</code> → tiene el atributo.", "<code>[type=\"email\"]</code> → valor exacto.", "<code>[href^=\"https\"]</code> → <b>empieza</b> por.", "<code>[href$=\".pdf\"]</code> → <b>termina</b> en.", "<code>[class*=\"btn\"]</code> → <b>contiene</b>.", "<code>[lang|=\"es\"]</code> → es «es» o empieza por «es-»."],
+ h: `<p><a href="https://mdn.dev">Enlace seguro</a> · <a href="http://ejemplo.com">Enlace http</a> · <a href="apuntes.pdf">Apuntes en PDF</a></p>\n<input type="text" placeholder="Nombre">\n<input type="email" placeholder="Email">`,
+ c: `input { padding: 6px; margin: 4px; }\n`,
+ s: `input { padding: 6px; margin: 4px; }\na[href$=".pdf"] {\n  color: crimson;\n}\na[href^="https"] {\n  font-weight: bold;\n}\ninput[type="email"] {\n  border: 3px solid royalblue;\n}\n`,
+ task: "Los enlaces que <b>terminan en .pdf</b> en <code>crimson</code>; los que <b>empiezan por https</b> en negrita; y solo el input de tipo email con borde <code>3px solid royalblue</code>.",
+ k: [["El enlace .pdf es crimson", h => h.cs('a[href$=".pdf"]', "color") === "rgb(220, 20, 60)"], ["El enlace https está en negrita", h => +h.cs('a[href^="https"]', "fontWeight") >= 700], ["El http no", h => +h.cs('a[href^="http:"]', "fontWeight") < 700], ["Solo el email tiene borde azul de 3px", h => h.n('input[type="email"]', "borderTopWidth") === 3 && h.n('input[type="text"]', "borderTopWidth") !== 3]],
+ x: "Olvidar las comillas cuando el valor tiene puntos o barras: <code>[href$=.pdf]</code> no es válido." });
+
+L({ id: "pseudoclases", g: "G3", t: "Pseudo-clases: :first-child, :nth-child, :not…", w3: W3("css_pseudo_classes.asp"),
+ i: "Una <b>pseudo-clase</b> (un <code>:</code>) selecciona elementos por su <b>estado</b> o su <b>posición</b> en el árbol, sin añadir clases al HTML.",
+ p: ["Posición: <code>:first-child</code>, <code>:last-child</code>, <code>:nth-child(2)</code>, <code>:nth-child(odd|even)</code>, <code>:nth-child(3n+1)</code>, <code>:only-child</code>.", "Por tipo: <code>:first-of-type</code>, <code>:nth-of-type(2)</code> (cuenta solo los de su etiqueta).", "Estado: <code>:hover</code>, <code>:focus</code>, <code>:active</code>, <code>:checked</code>, <code>:disabled</code>, <code>:visited</code>.", "Lógicas: <code>:not(.activo)</code>, <code>:is(h1, h2)</code>, <code>:has(img)</code> (el padre que contiene…).", "<code>li:first-child</code> significa «un li que es el primer hijo de su padre», no «el primer hijo del li»."],
+ h: `<ul class="lista">\n  <li>Uno</li>\n  <li>Dos</li>\n  <li>Tres</li>\n  <li>Cuatro</li>\n  <li class="activo">Cinco</li>\n  <li>Seis</li>\n</ul>`,
+ c: `.lista li { padding: 6px; }\n`,
+ s: `.lista li { padding: 6px; }\n.lista li:first-child {\n  font-weight: bold;\n}\n.lista li:nth-child(even) {\n  background: #f1f5f9;\n}\n.lista li:not(.activo) {\n  color: #64748b;\n}\n`,
+ task: "El primer <code>li</code> en negrita; los <b>pares</b> con fondo <code>#f1f5f9</code>; y todos los que <b>no</b> son <code>.activo</code> en gris <code>#64748b</code>.",
+ k: [["El primero en negrita", h => +h.cs(".lista li:first-child", "fontWeight") >= 700], ["Los pares tienen fondo", h => h.cs(".lista li:nth-child(2)", "backgroundColor") === "rgb(241, 245, 249)" && h.cs(".lista li:nth-child(3)", "backgroundColor") !== "rgb(241, 245, 249)"], ["Los no activos son grises y el activo no", h => h.cs(".lista li:nth-child(1)", "color") === "rgb(100, 116, 139)" && h.cs(".activo", "color") !== "rgb(100, 116, 139)"]],
+ x: "Escribir <code>.lista:first-child</code> (el ul que es primer hijo) en vez de <code>.lista li:first-child</code>." });
+
+L({ id: "pseudoelementos", g: "G3", t: "Pseudo-elementos ::before, ::after y content", w3: W3("css_pseudo_elements.asp"),
+ i: "Un <b>pseudo-elemento</b> (<code>::</code>) crea o selecciona una <b>parte</b> de un elemento. <code>::before</code> y <code>::after</code> crean un hijo «falso» al principio o al final, y <b>solo existen si tienen <code>content</code></b>.",
+ p: ["<code>content: \"★ \"</code> → texto; <code>content: \"\"</code> → caja vacía para decorar (líneas, flechas, círculos).", "<code>content: attr(data-tip)</code> → muestra el valor de un atributo; <code>content: counter(n)</code> → un contador (G8).", "Son <code>inline</code> por defecto: para darles tamaño, <code>display: block</code> o <code>position: absolute</code>.", "Otros: <code>::first-letter</code> (letra capital), <code>::first-line</code>, <code>::selection</code> (texto seleccionado), <code>::placeholder</code>, <code>::marker</code> (viñeta de lista).", "El contenido de ::before/::after <b>no está en el DOM</b>: no se puede seleccionar ni copiar."],
+ h: `<p class="nota">Recuerda guardar el proyecto.</p>\n<h2 class="subrayado">Título decorado</h2>\n<p class="capitular">Érase una vez un párrafo con letra capital al principio.</p>`,
+ c: `.nota { background: #fef3c7; padding: 8px; }\n`,
+ s: `.nota { background: #fef3c7; padding: 8px; }\n.nota::before {\n  content: "💡 ";\n}\n.subrayado::after {\n  content: "";\n  display: block;\n  width: 60px;\n  height: 4px;\n  background: #7c3aed;\n}\n.capitular::first-letter {\n  font-size: 2.5em;\n  font-weight: bold;\n}\n`,
+ task: "Añade «💡 » delante de <code>.nota</code> con ::before; una línea decorativa de 60×4px bajo el <code>.subrayado</code> con ::after; y una letra capital de 2.5em en <code>.capitular</code>.",
+ k: [["La nota empieza con 💡", h => h.cs(".nota", "content", "::before").includes("💡")], ["El h2 tiene una línea de 60×4", h => h.cs(".subrayado", "width", "::after") === "60px" && h.cs(".subrayado", "height", "::after") === "4px"], ["Letra capital grande", h => h.n(".capitular", "fontSize", "::first-letter") > h.n(".capitular", "fontSize") * 2]],
+ x: "Olvidar <code>content: \"\"</code>: sin él, el ::before/::after no existe y nada de lo demás funciona." });
+
+L({ id: "hover", g: "G3", t: ":hover y los estados de interacción", w3: W3("css_pseudo_classes.asp"),
+ i: "<code>:hover</code> se aplica mientras el ratón está encima. Junto a <code>:focus</code> (teclado) y <code>:active</code> (mientras se pulsa) dan sensación de interfaz viva.",
+ p: ["<code>.btn:hover { background: … }</code>.", "Ponle también <code>:focus-visible</code> para quien navega con teclado (accesibilidad).", "<code>.tarjeta:hover .titulo</code> → al pasar por la tarjeta, cambia un hijo: patrón muy usado (menús desplegables, G8).", "En móvil no existe hover real: no escondas información importante solo tras un hover.", "Con <code>transition</code> (G10) el cambio es suave."],
+ h: `<button class="btn">Pásame el ratón</button>\n<div class="tarjeta"><h3 class="titulo">Tarjeta</h3><p>Pasa por encima de la tarjeta.</p></div>`,
+ c: `.btn { padding: 10px 18px; border: 0; background: #4f46e5; color: white; border-radius: 8px; }\n.tarjeta { border: 1px solid #ddd; padding: 12px; margin-top: 16px; }\n`,
+ s: `.btn { padding: 10px 18px; border: 0; background: #4f46e5; color: white; border-radius: 8px; }\n.btn:hover {\n  background: #3730a3;\n  cursor: pointer;\n}\n.btn:focus-visible {\n  outline: 3px solid #fbbf24;\n}\n.tarjeta { border: 1px solid #ddd; padding: 12px; margin-top: 16px; }\n.tarjeta:hover .titulo {\n  color: #4f46e5;\n}\n`,
+ task: "Escribe: <code>.btn:hover</code> con un fondo más oscuro y cursor de mano; <code>.btn:focus-visible</code> con un outline; y <code>.tarjeta:hover .titulo</code> que cambie el color del título. (Pásale el ratón para probarlo.)",
+ k: [[".btn:hover cambia el fondo", h => { const r = h.rule(".btn:hover"); return r && (r.backgroundColor || r.background); }], [".btn:hover pone cursor pointer", h => { const r = h.rule(".btn:hover"); return r && r.cursor === "pointer"; }], [".btn:focus-visible tiene outline", h => { const r = h.rule(".btn:focus-visible"); return r && (r.outline || r.outlineStyle); }], [".tarjeta:hover .titulo cambia el color", h => { const r = h.rule(".tarjeta:hover .titulo"); return r && r.color; }]],
+ x: "Escribir <code>.btn :hover</code> (con espacio): significa «un descendiente de .btn en hover»." });
+
+L({ id: "refsel", g: "G3", t: "Referencia de selectores", w3: "https://www.w3schools.com/cssref/css_selectors.php",
+ i: "Resumen de todos los selectores con su especificidad. Pruébalos en el <b>Laboratorio</b> con el probador de selectores: escribes un selector y se iluminan los elementos que selecciona.",
+ p: ["Tabla completa en la pestaña <b>Chuleta</b>.", "Regla práctica: usa <b>clases</b> para casi todo, combinadores para relaciones y evita los <b>id</b> en CSS (suben tanto la especificidad que luego cuesta sobrescribir)."],
+ h: `<nav>\n  <a href="#" class="activo">Inicio</a>\n  <a href="#">Blog</a>\n  <a href="#">Contacto</a>\n</nav>\n<article>\n  <h2>Post</h2>\n  <p>Primer párrafo</p>\n  <p>Segundo párrafo</p>\n</article>`,
+ c: `nav a { margin-right: 12px; }\n`,
+ s: `nav a { margin-right: 12px; }\nnav a:not(.activo) {\n  color: gray;\n}\narticle p:last-child {\n  border-left: 4px solid orange;\n  padding-left: 8px;\n}\n`,
+ task: "Repaso: en gris los enlaces del nav que <b>no</b> son <code>.activo</code>, y un borde izquierdo naranja de 4px al <b>último</b> párrafo del artículo.",
+ k: [["Enlaces no activos en gris", h => h.cs("nav a:nth-child(2)", "color") === "rgb(128, 128, 128)" && h.cs("nav a.activo", "color") !== "rgb(128, 128, 128)"], ["El último párrafo tiene borde naranja", h => h.cs("article p:last-child", "borderLeftColor") === "rgb(255, 165, 0)" && h.n("article p:last-child", "borderLeftWidth") === 4]],
+ x: "" });
+
+// ------------------------------------------------------------------ G4
+L({ id: "bordes", g: "G4", t: "Bordes y border-radius", w3: W3("css_border.asp"),
+ i: "Un borde necesita <b>grosor, estilo y color</b>. Sin estilo no se ve.",
+ p: ["Abreviatura: <code>border: 2px solid #333;</code> · por lado: <code>border-bottom: …</code>.", "Estilos: solid, dashed, dotted, double, none.", "<code>border-radius: 8px</code> redondea; <code>50%</code> en una caja cuadrada la convierte en círculo.", "Esquinas sueltas: <code>border-radius: 16px 0</code> (arriba-izquierda/abajo-derecha y al revés).", "<code>box-shadow: 0 4px 12px rgba(0,0,0,.15)</code> da profundidad (desplazamiento x, y, desenfoque, color)."],
+ h: `<img class="avatar" src="img/avatar.svg" alt="Avatar" width="120" height="120">\n<p class="aviso">Aviso importante</p>`,
+ c: `\n`,
+ s: `.avatar {\n  border-radius: 50%;\n  border: 3px solid #4f46e5;\n}\n.aviso {\n  border-left: 6px solid orange;\n  padding: 8px;\n  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);\n}\n`,
+ task: "Convierte el <code>.avatar</code> en un <b>círculo</b> con borde de 3px sólido; dale al <code>.aviso</code> solo un borde izquierdo naranja de 6px y una sombra.",
+ k: [["El avatar es circular", h => h.cs(".avatar", "borderTopLeftRadius") === "50%"], ["…con borde de 3px sólido", h => h.n(".avatar", "borderTopWidth") === 3 && h.cs(".avatar", "borderTopStyle") === "solid"], ["El aviso tiene solo borde izquierdo de 6px", h => h.n(".aviso", "borderLeftWidth") === 6 && h.n(".aviso", "borderTopWidth") === 0], ["El aviso tiene sombra", h => h.cs(".aviso", "boxShadow") !== "none"]],
+ x: "<code>border: 2px red;</code> sin estilo: no aparece nada." });
+
+L({ id: "margenes", g: "G4", t: "Márgenes", w3: W3("css_margin.asp"),
+ i: "El <code>margin</code> es el espacio <b>exterior</b> de la caja. Se escribe en el orden de las agujas del reloj: arriba, derecha, abajo, izquierda.",
+ p: ["1 valor: los 4 lados · 2 valores: vertical horizontal · 3: arriba, horizontal, abajo · 4: arriba derecha abajo izquierda.", "<code>margin: 0 auto</code> con un <code>width</code> o <code>max-width</code> → <b>centra horizontalmente</b> un bloque.", "Los márgenes verticales entre bloques <b>se fusionan</b> (gana el mayor).", "Admiten valores negativos (acercan o solapan).", "Los navegadores ponen márgenes por defecto a body, h1-h6, p y ul: por eso muchos proyectos empiezan con <code>body { margin: 0 }</code>."],
+ h: `<div class="contenedor">Contenedor centrado de 300px</div>\n<p class="a">Párrafo con margin-bottom 30px</p>\n<p class="b">Párrafo con margin-top 20px. ¿Cuánto espacio hay entre los dos?</p>`,
+ c: `.contenedor { background: #e0e7ff; padding: 12px; }\n.a { margin-bottom: 30px; background: #fef3c7; }\n.b { margin-top: 20px; background: #dcfce7; }\n`,
+ s: `.contenedor { background: #e0e7ff; padding: 12px; width: 300px; margin: 0 auto; }\n.a { margin-bottom: 30px; background: #fef3c7; }\n.b { margin-top: 20px; background: #dcfce7; }\n`,
+ task: "Centra el <code>.contenedor</code> horizontalmente con 300px de ancho. Después mide con el inspector el hueco entre los dos párrafos: ¿50px o 30px? (es el margin collapse).",
+ k: [["El contenedor mide 300px de contenido", h => h.n(".contenedor", "width") === 300], ["Está centrado (márgenes izquierdo y derecho iguales y > 0)", h => h.n(".contenedor", "marginLeft") > 0 && h.near(h.n(".contenedor", "marginLeft"), h.n(".contenedor", "marginRight"))]],
+ x: "Intentar centrar con <code>margin: auto</code> un elemento sin width: un bloque ya ocupa todo el ancho y no hay nada que centrar." });
+
+L({ id: "padding", g: "G4", t: "Padding (relleno)", w3: W3("css_padding.asp"),
+ i: "El <code>padding</code> es el espacio <b>interior</b> entre el contenido y el borde. A diferencia del margin, <b>tiene el fondo</b> del elemento y no admite negativos.",
+ p: ["Mismo orden que margin: <code>padding: 10px 20px</code> = 10 arriba/abajo, 20 izquierda/derecha.", "Hace los botones más fáciles de pulsar (área táctil mínima recomendada ≈ 44px).", "Con <code>content-box</code> suma al ancho; con <code>border-box</code> no.", "En un elemento <b>inline</b> (un a, un span) el padding vertical se pinta pero no empuja las líneas: usa inline-block."],
+ h: `<a href="#" class="boton">Botón</a>\n<div class="tarjeta">Contenido pegado al borde</div>`,
+ c: `.boton { background: #4f46e5; color: white; text-decoration: none; }\n.tarjeta { border: 1px solid #ccc; margin-top: 16px; }\n`,
+ s: `.boton { background: #4f46e5; color: white; text-decoration: none; display: inline-block; padding: 10px 20px; }\n.tarjeta { border: 1px solid #ccc; margin-top: 16px; padding: 16px; }\n`,
+ task: "Dale al <code>.boton</code> padding <code>10px 20px</code> y conviértelo en inline-block; y a la <code>.tarjeta</code> 16px de padding en todos los lados.",
+ k: [["Botón: 10px arriba y 20px a los lados", h => h.n(".boton", "paddingTop") === 10 && h.n(".boton", "paddingLeft") === 20], ["El botón es inline-block", h => h.cs(".boton", "display") === "inline-block"], ["La tarjeta tiene 16px de padding", h => ["Top", "Right", "Bottom", "Left"].every(s => h.n(".tarjeta", "padding" + s) === 16)]],
+ x: "Usar margin para separar el texto del borde: el margin está fuera del borde." });
+
+L({ id: "dimensiones", g: "G4", t: "width, height, min y max", w3: W3("css_dimension.asp"),
+ i: "<code>width</code> y <code>height</code> fijan el tamaño; <code>min-*</code> y <code>max-*</code> ponen límites. En diseño adaptable casi siempre es mejor <b>max-width</b> que width.",
+ p: ["<code>max-width: 700px</code> → nunca más ancho, pero puede encogerse en pantallas pequeñas.", "<code>img { max-width: 100%; height: auto; }</code> → las imágenes nunca desbordan su contenedor.", "Evita <code>height</code> fijo en cajas con texto: si el texto crece, se desborda. Usa <code>min-height</code>.", "<code>width: auto</code> (por defecto) en un bloque = todo el ancho disponible."],
+ h: `<article class="articulo">\n  <h2>Artículo</h2>\n  <img src="img/paisaje.svg" alt="Paisaje">\n  <p>Las líneas de texto muy largas cansan la vista. Con max-width el artículo se queda en un ancho cómodo y se adapta en pantallas pequeñas.</p>\n</article>`,
+ c: `.articulo { background: #f8fafc; padding: 16px; }\n`,
+ s: `.articulo { background: #f8fafc; padding: 16px; max-width: 400px; }\nimg { max-width: 100%; height: auto; }\n`,
+ task: "Limita el <code>.articulo</code> a <code>max-width: 400px</code> y haz que la imagen (que mide 600px) no se salga nunca de él.",
+ k: [["El artículo no pasa de 400px", h => h.cs(".articulo", "maxWidth") === "400px"], ["La imagen cabe dentro del artículo", h => h.rect("img").right <= h.rect(".articulo").right + 0.5]],
+ x: "Poner <code>width: 400px</code>: en un móvil de 360px aparece barra de scroll horizontal." });
+
+L({ id: "outline", g: "G4", t: "outline", w3: W3("css_outline.asp"),
+ i: "<code>outline</code> es una línea <b>por fuera del borde</b> que <b>no ocupa espacio</b> ni mueve nada. El navegador la usa para marcar el elemento con <b>foco</b>.",
+ p: ["<code>outline: 3px solid #fbbf24; outline-offset: 2px;</code>", "No afecta al layout: perfecto para estados de foco.", "<b>Nunca</b> pongas <code>outline: none</code> sin dar otra señal de foco: quien usa teclado se queda sin saber dónde está.", "<code>:focus-visible</code> muestra el foco solo al navegar con teclado, no al hacer clic."],
+ h: `<input class="campo" placeholder="Pulsa Tab hasta aquí">\n<button class="btn">Botón</button>`,
+ c: `.campo { padding: 8px; border: 1px solid #94a3b8; }\n.btn { padding: 8px 14px; }\n`,
+ s: `.campo { padding: 8px; border: 1px solid #94a3b8; }\n.campo:focus {\n  outline: 3px solid #7c3aed;\n  outline-offset: 2px;\n}\n.btn { padding: 8px 14px; }\n.btn:focus-visible {\n  outline: 3px solid #fbbf24;\n}\n`,
+ task: "Escribe un estado <code>.campo:focus</code> con outline de 3px y <code>outline-offset: 2px</code>, y un <code>.btn:focus-visible</code> con outline amarillo.",
+ k: [[".campo:focus tiene outline de 3px", h => { const r = h.rule(".campo:focus"); return r && (r.outlineWidth === "3px" || /3px/.test(r.outline)); }], ["…con outline-offset", h => { const r = h.rule(".campo:focus"); return r && r.outlineOffset; }], [".btn:focus-visible tiene outline", h => { const r = h.rule(".btn:focus-visible"); return r && (r.outline || r.outlineStyle); }]],
+ x: "Quitar el contorno de foco por estética (<code>outline: none</code>) y dejar la web inaccesible por teclado." });
+
+L({ id: "overflow", g: "G4", t: "overflow", w3: W3("css_overflow.asp"),
+ i: "Cuando el contenido no cabe en su caja, <code>overflow</code> decide qué hacer con lo que sobra.",
+ p: ["<b>visible</b> (por defecto): se sale de la caja.", "<b>hidden</b>: se recorta.", "<b>scroll</b>: barras de desplazamiento siempre.", "<b>auto</b>: barras solo si hace falta (el más útil).", "<code>overflow-x</code> / <code>overflow-y</code> por separado (tablas anchas en móvil: <code>overflow-x: auto</code>).", "Texto en una línea con «…»: <code>white-space: nowrap; overflow: hidden; text-overflow: ellipsis;</code> (las tres juntas)."],
+ h: `<div class="caja">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</div>\n<p class="titulo">Un título larguísimo que no debería ocupar más de una línea en la tarjeta</p>`,
+ c: `.caja { width: 260px; height: 100px; border: 1px solid #ccc; }\n.titulo { width: 260px; background: #f1f5f9; }\n`,
+ s: `.caja { width: 260px; height: 100px; border: 1px solid #ccc; overflow: auto; }\n.titulo { width: 260px; background: #f1f5f9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }\n`,
+ task: "Que la <code>.caja</code> muestre una barra de scroll solo si hace falta, y que el <code>.titulo</code> ocupe una sola línea terminada en «…».",
+ k: [["La caja tiene overflow auto", h => h.cs(".caja", "overflowY") === "auto"], ["El título está en una línea", h => h.cs(".titulo", "whiteSpace") === "nowrap"], ["…recortado con ellipsis", h => h.cs(".titulo", "textOverflow") === "ellipsis" && h.cs(".titulo", "overflowX") === "hidden"]],
+ x: "Poner <code>text-overflow: ellipsis</code> solo: necesita también nowrap y overflow hidden." });
+
+// ------------------------------------------------------------------ G5
+L({ id: "texto", g: "G5", t: "Propiedades de texto", w3: W3("css_text.asp"),
+ i: "Controlan el aspecto del texto, no la fuente: color, alineación, decoración, mayúsculas, espaciado y sombras.",
+ p: ["<code>text-align: left | center | right | justify</code> (alinea el contenido <b>inline</b> dentro del bloque).", "<code>text-decoration: none | underline | line-through</code> (quitar el subrayado de enlaces).", "<code>text-transform: uppercase | lowercase | capitalize</code>.", "<code>line-height: 1.6</code> (sin unidad, se multiplica por el font-size) → la clave de la legibilidad.", "<code>letter-spacing</code>, <code>word-spacing</code>, <code>text-indent</code>, <code>text-shadow: 1px 1px 2px #000</code>."],
+ h: `<h2 class="titular">titular de la noticia</h2>\n<p class="cuerpo">Un párrafo con interlineado cómodo para leer. Cuando el texto es largo, un line-height de 1.5 a 1.7 hace la lectura mucho más agradable que el valor por defecto.</p>\n<p class="tachado">Precio antiguo: 99 €</p>`,
+ c: `\n`,
+ s: `.titular {\n  text-transform: uppercase;\n  letter-spacing: 2px;\n  text-align: center;\n}\n.cuerpo {\n  line-height: 1.6;\n}\n.tachado {\n  text-decoration: line-through;\n}\n`,
+ task: "<code>.titular</code> en mayúsculas, centrado y con 2px de letter-spacing; <code>.cuerpo</code> con <code>line-height: 1.6</code>; y <code>.tachado</code> tachado.",
+ k: [["Titular en mayúsculas", h => h.cs(".titular", "textTransform") === "uppercase"], ["Titular centrado con 2px de espaciado", h => h.cs(".titular", "textAlign") === "center" && h.cs(".titular", "letterSpacing") === "2px"], ["Interlineado 1.6", h => h.near(h.n(".cuerpo", "lineHeight"), h.n(".cuerpo", "fontSize") * 1.6, 0.6)], ["Texto tachado", h => h.cs(".tachado", "textDecorationLine") === "line-through"]],
+ x: "Escribir el texto en mayúsculas en el HTML en vez de usar text-transform: los lectores de pantalla lo deletrean." });
+
+L({ id: "fuentes", g: "G5", t: "Fuentes", w3: W3("css_font.asp"),
+ i: "<code>font-family</code> recibe una <b>lista de respaldo</b>: si la primera no existe, prueba la siguiente. Termina siempre con una <b>familia genérica</b>.",
+ p: ["Genéricas: <code>serif</code>, <code>sans-serif</code>, <code>monospace</code>, <code>system-ui</code>.", "Nombres con espacios, entre comillas: <code>\"Segoe UI\"</code>.", "<code>font-size</code> (mejor en rem), <code>font-weight</code> (400 normal, 700 negrita), <code>font-style: italic</code>.", "Abreviatura: <code>font: italic 700 1.2rem/1.5 Georgia, serif;</code> (estilo peso tamaño/interlineado familia).", "Fuentes web: Google Fonts con <code>&lt;link&gt;</code> o <code>@import url(…)</code>, o tus archivos con <code>@font-face</code>."],
+ h: `<h1>Título con serif</h1>\n<p>Cuerpo con sans-serif.</p>\n<pre class="codigo">const x = 42;</pre>`,
+ c: `\n`,
+ s: `body {\n  font-family: system-ui, "Segoe UI", Roboto, sans-serif;\n}\nh1 {\n  font-family: Georgia, "Times New Roman", serif;\n  font-weight: 700;\n}\n.codigo {\n  font-family: ui-monospace, Consolas, monospace;\n  font-size: 0.9rem;\n}\n`,
+ task: "<code>body</code> con una pila de fuentes que acabe en <code>sans-serif</code>; <code>h1</code> en una serif (acabando en <code>serif</code>) y peso 700; <code>.codigo</code> en monospace a 0.9rem.",
+ k: [["El body termina en sans-serif", h => /sans-serif\s*$/.test(h.cs("body", "fontFamily"))], ["El h1 termina en serif", h => /(^|,\s*)serif\s*$/.test(h.cs("h1", "fontFamily"))], ["El código es monospace a 0.9rem", h => /monospace/.test(h.cs(".codigo", "fontFamily")) && h.n(".codigo", "fontSize") === 14.4]],
+ x: "Poner solo <code>font-family: Roboto</code>: en un equipo sin Roboto saldrá Times New Roman." });
+
+L({ id: "iconos", g: "G5", t: "Iconos", w3: W3("css_icons.asp"),
+ i: "Tres formas: <b>emoji</b> (fácil, pero cambia según el sistema), <b>SVG en línea</b> (lo más flexible: se colorea con CSS) y <b>fuentes de iconos</b> como Font Awesome o Material Icons (con un <code>&lt;link&gt;</code> a su CDN).",
+ p: ["SVG en línea: <code>&lt;svg viewBox=\"0 0 24 24\"&gt;&lt;path …/&gt;&lt;/svg&gt;</code>; con <code>fill: currentColor</code> toma el color del texto.", "Tamaño: <code>width</code> y <code>height</code> (en em para que escale con el texto).", "Font Awesome: <code>&lt;i class=\"fa-solid fa-house\"&gt;&lt;/i&gt;</code> tras enlazar su CSS.", "Si el icono no tiene texto al lado, añade <code>aria-label</code> para la accesibilidad."],
+ h: `<p><a class="social" href="#" aria-label="GitHub"><svg class="icono" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .8.1-.7.4-1.1.6-1.3-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.4 9.4 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></svg> GitHub</a></p>`,
+ c: `.social { color: #334155; text-decoration: none; }\n`,
+ s: `.social { color: #334155; text-decoration: none; }\n.icono {\n  width: 24px;\n  height: 24px;\n  fill: currentColor;\n  vertical-align: middle;\n}\n.social:hover {\n  color: #7c3aed;\n}\n`,
+ task: "El icono SVG sale enorme y negro. Dale 24×24px, que tome el color del enlace con <code>fill: currentColor</code>, y que al hacer hover el enlace (y el icono) cambien de color.",
+ k: [["El icono mide 24×24", h => h.near(h.rect(".icono").width, 24) && h.near(h.rect(".icono").height, 24)], ["Usa el color del texto", h => h.cs(".icono", "fill") === h.cs(".social", "color")], [".social:hover cambia el color", h => { const r = h.rule(".social:hover"); return r && r.color; }]],
+ x: "Copiar un SVG con <code>fill=\"#000\"</code> dentro del path: entonces currentColor no le afecta." });
+
+L({ id: "enlaces", g: "G5", t: "Enlaces", w3: W3("css_link.asp"),
+ i: "Los enlaces tienen cuatro estados que deben escribirse en este orden: <b>:link → :visited → :hover → :active</b> (regla «LoVe HAte»). Si no, unos tapan a otros por la cascada.",
+ p: ["<code>a { color: …; text-decoration: none; }</code> para quitar el subrayado.", "Un enlace con aspecto de botón: <code>display: inline-block</code> + padding + fondo + border-radius.", "Indica siempre de algún modo que es un enlace (color, subrayado al hover).", "<code>:visited</code> solo admite cambiar colores (por privacidad)."],
+ h: `<p>Lee <a href="#" class="texto">este artículo</a> sobre CSS.</p>\n<a href="#" class="boton">Descargar CV</a>`,
+ c: `\n`,
+ s: `a.texto {\n  color: #4f46e5;\n  text-decoration: none;\n}\na.texto:hover {\n  text-decoration: underline;\n}\na.boton {\n  display: inline-block;\n  padding: 10px 20px;\n  background: #4f46e5;\n  color: white;\n  border-radius: 8px;\n  text-decoration: none;\n}\na.boton:hover {\n  background: #3730a3;\n}\n`,
+ task: "El enlace <code>.texto</code> sin subrayado pero subrayado al pasar el ratón. El <code>.boton</code>: inline-block, padding, fondo, texto blanco, esquinas redondeadas y sin subrayado.",
+ k: [[".texto sin subrayado", h => h.cs("a.texto", "textDecorationLine") === "none"], ["…subrayado en hover", h => { const r = h.rule("a.texto:hover") || h.rule(".texto:hover"); return r && /underline/.test(r.textDecoration || r.textDecorationLine); }], [".boton parece un botón", h => h.cs("a.boton", "display") === "inline-block" && h.n("a.boton", "paddingLeft") > 0 && h.cs("a.boton", "backgroundColor") !== "rgba(0, 0, 0, 0)" && h.cs("a.boton", "textDecorationLine") === "none" && h.n("a.boton", "borderTopLeftRadius") > 0]],
+ x: "Escribir <code>a:hover</code> antes que <code>a:visited</code>: los enlaces visitados ya no cambian al pasar el ratón." });
+
+L({ id: "alinear", g: "G5", t: "Alinear y centrar", w3: W3("css_align.asp"),
+ i: "«¿Cómo centro esto?» es la pregunta más famosa de CSS. Depende de <b>qué</b> centras y <b>en qué dirección</b>.",
+ p: ["Texto o elementos inline dentro de un bloque → <code>text-align: center</code> en el <b>padre</b>.", "Un bloque con ancho → <code>margin: 0 auto</code>.", "Cualquier cosa, en horizontal <b>y</b> vertical → en el padre: <code>display: flex; justify-content: center; align-items: center;</code>", "Con grid aún más corto: <code>display: grid; place-items: center;</code>", "Con posición: <code>position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);</code>", "Recuerda: el padre necesita <b>altura</b> para que se note el centrado vertical."],
+ h: `<div class="padre">\n  <div class="hijo">Centrado</div>\n</div>`,
+ c: `.padre { height: 220px; background: #f1f5f9; }\n.hijo { width: 120px; padding: 12px; background: #4f46e5; color: white; }\n`,
+ s: `.padre { height: 220px; background: #f1f5f9; display: flex; justify-content: center; align-items: center; }\n.hijo { width: 120px; padding: 12px; background: #4f46e5; color: white; text-align: center; }\n`,
+ task: "Centra el <code>.hijo</code> en horizontal y en vertical dentro del <code>.padre</code> (usa flex o grid en el padre).",
+ k: [["Centrado en horizontal", h => { const p = h.rect(".padre"), c = h.rect(".hijo"); return h.near(c.left - p.left, p.right - c.right, 1.5); }], ["Centrado en vertical", h => { const p = h.rect(".padre"), c = h.rect(".hijo"); return h.near(c.top - p.top, p.bottom - c.bottom, 1.5); }]],
+ x: "Usar <code>vertical-align: middle</code> en un div: solo funciona en elementos inline y celdas de tabla." });
+
+// =====================================================================
+//  LECCIONES · G6 a G10
+// =====================================================================
+// ------------------------------------------------------------------ G6
+L({ id: "listas", g: "G6", t: "Listas", w3: W3("css_list.asp"),
+ i: "Las listas (<code>ul</code>, <code>ol</code>) traen viñetas, sangría y márgenes por defecto. Para menús se quitan; para contenido se personalizan.",
+ p: ["<code>list-style-type: disc | circle | square | decimal | upper-roman | none</code>.", "<code>list-style-position: inside | outside</code>.", "Para un menú: <code>list-style: none; padding: 0; margin: 0;</code> (la sangría es padding del ul).", "Viñeta propia: <code>li::before { content: \"✓ \"; }</code> o <code>li::marker { color: … }</code> para colorear la viñeta normal."],
+ h: `<ul class="menu">\n  <li><a href="#">Inicio</a></li>\n  <li><a href="#">Blog</a></li>\n</ul>\n<ul class="checks">\n  <li>HTML semántico</li>\n  <li>CSS con flexbox</li>\n  <li>Accesibilidad</li>\n</ul>\n<ol class="romanos"><li>Uno</li><li>Dos</li><li>Tres</li></ol>`,
+ c: `\n`,
+ s: `.menu {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n}\n.checks {\n  list-style: none;\n  padding-left: 0;\n}\n.checks li::before {\n  content: "✓ ";\n  color: green;\n  font-weight: bold;\n}\n.romanos {\n  list-style-type: upper-roman;\n}\n`,
+ task: "Quita viñetas y sangría a <code>.menu</code>; en <code>.checks</code> cambia la viñeta por «✓ » verde con ::before; numera <code>.romanos</code> con números romanos en mayúscula.",
+ k: [["El menú no tiene viñetas ni sangría", h => h.cs(".menu", "listStyleType") === "none" && h.n(".menu", "paddingLeft") === 0], [".checks muestra ✓", h => h.cs(".checks li", "content", "::before").includes("✓") && h.cs(".checks", "listStyleType") === "none"], ["Romanos en mayúscula", h => h.cs(".romanos", "listStyleType") === "upper-roman"]],
+ x: "Quitar solo <code>list-style</code> y no entender por qué sigue la sangría: es el padding del ul." });
+
+L({ id: "tablas", g: "G6", t: "Tablas", w3: W3("css_table.asp"),
+ i: "Una tabla legible necesita bordes simples, relleno en las celdas y filas que se distingan.",
+ p: ["<code>border-collapse: collapse</code> fusiona los bordes dobles en uno.", "<code>th, td { padding: 8px 12px; border-bottom: 1px solid #ddd; }</code>.", "Filas cebra: <code>tbody tr:nth-child(even) { background: … }</code>.", "<code>tr:hover</code> resalta la fila.", "Tablas anchas en móvil: envolverlas en un div con <code>overflow-x: auto</code>.", "<code>caption</code> para el título y <code>text-align</code> en los números a la derecha."],
+ h: `<table class="tabla">\n  <caption>Notas del trimestre</caption>\n  <thead><tr><th>Módulo</th><th>Nota</th></tr></thead>\n  <tbody>\n    <tr><td>Bases de Datos</td><td>9.5</td></tr>\n    <tr><td>Programación</td><td>8.0</td></tr>\n    <tr><td>Lenguajes de marcas</td><td>8.7</td></tr>\n    <tr><td>Sistemas</td><td>7.9</td></tr>\n  </tbody>\n</table>`,
+ c: `.tabla, .tabla th, .tabla td {\n  border: 1px solid #999;\n}\n`,
+ s: `.tabla {\n  width: 100%;\n  border-collapse: collapse;\n}\n.tabla th, .tabla td {\n  border: 1px solid #ddd;\n  padding: 8px 12px;\n  text-align: left;\n}\n.tabla thead th {\n  background: #1e3a8a;\n  color: white;\n}\n.tabla tbody tr:nth-child(even) {\n  background: #f1f5f9;\n}\n.tabla tbody tr:hover {\n  background: #e0e7ff;\n}\n`,
+ task: "Tabla a ancho completo con bordes fusionados, celdas con padding <code>8px 12px</code>, cabecera con fondo oscuro y texto blanco, filas pares con fondo y resaltado de fila al hacer hover.",
+ k: [["Bordes fusionados y ancho completo", h => h.cs(".tabla", "borderCollapse") === "collapse" && h.rect(".tabla").width > h.rect("body").width - 2], ["Celdas con padding 8px 12px", h => h.n("td", "paddingTop") === 8 && h.n("td", "paddingLeft") === 12], ["Cabecera con texto blanco", h => h.cs("th", "color") === "rgb(255, 255, 255)"], ["Filas pares con fondo", h => h.cs("tbody tr:nth-child(2)", "backgroundColor") !== "rgba(0, 0, 0, 0)" && h.cs("tbody tr:nth-child(1)", "backgroundColor") === "rgba(0, 0, 0, 0)"], ["Hover en filas", h => !!h.rule(".tabla tbody tr:hover") || !!h.rule(".tabla tr:hover") || !!h.rule("tr:hover")]],
+ x: "Usar tablas para maquetar la página: las tablas son para datos; para el layout está flex/grid." });
+
+// ------------------------------------------------------------------ G7
+L({ id: "flexcont", g: "G7", t: "Flexbox: el contenedor", w3: W3("css3_flexbox.asp"),
+ i: "Con <code>display: flex</code> en un padre, sus <b>hijos directos</b> se colocan en fila y puedes repartirlos y alinearlos fácilmente. Hay un <b>eje principal</b> (el de flex-direction) y un <b>eje cruzado</b> (el perpendicular).",
+ p: ["<code>flex-direction: row | column</code> → define el eje principal.", "<code>justify-content</code> → reparte en el <b>eje principal</b>: flex-start, center, flex-end, space-between, space-around, space-evenly.", "<code>align-items</code> → alinea en el <b>eje cruzado</b>: stretch (por defecto), center, flex-start, flex-end.", "<code>flex-wrap: wrap</code> → permite pasar a otra línea.", "<code>gap: 16px</code> → separación entre hijos (mejor que márgenes).", "Truco: si cambias a column, justify-content pasa a ser vertical."],
+ h: `<header class="barra">\n  <div class="logo">Logo</div>\n  <nav class="enlaces"><a href="#">Inicio</a><a href="#">Blog</a><a href="#">Contacto</a></nav>\n  <button>Entrar</button>\n</header>`,
+ c: `.barra { background: #1e293b; color: white; padding: 12px 20px; height: 70px; }\n.barra a { color: white; }\n.logo { font-weight: bold; font-size: 1.4rem; }\n`,
+ s: `.barra { background: #1e293b; color: white; padding: 12px 20px; height: 70px; display: flex; justify-content: space-between; align-items: center; }\n.barra a { color: white; }\n.logo { font-weight: bold; font-size: 1.4rem; }\n.enlaces { display: flex; gap: 20px; }\n`,
+ task: "Pon logo, enlaces y botón en una fila con el logo a la izquierda y el botón a la derecha (<code>space-between</code>), centrados en vertical; y separa los enlaces del nav con <code>gap: 20px</code>.",
+ k: [[".barra es flex con space-between", h => h.cs(".barra", "display") === "flex" && h.cs(".barra", "justifyContent") === "space-between"], ["Centrado vertical", h => h.cs(".barra", "alignItems") === "center"], ["El nav es flex con gap 20px", h => h.cs(".enlaces", "display") === "flex" && h.cs(".enlaces", "columnGap") === "20px"]],
+ x: "Poner <code>display: flex</code> en los hijos en vez de en el padre: flex se pone en el <b>contenedor</b>." });
+
+L({ id: "flexitems", g: "G7", t: "Flexbox: los hijos", w3: W3("css3_flexbox.asp"),
+ i: "Cada hijo flexible decide cuánto <b>crece</b>, cuánto <b>encoge</b> y su <b>tamaño base</b>. Es lo que permite hacer columnas que se adaptan.",
+ p: ["<code>flex: 1</code> → crece para ocupar el espacio libre (todos con flex 1 = columnas iguales).", "<code>flex: 0 0 200px</code> → no crece, no encoge, mide 200px (barra lateral fija).", "Abreviatura: <code>flex: grow shrink basis</code>.", "<code>order: -1</code> → cambia el orden visual sin tocar el HTML.", "<code>align-self</code> → alineación de un solo hijo en el eje cruzado.", "Tarjetas que se adaptan: contenedor con <code>flex-wrap: wrap</code> y tarjetas con <code>flex: 1 1 250px</code>."],
+ h: `<div class="layout">\n  <aside class="lateral">Lateral fijo</aside>\n  <main class="principal">Contenido que ocupa el resto</main>\n</div>`,
+ c: `* { box-sizing: border-box; }\n.layout { display: flex; gap: 16px; width: 600px; }\n.lateral { background: #e0e7ff; padding: 12px; }\n.principal { background: #dcfce7; padding: 12px; }\n`,
+ s: `* { box-sizing: border-box; }\n.layout { display: flex; gap: 16px; width: 600px; }\n.lateral { background: #e0e7ff; padding: 12px; flex: 0 0 200px; }\n.principal { background: #dcfce7; padding: 12px; flex: 1; }\n`,
+ task: "Haz que <code>.lateral</code> mida siempre 200px (ni crece ni encoge) y que <code>.principal</code> ocupe todo el espacio restante.",
+ k: [["El lateral mide 200px", h => h.near(h.rect(".lateral").width, 200)], ["El principal ocupa el resto (384px)", h => h.near(h.rect(".principal").width, 384, 1.5)], ["El lateral no encoge", h => h.cs(".lateral", "flexShrink") === "0"]],
+ x: "Dar <code>width</code> a los hijos y que flex los encoja igualmente: usa flex-basis + flex-shrink: 0." });
+
+// ------------------------------------------------------------------ G8
+L({ id: "inlineblock", g: "G8", t: "inline-block", w3: W3("css_inline-block.asp"),
+ i: "<code>inline-block</code> pone cajas <b>en línea</b> respetando width, height, padding y márgenes. Antes de flexbox era la forma de hacer menús y rejillas; hoy sigue siendo útil para botones, etiquetas y elementos sueltos.",
+ p: ["Los elementos inline-block se alinean por la <b>línea base</b> del texto: <code>vertical-align: top</code> si tienen alturas distintas.", "Dejan un pequeño <b>hueco</b> entre ellos (el espacio del HTML).", "Para filas de elementos, flex es más limpio."],
+ h: `<span class="etiqueta">CSS</span>\n<span class="etiqueta">HTML</span>\n<span class="etiqueta">JavaScript</span>`,
+ c: `.etiqueta { background: #ede9fe; color: #5b21b6; }\n`,
+ s: `.etiqueta {\n  background: #ede9fe;\n  color: #5b21b6;\n  display: inline-block;\n  padding: 6px 12px;\n  margin: 4px;\n  border-radius: 999px;\n  width: 110px;\n  text-align: center;\n}\n`,
+ task: "Convierte las <code>.etiqueta</code> en «pastillas» de 110px de ancho, con padding <code>6px 12px</code>, margen de 4px y bordes totalmente redondeados.",
+ k: [["Son inline-block de 110px", h => h.cs(".etiqueta", "display") === "inline-block" && (h.n(".etiqueta", "width") === 110 || h.near(h.rect(".etiqueta").width, 110))], ["Padding 6px 12px", h => h.n(".etiqueta", "paddingTop") === 6 && h.n(".etiqueta", "paddingLeft") === 12], ["Bordes redondeados", h => h.n(".etiqueta", "borderTopLeftRadius") >= 12]],
+ x: "Esperar que los márgenes verticales funcionen en un <code>span</code> inline: solo con inline-block." });
+
+L({ id: "navbar", g: "G8", t: "Barra de navegación", w3: W3("css_navbar.asp"),
+ i: "Una barra de navegación es <b>una lista de enlaces</b> (semántica: <code>nav &gt; ul &gt; li &gt; a</code>) a la que se quitan las viñetas y se pone en fila.",
+ p: ["<code>ul { list-style: none; margin: 0; padding: 0; display: flex; }</code>.", "Haz el <b>enlace</b> grande (<code>display: block; padding: 14px 16px</code>), no el li: así toda la zona es clicable.", "Marca la página actual con una clase <code>.activo</code>.", "<code>position: sticky; top: 0</code> para que se quede arriba al hacer scroll."],
+ h: `<nav class="nav">\n  <ul>\n    <li><a href="#" class="activo">Inicio</a></li>\n    <li><a href="#">Servicios</a></li>\n    <li><a href="#">Blog</a></li>\n    <li><a href="#">Contacto</a></li>\n  </ul>\n</nav>\n<p style="height:400px">Contenido largo para hacer scroll…</p>`,
+ c: `.nav { background: #111827; }\n`,
+ s: `.nav { background: #111827; position: sticky; top: 0; }\n.nav ul {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n  display: flex;\n}\n.nav a {\n  display: block;\n  padding: 14px 16px;\n  color: white;\n  text-decoration: none;\n}\n.nav a:hover {\n  background: #374151;\n}\n.nav a.activo {\n  background: #4f46e5;\n}\n`,
+ task: "Construye la barra: ul sin viñetas en fila, enlaces blancos sin subrayado con <code>display: block</code> y padding <code>14px 16px</code>, hover más claro, <code>.activo</code> con fondo morado y la barra <code>sticky</code> arriba.",
+ k: [["La lista es una fila sin viñetas", h => h.cs(".nav ul", "display") === "flex" && h.cs(".nav ul", "listStyleType") === "none"], ["Enlaces block con padding 14px 16px", h => h.cs(".nav a", "display") === "block" && h.n(".nav a", "paddingTop") === 14 && h.n(".nav a", "paddingLeft") === 16], ["Hover y activo", h => !!h.rule(".nav a:hover") && h.cs(".nav a.activo", "backgroundColor") !== h.cs(".nav a:not(.activo)", "backgroundColor")], ["La barra es sticky", h => h.cs(".nav", "position") === "sticky"]],
+ x: "Dar el padding al <code>li</code>: el área clicable se queda solo en el texto del enlace." });
+
+L({ id: "dropdown", g: "G8", t: "Menú desplegable", w3: W3("css_dropdowns.asp"),
+ i: "Patrón clásico que combina <b>position</b>, <b>display</b> y <b>:hover</b>: el contenido está oculto y aparece al pasar por el padre.",
+ p: ["Padre: <code>position: relative</code> (referencia).", "Contenido: <code>position: absolute; top: 100%; left: 0; display: none;</code>", "Mostrar: <code>.dropdown:hover .dropdown-content { display: block; }</code>.", "Añade <code>z-index</code> para que quede por encima del resto.", "Accesible por teclado: <code>.dropdown:focus-within .dropdown-content { display: block; }</code>."],
+ h: `<div class="dropdown">\n  <button>Cursos ▾</button>\n  <div class="dropdown-content">\n    <a href="#">HTML</a>\n    <a href="#">CSS</a>\n    <a href="#">JavaScript</a>\n  </div>\n</div>\n<p>Texto que no debe moverse cuando se abre el menú.</p>`,
+ c: `.dropdown-content a { display: block; padding: 8px 14px; color: #111; text-decoration: none; }\n.dropdown-content { background: white; box-shadow: 0 8px 20px rgba(0,0,0,.15); min-width: 160px; }\n`,
+ s: `.dropdown { position: relative; display: inline-block; }\n.dropdown-content a { display: block; padding: 8px 14px; color: #111; text-decoration: none; }\n.dropdown-content { background: white; box-shadow: 0 8px 20px rgba(0,0,0,.15); min-width: 160px; position: absolute; top: 100%; left: 0; z-index: 10; display: none; }\n.dropdown:hover .dropdown-content,\n.dropdown:focus-within .dropdown-content { display: block; }\n.dropdown-content a:hover { background: #f1f5f9; }\n`,
+ task: "Haz que el menú esté <b>oculto</b>, aparezca al pasar el ratón por <code>.dropdown</code> y se superponga al párrafo sin moverlo.",
+ k: [[".dropdown es la referencia", h => h.cs(".dropdown", "position") === "relative"], ["El contenido es absolute y está oculto", h => h.cs(".dropdown-content", "position") === "absolute" && h.cs(".dropdown-content", "display") === "none"], ["Se muestra con .dropdown:hover", h => { const r = h.rule(".dropdown:hover .dropdown-content"); return r && r.display === "block"; }]],
+ x: "Hacer el submenú <code>display: block</code> en hover pero sin absolute: empuja todo el contenido hacia abajo." });
+
+L({ id: "galeria", g: "G8", t: "Galería de imágenes", w3: W3("css_image_gallery.asp"),
+ i: "La forma moderna es <b>CSS Grid</b> con columnas automáticas: se adaptan solas al ancho disponible sin media queries.",
+ p: ["<code>display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px;</code>", "«Tantas columnas de al menos 150px como quepan, repartiendo el sobrante».", "<code>img { width: 100%; aspect-ratio: 1; object-fit: cover; }</code> → todas iguales sin deformarse.", "Para un pie de foto: <code>figure</code> + <code>figcaption</code>."],
+ h: `<div class="galeria">\n  <img src="img/galeria1.svg" alt="1"><img src="img/galeria2.svg" alt="2"><img src="img/galeria3.svg" alt="3">\n  <img src="img/galeria4.svg" alt="4"><img src="img/galeria5.svg" alt="5"><img src="img/galeria6.svg" alt="6">\n</div>`,
+ c: `img { width: 200px; }\n`,
+ s: `.galeria {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));\n  gap: 12px;\n}\n.galeria img {\n  width: 100%;\n  aspect-ratio: 1;\n  object-fit: cover;\n  border-radius: 8px;\n}\n`,
+ task: "Convierte <code>.galeria</code> en una rejilla de columnas automáticas de mínimo 150px con <code>gap: 12px</code>, e imágenes cuadradas que llenen su celda sin deformarse.",
+ k: [["Es una rejilla grid", h => h.cs(".galeria", "display") === "grid"], ["Columnas automáticas (repeat + auto-fill/auto-fit + minmax)", h => h.has(/repeat\(\s*auto-(fill|fit)\s*,\s*minmax\(/)], ["gap de 12px", h => h.cs(".galeria", "columnGap") === "12px"], ["Imágenes cuadradas con object-fit cover", h => h.cs(".galeria img", "objectFit") === "cover" && h.near(h.rect(".galeria img").width, h.rect(".galeria img").height, 1)]],
+ x: "Usar width fijo en las imágenes: la galería no se adapta y en móvil se desborda." });
+
+L({ id: "sprites", g: "G8", t: "Sprites de imágenes", w3: W3("css_image_sprites.asp"),
+ i: "Un <b>sprite</b> es una sola imagen que contiene varios iconos. Se muestra cada uno moviendo el <code>background-position</code>. Ahorra peticiones al servidor.",
+ p: ["El elemento tiene el tamaño de <b>un</b> icono y la imagen entera de fondo.", "<code>background-position: -32px 0</code> → desplaza la imagen 32px a la izquierda para ver el segundo icono.", "Hoy se usan menos (HTTP/2 y SVG), pero siguen apareciendo en exámenes y en juegos."],
+ h: `<p>Este es el sprite completo (96×32): <img src="img/sprite.svg" alt="sprite"></p>\n<span class="icono mas"></span>\n<span class="icono ok"></span>\n<span class="icono info"></span>`,
+ c: `.icono {\n  display: inline-block;\n  width: 32px;\n  height: 32px;\n  background-image: url(img/sprite.svg);\n}\n`,
+ s: `.icono {\n  display: inline-block;\n  width: 32px;\n  height: 32px;\n  background-image: url(img/sprite.svg);\n}\n.mas { background-position: 0 0; }\n.ok { background-position: -32px 0; }\n.info { background-position: -64px 0; }\n`,
+ task: "Cada icono muestra ahora el primero. Usa <code>background-position</code> para que <code>.ok</code> muestre el segundo (verde) e <code>.info</code> el tercero (azul).",
+ k: [[".ok desplazado -32px", h => h.cs(".ok", "backgroundPosition").startsWith("-32px")], [".info desplazado -64px", h => h.cs(".info", "backgroundPosition").startsWith("-64px")]],
+ x: "Usar valores positivos: el fondo se mueve hacia la derecha y aparece hueco vacío." });
+
+L({ id: "contadores", g: "G8", t: "Contadores", w3: W3("css_counters.asp"),
+ i: "CSS puede <b>numerar automáticamente</b> secciones, figuras o pasos sin escribir los números en el HTML.",
+ p: ["<code>counter-reset: seccion;</code> en el padre → crea el contador a 0.", "<code>counter-increment: seccion;</code> en cada elemento → suma 1.", "<code>content: counter(seccion) \". \";</code> en un ::before → lo muestra.", "Formatos: <code>counter(n, upper-roman)</code>, <code>decimal-leading-zero</code> (01, 02…).", "Anidados: <code>counters(n, \".\")</code> → 1.1, 1.2…"],
+ h: `<article class="manual">\n  <h2>Instalación</h2><p>…</p>\n  <h2>Configuración</h2><p>…</p>\n  <h2>Uso</h2><p>…</p>\n</article>`,
+ c: `\n`,
+ s: `.manual {\n  counter-reset: seccion;\n}\n.manual h2::before {\n  counter-increment: seccion;\n  content: "Paso " counter(seccion) ": ";\n  color: #7c3aed;\n}\n`,
+ task: "Numera los <code>h2</code> del manual como «Paso 1: », «Paso 2: »… usando contadores.",
+ k: [["Hay counter-reset en .manual", h => /seccion|\w+ 0/.test(h.cs(".manual", "counterReset")) && h.cs(".manual", "counterReset") !== "none"], ["Los h2 incrementan el contador", h => h.has(/counter-increment/)], ["El ::before muestra el contador", h => /counter\(/.test(h.cs(".manual h2", "content", "::before"))]],
+ x: "Poner counter-reset en el h2: el contador vuelve a 0 en cada uno y todos salen «1»." });
+
+L({ id: "layout", g: "G8", t: "Layout de una página web", w3: W3("css_website_layout.asp"),
+ i: "Una página típica tiene <b>cabecera, navegación, contenido, lateral y pie</b>. CSS Grid con <b>áreas con nombre</b> lo describe casi como un dibujo, y una media query lo reorganiza en móvil.",
+ p: ["<code>grid-template-areas</code> dibuja el layout con nombres; cada hijo se coloca con <code>grid-area: nombre</code>.", "<code>grid-template-columns: 200px 1fr</code> → columna fija + columna flexible (<code>fr</code> = fracción del espacio libre).", "<b>Responsive</b>: <code>@media (max-width: 700px) { … }</code> aplica reglas solo en pantallas estrechas.", "Mobile-first: escribe primero el CSS de móvil y usa <code>min-width</code> para pantallas grandes.", "Recuerda en el HTML: <code>&lt;meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"&gt;</code>."],
+ h: `<div class="pagina">\n  <header class="cab">Cabecera</header>\n  <nav class="nav">Navegación</nav>\n  <main class="main">Contenido principal</main>\n  <aside class="aside">Lateral</aside>\n  <footer class="pie">Pie</footer>\n</div>`,
+ c: `.pagina > * { padding: 16px; border-radius: 6px; }\n.cab { background: #c7d2fe; } .nav { background: #fde68a; } .main { background: #bbf7d0; min-height: 150px; } .aside { background: #fbcfe8; } .pie { background: #e5e7eb; }\n`,
+ s: `.pagina > * { padding: 16px; border-radius: 6px; }\n.cab { background: #c7d2fe; } .nav { background: #fde68a; } .main { background: #bbf7d0; min-height: 150px; } .aside { background: #fbcfe8; } .pie { background: #e5e7eb; }\n.pagina {\n  display: grid;\n  grid-template-columns: 200px 1fr;\n  grid-template-areas:\n    "cab cab"\n    "nav nav"\n    "aside main"\n    "pie pie";\n  gap: 8px;\n}\n.cab { grid-area: cab; } .nav { grid-area: nav; } .main { grid-area: main; } .aside { grid-area: aside; } .pie { grid-area: pie; }\n@media (max-width: 480px) {\n  .pagina {\n    grid-template-columns: 1fr;\n    grid-template-areas: "cab" "nav" "main" "aside" "pie";\n  }\n}\n`,
+ task: "Monta el layout con grid: cabecera y nav arriba a todo el ancho, <b>lateral de 200px a la izquierda</b> y contenido a la derecha, pie abajo. Añade una media query de <code>max-width: 480px</code> que lo ponga todo en una columna.",
+ k: [[".pagina es grid", h => h.cs(".pagina", "display") === "grid"], ["Usa grid-template-areas", h => h.cs(".pagina", "gridTemplateAreas") !== "none"], ["En pantalla ancha: lateral de 200px a la izquierda del contenido", h => { const r = h.rule(".pagina"); return r && /200px/.test(r.gridTemplateColumns) && /aside\s+main/.test(r.gridTemplateAreas); }], ["Hay una media query", h => h.has(/@media[^{]*max-width\s*:\s*480px/)]],
+ x: "Olvidar el meta viewport en el HTML real: el móvil simula un escritorio y las media queries no saltan." });
+
+L({ id: "especificidad", g: "G8", t: "Especificidad a fondo", w3: W3("css_specificity.asp"),
+ i: "La especificidad es un número de tres cifras <b>(ids, clases/atributos/pseudo-clases, etiquetas/pseudo-elementos)</b>. Se compara de izquierda a derecha: (1,0,0) gana a (0,15,0).",
+ p: ["<code>*</code>, combinadores y <code>:where()</code> valen 0.", "<code>:not(x)</code>, <code>:is(x)</code> y <code>:has(x)</code> valen lo que su argumento más fuerte.", "En línea (<code>style=\"\"</code>) va por encima; <code>!important</code> por encima de todo.", "Empate → gana la última regla.", "Practica en el <b>Laboratorio</b>: calculadora de especificidad y el inspector te enseñan qué regla gana."],
+ h: `<ul id="lista">\n  <li class="item">Uno</li>\n  <li class="item especial">Dos</li>\n  <li class="item">Tres</li>\n</ul>`,
+ c: `#lista li { color: gray; }        /* (1,0,1) */\nul .especial { color: green; }    /* (0,1,1) */\nli.item.especial { color: blue; } /* (0,2,1) */\n`,
+ s: `#lista li { color: gray; }\nul .especial { color: green; }\nli.item.especial { color: blue; }\n#lista .especial { color: crimson; }\n`,
+ task: "¿De qué color sale «Dos» y por qué? Compruébalo con el inspector. Luego añade <b>una</b> regla (sin !important ni estilos en línea) que lo ponga <code>crimson</code> y explica su especificidad con un comentario.",
+ k: [["«Dos» es crimson", h => h.cs(".especial", "color") === "rgb(220, 20, 60)"], ["Sin !important", h => !h.has(/!important/)], ["Los demás siguen grises", h => h.cs(".item:first-child", "color") === "rgb(128, 128, 128)"]],
+ x: "Pensar que muchas clases ganan a un id: (0,10,0) pierde contra (1,0,0)." });
+
+L({ id: "math", g: "G8", t: "Funciones matemáticas: calc, min, max, clamp", w3: W3("css_math_functions.asp"),
+ i: "Permiten <b>calcular</b> tamaños mezclando unidades, y hacer diseños fluidos sin media queries.",
+ p: ["<code>calc(100% - 200px)</code> → mezcla unidades (deja espacios alrededor de + y −).", "<code>min(600px, 100%)</code> → el menor (como un max-width).", "<code>max(16px, 1vw)</code> → el mayor (un mínimo).", "<code>clamp(mínimo, ideal, máximo)</code> → tipografía fluida: <code>font-size: clamp(1.5rem, 4vw, 3rem)</code>."],
+ h: `<h1 class="titulo">Título fluido</h1>\n<div class="fila"><div class="fijo">200px</div><div class="resto">calc(100% − 200px)</div></div>`,
+ c: `.fila { width: 500px; }\n.fijo, .resto { display: inline-block; box-sizing: border-box; background: #e0e7ff; padding: 8px; }\n.fijo { width: 200px; background: #fde68a; }\n`,
+ s: `.titulo { font-size: clamp(1.5rem, 5vw, 3rem); }\n.fila { width: 500px; display: flex; }\n.fijo, .resto { box-sizing: border-box; background: #e0e7ff; padding: 8px; }\n.fijo { width: 200px; background: #fde68a; }\n.resto { width: calc(100% - 200px); }\n`,
+ task: "Haz el <code>.titulo</code> fluido con <code>clamp(1.5rem, 5vw, 3rem)</code> y que <code>.resto</code> mida exactamente <code>calc(100% - 200px)</code> (300px).",
+ k: [["El título usa clamp()", h => h.has(/clamp\(/)], ["El tamaño está entre 24 y 48px", h => { const f = h.n(".titulo", "fontSize"); return f >= 24 && f <= 48; }], [".resto mide 300px con calc()", h => h.has(/calc\(\s*100%\s*-\s*200px\s*\)/) && h.near(h.rect(".resto").width, 300, 1)]],
+ x: "<code>calc(100%-200px)</code> sin espacios: es inválido." });
+
+// ------------------------------------------------------------------ G9
+L({ id: "formularios", g: "G9", t: "Formularios", w3: W3("css_form.asp"),
+ i: "Los campos de formulario tienen estilos del sistema muy distintos entre navegadores. Unas pocas reglas los dejan uniformes, cómodos y accesibles.",
+ p: ["<code>input, textarea, select { width: 100%; padding: 10px; font: inherit; box-sizing: border-box; }</code> (font: inherit, porque no heredan la fuente).", "Estado de foco visible: <code>:focus { border-color: …; outline: …; }</code>.", "Validación: <code>:invalid</code>, <code>:valid</code>, <code>:required</code>; con <code>:not(:placeholder-shown)</code> solo se marca cuando el usuario ya escribió.", "<code>textarea { resize: vertical; }</code>.", "Cada campo con su <code>&lt;label for=\"id\"&gt;</code>; <code>accent-color</code> colorea checkboxes y radios."],
+ h: `<form class="form">\n  <label for="n">Nombre</label>\n  <input id="n" type="text" placeholder="Tu nombre" required>\n  <label for="e">Email</label>\n  <input id="e" type="email" placeholder="tu@email.com" required>\n  <label for="m">Mensaje</label>\n  <textarea id="m" rows="4"></textarea>\n  <label><input type="checkbox" checked> Acepto la política</label>\n  <button>Enviar</button>\n</form>`,
+ c: `.form { max-width: 400px; }\n`,
+ s: `.form { max-width: 400px; display: flex; flex-direction: column; gap: 6px; }\n.form input[type="text"], .form input[type="email"], .form textarea {\n  width: 100%;\n  padding: 10px;\n  font: inherit;\n  border: 1px solid #cbd5e1;\n  border-radius: 6px;\n  box-sizing: border-box;\n}\n.form textarea { resize: vertical; }\n.form input:focus, .form textarea:focus {\n  outline: none;\n  border-color: #7c3aed;\n  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.25);\n}\n.form input:invalid:not(:placeholder-shown) { border-color: crimson; }\n.form input[type="checkbox"] { accent-color: #7c3aed; }\n.form button { padding: 10px; border: 0; border-radius: 6px; background: #7c3aed; color: white; font: inherit; cursor: pointer; }\n`,
+ task: "Campos de texto a ancho completo con padding 10px y <code>box-sizing: border-box</code>; textarea que solo se redimensiona en vertical; estado de foco con <code>border-color</code>; borde rojo para el email inválido ya escrito; y checkbox morado con <code>accent-color</code>.",
+ k: [["Los campos ocupan todo el ancho del form", h => h.near(h.rect("#n").width, h.rect(".form").width, 1)], ["Padding 10px", h => h.n("#n", "paddingTop") === 10], ["textarea: resize vertical", h => h.cs("textarea", "resize") === "vertical"], ["Hay estilo :focus con border-color", h => /:focus[^{]*\{[^}]*border-color/.test(h.css)], ["Marcas el :invalid", h => h.has(/:invalid/)], ["Checkbox con accent-color", h => h.cs('input[type="checkbox"]', "accentColor") !== "auto"]],
+ x: "Poner <code>width: 100%</code> sin <code>box-sizing: border-box</code>: el campo se sale por el padding." });
+
+// ------------------------------------------------------------------ G10
+L({ id: "t2d", g: "G10", t: "Transformaciones 2D", w3: W3("css3_2dtransforms.asp"),
+ i: "<code>transform</code> mueve, gira, escala o inclina un elemento <b>sin afectar al layout</b> (los demás no se mueven). Es la base de casi todos los efectos.",
+ p: ["<code>translate(20px, 10px)</code> / <code>translateX()</code> / <code>translateY()</code>.", "<code>rotate(45deg)</code>, <code>scale(1.2)</code>, <code>skew(10deg)</code>.", "Se combinan con espacios y se aplican <b>de derecha a izquierda</b>: <code>transform: translateX(50px) rotate(45deg);</code>", "<code>transform-origin</code> cambia el punto de giro (por defecto el centro).", "Es lo que mejor se anima (lo calcula la tarjeta gráfica)."],
+ h: `<div class="fila">\n  <div class="caja a">translate</div>\n  <div class="caja b">rotate</div>\n  <div class="caja c">scale</div>\n</div>`,
+ c: `.fila { display: flex; gap: 40px; padding: 40px; }\n.caja { width: 90px; height: 90px; background: #818cf8; color: white; display: grid; place-items: center; }\n`,
+ s: `.fila { display: flex; gap: 40px; padding: 40px; }\n.caja { width: 90px; height: 90px; background: #818cf8; color: white; display: grid; place-items: center; }\n.a { transform: translateY(-20px); }\n.b { transform: rotate(45deg); }\n.c { transform: scale(1.3); }\n`,
+ task: "<code>.a</code> sube 20px con translateY, <code>.b</code> gira 45°, <code>.c</code> se escala a 1.3.",
+ k: [[".a sube 20px", h => /matrix\(1, 0, 0, 1, 0, -20\)/.test(h.cs(".a", "transform"))], [".b gira 45°", h => { const m = h.cs(".b", "transform").match(/matrix\(([^,]+), ([^,]+)/); return m && h.near(+m[1], 0.7071, 0.01) && h.near(+m[2], 0.7071, 0.01); }], [".c escala 1.3", h => /matrix\(1\.3, 0, 0, 1\.3/.test(h.cs(".c", "transform"))]],
+ x: "Poner dos propiedades <code>transform</code> seguidas: la segunda anula a la primera. Se combinan en una sola." });
+
+L({ id: "t3d", g: "G10", t: "Transformaciones 3D", w3: W3("css3_3dtransforms.asp"),
+ i: "Con <code>perspective</code> en el padre, los giros en X e Y dan sensación de profundidad. El ejemplo clásico: la <b>tarjeta que se da la vuelta</b>.",
+ p: ["Padre: <code>perspective: 800px</code> (menor = más exagerado).", "<code>rotateY(180deg)</code>, <code>rotateX()</code>, <code>translateZ()</code>.", "<code>transform-style: preserve-3d</code> para que los hijos vivan en el espacio 3D.", "<code>backface-visibility: hidden</code> oculta la cara de atrás de cada lado."],
+ h: `<div class="escena">\n  <div class="carta">\n    <div class="cara frente">Pasa el ratón</div>\n    <div class="cara dorso">¡Detrás!</div>\n  </div>\n</div>`,
+ c: `.escena { width: 200px; height: 130px; margin: 20px; }\n.carta { position: relative; width: 100%; height: 100%; transition: transform 0.6s; }\n.cara { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 12px; color: white; font-weight: bold; }\n.frente { background: #4f46e5; }\n.dorso { background: #db2777; }\n`,
+ s: `.escena { width: 200px; height: 130px; margin: 20px; perspective: 800px; }\n.carta { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }\n.escena:hover .carta { transform: rotateY(180deg); }\n.cara { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 12px; color: white; font-weight: bold; backface-visibility: hidden; }\n.frente { background: #4f46e5; }\n.dorso { background: #db2777; transform: rotateY(180deg); }\n`,
+ task: "Monta la tarjeta giratoria: perspective en <code>.escena</code>, preserve-3d en <code>.carta</code>, caras con backface-visibility hidden, el dorso girado 180° y al hacer hover sobre la escena la carta gira 180° en Y.",
+ k: [["perspective en la escena", h => h.cs(".escena", "perspective") !== "none"], ["preserve-3d", h => h.cs(".carta", "transformStyle") === "preserve-3d"], ["backface-visibility hidden", h => h.cs(".cara", "backfaceVisibility") === "hidden"], ["Dorso girado y giro en hover", h => h.cs(".dorso", "transform") !== "none" && !!(h.rule(".escena:hover .carta") || h.rule(".carta:hover"))]],
+ x: "Poner perspective en el mismo elemento que gira: debe ir en el padre." });
+
+L({ id: "transiciones", g: "G10", t: "Transiciones", w3: W3("css3_transitions.asp"),
+ i: "Una <code>transition</code> hace que el cambio entre dos estados (normal → hover, por ejemplo) sea <b>gradual</b> en lugar de instantáneo.",
+ p: ["<code>transition: propiedad duración curva retraso;</code> → <code>transition: background-color 0.3s ease;</code>", "Varias: <code>transition: transform .3s, box-shadow .3s;</code>", "Se pone en el <b>estado normal</b>, no en el :hover (así anima también al salir).", "Curvas: ease, linear, ease-in, ease-out, cubic-bezier().", "Evita <code>transition: all</code>: anima cosas que no quieres y rinde peor."],
+ h: `<button class="btn">Botón suave</button>\n<div class="tarjeta">Tarjeta que se eleva</div>`,
+ c: `.btn { padding: 10px 20px; border: 0; border-radius: 8px; background: #4f46e5; color: white; }\n.btn:hover { background: #db2777; }\n.tarjeta { width: 200px; padding: 20px; margin-top: 24px; background: white; border: 1px solid #ddd; border-radius: 12px; }\n.tarjeta:hover { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(0,0,0,.15); }\n`,
+ s: `.btn { padding: 10px 20px; border: 0; border-radius: 8px; background: #4f46e5; color: white; transition: background-color 0.3s ease; }\n.btn:hover { background: #db2777; }\n.tarjeta { width: 200px; padding: 20px; margin-top: 24px; background: white; border: 1px solid #ddd; border-radius: 12px; transition: transform 0.3s ease, box-shadow 0.3s ease; }\n.tarjeta:hover { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(0,0,0,.15); }\n`,
+ task: "Los cambios de hover son bruscos. Añade una transición de 0.3s al color de fondo del <code>.btn</code> y otra de 0.3s a <code>transform</code> y <code>box-shadow</code> de la <code>.tarjeta</code> (en el estado normal).",
+ k: [["El botón anima el fondo en 0.3s", h => /background/.test(h.cs(".btn", "transitionProperty")) && h.cs(".btn", "transitionDuration").includes("0.3s")], ["La tarjeta anima transform", h => /transform/.test(h.cs(".tarjeta", "transitionProperty"))], ["…y box-shadow", h => /box-shadow/.test(h.cs(".tarjeta", "transitionProperty"))]],
+ x: "Poner la transition solo en :hover: entra suave pero sale de golpe." });
+
+L({ id: "animaciones", g: "G10", t: "Animaciones", w3: W3("css3_animations.asp"),
+ i: "Una animación recorre una secuencia de pasos definida con <code>@keyframes</code>, <b>sin necesitar</b> un hover. Puede repetirse.",
+ p: ["<code>@keyframes nombre { from { … } to { … } }</code> o con porcentajes (0%, 50%, 100%).", "<code>animation: nombre 1s ease-in-out infinite;</code>", "Partes: name, duration, timing-function, delay, iteration-count (número o infinite), direction (alternate), fill-mode (forwards, both).", "Respeta a quien prefiere menos movimiento: <code>@media (prefers-reduced-motion: reduce) { * { animation: none; } }</code>."],
+ h: `<h2 class="entrada">Aparezco suavemente</h2>\n<div class="punto"></div>`,
+ c: `.punto { width: 24px; height: 24px; border-radius: 50%; background: #db2777; margin: 20px; }\n`,
+ s: `@keyframes aparecer {\n  from { opacity: 0; transform: translateY(20px); }\n  to { opacity: 1; transform: none; }\n}\n@keyframes latido {\n  0%, 100% { transform: scale(1); }\n  50% { transform: scale(1.5); }\n}\n.entrada { animation: aparecer 1s ease-out both; }\n.punto { width: 24px; height: 24px; border-radius: 50%; background: #db2777; margin: 20px; animation: latido 1s ease-in-out infinite; }\n`,
+ task: "Crea <code>@keyframes aparecer</code> (de opacidad 0 y 20px abajo a visible) y aplícala a <code>.entrada</code> durante 1s; y <code>@keyframes latido</code> que escale el <code>.punto</code> a 1.5 a mitad, repitiéndose <b>infinitamente</b>.",
+ k: [["Hay @keyframes aparecer y latido", h => h.has(/@keyframes\s+aparecer/) && h.has(/@keyframes\s+latido/)], [".entrada usa aparecer durante 1s", h => h.cs(".entrada", "animationName") === "aparecer" && h.cs(".entrada", "animationDuration") === "1s"], [".punto late infinitamente", h => h.cs(".punto", "animationName") === "latido" && h.cs(".punto", "animationIterationCount") === "infinite"]],
+ x: "Definir @keyframes pero no aplicar <code>animation</code> al elemento (o escribir mal el nombre)." });
+
+L({ id: "tooltip", g: "G10", t: "Tooltip", w3: W3("css_tooltip.asp"),
+ i: "Un tooltip es un texto que aparece al pasar el ratón. Se construye con <b>position</b> + <b>::after</b> + <b>attr()</b> + <b>:hover</b>: un resumen de medio curso en un solo componente.",
+ p: ["Padre: <code>position: relative</code>.", "Texto: <code>.tip::after { content: attr(data-tip); position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%); }</code>", "Oculto por defecto (<code>opacity: 0</code> o <code>visibility: hidden</code>) y visible en <code>:hover</code>.", "La flecha: otro pseudo-elemento con bordes transparentes (truco del triángulo)."],
+ h: `<p style="margin-top:60px">Pasa el ratón por <span class="tip" data-tip="Cascading Style Sheets">CSS</span> para ver qué significa.</p>`,
+ c: `.tip { border-bottom: 1px dotted; cursor: help; }\n`,
+ s: `.tip { border-bottom: 1px dotted; cursor: help; position: relative; }\n.tip::after {\n  content: attr(data-tip);\n  position: absolute;\n  bottom: 125%;\n  left: 50%;\n  transform: translateX(-50%);\n  white-space: nowrap;\n  background: #111827;\n  color: white;\n  padding: 4px 8px;\n  border-radius: 6px;\n  opacity: 0;\n  transition: opacity 0.2s;\n}\n.tip:hover::after { opacity: 1; }\n`,
+ task: "Haz que el tooltip muestre el texto de <code>data-tip</code> encima del término, oculto (<code>opacity: 0</code>) y visible al hacer hover.",
+ k: [[".tip es la referencia", h => h.cs(".tip", "position") === "relative"], ["::after muestra attr(data-tip)", h => h.cs(".tip", "content", "::after").includes("Cascading")], ["Está oculto por defecto", h => h.cs(".tip", "opacity", "::after") === "0" || h.cs(".tip", "visibility", "::after") === "hidden"], ["Se muestra con :hover", h => !!h.rule(".tip:hover::after")]],
+ x: "Olvidar <code>white-space: nowrap</code>: el tooltip se estrecha al ancho de la palabra." });
+
+L({ id: "objectfit", g: "G10", t: "object-fit y object-position", w3: W3("css3_object-fit.asp"),
+ i: "Cuando fuerzas a una imagen a un tamaño con otra proporción, se deforma. <code>object-fit</code> decide cómo encaja <b>sin deformarse</b>.",
+ p: ["<b>fill</b> (defecto): estira y deforma.", "<b>cover</b>: llena la caja y recorta lo que sobra (fotos de tarjetas, avatares).", "<b>contain</b>: se ve entera, con huecos (logos).", "<code>object-position: top</code> elige qué parte se queda al recortar.", "Es el equivalente de background-size para <code>&lt;img&gt;</code>."],
+ h: `<img class="a" src="img/vertical.svg" alt="">\n<img class="b" src="img/vertical.svg" alt="">\n<img class="c" src="img/paisaje.svg" alt="">`,
+ c: `img { width: 200px; height: 150px; border: 2px solid #94a3b8; margin: 4px; }\n`,
+ s: `img { width: 200px; height: 150px; border: 2px solid #94a3b8; margin: 4px; }\n.a { object-fit: cover; }\n.b { object-fit: cover; object-position: top; }\n.c { object-fit: contain; background: #f1f5f9; }\n`,
+ task: "La foto vertical está deformada. <code>.a</code>: cover; <code>.b</code>: cover mostrando la parte de arriba; <code>.c</code>: contain (se ve entera).",
+ k: [[".a con cover", h => h.cs(".a", "objectFit") === "cover"], [".b con cover y arriba", h => h.cs(".b", "objectFit") === "cover" && h.cs(".b", "objectPosition").startsWith("50% 0%")], [".c con contain", h => h.cs(".c", "objectFit") === "contain"]],
+ x: "Usar object-fit sin fijar width y height: no hay caja a la que ajustarse." });
+
+L({ id: "masking", g: "G10", t: "Máscaras y recortes", w3: W3("css3_masking.asp"),
+ i: "<code>mask-image</code> usa una imagen o degradado como máscara (lo opaco se ve, lo transparente desaparece). <code>clip-path</code> recorta con una forma geométrica.",
+ p: ["<code>mask-image: linear-gradient(black, transparent);</code> → la imagen se desvanece hacia abajo.", "<code>clip-path: circle(50%)</code>, <code>ellipse()</code>, <code>inset(10px round 12px)</code>, <code>polygon(50% 0, 100% 100%, 0 100%)</code> (triángulo).", "Ninguno cambia el tamaño que ocupa el elemento en el layout."],
+ h: `<img class="fundido" src="img/paisaje.svg" alt="" width="300">\n<img class="circulo" src="img/foto.svg" alt="" width="160" height="160" style="object-fit:cover">\n<div class="triangulo"></div>`,
+ c: `.triangulo { width: 120px; height: 100px; background: #db2777; }\n`,
+ s: `.fundido {\n  mask-image: linear-gradient(to bottom, black 50%, transparent);\n  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent);\n}\n.circulo { clip-path: circle(50%); }\n.triangulo { width: 120px; height: 100px; background: #db2777; clip-path: polygon(50% 0, 100% 100%, 0 100%); }\n`,
+ task: "Desvanece <code>.fundido</code> hacia abajo con <code>mask-image</code> y un degradado; recorta <code>.circulo</code> con <code>clip-path: circle(50%)</code>; y convierte <code>.triangulo</code> en un triángulo con <code>polygon()</code>.",
+ k: [["mask-image con degradado", h => h.has(/mask-image\s*:\s*linear-gradient/)], ["Círculo con clip-path", h => /circle/.test(h.cs(".circulo", "clipPath"))], ["Triángulo con polygon", h => /polygon/.test(h.cs(".triangulo", "clipPath"))]],
+ x: "Pensar que clip-path reduce el espacio: el hueco del elemento se queda igual." });
+
+L({ id: "botones", g: "G10", t: "Botones", w3: W3("css3_buttons.asp"),
+ i: "Un sistema de botones coherente: una clase base y <b>modificadores</b> para variantes y tamaños. Es la idea de los frameworks como Bootstrap.",
+ p: ["Base <code>.btn</code>: padding, border-radius, font: inherit, cursor: pointer, border.", "Variantes: <code>.btn-primario</code>, <code>.btn-borde</code> (fondo transparente y borde).", "Estados: <code>:hover</code>, <code>:active</code> (un poco hundido), <code>:disabled</code> (opacidad y cursor not-allowed).", "Grupo de botones: contenedor flex sin gap y esquinas solo en los extremos."],
+ h: `<button class="btn btn-primario">Guardar</button>\n<button class="btn btn-borde">Cancelar</button>\n<button class="btn btn-primario" disabled>Desactivado</button>`,
+ c: `\n`,
+ s: `.btn {\n  padding: 10px 18px;\n  border-radius: 8px;\n  border: 2px solid #4f46e5;\n  font: inherit;\n  cursor: pointer;\n  transition: background-color 0.2s, transform 0.1s;\n}\n.btn-primario { background: #4f46e5; color: white; }\n.btn-primario:hover { background: #3730a3; }\n.btn-borde { background: transparent; color: #4f46e5; }\n.btn-borde:hover { background: #eef2ff; }\n.btn:active { transform: scale(0.97); }\n.btn:disabled { opacity: 0.5; cursor: not-allowed; }\n`,
+ task: "Crea la base <code>.btn</code> (padding, borde de 2px, esquinas, cursor pointer), la variante <code>.btn-primario</code> (relleno) y <code>.btn-borde</code> (fondo transparente), y el estado <code>:disabled</code> con opacidad 0.5 y cursor not-allowed.",
+ k: [["Base con cursor pointer y radio", h => h.cs(".btn", "cursor") === "pointer" && h.n(".btn", "borderTopLeftRadius") > 0 && h.n(".btn", "borderTopWidth") === 2], ["Primario con fondo y borde con fondo transparente", h => h.cs(".btn-primario", "backgroundColor") !== "rgba(0, 0, 0, 0)" && h.cs(".btn-borde", "backgroundColor") === "rgba(0, 0, 0, 0)"], ["Desactivado: opacidad 0.5 y not-allowed", h => h.cs(".btn:disabled", "opacity") === "0.5" && h.cs(".btn:disabled", "cursor") === "not-allowed"]],
+ x: "Copiar todos los estilos en cada variante en vez de usar una clase base." });
+
+L({ id: "paginacion", g: "G10", t: "Paginación", w3: W3("css3_pagination.asp"),
+ i: "Una fila de números enlazados con la página actual resaltada: repasa flex, enlaces, padding, border-radius, hover y una clase de estado.",
+ p: ["Contenedor <code>display: flex; gap: 4px;</code>.", "Enlaces con tamaño fijo y centrados.", "<code>.activa</code> con fondo y sin hover.", "Accesibilidad: <code>aria-current=\"page\"</code> en el HTML, que además puedes usar como selector: <code>[aria-current=\"page\"]</code>."],
+ h: `<nav class="paginacion">\n  <a href="#">«</a><a href="#">1</a><a href="#" class="activa" aria-current="page">2</a><a href="#">3</a><a href="#">4</a><a href="#">»</a>\n</nav>`,
+ c: `\n`,
+ s: `.paginacion { display: flex; gap: 4px; }\n.paginacion a {\n  display: grid;\n  place-items: center;\n  min-width: 36px;\n  height: 36px;\n  border-radius: 6px;\n  text-decoration: none;\n  color: #334155;\n  border: 1px solid #cbd5e1;\n}\n.paginacion a:hover:not(.activa) { background: #f1f5f9; }\n.paginacion .activa { background: #4f46e5; color: white; border-color: #4f46e5; }\n`,
+ task: "Paginación en fila con 4px de separación, enlaces de 36px de alto, sin subrayado y con borde, y la <code>.activa</code> con fondo morado y texto blanco.",
+ k: [["En fila con gap 4px", h => h.cs(".paginacion", "display") === "flex" && h.cs(".paginacion", "columnGap") === "4px"], ["Enlaces de 36px de alto sin subrayado", h => h.cs(".paginacion a", "height") === "36px" && h.cs(".paginacion a", "textDecorationLine") === "none"], ["La activa resalta", h => h.cs(".activa", "color") === "rgb(255, 255, 255)" && h.cs(".activa", "backgroundColor") !== "rgba(0, 0, 0, 0)"]],
+ x: "" });
+
+L({ id: "columnas", g: "G10", t: "Varias columnas (multicolumn)", w3: W3("css3_multiple_columns.asp"),
+ i: "Reparte el <b>texto</b> en columnas como un periódico. Para layout de cajas usa grid; esto es para texto corrido.",
+ p: ["<code>column-count: 3</code> o <code>column-width: 200px</code> (las que quepan).", "<code>column-gap</code> y <code>column-rule: 1px solid #ddd</code> (línea separadora).", "<code>column-span: all</code> → un título que cruza todas las columnas.", "<code>break-inside: avoid</code> → que una caja no se parta entre columnas."],
+ h: `<article class="periodico">\n  <h2>Titular a todo el ancho</h2>\n  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>\n  <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\n</article>`,
+ c: `\n`,
+ s: `.periodico {\n  column-count: 3;\n  column-gap: 24px;\n  column-rule: 1px solid #ddd;\n}\n.periodico h2 {\n  column-span: all;\n}\n`,
+ task: "Reparte el artículo en 3 columnas con 24px de separación y una línea entre ellas, y que el titular ocupe todas las columnas.",
+ k: [["3 columnas", h => h.cs(".periodico", "columnCount") === "3"], ["Separación 24px y línea", h => h.cs(".periodico", "columnGap") === "24px" && h.cs(".periodico", "columnRuleStyle") === "solid"], ["El titular cruza todas", h => h.cs(".periodico h2", "columnSpan") === "all"]],
+ x: "" });
+
+L({ id: "boxsizing", g: "G10", t: "box-sizing: el reset universal", w3: W3("css3_box-sizing.asp"),
+ i: "Ya lo viste en el modelo de caja: con <code>border-box</code> el width incluye padding y borde. Por eso casi todos los proyectos empiezan con un pequeño <b>reset</b>.",
+ p: ["<code>*, *::before, *::after { box-sizing: border-box; }</code>", "Elimina el problema de «dos columnas al 50 % con padding no caben».", "Suele acompañarse de <code>body { margin: 0; }</code> e <code>img { max-width: 100%; display: block; }</code>."],
+ h: `<div class="fila">\n  <div class="col">50% con padding</div>\n  <div class="col">50% con padding</div>\n</div>`,
+ c: `.fila { width: 400px; border: 1px solid #ccc; }\n.col { float: left; width: 50%; padding: 20px; border: 2px solid #818cf8; }\n.fila::after { content: ""; display: block; clear: both; }\n`,
+ s: `*, *::before, *::after { box-sizing: border-box; }\n.fila { width: 400px; border: 1px solid #ccc; }\n.col { float: left; width: 50%; padding: 20px; border: 2px solid #818cf8; }\n.fila::after { content: ""; display: block; clear: both; }\n`,
+ task: "Las dos columnas al 50 % no caben en la misma fila. Añade el reset universal de box-sizing para arreglarlo.",
+ k: [["Reset universal (*, *::before, *::after)", h => h.has(/\*\s*,\s*\*::before\s*,\s*\*::after\s*\{[^}]*border-box/)], ["Las dos columnas en la misma fila", h => { const c = h.all(".col").map(e => e.getBoundingClientRect()); return h.near(c[0].top, c[1].top); }]],
+ x: "" });
+
+L({ id: "ui", g: "G10", t: "Interfaz de usuario (cursor, resize, user-select…)", w3: W3("css3_user_interface.asp"),
+ i: "Propiedades pequeñas que mejoran mucho la experiencia.",
+ p: ["<code>cursor: pointer | not-allowed | help | grab | text</code>.", "<code>resize: both | vertical | horizontal | none</code> (necesita overflow distinto de visible).", "<code>user-select: none</code> → que no se pueda seleccionar (botones, iconos).", "<code>accent-color</code> → color de checkbox, radio y range.", "<code>caret-color</code> → color del cursor de texto.", "<code>scroll-behavior: smooth</code> en <code>html</code> → desplazamiento suave a las anclas."],
+ h: `<div class="nota">Esta nota se puede redimensionar desde la esquina.</div>\n<button class="icono">⚙️</button>\n<p><input type="range"> <input type="radio" checked></p>`,
+ c: `.nota { width: 200px; height: 80px; padding: 8px; border: 1px solid #cbd5e1; }\n`,
+ s: `html { scroll-behavior: smooth; }\n.nota { width: 200px; height: 80px; padding: 8px; border: 1px solid #cbd5e1; resize: both; overflow: auto; }\n.icono { cursor: pointer; user-select: none; }\ninput { accent-color: #db2777; }\n`,
+ task: "Haz la <code>.nota</code> redimensionable en ambos sentidos, el <code>.icono</code> con cursor de mano y no seleccionable, los inputs de color <code>#db2777</code> con accent-color y el scroll suave en <code>html</code>.",
+ k: [["Nota redimensionable", h => h.cs(".nota", "resize") === "both" && h.cs(".nota", "overflowX") !== "visible"], ["Icono con pointer y no seleccionable", h => h.cs(".icono", "cursor") === "pointer" && h.cs(".icono", "userSelect") === "none"], ["accent-color en los inputs", h => h.cs('input[type="range"]', "accentColor") === "rgb(219, 39, 119)"], ["Scroll suave", h => h.cs("html", "scrollBehavior") === "smooth"]],
+ x: "Poner <code>resize</code> sin <code>overflow</code>: no aparece el tirador." });
+
+L({ id: "variables", g: "G10", t: "Variables CSS (custom properties)", w3: W3("css3_variables.asp"),
+ i: "Una variable guarda un valor para reutilizarlo: cambias el color de la marca en un sitio y cambia en toda la web. Además <b>se heredan</b> y se pueden redefinir en una zona (temas).",
+ p: ["Definir (normalmente en <code>:root</code>): <code>--color-primario: #4f46e5;</code>", "Usar: <code>color: var(--color-primario);</code> con respaldo: <code>var(--x, blue)</code>.", "Redefinir en un ámbito: <code>.tema-oscuro { --fondo: #111; --texto: #eee; }</code> → todo lo de dentro cambia.", "Se pueden cambiar desde JavaScript: <code>document.documentElement.style.setProperty('--color-primario', 'red')</code>.", "Combinan con calc: <code>padding: calc(var(--espacio) * 2)</code>."],
+ h: `<div class="tarjeta"><h3>Tema claro</h3><p>Texto normal.</p><button>Botón</button></div>\n<div class="tarjeta oscuro"><h3>Tema oscuro</h3><p>Mismo CSS, otras variables.</p><button>Botón</button></div>`,
+ c: `.tarjeta { background: white; color: #111827; padding: 16px; margin: 8px 0; border-radius: 12px; border: 1px solid #ddd; }\n.tarjeta button { background: #4f46e5; color: white; border: 0; padding: 8px 14px; border-radius: 6px; }\n`,
+ s: `:root {\n  --fondo: white;\n  --texto: #111827;\n  --primario: #4f46e5;\n  --radio: 12px;\n}\n.oscuro {\n  --fondo: #111827;\n  --texto: #f9fafb;\n  --primario: #f472b6;\n}\n.tarjeta { background: var(--fondo); color: var(--texto); padding: 16px; margin: 8px 0; border-radius: var(--radio); border: 1px solid #ddd; }\n.tarjeta button { background: var(--primario); color: white; border: 0; padding: 8px 14px; border-radius: 6px; }\n`,
+ task: "Define en <code>:root</code> las variables <code>--fondo</code>, <code>--texto</code> y <code>--primario</code>, úsalas en las tarjetas y redefínelas en <code>.oscuro</code> para que esa tarjeta tenga fondo oscuro y botón rosa <b>sin repetir las reglas</b>.",
+ k: [["Variables definidas en :root", h => h.v("--fondo") && h.v("--texto") && h.v("--primario")], ["Las tarjetas usan var()", h => h.has(/background\s*:\s*var\(--fondo/) && h.has(/color\s*:\s*var\(--texto/)], ["La tarjeta oscura tiene otro fondo y otro botón", h => h.cs(".oscuro", "backgroundColor") !== h.cs(".tarjeta", "backgroundColor") && h.cs(".oscuro button", "backgroundColor") !== h.cs(".tarjeta button", "backgroundColor")]],
+ x: "Escribir <code>var(primario)</code> sin los dos guiones, o definir la variable dentro de un selector que no es antepasado del elemento." });
+
+// =====================================================================
+//  PROYECTO: tu portfolio, construido en 10 pasos (uno por bloque)
+// =====================================================================
+const P_HTML = `<header class="cabecera">
+  <a href="#inicio" class="logo">Elaine<span>.dev</span></a>
+  <nav class="menu">
+    <ul>
+      <li><a href="#sobre-mi">Sobre mí</a></li>
+      <li><a href="#habilidades">Habilidades</a></li>
+      <li class="desplegable">
+        <a href="#proyectos">Proyectos ▾</a>
+        <ul class="submenu">
+          <li><a href="#proyectos">Backend</a></li>
+          <li><a href="#proyectos">Cloud</a></li>
+          <li><a href="#proyectos">Bases de datos</a></li>
+        </ul>
+      </li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section id="inicio" class="hero">
+    <span class="badge">Disponible para prácticas</span>
+    <h1>Hola, soy Elaine</h1>
+    <p class="subtitulo">Desarrolladora backend junior · Java · Spring Boot · Cloud</p>
+    <a href="#contacto" class="boton">Hablemos</a>
+  </section>
+
+  <section id="sobre-mi" class="seccion">
+    <h2>Sobre mí</h2>
+    <p>Estudio Desarrollo de Aplicaciones Web y me especializo en backend con Java y Spring Boot, bases de datos y despliegue en la nube. Me gusta construir sistemas fiables y entender cómo funciona todo por dentro.</p>
+  </section>
+
+  <section id="habilidades" class="seccion">
+    <h2>Habilidades</h2>
+    <ul class="lista-habilidades">
+      <li>Java 21 y Spring Boot</li>
+      <li>SQL y modelado entidad-relación</li>
+      <li>AWS y Google Cloud</li>
+      <li>Git, Linux y Docker</li>
+      <li>HTML y CSS</li>
+    </ul>
+    <table class="tabla">
+      <caption>Certificaciones</caption>
+      <thead>
+        <tr><th>Certificación</th><th>Entidad</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Java SE 21 Developer Professional</td><td>Oracle</td></tr>
+        <tr><td>Cloud Practitioner</td><td>AWS</td></tr>
+        <tr><td>Certificación Google Cloud</td><td>Google</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="proyectos" class="seccion">
+    <h2>Proyectos</h2>
+    <div class="tarjetas">
+      <article class="tarjeta">
+        <img src="img/proyecto1.svg" alt="Captura de la API REST">
+        <h3>API REST de pedidos</h3>
+        <p>Spring Boot, JPA y PostgreSQL con pruebas JUnit.</p>
+        <a href="#" class="enlace" data-tip="Ver el código en GitHub">Ver código</a>
+      </article>
+      <article class="tarjeta">
+        <img src="img/proyecto2.svg" alt="Diagrama de despliegue">
+        <h3>Despliegue en la nube</h3>
+        <p>Aplicación contenedorizada desplegada en AWS.</p>
+        <a href="#" class="enlace" data-tip="Ver el código en GitHub">Ver código</a>
+      </article>
+      <article class="tarjeta">
+        <img src="img/proyecto3.svg" alt="Diagrama entidad-relación">
+        <h3>Diseño de bases de datos</h3>
+        <p>Modelos E/R y relacionales con su SQL.</p>
+        <a href="#" class="enlace" data-tip="Ver el código en GitHub">Ver código</a>
+      </article>
+    </div>
+    <h3>Galería</h3>
+    <div class="galeria">
+      <img src="img/galeria1.svg" alt="Imagen 1">
+      <img src="img/galeria2.svg" alt="Imagen 2">
+      <img src="img/galeria3.svg" alt="Imagen 3">
+      <img src="img/galeria4.svg" alt="Imagen 4">
+      <img src="img/galeria5.svg" alt="Imagen 5">
+      <img src="img/galeria6.svg" alt="Imagen 6">
+    </div>
+  </section>
+
+  <section id="contacto" class="seccion">
+    <h2>Contacto</h2>
+    <form class="formulario">
+      <label for="nombre">Nombre</label>
+      <input id="nombre" type="text" placeholder="Tu nombre" required>
+      <label for="email">Email</label>
+      <input id="email" type="email" placeholder="tu@email.com" required>
+      <label for="mensaje">Mensaje</label>
+      <textarea id="mensaje" rows="5" placeholder="Cuéntame…"></textarea>
+      <button type="submit">Enviar</button>
+    </form>
+  </section>
+</main>
+
+<footer class="pie">
+  <p>© 2026 Elaine Parra · Hecho a mano con HTML y CSS</p>
+</footer>`;
+
+const STEPS = [
+ { g: "G1", t: "Base: fuente, colores y espacios", learn: ["selectores de etiqueta, clase y agrupados", "herencia (todo hereda la fuente del body)"],
+   todo: ["Quita el margen del <code>body</code> y dale una pila de fuentes que termine en <code>sans-serif</code>, color de texto <code>#1f2937</code> e interlineado <code>1.6</code>.", "Pon <code>h1</code>, <code>h2</code> y <code>h3</code> de color <code>#1e3a8a</code> con <b>una sola regla agrupada</b>.", "Da a cada <code>.seccion</code> un padding de <code>48px 24px</code>."],
+   css: `/* ===== Paso 1 · Base ===== */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: #1f2937;
+  line-height: 1.6;
+}
+h1, h2, h3 {
+  color: #1e3a8a;
+}
+.seccion {
+  padding: 48px 24px;
+}
+`,
+   k: [["body sin margen", h => h.n("body", "marginTop") === 0], ["Fuente que termina en sans-serif", h => /sans-serif\s*$/.test(h.cs("body", "fontFamily"))], ["Texto #1f2937 con interlineado 1.6", h => h.cs("body", "color") === "rgb(31, 41, 55)" && h.near(h.n("p", "lineHeight"), h.n("p", "fontSize") * 1.6, 0.6)], ["Títulos #1e3a8a", h => ["h2", "h3"].every(s => h.cs(s, "color") === "rgb(30, 58, 138)")], [".seccion con padding 48px 24px", h => h.n(".seccion", "paddingTop") === 48 && h.n(".seccion", "paddingLeft") === 24]] },
+ { g: "G2", t: "Posicionamiento: cabecera fija y etiqueta", learn: ["position sticky y absolute", "z-index", "display: none"],
+   todo: ["Haz la <code>.cabecera</code> <code>sticky</code> arriba (<code>top: 0</code>), con <code>z-index: 10</code> y fondo blanco para que no se transparente el contenido al hacer scroll.", "Convierte el <code>.hero</code> en referencia (<code>relative</code>) y coloca la <code>.badge</code> con <code>absolute</code> a 16px de arriba y 16px de la derecha.", "Oculta el <code>.submenu</code> con <code>display: none</code> (lo mostraremos en el paso 8)."],
+   css: `/* ===== Paso 2 · Posicionamiento ===== */
+.cabecera {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #ffffff;
+}
+.hero {
+  position: relative;
+}
+.badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+.submenu {
+  display: none;
+}
+`,
+   k: [["Cabecera sticky arriba", h => h.cs(".cabecera", "position") === "sticky" && h.cs(".cabecera", "top") === "0px"], ["…con z-index 10 y fondo blanco", h => h.cs(".cabecera", "zIndex") === "10" && h.cs(".cabecera", "backgroundColor") === "rgb(255, 255, 255)"], ["Hero relative y badge absolute", h => h.cs(".hero", "position") === "relative" && h.cs(".badge", "position") === "absolute"], ["Badge a 16px de arriba y de la derecha", h => h.cs(".badge", "top") === "16px" && h.cs(".badge", "right") === "16px"], ["Submenú oculto", h => h.cs(".submenu", "display") === "none"]] },
+ { g: "G3", t: "Unidades, colores, fondos y selectores", learn: ["box-sizing border-box", "rem y vh", "linear-gradient", "rgba", ":hover y :nth-child"],
+   todo: ["Añade el reset universal <code>*, *::before, *::after { box-sizing: border-box; }</code>.", "Tamaños con rem: <code>h1</code> a <code>3rem</code> y <code>h2</code> a <code>2rem</code>.", "El <code>.hero</code>: <code>min-height: 70vh</code>, padding <code>64px 24px</code>, texto blanco, color de respaldo <code>#1e3a8a</code> y fondo <code>linear-gradient(135deg, #1e3a8a, #7c3aed)</code>. Su h1, también blanco (fíjate: hay que vencer a la regla de los títulos).", "La <code>.badge</code> con fondo blanco al 20 % (<code>rgba</code>), padding <code>4px 12px</code> y totalmente redondeada.", "<code>.menu a:hover</code> de color <code>#7c3aed</code> y las secciones pares (<code>.seccion:nth-child(even)</code>) con fondo <code>#f3f4f6</code>."],
+   css: `/* ===== Paso 3 · Unidades, colores y fondos ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+h1 { font-size: 3rem; }
+h2 { font-size: 2rem; }
+.hero {
+  min-height: 70vh;
+  padding: 64px 24px;
+  color: #ffffff;
+  background-color: #1e3a8a;
+  background-image: linear-gradient(135deg, #1e3a8a, #7c3aed);
+}
+.hero h1 {
+  color: #ffffff;
+}
+.badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+.menu a:hover {
+  color: #7c3aed;
+}
+.seccion:nth-child(even) {
+  background: #f3f4f6;
+}
+`,
+   k: [["box-sizing universal", h => h.cs(".seccion", "boxSizing") === "border-box" && h.has(/\*::before/)], ["h1 3rem y h2 2rem", h => h.n("h1", "fontSize") === 48 && h.n("h2", "fontSize") === 32], ["Hero con degradado, respaldo y min-height en vh", h => /linear-gradient/.test(h.cs(".hero", "backgroundImage")) && h.cs(".hero", "backgroundColor") === "rgb(30, 58, 138)" && h.has(/min-height\s*:\s*70vh/)], ["h1 del hero en blanco", h => h.cs(".hero h1", "color") === "rgb(255, 255, 255)"], ["Badge con rgba y redondeada", h => /rgba\(255, 255, 255, 0\.2\)/.test(h.cs(".badge", "backgroundColor")) && h.n(".badge", "borderTopLeftRadius") > 20], ["Hover del menú y secciones pares", h => { const r = h.rule(".menu a:hover"); return r && r.color && h.cs("#sobre-mi", "backgroundColor") === "rgb(243, 244, 246)"; }]] },
+ { g: "G4", t: "La caja: contenedor, tarjetas y botón", learn: ["max-width + margin auto", "border, border-radius, padding", "overflow", "outline de foco"],
+   todo: ["Limita el contenido de cada sección: <code>.seccion &gt; *</code> con <code>max-width: 1000px</code> y márgenes laterales <code>auto</code>.", "<code>.tarjeta</code>: borde <code>1px solid #e5e7eb</code>, <code>border-radius: 12px</code>, padding 16px, margin-bottom 24px, fondo blanco y <code>overflow: hidden</code>.", "Imágenes de las tarjetas: <code>max-width: 100%</code> y <code>display: block</code>.", "<code>.boton</code>: inline-block, padding <code>12px 24px</code>, borde blanco de 2px, esquinas de 8px y margin-top 16px; y un <code>.boton:focus-visible</code> con outline amarillo (<code>#fbbf24</code>) y outline-offset."],
+   css: `/* ===== Paso 4 · Modelo de caja ===== */
+.seccion > * {
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.tarjeta {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+  background: #ffffff;
+  overflow: hidden;
+}
+.tarjeta img {
+  max-width: 100%;
+  display: block;
+}
+.boton {
+  display: inline-block;
+  padding: 12px 24px;
+  border: 2px solid #ffffff;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+.boton:focus-visible {
+  outline: 3px solid #fbbf24;
+  outline-offset: 3px;
+}
+`,
+   k: [["Contenido de sección limitado a 1000px y centrado", h => h.cs("#sobre-mi > h2", "maxWidth") === "1000px" && h.cs("#sobre-mi > h2", "marginLeft") === h.cs("#sobre-mi > h2", "marginRight")], ["Tarjeta con borde, radio 12px y padding 16px", h => h.n(".tarjeta", "borderTopWidth") === 1 && h.n(".tarjeta", "borderTopLeftRadius") === 12 && h.n(".tarjeta", "paddingTop") === 16], ["Tarjeta con overflow hidden", h => h.cs(".tarjeta", "overflowX") === "hidden"], ["Imágenes que no desbordan", h => h.cs(".tarjeta img", "maxWidth") === "100%" && h.cs(".tarjeta img", "display") === "block"], ["Botón inline-block 12px 24px con borde 2px", h => h.cs(".boton", "display") === "inline-block" && h.n(".boton", "paddingTop") === 12 && h.n(".boton", "paddingLeft") === 24 && h.n(".boton", "borderTopWidth") === 2], ["Foco visible en el botón", h => { const r = h.rule(".boton:focus-visible") || h.rule(".boton:focus"); return r && (r.outline || r.outlineStyle); }]] },
+ { g: "G5", t: "Texto, fuentes y enlaces", learn: ["text-decoration, text-transform, letter-spacing", "font-weight, font-style", "estados de enlace", "ch"],
+   todo: ["<code>.logo</code>: 1.5rem, negrita (700), sin subrayado y color <code>#1e3a8a</code>; su <code>span</code> en <code>#7c3aed</code>.", "Enlaces del menú (<code>.menu a</code>): sin subrayado, color <code>#1f2937</code>, mayúsculas, <code>letter-spacing: 0.05em</code> y 0.85rem.", "Centra el texto del <code>.hero</code> y pon el <code>.subtitulo</code> a 1.25rem en cursiva.", "<code>.boton</code>: texto blanco, sin subrayado y peso 600.", "Párrafos con <code>max-width: 65ch</code> para que las líneas no sean eternas."],
+   css: `/* ===== Paso 5 · Texto, fuentes y enlaces ===== */
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: #1e3a8a;
+}
+.logo span {
+  color: #7c3aed;
+}
+.menu a {
+  text-decoration: none;
+  color: #1f2937;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.85rem;
+}
+.hero {
+  text-align: center;
+}
+.subtitulo {
+  font-size: 1.25rem;
+  font-style: italic;
+}
+.boton {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+}
+p {
+  max-width: 65ch;
+}
+`,
+   k: [["Logo en negrita sin subrayado y span morado", h => +h.cs(".logo", "fontWeight") === 700 && h.cs(".logo", "textDecorationLine") === "none" && h.cs(".logo span", "color") === "rgb(124, 58, 237)"], ["Menú en mayúsculas sin subrayado", h => h.cs(".menu a", "textTransform") === "uppercase" && h.cs(".menu a", "textDecorationLine") === "none"], ["Menú con letter-spacing", h => h.n(".menu a", "letterSpacing") > 0], ["Hero centrado y subtítulo en cursiva", h => h.cs(".hero", "textAlign") === "center" && h.cs(".subtitulo", "fontStyle") === "italic"], ["Botón con texto blanco y sin subrayado", h => h.cs(".boton", "color") === "rgb(255, 255, 255)" && h.cs(".boton", "textDecorationLine") === "none"], ["Párrafos de 65ch como máximo", h => h.has(/max-width\s*:\s*65ch/)]] },
+ { g: "G6", t: "Listas y tablas", learn: ["list-style none", "::before con content", "border-collapse y filas cebra"],
+   todo: ["Quita viñetas, padding y margen a las listas del menú y a <code>.lista-habilidades</code> (con una regla agrupada).", "Cada habilidad con un «✓ » verde (<code>#16a34a</code>) delante usando <code>::before</code>.", "<code>.tabla</code>: ancho 100 %, bordes fusionados y margin-top 24px; celdas con padding <code>10px 12px</code>, borde inferior y alineadas a la izquierda.", "Cabecera (<code>thead th</code>) con fondo <code>#1e3a8a</code> y texto blanco; filas pares del cuerpo con fondo <code>#f9fafb</code>; <code>caption</code> en negrita."],
+   css: `/* ===== Paso 6 · Listas y tablas ===== */
+.menu ul,
+.lista-habilidades {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.lista-habilidades li::before {
+  content: "✓ ";
+  color: #16a34a;
+  font-weight: 700;
+}
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 24px;
+}
+.tabla th,
+.tabla td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+.tabla thead th {
+  background: #1e3a8a;
+  color: #ffffff;
+}
+.tabla tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
+.tabla caption {
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+`,
+   k: [["Listas sin viñetas ni sangría", h => h.cs(".menu ul", "listStyleType") === "none" && h.cs(".lista-habilidades", "listStyleType") === "none" && h.n(".lista-habilidades", "paddingLeft") === 0], ["Habilidades con ✓ verde", h => h.cs(".lista-habilidades li", "content", "::before").includes("✓") && h.cs(".lista-habilidades li", "color", "::before") === "rgb(22, 163, 74)"], ["Tabla a todo el ancho con bordes fusionados", h => h.cs(".tabla", "borderCollapse") === "collapse" && h.has(/\.tabla\s*\{[^}]*width\s*:\s*100%/)], ["Celdas con padding 10px 12px", h => h.n(".tabla td", "paddingTop") === 10 && h.n(".tabla td", "paddingLeft") === 12], ["Cabecera azul con texto blanco", h => h.cs(".tabla th", "backgroundColor") === "rgb(30, 58, 138)" && h.cs(".tabla th", "color") === "rgb(255, 255, 255)"], ["Filas pares con fondo", h => h.cs(".tabla tbody tr:nth-child(2)", "backgroundColor") === "rgb(249, 250, 251)"]] },
+ { g: "G7", t: "Flexbox: cabecera, menú, portada y tarjetas", learn: ["justify-content y align-items", "gap", "flex-direction: column", "flex-wrap y flex: 1 1 280px"],
+   todo: ["<code>.cabecera</code>: flex, <code>space-between</code>, centrada en vertical y con padding <code>12px 24px</code>.", "El menú principal (<code>.menu &gt; ul</code>, solo el de primer nivel) en fila con <code>gap: 24px</code>.", "<code>.hero</code> en columna con todo centrado en ambos ejes.", "<code>.tarjetas</code> en fila que pase a otra línea (<code>wrap</code>) con <code>gap: 24px</code>, y cada <code>.tarjeta</code> con <code>flex: 1 1 280px</code>."],
+   css: `/* ===== Paso 7 · Flexbox ===== */
+.cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+}
+.menu > ul {
+  display: flex;
+  gap: 24px;
+}
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.tarjetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.tarjeta {
+  flex: 1 1 280px;
+}
+`,
+   k: [["Cabecera flex con space-between y centrada", h => h.cs(".cabecera", "display") === "flex" && h.cs(".cabecera", "justifyContent") === "space-between" && h.cs(".cabecera", "alignItems") === "center"], ["Menú en fila con gap 24px (solo el primer nivel)", h => h.cs(".menu > ul", "display") === "flex" && h.cs(".menu > ul", "columnGap") === "24px" && h.cs(".submenu", "display") !== "flex"], ["Hero en columna centrado", h => h.cs(".hero", "flexDirection") === "column" && h.cs(".hero", "alignItems") === "center" && h.cs(".hero", "justifyContent") === "center"], ["Tarjetas que se adaptan", h => h.cs(".tarjetas", "flexWrap") === "wrap" && h.cs(".tarjeta", "flexBasis") === "280px" && h.cs(".tarjeta", "flexGrow") === "1"]] },
+ { g: "G8", t: "Componentes: desplegable, galería, contadores y responsive", learn: ["dropdown con :hover", "grid auto-fill", "contadores", "@media", "especificidad en la práctica"],
+   todo: ["Menú desplegable: <code>.desplegable</code> relative; <code>.menu .submenu</code> absolute bajo el enlace (<code>top: 100%; left: 0</code>), min-width 180px, fondo blanco, sombra, radio 8px y padding <code>8px 0</code>; sus enlaces block con padding <code>8px 16px</code>; y que aparezca con <code>.desplegable:hover .submenu</code>.", "⚠️ ¿Por qué hay que escribir <code>.menu .submenu</code> y no <code>.submenu</code> para el padding? Inspecciónalo: el <code>.menu ul</code> del paso 6 es más específico.", "<code>.galeria</code>: grid con <code>repeat(auto-fill, minmax(160px, 1fr))</code> y gap 12px.", "Numera los títulos de sección: <code>counter-reset</code> en <code>main</code> y, en <code>.seccion h2::before</code>, incrementa y muestra «01. », «02. »… (<code>decimal-leading-zero</code>).", "Una <code>@media (max-width: 700px)</code> que ponga la cabecera en columna y reduzca el h1 a 2.2rem."],
+   css: `/* ===== Paso 8 · Componentes y layout ===== */
+.desplegable {
+  position: relative;
+}
+.menu .submenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 180px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  padding: 8px 0;
+}
+.submenu a {
+  display: block;
+  padding: 8px 16px;
+}
+.desplegable:hover .submenu {
+  display: block;
+}
+.galeria {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+main {
+  counter-reset: seccion;
+}
+.seccion h2::before {
+  counter-increment: seccion;
+  content: counter(seccion, decimal-leading-zero) ". ";
+  color: #7c3aed;
+}
+@media (max-width: 700px) {
+  .cabecera {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .menu > ul {
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  h1 {
+    font-size: 2.2rem;
+  }
+}
+`,
+   k: [["Desplegable: padre relative y submenú absolute", h => h.cs(".desplegable", "position") === "relative" && h.cs(".submenu", "position") === "absolute"], ["Submenú con padding 8px 0 (has ganado a .menu ul)", h => h.n(".submenu", "paddingTop") === 8 && h.n(".submenu", "paddingLeft") === 0], ["Sigue oculto y se muestra con .desplegable:hover", h => h.cs(".submenu", "display") === "none" && (h.rule(".desplegable:hover .submenu") || {}).display === "block"], ["Galería grid automática con gap 12px", h => h.cs(".galeria", "display") === "grid" && h.has(/repeat\(\s*auto-(fill|fit)/) && h.cs(".galeria", "columnGap") === "12px"], ["Títulos numerados con contador", h => /counter\(/.test(h.cs(".seccion h2", "content", "::before")) && h.cs("main", "counterReset") !== "none"], ["Media query de 700px", h => h.has(/@media[^{]*max-width\s*:\s*700px/)]] },
+ { g: "G9", t: "Formulario de contacto", learn: ["campos a ancho completo", "font: inherit", ":focus y :invalid", "resize"],
+   todo: ["<code>.formulario</code>: flex en columna, gap 8px y max-width 520px.", "Inputs y textarea: ancho 100 %, padding <code>10px 12px</code>, <code>font: inherit</code>, borde <code>1px solid #d1d5db</code> y radio 8px.", "El textarea solo se redimensiona en vertical.", "Estado <code>:focus</code>: sin outline, <code>border-color: #7c3aed</code> y un anillo con box-shadow.", "Email inválido ya escrito con borde rojo (<code>:invalid:not(:placeholder-shown)</code>).", "Botón: a la izquierda (<code>align-self: flex-start</code>), padding <code>10px 24px</code>, sin borde, radio 8px, fondo <code>#7c3aed</code>, texto blanco, <code>font: inherit</code> y <code>cursor: pointer</code>."],
+   css: `/* ===== Paso 9 · Formulario ===== */
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 520px;
+}
+.formulario input,
+.formulario textarea {
+  width: 100%;
+  padding: 10px 12px;
+  font: inherit;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+.formulario textarea {
+  resize: vertical;
+}
+.formulario input:focus,
+.formulario textarea:focus {
+  outline: none;
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.25);
+}
+.formulario input:invalid:not(:placeholder-shown) {
+  border-color: #dc2626;
+}
+.formulario button {
+  align-self: flex-start;
+  padding: 10px 24px;
+  border: 0;
+  border-radius: 8px;
+  background: #7c3aed;
+  color: #ffffff;
+  font: inherit;
+  cursor: pointer;
+}
+`,
+   k: [["Formulario en columna con gap 8px", h => h.cs(".formulario", "flexDirection") === "column" && h.cs(".formulario", "rowGap") === "8px"], ["Campos a todo el ancho con padding 10px 12px", h => h.near(h.rect("#nombre").width, h.rect(".formulario").width, 1) && h.n("#nombre", "paddingTop") === 10 && h.n("#nombre", "paddingLeft") === 12], ["Los campos heredan la fuente", h => h.cs("#nombre", "fontFamily") === h.cs("body", "fontFamily")], ["Textarea solo en vertical", h => h.cs("textarea", "resize") === "vertical"], ["Foco con border-color y :invalid", h => /:focus[^{]*\{[^}]*border-color/.test(h.css) && h.has(/:invalid/)], ["Botón morado con cursor pointer", h => h.cs(".formulario button", "backgroundColor") === "rgb(124, 58, 237)" && h.cs(".formulario button", "cursor") === "pointer"]] },
+ { g: "G10", t: "Variables, transiciones, animación y tooltip", learn: [":root y var()", "transition y transform", "@keyframes", "object-fit", "tooltip con attr()"],
+   todo: ["Crea en <code>:root</code> las variables <code>--primario: #1e3a8a</code>, <code>--acento: #7c3aed</code> y <code>--radio: 12px</code>, y úsalas en el <code>.boton</code> (fondo <code>var(--acento)</code>) y en el radio de la <code>.tarjeta</code>.", "Tarjetas que se elevan: <code>transition</code> de 0.3s en transform y box-shadow, y en <code>.tarjeta:hover</code> <code>translateY(-6px)</code> con sombra.", "Imágenes de tarjeta de 160px de alto con <code>object-fit: cover</code>.", "Crea <code>@keyframes aparecer</code> (de transparente y 20px abajo a visible) y aplícala al <code>.hero h1</code> durante 1s.", "Tooltip: <code>.enlace</code> relative y <code>.enlace:hover::after</code> que muestre <code>attr(data-tip)</code> encima, con fondo oscuro y texto blanco."],
+   css: `/* ===== Paso 10 · Variables, transiciones y animaciones ===== */
+:root {
+  --primario: #1e3a8a;
+  --acento: #7c3aed;
+  --radio: 12px;
+}
+.boton {
+  background: var(--acento);
+}
+.tarjeta {
+  border-radius: var(--radio);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.tarjeta:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+.tarjeta img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: none; }
+}
+.hero h1 {
+  animation: aparecer 1s ease-out both;
+}
+.enlace {
+  position: relative;
+}
+.enlace:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 0;
+  bottom: 130%;
+  white-space: nowrap;
+  background: #111827;
+  color: #ffffff;
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+`,
+   k: [["Variables en :root", h => h.v("--primario") && h.v("--acento") && h.v("--radio")], ["El botón y la tarjeta usan var()", h => h.has(/var\(--acento\)/) && h.has(/var\(--radio\)/) && h.cs(".boton", "backgroundColor") === "rgb(124, 58, 237)"], ["Transición de 0.3s en la tarjeta", h => /transform/.test(h.cs(".tarjeta", "transitionProperty")) && h.cs(".tarjeta", "transitionDuration").includes("0.3s")], [".tarjeta:hover con transform", h => { const r = h.rule(".tarjeta:hover"); return r && /translate/.test(r.transform); }], ["Imágenes 160px con object-fit cover", h => h.cs(".tarjeta img", "objectFit") === "cover" && h.near(h.rect(".tarjeta img").height, 160)], ["Animación aparecer en el h1", h => h.has(/@keyframes\s+aparecer/) && h.cs(".hero h1", "animationName") === "aparecer"], ["Tooltip con attr(data-tip)", h => { const r = h.rule(".enlace:hover::after"); return r && /attr\(data-tip\)/.test(r.content) && h.cs(".enlace", "position") === "relative"; }]] }
+];
+const stepSolution = i => STEPS.slice(0, i + 1).map(s => s.css).join("\n");
+
+let PSTEP = store("p-step") || 0;
+function renderProject() {
+    const done = store("p-done") || {};
+    const s = STEPS[PSTEP];
+    $("v-proj").innerHTML = `<div class="panel"><div class="row sb"><h2>Proyecto: tu portfolio en 10 pasos</h2><div class="row"><button id="p-open">↗ Ver a pantalla completa</button><button id="p-dl-html">⬇ index.html</button><button id="p-dl-css">⬇ styles.css</button></div></div>
+   <p class="lead">Un único proyecto que crece con cada bloque. El HTML ya está hecho (semántico, como debe ser): tú escribes <b>todo el CSS</b>. Termina un paso de lecciones y aplícalo aquí. Al final descargas los dos archivos y lo publicas, por ejemplo en GitHub Pages.</p>
+   <div class="steps">${STEPS.map((x, i) => `<button class="${i === PSTEP ? "on" : ""} ${done[i] ? "done" : ""}" data-s="${i}"><span>${i + 1}</span>${x.t}</button>`).join("")}</div></div>
+   <div class="panel"><div class="row sb"><h2>Paso ${PSTEP + 1} · ${s.t}</h2><span class="badge">${s.g} · ${GROUPS.find(g => g[0] === s.g)[1]}</span></div>
+    <p class="muted">Practicas: ${s.learn.join(" · ")}</p>
+    <ol class="todo">${s.todo.map(t => `<li>${t}</li>`).join("")}</ol>
+    <div class="row"><button id="p-sol">Ver la solución de este paso</button><button id="p-prev" ${PSTEP === 0 ? "disabled" : ""}>← Paso anterior</button><button id="p-next" class="primary" ${PSTEP === STEPS.length - 1 ? "disabled" : ""}>Paso siguiente →</button></div>
+    <div id="p-pg" style="margin-top:12px"></div>
+    <details class="soldet"><summary>Solución de este paso (léela solo si te atascas)</summary><pre class="codeblock">${esc(s.css)}</pre></details>
+   </div>`;
+    const pg = mountPG($("p-pg"), { key: "proyecto", html: P_HTML, css: "/* Escribe aquí el CSS de tu portfolio, paso a paso */\n\n", checks: s.k, tall: true, onPass: () => { const d = store("p-done") || {}; if (!d[PSTEP]) { d[PSTEP] = 1; store("p-done", d); document.querySelector(`.steps [data-s="${PSTEP}"]`).classList.add("done"); renderRoute(); } } });
+    document.querySelectorAll(".steps [data-s]").forEach(b => b.onclick = () => { PSTEP = +b.dataset.s; store("p-step", PSTEP); renderProject(); });
+    $("p-prev").onclick = () => { PSTEP--; store("p-step", PSTEP); renderProject(); };
+    $("p-next").onclick = () => { PSTEP++; store("p-step", PSTEP); renderProject(); };
+    $("p-sol").onclick = () => {
+        if (!confirm("Esto sustituye TU CSS por la solución acumulada hasta este paso. ¿Seguro? (Mejor copia solo lo que te falte desde «Solución de este paso».)")) return;
+        pg.st.css = stepSolution(PSTEP); const all = store("pg") || {}; all.proyecto = { html: pg.st.html, css: pg.st.css }; store("pg", all); renderProject();
+    };
+    const dl = (name, text, type) => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name; document.body.appendChild(a); a.click(); a.remove(); };
+    $("p-open").onclick = () => window.open(URL.createObjectURL(new Blob([`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Portfolio</title><style>${withImgs(pg.st.css)}</style></head><body>${withImgs(pg.st.html)}</body></html>`], { type: "text/html" })), "_blank");
+    $("p-dl-css").onclick = () => dl("styles.css", pg.st.css, "text/css");
+    $("p-dl-html").onclick = () => dl("index.html", `<!DOCTYPE html>\n<html lang="es">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>Elaine Parra · Portfolio</title>\n  <link rel="stylesheet" href="styles.css">\n</head>\n<body>\n${withImgs(pg.st.html)}\n</body>\n</html>\n`, "text/html");
+}
+
+// =====================================================================
+//  RUTA, LECCIONES, LABORATORIO, CHULETA, TEST Y PESTAÑAS
+// =====================================================================
+const lessonDone = () => store("l-done") || {};
+
+// ---------- ruta ----------
+function renderRoute() {
+    const d = lessonDone(), pd = store("p-done") || {};
+    const tot = LESSONS.length, ok = LESSONS.filter(l => d[l.id]).length;
+    $("v-ruta").innerHTML = `
+  <div class="panel"><h2>Cómo usar este material</h2>
+   <p class="lead">CSS se aprende <b>tocando</b>: cada lección tiene un editor en vivo y un reto que se corrige solo, y cada bloque termina aplicándolo a un proyecto real, tu portfolio.</p>
+   <div class="cycle">
+    <div><b>1 · Lee</b><span>La idea y los puntos clave (5 min).</span></div><div class="ar">→</div>
+    <div><b>2 · Toca</b><span>Cambia valores en el editor y mira qué pasa. Rompe cosas a propósito.</span></div><div class="ar">→</div>
+    <div><b>3 · Inspecciona</b><span>Activa 🔍: verás la caja, el árbol DOM y qué regla gana.</span></div><div class="ar">→</div>
+    <div><b>4 · Reto</b><span>Hasta que salgan todos los ✓. «Ver solución» solo al final.</span></div><div class="ar">→</div>
+    <div><b>5 · Proyecto</b><span>Al acabar el bloque, haz su paso del portfolio.</span></div>
+   </div>
+   <div class="tip">Tu progreso se guarda en este navegador. Abre también las DevTools de tu navegador (F12) en cualquier web: el inspector de aquí funciona igual y te entrenará para usarlas.</div></div>
+  <div class="panel"><div class="row sb"><h2>Tu progreso</h2><span class="score">${ok}/${tot} lecciones · ${Object.keys(pd).length}/${STEPS.length} pasos del proyecto</span></div>
+   <div class="track"><div class="bar" style="width:${ok / tot * 100}%"></div></div>
+   <div class="groups">${GROUPS.map(([g, n, desc], gi) => {
+        const ls = LESSONS.filter(l => l.g === g), c = ls.filter(l => d[l.id]).length;
+        return `<div class="gcard ${c === ls.length ? "full" : ""}"><div class="row sb"><b>${g} · ${n}</b><span class="muted">${c}/${ls.length}</span></div><p class="muted">${desc}</p>
+      <div class="chips">${ls.map(l => `<button class="chip ${d[l.id] ? "ok" : ""}" data-l="${l.id}">${d[l.id] ? "✓ " : ""}${l.t}</button>`).join("")}</div>
+      <button class="mini projlink ${pd[gi] ? "ok" : ""}" data-p="${gi}">${pd[gi] ? "✓" : "▶"} Paso ${gi + 1} del proyecto</button></div>`;
+    }).join("")}</div></div>
+  <div class="panel"><h2>Plan sugerido (3 semanas)</h2>
+   <table class="tb"><tr><th>Semana</th><th>Bloques</th><th>Objetivo</th></tr>
+    <tr><td>1</td><td>G1 · G2 · G3</td><td>Entender cómo lee el navegador el CSS: selectores, cascada, especificidad, modelo de caja y posicionamiento. <b>Es la base de todo lo demás.</b></td></tr>
+    <tr><td>2</td><td>G4 · G5 · G6 · G7</td><td>Caja, texto, listas, tablas y flexbox: con esto ya maquetas casi cualquier página.</td></tr>
+    <tr><td>3</td><td>G8 · G9 · G10</td><td>Componentes reales (menús, galerías, layout con grid, formularios) y efectos (transiciones, animaciones, variables). Termina el portfolio.</td></tr></table>
+   <p class="muted">Cada día: 2–3 lecciones + 10 minutos de Chuleta. Al final de cada semana, el test del bloque.</p></div>`;
+    document.querySelectorAll("#v-ruta [data-l]").forEach(b => b.onclick = () => { CUR = b.dataset.l; store("cur", CUR); show("lec"); renderLesson(); });
+    document.querySelectorAll("#v-ruta [data-p]").forEach(b => b.onclick = () => { PSTEP = +b.dataset.p; store("p-step", PSTEP); show("proj"); renderProject(); });
+}
+
+// ---------- lecciones ----------
+let CUR = store("cur") || LESSONS[0].id;
+function renderLessonNav() {
+    const d = lessonDone();
+    $("lec-nav").innerHTML = GROUPS.map(([g, n]) => `<div class="lg"><div class="lgh">${g} · ${n}</div>${LESSONS.filter(l => l.g === g).map(l => `<button data-l="${l.id}" class="${l.id === CUR ? "on" : ""} ${d[l.id] ? "ok" : ""}">${d[l.id] ? "✓ " : ""}${l.t}</button>`).join("")}</div>`).join("");
+    $("lec-nav").querySelectorAll("[data-l]").forEach(b => b.onclick = () => { CUR = b.dataset.l; store("cur", CUR); renderLesson(); window.scrollTo({ top: 0 }); });
+    const sel = $("lec-sel"); sel.innerHTML = LESSONS.map(l => `<option value="${l.id}" ${l.id === CUR ? "selected" : ""}>${l.g} · ${l.t}</option>`).join(""); sel.onchange = () => { CUR = sel.value; store("cur", CUR); renderLesson(); };
+}
+function renderLesson() {
+    const idx = LESSONS.findIndex(l => l.id === CUR), l = LESSONS[idx] || LESSONS[0];
+    renderLessonNav();
+    const gi = GROUPS.findIndex(g => g[0] === l.g), lastOfGroup = LESSONS.filter(x => x.g === l.g).slice(-1)[0].id === l.id;
+    $("lec-main").innerHTML = `<div class="panel"><div class="row sb"><span class="badge">${l.g} · ${GROUPS[gi][1]}</span><a class="muted" href="${l.w3}" target="_blank" rel="noopener">Referencia ↗</a></div>
+    <h2>${l.t}</h2><p class="intro">${l.i}</p>
+    <ul class="points">${l.p.map(p => `<li>${p}</li>`).join("")}</ul>
+    ${l.x ? `<div class="warn"><b>Error típico:</b> ${l.x}</div>` : ""}</div>
+   <div class="panel"><h3>🎯 Reto</h3><p>${l.task}</p><div id="lec-pg"></div></div>
+   <div class="row sb noprint"><button id="lp" ${idx <= 0 ? "disabled" : ""}>← Anterior</button>${lastOfGroup ? `<button id="lproj" class="ghost">▶ Aplicarlo al proyecto (paso ${gi + 1})</button>` : ""}<button id="ln" class="primary" ${idx >= LESSONS.length - 1 ? "disabled" : ""}>Siguiente →</button></div>`;
+    mountPG($("lec-pg"), { key: "l-" + l.id, html: l.h, css: l.c, solCss: l.s, solHtml: l.sh, tabs: l.tabs, checks: l.k, onPass: () => { const d = lessonDone(); if (!d[l.id]) { d[l.id] = 1; store("l-done", d); renderLessonNav(); renderRoute(); } } });
+    $("lp").onclick = () => { CUR = LESSONS[idx - 1].id; store("cur", CUR); renderLesson(); window.scrollTo({ top: 0 }); };
+    $("ln").onclick = () => { CUR = LESSONS[idx + 1].id; store("cur", CUR); renderLesson(); window.scrollTo({ top: 0 }); };
+    if ($("lproj")) $("lproj").onclick = () => { PSTEP = gi; store("p-step", PSTEP); show("proj"); renderProject(); };
+}
+
+// ---------- laboratorio ----------
+const LAB_HTML = `<header class="cabecera">\n  <h1 id="titulo">Laboratorio</h1>\n  <nav><a href="#" class="activo">Inicio</a> <a href="#">Blog</a> <a href="apuntes.pdf">PDF</a></nav>\n</header>\n<main>\n  <article class="tarjeta destacada">\n    <h2>Artículo</h2>\n    <p>Primer párrafo con <em>énfasis</em> y un <a href="https://mdn.dev">enlace</a>.</p>\n    <p>Segundo párrafo.</p>\n    <ul>\n      <li>Uno</li><li class="especial">Dos</li><li>Tres</li>\n    </ul>\n  </article>\n  <article class="tarjeta">\n    <h2>Otro artículo</h2>\n    <p>Texto.</p>\n  </article>\n</main>`;
+const LAB_CSS = `body { font-family: system-ui, sans-serif; margin: 0; }\n.cabecera { display: flex; justify-content: space-between; align-items: center; padding: 8px 16px; background: #1e293b; color: white; }\n.cabecera a { color: white; margin-left: 12px; }\nmain { display: flex; gap: 16px; padding: 16px; }\n.tarjeta { flex: 1; padding: 16px; border: 1px solid #cbd5e1; border-radius: 12px; }\n.destacada { border-color: #7c3aed; }\np { color: #334155; }\n.tarjeta p { color: #1d4ed8; }\n#titulo { font-size: 1.4rem; }\n`;
+function renderLab() {
+    $("v-lab").innerHTML = `<div class="panel"><h2>Laboratorio libre</h2><p class="lead">Escribe lo que quieras. Activa 🔍 para ver la caja, el árbol DOM y qué reglas ganan. Con el probador de selectores se iluminan los elementos que selecciona tu selector.</p>
+    <div class="grid2"><div><label class="muted" for="sel-in">Probador de selectores</label><div class="row"><input id="sel-in" class="mono" value=".tarjeta p" style="flex:1"><span id="sel-out" class="score"></span></div></div>
+     <div><label class="muted" for="spec-in">Calculadora de especificidad (uno por línea)</label><textarea id="spec-in" class="mono" rows="3">#titulo\n.tarjeta p\nmain article.destacada li:nth-child(2)</textarea><div id="spec-out"></div></div></div>
+    <div id="lab-pg" style="margin-top:12px"></div></div>`;
+    const pg = mountPG($("lab-pg"), { key: "lab", html: LAB_HTML, css: LAB_CSS, tall: true, onChange: () => testSel() });
+    function testSel() {
+        const s = $("sel-in").value.trim(), d = pg.ifr.contentDocument; if (!d || !d.body) return;
+        let els = []; try { els = s ? [...d.body.querySelectorAll(s)] : []; } catch (e) { $("sel-out").textContent = "selector no válido"; pg.ov.innerHTML = ""; return; }
+        $("sel-out").textContent = `${els.length} elemento${els.length === 1 ? "" : "s"} · especificidad ${specTxt(specificity(s))}`;
+        pg.ov.innerHTML = els.map(e => { const r = e.getBoundingClientRect(); return `<div class="ovsel" style="left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px"></div>`; }).join("");
+    }
+    const specCalc = () => {
+        const rows = $("spec-in").value.split("\n").map(s => s.trim()).filter(Boolean).map(s => [s, specificity(s)]);
+        const sorted = rows.slice().sort((x, y) => y[1][0] - x[1][0] || y[1][1] - x[1][1] || y[1][2] - x[1][2]);
+        $("spec-out").innerHTML = `<table class="tb mono">${sorted.map((r, i) => `<tr${i === 0 ? ' class="win"' : ""}><td>${esc(r[0])}</td><td>(${r[1].join(", ")})</td></tr>`).join("")}</table><p class="muted">Ordenados de más a menos fuerte: (ids, clases·atributos·pseudo-clases, etiquetas·pseudo-elementos).</p>`;
+    };
+    $("sel-in").oninput = testSel; $("spec-in").oninput = specCalc; specCalc();
+}
+
+// ---------- chuleta ----------
+function renderCheat() {
+    const sel = [["*", "Todos", "(0,0,0)"], ["p", "Etiqueta", "(0,0,1)"], [".clase", "Clase", "(0,1,0)"], ["#id", "Id", "(1,0,0)"], ["a, b", "Agrupación", "cada uno la suya"], ["a b", "Descendiente", "suma"], ["a > b", "Hijo directo", "suma"], ["a + b", "Hermano inmediato", "suma"], ["a ~ b", "Hermanos siguientes", "suma"], ["[attr]", "Tiene atributo", "(0,1,0)"], ["[attr=\"v\"] ^= $= *=", "Igual / empieza / termina / contiene", "(0,1,0)"], [":hover :focus :active", "Estados", "(0,1,0)"], [":first-child :last-child :nth-child(n)", "Posición", "(0,1,0)"], [":not(x) :is(x) :has(x)", "Lógicas", "la de x"], [":where(x)", "Como :is pero sin peso", "(0,0,0)"], ["::before ::after", "Pseudo-elementos (con content)", "(0,0,1)"], ["style=\"…\"", "En línea", "gana a todo"], ["!important", "Importancia", "gana incluso al en línea"]];
+    $("v-chuleta").innerHTML = `
+  <div class="panel"><h2>¿Qué regla gana? (la cascada)</h2><ol><li><b>Importancia</b>: <code>!important</code> gana.</li><li><b>Especificidad</b>: (ids, clases, etiquetas), comparando de izquierda a derecha. En línea va por encima.</li><li><b>Orden</b>: si empatan, la última escrita.</li><li>Si ninguna regla le da valor: <b>herencia</b> (solo propiedades de texto) o el valor <b>inicial</b>.</li></ol></div>
+  <div class="panel"><h2>Selectores</h2><div class="tscroll"><table class="tb"><tr><th>Selector</th><th>Selecciona</th><th>Especificidad</th></tr>${sel.map(r => `<tr><td><code>${esc(r[0])}</code></td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("")}</table></div></div>
+  <div class="grid2">
+   <div class="panel"><h2>Modelo de caja</h2><div class="bm big"><span class="t">margin</span><div class="bm-b"><span class="t">border</span><div class="bm-p"><span class="t">padding</span><div class="bm-c">contenido</div></div></div></div>
+    <p><code>content-box</code>: ancho real = width + padding + border. <code>border-box</code>: ancho real = width.</p><p>Orden de 4 valores: <b>arriba derecha abajo izquierda</b> (agujas del reloj).</p></div>
+   <div class="panel"><h2>display y position</h2><table class="tb"><tr><td><code>block</code></td><td>línea nueva, todo el ancho, acepta width/height</td></tr><tr><td><code>inline</code></td><td>en línea, ignora width/height</td></tr><tr><td><code>inline-block</code></td><td>en línea y acepta tamaños</td></tr><tr><td><code>none</code></td><td>desaparece sin hueco</td></tr><tr><td><code>relative</code></td><td>se mueve respecto a sí misma; referencia para absolute</td></tr><tr><td><code>absolute</code></td><td>fuera del flujo, respecto al antepasado posicionado</td></tr><tr><td><code>fixed</code></td><td>respecto a la ventana</td></tr><tr><td><code>sticky</code></td><td>normal hasta que se pega al hacer scroll</td></tr></table></div>
+  </div>
+  <div class="grid2">
+   <div class="panel"><h2>Flexbox</h2><table class="tb"><tr><th colspan="2">En el contenedor</th></tr><tr><td><code>display: flex</code></td><td>activa flex en los hijos directos</td></tr><tr><td><code>flex-direction</code></td><td>row | column (eje principal)</td></tr><tr><td><code>justify-content</code></td><td>reparto en el eje principal</td></tr><tr><td><code>align-items</code></td><td>alineación en el eje cruzado</td></tr><tr><td><code>flex-wrap</code></td><td>wrap para varias líneas</td></tr><tr><td><code>gap</code></td><td>separación</td></tr><tr><th colspan="2">En los hijos</th></tr><tr><td><code>flex: 1</code></td><td>ocupa el espacio libre</td></tr><tr><td><code>flex: 0 0 200px</code></td><td>tamaño fijo</td></tr><tr><td><code>order</code> · <code>align-self</code></td><td>orden y alineación propios</td></tr></table></div>
+   <div class="panel"><h2>Grid y centrado</h2><pre class="codeblock">.rejilla {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));\n  gap: 16px;\n}\n.centrar-todo {\n  display: grid;\n  place-items: center;\n}\n.centrar-flex {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n.centrar-bloque {\n  max-width: 800px;\n  margin: 0 auto;\n}</pre></div>
+  </div>
+  <div class="grid2">
+   <div class="panel"><h2>Unidades</h2><table class="tb"><tr><td><code>px</code></td><td>fijo</td></tr><tr><td><code>%</code></td><td>del padre</td></tr><tr><td><code>em</code></td><td>del font-size propio (se acumula)</td></tr><tr><td><code>rem</code></td><td>del font-size del html (16px)</td></tr><tr><td><code>vw / vh</code></td><td>1 % de la ventana</td></tr><tr><td><code>ch</code></td><td>ancho del «0»</td></tr><tr><td><code>fr</code></td><td>fracción del espacio libre (grid)</td></tr></table></div>
+   <div class="panel"><h2>Plantilla de inicio</h2><pre class="codeblock">*, *::before, *::after { box-sizing: border-box; }\n:root { --primario: #1e3a8a; --texto: #1f2937; }\nbody {\n  margin: 0;\n  font-family: system-ui, sans-serif;\n  line-height: 1.6;\n  color: var(--texto);\n}\nimg { max-width: 100%; display: block; }\n@media (max-width: 700px) { /* móvil */ }</pre></div>
+  </div>`;
+}
+
+// ---------- test ----------
+const QUIZ = [
+ ["G1", "¿Qué parte de <code>p { color: red; }</code> es el selector?", ["p", "color", "red", "{ }"], 0],
+ ["G1", "¿Cómo se escribe un comentario en CSS?", ["/* … */", "// …", "&lt;!-- … --&gt;", "# …"], 0],
+ ["G1", "¿Qué selector elige todos los elementos con class=\"menu\"?", [".menu", "#menu", "menu", "*menu"], 0],
+ ["G1", "¿Qué forma de añadir CSS es la recomendable en un proyecto?", ["Hoja externa con &lt;link&gt;", "Atributo style", "Etiqueta &lt;style&gt; en cada página", "Atributos HTML como color="], 0],
+ ["G1", "¿Qué propiedad SÍ se hereda de padres a hijos?", ["color", "margin", "border", "padding"], 0],
+ ["G2", "¿Por qué un <code>span</code> ignora width y height?", ["Porque es inline", "Porque es block", "Porque no tiene padding", "Porque falta position"], 0],
+ ["G2", "Diferencia entre display:none y visibility:hidden", ["none no deja hueco; hidden sí", "Son iguales", "hidden no deja hueco", "none solo oculta el texto"], 0],
+ ["G2", "Un elemento absolute se coloca respecto a…", ["Su antepasado posicionado más cercano", "Su padre siempre", "La ventana siempre", "Su hermano anterior"], 0],
+ ["G2", "¿Qué position mantiene una cabecera pegada arriba al hacer scroll sin sacarla del flujo?", ["sticky", "fixed", "absolute", "relative"], 0],
+ ["G2", "¿Cuándo funciona z-index?", ["En elementos posicionados (o hijos de flex/grid)", "Siempre", "Solo en imágenes", "Solo con float"], 0],
+ ["G2", "opacity: 0.5 en un contenedor…", ["Vuelve semitransparentes también a sus hijos", "Solo afecta al fondo", "Solo afecta al borde", "No afecta al texto"], 0],
+ ["G3", "Con html a 16px, ¿cuánto mide 1.5rem?", ["24px", "16px", "1.5px", "Depende del padre"], 0],
+ ["G3", "Una caja de width 200px, padding 10px y border 2px con content-box mide en total…", ["224px", "200px", "212px", "220px"], 0],
+ ["G3", "¿Y con box-sizing: border-box?", ["200px", "224px", "176px", "212px"], 0],
+ ["G3", "Especificidad de <code>#menu .item a</code>", ["(1,1,1)", "(1,2,0)", "(0,1,2)", "(1,0,2)"], 0],
+ ["G3", "¿Qué gana: <code>.a.b.c</code> o <code>#x</code>?", ["#x", ".a.b.c", "Empate: la última", "Depende del navegador"], 0],
+ ["G3", "<code>ul &gt; li</code> selecciona…", ["Los li hijos directos de ul", "Todos los li dentro de ul a cualquier nivel", "El li justo después de ul", "Los ul dentro de li"], 0],
+ ["G3", "<code>h2 + p</code> selecciona…", ["El p inmediatamente después de un h2", "Todos los p después del h2", "Los p dentro de h2", "h2 y p"], 0],
+ ["G3", "<code>a[href$=\".pdf\"]</code> selecciona enlaces cuyo href…", ["Termina en .pdf", "Empieza por .pdf", "Contiene .pdf", "Es exactamente .pdf"], 0],
+ ["G3", "¿Qué necesita ::before para aparecer?", ["La propiedad content", "display: block", "position: absolute", "Un id"], 0],
+ ["G3", "li:nth-child(even) selecciona…", ["Los li pares", "Los impares", "El segundo solo", "Los que tienen hijos"], 0],
+ ["G4", "<code>margin: 10px 20px</code> significa…", ["10 arriba y abajo, 20 a los lados", "10 a los lados, 20 arriba y abajo", "10 arriba, 20 abajo", "10 izquierda, 20 derecha"], 0],
+ ["G4", "Para centrar un bloque de 600px se usa…", ["margin: 0 auto", "text-align: center", "align: center", "padding: auto"], 0],
+ ["G4", "Dos párrafos con margin-bottom 30px y margin-top 20px quedan separados…", ["30px (margin collapse)", "50px", "20px", "10px"], 0],
+ ["G4", "¿Qué propiedad NO ocupa espacio en el layout?", ["outline", "border", "padding", "margin"], 0],
+ ["G4", "Para poner «…» a un texto cortado hacen falta…", ["white-space: nowrap + overflow: hidden + text-overflow: ellipsis", "Solo text-overflow", "overflow: scroll", "word-break"], 0],
+ ["G5", "¿Por qué terminar font-family en sans-serif?", ["Es la familia genérica de respaldo", "Es la más bonita", "Es obligatorio", "Para cargar Google Fonts"], 0],
+ ["G5", "Orden correcto de los estados de enlace", [":link :visited :hover :active", ":hover :link :active :visited", ":active :hover :visited :link", "Da igual"], 0],
+ ["G5", "Para centrar en horizontal y vertical un hijo con flex, en el padre…", ["justify-content: center; align-items: center", "text-align: center", "vertical-align: middle", "margin: auto auto"], 0],
+ ["G6", "¿Qué fusiona los bordes dobles de una tabla?", ["border-collapse: collapse", "border-spacing: 0", "border: none", "table-layout: fixed"], 0],
+ ["G6", "Un ul sin viñetas pero aún con sangría: ¿qué falta?", ["padding: 0 (o padding-left)", "margin: 0 auto", "list-style-position", "display: block"], 0],
+ ["G7", "justify-content en un contenedor flex con flex-direction: row reparte…", ["En horizontal (eje principal)", "En vertical", "Solo el texto", "Nada"], 0],
+ ["G7", "<code>flex: 0 0 200px</code> significa…", ["No crece, no encoge, base 200px", "Crece y encoge hasta 200px", "Ocupa el 200 %", "Orden 200"], 0],
+ ["G7", "¿Dónde se pone display: flex?", ["En el contenedor (padre)", "En cada hijo", "En el body siempre", "En el html"], 0],
+ ["G8", "En un menú desplegable, el submenú suele ser…", ["absolute dentro de un padre relative", "fixed", "sticky", "float: left"], 0],
+ ["G8", "<code>repeat(auto-fill, minmax(150px, 1fr))</code> crea…", ["Tantas columnas de ≥150px como quepan", "Siempre 150 columnas", "Una columna de 150px", "Filas de 150px"], 0],
+ ["G8", "¿Qué hace counter-increment?", ["Suma 1 a un contador CSS", "Cuenta los elementos del DOM con JS", "Crea una lista ol", "Repite una animación"], 0],
+ ["G8", "<code>clamp(1rem, 4vw, 2rem)</code> devuelve…", ["4vw limitado entre 1rem y 2rem", "Siempre 1rem", "La media de los tres", "2rem en móvil"], 0],
+ ["G9", "¿Por qué poner font: inherit en inputs y botones?", ["Porque no heredan la fuente del documento", "Para que sean más grandes", "Es obligatorio en HTML5", "Para que validen"], 0],
+ ["G9", "Un input con width: 100% y padding se sale de su contenedor. Solución:", ["box-sizing: border-box", "overflow: hidden", "padding: 0", "display: inline"], 0],
+ ["G10", "¿Dónde se pone transition para que anime al entrar y al salir del hover?", ["En el estado normal", "En :hover", "En @keyframes", "En :root"], 0],
+ ["G10", "Para que una animación se repita siempre…", ["animation-iteration-count: infinite", "transition: infinite", "animation-loop: true", "repeat: always"], 0],
+ ["G10", "object-fit: cover en una imagen…", ["Llena la caja recortando sin deformar", "Se ve entera con huecos", "La estira deformándola", "La convierte en fondo"], 0],
+ ["G10", "Cómo se usa una variable CSS", ["var(--primario)", "$primario", "@primario", "--primario()"], 0],
+ ["G10", "transform: translateX(50px)…", ["Mueve el elemento sin afectar al layout", "Cambia su margin-left", "Lo saca del flujo", "Empuja a sus hermanos"], 0]
+];
+let QZ = null;
+function renderTest() {
+    $("v-test").innerHTML = `<div class="panel"><div class="row sb"><h2>Test</h2><select id="qz-g"><option value="all">Todo (${QUIZ.length})</option>${GROUPS.map(([g, n]) => `<option value="${g}">${g} · ${n} (${QUIZ.filter(q => q[0] === g).length})</option>`).join("")}</select></div>
+   <div class="muted" id="qz-st"></div><div class="track"><div class="bar" id="qz-bar"></div></div><div id="qz-box"></div></div>`;
+    const start = () => { const g = $("qz-g").value; QZ = { list: shuffle(QUIZ.filter(q => g === "all" || q[0] === g)), k: 0, ok: 0, fails: [], ans: false }; draw(); };
+    const draw = () => {
+        const n = QZ.list.length; $("qz-st").textContent = `Pregunta ${Math.min(QZ.k + 1, n)} de ${n} · Aciertos ${QZ.ok}`; $("qz-bar").style.width = (QZ.k / n * 100) + "%";
+        if (QZ.k >= n) { $("qz-box").innerHTML = `<div class="big">${(QZ.ok / n * 10).toFixed(1).replace(".", ",")}</div>${QZ.fails.length ? `<h3>Repasa</h3><ul>${QZ.fails.map(q => `<li>${q[1]} → <b>${q[2][q[3]]}</b> <span class="badge">${q[0]}</span></li>`).join("")}</ul>` : "<p style='text-align:center'>¡Perfecto!</p>"}<div class="row" style="justify-content:center"><button class="primary" id="qz-again">Repetir</button></div>`; $("qz-again").onclick = start; return; }
+        const q = QZ.list[QZ.k], ord = shuffle(q[2].map((_, i) => i)); QZ.ans = false;
+        $("qz-box").innerHTML = `<span class="badge">${q[0]}</span><p class="qtext">${q[1]}</p><div class="opts">${ord.map((o, p) => `<button class="opt" data-o="${o}"><b>${"ABCD"[p]}</b> ${q[2][o]}</button>`).join("")}</div><div id="qz-fb"></div>`;
+        document.querySelectorAll("#qz-box .opt").forEach(b => b.onclick = () => {
+            if (QZ.ans) return; QZ.ans = true; const good = +b.dataset.o === q[3]; good ? QZ.ok++ : QZ.fails.push(q);
+            document.querySelectorAll("#qz-box .opt").forEach(x => { x.disabled = true; if (+x.dataset.o === q[3]) x.classList.add("right"); else if (x === b) x.classList.add("wrong"); });
+            const les = LESSONS.find(l => l.g === q[0]);
+            $("qz-fb").innerHTML = `<div class="row sb" style="margin-top:10px"><span>${good ? "✓ <b>Correcto</b>" : "✗ <b>No</b>"}</span><button class="primary" id="qz-next">Siguiente →</button></div>`;
+            $("qz-next").onclick = () => { QZ.k++; draw(); }; $("qz-next").focus();
+        });
+    };
+    $("qz-g").onchange = start; start();
+}
+
+// ---------- pestañas ----------
+const VIEWS = [["ruta", "🧭 Ruta"], ["lec", "📘 Lecciones"], ["proj", "🛠️ Proyecto portfolio"], ["lab", "🔬 Laboratorio"], ["chuleta", "📄 Chuleta"], ["test", "✅ Test"]];
+function show(v) {
+    VIEWS.forEach(([k]) => { $("v-" + k).hidden = k !== v; $("t-" + k).classList.toggle("on", k === v); }); store("view", v); window.scrollTo({ top: 0 });
+    // los iframes que estaban ocultos no tienen layout: se vuelven a dibujar al mostrarlos
+    const pg = v === "lec" ? PG["l-" + CUR] : v === "proj" ? PG.proyecto : v === "lab" ? PG.lab : null;
+    if (pg) pg.render();
+}
+$("tabs").innerHTML = VIEWS.map(([k, n]) => `<button id="t-${k}">${n}</button>`).join("");
+VIEWS.forEach(([k]) => $("t-" + k).onclick = () => show(k));
+renderRoute(); renderLesson(); renderProject(); renderLab(); renderCheat(); renderTest();
+const sv = store("view"); show(VIEWS.some(v => v[0] === sv) ? sv : "ruta");
+
+</script>
+</body>
+</html>

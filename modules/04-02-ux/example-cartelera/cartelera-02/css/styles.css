@@ -1,0 +1,81 @@
+/* Base Container */
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Outer Card Frame */
+.card {
+    display: flex;
+    width: 400px;
+    height: 120px;
+    border: 1px dotted #555;
+}
+
+/* Left Sidebar */
+.sidebar {
+    width: 80px;
+    height: 100%;
+    background-color: yellow;
+    border-right: 1px dotted #555;
+}
+
+/* Right Content Area */
+.card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* Base Row Styling */
+.row {
+    border-bottom: 1px dotted #555;
+}
+
+/* Las filas vacías del medio se expanden para ocupar el espacio restante */
+.row:not(:first-child) {
+    flex: 1;
+}
+
+/* Primera fila (cabecera verde) ajustada al texto */
+.row:first-child {
+    background-color: green;
+    color: black;
+    font-family: sans-serif;
+    font-size: 14px;
+    padding: 2px 4px; /* Padding reducido para evitar espacio vertical extra */
+    flex: 0 0 auto;   /* Evita que flexbox la estire verticalmente */
+}
+
+/* --- Inyección de contenido mediante pseudoelementos --- */
+
+/* Card 1 */
+.card:nth-child(1) .row:first-child::before {
+    content: "beforeCss1 afterCssTodos";
+}
+
+/* Card 2 */
+.card:nth-child(2) .row:first-child::before {
+    content: "beforeCss2 HTML2 afterCssTodos";
+}
+
+/* Card 3 */
+.card:nth-child(3) .row:first-child::before {
+    content: "HTML3 afterCssTodos";
+}
+
+/* Footer Container & Red Action Boxes */
+.footer-bar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    padding: 8px;
+}
+
+.box {
+    width: 45px;
+    height: 18px;
+    background-color: red;
+}

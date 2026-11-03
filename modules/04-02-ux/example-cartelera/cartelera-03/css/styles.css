@@ -1,0 +1,150 @@
+/* General page styling */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    background-image: url("../images/cortinas.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    font-family: Arial, sans-serif;
+}
+
+/* Header and logo */
+header {
+    text-align: center;
+    padding: 25px 0;
+}
+
+.banner-logo {
+    width: 250px;
+    max-width: 80%;
+    height: auto;
+}
+
+/* Carousel wrapper */
+.carousel {
+    position: relative;
+    width: min(100%, 1140px);
+    margin: 50px auto;
+    padding: 0 45px;
+}
+
+/* Horizontal movie collection */
+.movies-container {
+    display: flex;
+    gap: 30px;
+
+    flex-wrap: nowrap;
+    overflow-x: auto;
+
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+.movies-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Individual movie */
+.movie-card {
+    flex: 0 0 200px;
+    margin: 0;
+    text-align: center;
+}
+
+/* Poster */
+.movie-card img {
+    display: block;
+    width: 100%;
+    height: 300px;
+
+    object-fit: cover;
+    border-radius: 8px;
+
+    transition: transform 0.3s ease;
+}
+
+.movie-card img:hover {
+    transform: scale(1.04);
+}
+
+/* Movie title */
+.movie-card figcaption {
+    margin-top: 12px;
+    padding: 10px;
+
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 5px;
+}
+
+/* Rotten Tomatoes rating */
+.tomatometer {
+    margin-top: 10px;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.tomatometer span {
+    font-size: 12px;
+    font-weight: normal;
+    color: #ddd;
+}
+
+/* Navigation arrows */
+.carousel-arrow {
+    position: absolute;
+    top: 40%;
+    z-index: 2;
+
+    width: 40px;
+    height: 55px;
+
+    border: none;
+    border-radius: 5px;
+
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.carousel-arrow:hover {
+    background: rgba(180, 0, 0, 0.9);
+}
+
+.carousel-arrow.left {
+    left: 0;
+}
+
+.carousel-arrow.right {
+    right: 0;
+}
+
+/* Smaller screens */
+@media (max-width: 600px) {
+    .carousel {
+        padding: 0 40px;
+        margin-top: 25px;
+    }
+
+    .movie-card {
+        flex-basis: 170px;
+    }
+
+    .movie-card img {
+        height: 255px;
+    }
+}

@@ -1,0 +1,27 @@
+A partir del ficheros XML UMA.xml ( UMA.XML) resolver las expresiones XPATH solicitadas.
+Teniendo abierto el fichero XML la opción de validar expresiones XPATH.
+
+captura1
+
+Ejercicios de XPATH
+
+Dado el documento UMA.xml definir expresiones XPATH que recuperen:
+
+1. El nombre de la universidad
+2. El nombre de la última carrera
+3. Los años de plan de estudio de las carreras
+4. Los id de todas las carreras
+5. Los datos de la carrera cuyo id es “c04”
+6. El centro en el que se estudia la carrera con id “c01”
+7. Nombre de los alumnos que estén haciendo proyecto
+8. Nombre de los centros que tengan subdirector
+9. Apellidos y nombre de los alumnos con beca
+10. Nombre de las asignaturas de la titulación “c04”
+11. Códigos de las asignaturas que estudian mujeres
+12. Nombre de las asignaturas de segundo cuatrimestre
+13. Nombre de las asignaturas que no tienen cuatro créditos teóricos
+14. Código de la carrera que estudia el último alumno
+15. Nombre de los alumnos matriculados en la asignatura cuyo id es “a02”
+16. Codigos de las carreras que estudian los alumnos matriculados en alguna asignatura
+17. Nombre de la carrera que estudia Federico
+18. Apellidos de todos los hombres.

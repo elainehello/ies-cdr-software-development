@@ -1,0 +1,45 @@
+<--! busqueda carreras nombre -->
+/universidad/carreras/carrera/nombre
+//carrera/nombre
+
+<!-- año de plan de estudio de la carrera -->
+/universidad/carreras/carrera/plan
+//carrera/plan
+//plan
+
+<!-- nombre de todos los alumnos -->
+
+// failed
+/universidad/carreras/alumnos/alumno/@id=[.>a]
+
+// her solution
+//alumno/nombre | //alumno/apellido1 | //alumno/apellido2
+
+<!-- identificadores de todas las carreras -->
+//carrera/@id
+
+
+<!-- datos de la carrera cuyo id es de 0 a 1 'c01'-->
+//carrera/@id[.="c01"] <--- incorrect 
+//carrera/@id[.="c01"]/.. <--- correct
+//carrera[@id="c01"] <--- correct
+
+<!-- centro cuyo id es c02 -->
+//carrera[@id="c02"]/centro   <--- correct
+//centro[../@id="c02"]        <--- correct
+
+
+<!-- nombres de las carrera que tengan subdirector
+//carrera/subdirector <-- incorrecto
+
+//carrera/nombre[../subdirector] <-- correct
+
+<!.. nombre de los alumnos que esten haciendo proyecto -->
+//alumno/estudios/proyecto/../../nombre
+
+//alumno/nombre[..//proyecto] <--- correct
+
+<!-- conditions and statements prefered -->
+
+website
+www.webtoolkitonline.com/xml-xpath-tester.html?

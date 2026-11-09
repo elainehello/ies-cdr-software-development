@@ -1291,3 +1291,144 @@ ALTER TABLE PRICE ADD /* CONSTRAINT PRICE_FOREIGN_KEY  */
    FOREIGN KEY (PRODUCT_ID) REFERENCES PRODUCT(PRODUCT_ID);
 ALTER TABLE SALES_ORDER ADD /* CONSTRAINT SALES_ORDER_FOREIGN_KEY  */
    FOREIGN KEY (CUSTOMER_ID) REFERENCES CUSTOMER(CUSTOMER_ID);
+
+
+-- function call eg output 'alumno@localhost' Empleados 8.4.11-0ubuntu0.26.04.1
+SELECT current_user(), database(), version();
+
+-- insertar un nuevo departamento ALUMNOS con el código 44 sin localidad
+INSERT INTO DEPARTMENT (DEPARTMENT_ID, NAME) VALUES (44, 'ALUMNOS');
+
+-- comprueba el resultado
+SELECT * FROM DEPARTMENT WHERE DEPARTMENT_ID = 44;
+SELECT * FROM DEPARTMENT WHERE NAME = 'ALUMNOS'; -- playing around
+
+-- insertar un empleado nuevo llamado 'JUAN GARCIA'	que va a trabajar en las mismas
+-- condiciones que 'ALICE' y cuyo código será el de 'ALICE' + 1
+-- SELECT * FROM EMPLOYEE WHERE FIRST_NAME = 'ALICE';
+INSERT INTO EMPLOYEE (EMPLOYEE_ID, LAST_NAME, FIRST_NAME, MIDDLE_INITIAL, JOB_ID, MANAGER_ID, HIRE_DATE, 
+SALARY, COMMISSION, DEPARTMENT_ID)
+SELECT (EMPLOYEE_ID + 1), 'GARCIA', 'JUAN', MIDDLE_INITIAL, JOB_ID, MANAGER_ID, HIRE_DATE, 
+SALARY, COMMISSION, DEPARTMENT_ID
+FROM EMPLOYEE
+WHERE FIRST_NAME = 'ALICE';
+
+-- VALIDATE THE CHANGES
+SELECT * FROM EMPLOYEE WHERE FIRST_NAME = 'JUAN';
+
+SELECT * FROM EMPLOYEE WHERE FIRST_NAME IN ('ALICE', 'JUAN');
+
+-- AL FINAL NO SE INCORPORA 'JUAN GARCIA', SINO PEPE PEREZ CON LAS MISMAS
+-- CONDICIONES. MODIFICA EL REGISTRO
+SELECT * FROM EMPLOYEE WHERE FIRST_NAME = 'JUAN';
+UPDATE EMPLOYEE
+SET FIRST_NAME = 'PEPE', LAST_NAME = 'PEREZ'
+WHERE FIRST_NAME = 'JUAN' AND LAST_NAME = 'GARCIA' AND EMPLOYEE_ID = '7951'; -- I HAD TO USE THE PK 'EMPLOYEE_ID' IN ORDER TO CHANGE SUCCESSFULLY
+
+-- VERIFY THE CHANGES
+SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME FROM EMPLOYEE WHERE EMPLOYEE_ID = 7951;
+
+-- VERIFY EMPLOYEE'S SALARIES
+SELECT * FROM EMPLOYEE;
+
+-- SUBIR EL SUELDO UN 10% A LOS EMPLEADOS DEL DEPARTAMENTO 20
+-- Y UN 5% AL RESTO
+UPDATE EMPLOYEE
+SET SALARY = CASE WHEN DEPARTMENT_ID = 20 THEN SALARY * 1.10
+				  ELSE SALARY * 1.05
+			 END; 
+             
+-- printing calculation without changing database
+SELECT
+	EMPLOYEE_ID,
+	FIRST_NAME,
+	LAST_NAME,
+	SALARY AS ORIGINAL_SALARY,
+	CASE
+		WHEN DEPARTMENT_ID = 20 THEN SALARY * 1.10
+        ELSE SALARY * 1.05
+	END AS NEW_SALARY
+	FROM EMPLOYEE;
+	
+-- insertar un nuevo departamento alumnos con el codigo 44 sin localidad
+select * from DEPARTMENT;
+
+-- eliminar el departamento alumno 44 y volverlo a incluir
+delete from DEPARTMENT where DEPARTMENT_ID=44;
+select * from DEPARTMENT;
+
+-- insertar un nuevo departamento 'ALUMNOS' con el codigo 44 sin localidad
+insert into DEPARTMENT(DEPARTMENT_ID, NAME) values
+(44, 'ALUMNOS');
+
+select * from DEPARTMENT where DEPARTMENT_ID=44;
+
+-- insertar un empleado nuevo llamado 'JUAN GARCIA' que va a trabajar en la mismas
+-- condiciones que ALICE y cuyo codigo sera el de ALICE + 1
+select * from EMPLOYEE where FIRST_NAME = 'ALICE';
+
+insert into EMPLOYEE(EMPLOYEE_ID, LAST_NAME, FIRST_NAME, MIDDLE_INITIAL, JOB_ID, 
+				MANAGER_ID, HIRE_DATE, SALARY, COMMISSION, DEPARTMENT_ID)
+select EMPLOYEE_ID + 1, 'GARCIA', 'JUAN', MIDDLE_INITIAL, JOB_ID, MANAGER_ID,
+				HIRE_DATE, SALARY, COMMISSION, DEPARTMENT_ID
+from EMPLOYEE
+where FIRST_NAME = 'ALICE';
+
+select * from EMPLOYEE where first_name='JUAN';
+
+select * from EMPLOYEE where EMPLOYEE_ID=7951;
+
+delete from EMPLOYEE where EMPLOYEE_ID=7951;
+
+-- al final no se incorpora 'JUAN GARCIA', sino 'PEPE PEREZ' con las mismas
+-- condiciones. Modificar el registo
+select * from EMPLOYEE where FIRST_NAME='JUAN';
+
+update EMPLOYEE
+set FIRST_NAME= 'PEPE', LAST_NAME='PEREZ'
+where FIRST_NAME='JUAN' and LAST_NAME='GARCIA' and EMPLOYEE_ID=7951;
+
+select * from EMPLOYEE where EMPLOYEE_ID=7951;
+
+-- subir el sueldo un 10% a los empleados del departamento 20 y un 5% al resto
+select * from EMPLOYEE
+where SALARY = case when DEPARTMENT_ID = 20 then SALARY * 1.10
+else SALARY * 1.05
+end;
+
+-- printing calculation without changing database
+SELECT
+	EMPLOYEE_ID,
+	FIRST_NAME,
+	LAST_NAME,
+	SALARY AS ORIGINAL_SALARY,
+	CASE
+		WHEN DEPARTMENT_ID = 20 THEN SALARY * 1.10
+        ELSE SALARY * 1.05
+	END AS NEW_SALARY
+	FROM EMPLOYEE;
+    
+-- poner una comision del 10% del salario a los empleados cuya funcion
+-- sea analista
+select * from EMPLOYEE;
+select * from DEPARTMENT;
+
+select * from JOB;
+
+-- poner una comision del 10% del salario a los empleados cuya funcion
+-- sea analista
+select EMPLOYEE_ID,
+	   FIRST_NAME,
+       LAST_NAME,
+       JOB_ID,
+       SALARY,
+       SALARY * 0.10 as COMMISSION
+from EMPLOYEE
+where JOB_ID = (
+	select JOB_ID
+    from JOB
+    where FUNCTIONS = 'ANALYST'
+);
+
+
+

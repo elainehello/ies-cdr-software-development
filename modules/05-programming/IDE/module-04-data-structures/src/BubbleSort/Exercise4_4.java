@@ -10,8 +10,9 @@ public class Exercise4_4 {
         Scanner sc = new Scanner(System.in);
         int numAlumnos = sc.nextInt();
         double[] notas = leerNotas(sc, numAlumnos);
-        System.out.print("Notas originales:");
+        System.out.println("Notas originales:");
         mostrarNotas(notas);
+        System.out.println("Notas ordenadas (menor a mayor):");
         bubbleSort(notas);
 
     }
@@ -32,7 +33,7 @@ public class Exercise4_4 {
 
 
     public static void mostrarNotas(double[] notas) {
-        System.out.println("Notas originales:");
+
         System.out.print("[");
 
         for (int i = 0; i < notas.length; i++) {
@@ -43,7 +44,7 @@ public class Exercise4_4 {
             }
         }
 
-        System.out.println("]");
+        System.out.println("]\n");
     }
 
     // sorting algorithm bubble sort
@@ -65,17 +66,6 @@ public class Exercise4_4 {
             if (!flag_control)
                 break ;
         }
-        System.out.println("Notas ordenadas (menor a mayor):");
-        System.out.print("[");
-
-        for (int i = 0; i < notas.length; i++) {
-            System.out.print(notas[i]);
-
-            if (i < notas.length - 1) {
-                System.out.print(", ");
-            }
-        }
-
-        System.out.println("]");
+        mostrarNotas(notas);
     }
 }

@@ -122,6 +122,62 @@ table.vst td:first-child,table.vst td:nth-child(2){white-space:nowrap}@media (ma
 .gchg{max-height:340px;overflow:auto}.gc{border-left:4px solid #f08c00;padding:4px 8px;margin:6px 0;background:var(--bg);border-radius:0 6px 6px 0}.gc.new{border-color:#18794e}
 .gexp p{margin:4px 0}.ghidden{position:absolute;left:-10000px;top:0;width:1px;height:1px;overflow:hidden}.ghidden iframe{border:0;display:block}
 .lab.glow{outline:4px solid #f08c00;transition:outline .3s}
+
+/* ---- 📝 casos de examen en papel ---- */
+.cstats{text-align:center;min-width:170px}.cstats .prog{margin-top:6px}
+.cmethod{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:4px 24px}.cmethod h4{margin:6px 0}.cmethod ol{margin:4px 0;padding-left:20px}
+.cfilters{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin:12px 0}
+.cgrid{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 12px;align-items:center}
+.cgi{min-width:34px;height:32px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:7px;font:600 13px system-ui;cursor:pointer}
+.cgi:hover{border-color:var(--acc)}.cgi.ok{background:var(--tem);border-color:var(--ok);color:var(--ok)}.cgi.rep{background:var(--trap);border-color:var(--bad);color:var(--bad)}
+.cgi.cur{outline:3px solid var(--acc);outline-offset:1px}
+.ccard{display:grid;gap:8px;min-width:0}.ccard>*{min-width:0}.ccard h3{margin:4px 0 0;font-size:20px}.ccard h4{margin:6px 0 0}
+.ctext{background:var(--hi);border-radius:8px;padding:10px 12px}
+.cask{font-size:16.5px}
+.cta{width:100%;box-sizing:border-box;font:15px/1.5 system-ui;resize:vertical}
+.cframes{display:flex;flex-wrap:wrap;gap:10px;overflow-x:auto;padding-bottom:4px}
+.cfr{flex:1 1 260px;min-width:0;max-width:100%}.cfr[style]{flex:none}
+.cfr iframe{width:100%;height:230px;border:1px solid var(--line);border-radius:8px;background:#fff;display:block}
+.csol h4{margin:12px 0 4px}.csol table,.ccard table{background:var(--card);display:block;overflow-x:auto;max-width:100%}
+.cself{margin-top:10px}.cself .btn.on{background:var(--chip);border-color:var(--acc);color:var(--acc)}
+.cnav{justify-content:space-between;border-top:1px solid var(--line);padding-top:10px}
+.btn:disabled{opacity:.5;cursor:default}
+
+/* ---- código completo + explicación pieza a pieza ---- */
+.cfull,.cexp{border:1px solid var(--line);border-radius:10px;margin:10px 0;background:var(--card)}
+.cfull>summary,.cexp>summary{cursor:pointer;font-weight:700;padding:10px 12px}
+.cvers{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:12px;padding:0 12px 12px}
+.cver{min-width:0}.cver h5{margin:4px 0;font-size:15px}.clab{margin:8px 0 0;font:700 12px system-ui;text-transform:uppercase;letter-spacing:.4px;color:var(--mute)}
+.caux summary{cursor:pointer;color:var(--mute)}
+.cdiff{padding:0 12px 12px}.cdiff h5{margin:4px 0}.dadd{color:var(--ok)}.ddel{color:var(--bad);text-decoration:line-through}
+.xp{padding:0 12px 12px;min-width:0}.xp h4{margin:14px 0 6px}
+.xtree{list-style:none;padding:0;margin:0}.xtree>li{margin-left:calc(var(--d,0) * 18px);border-left:3px solid var(--line);padding:4px 0 4px 10px}
+.xel{font-size:14.5px}.xat{margin:2px 0 4px;padding-left:18px;font-size:13.5px}.xat li{margin:2px 0}
+.xrule,.xmedia{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0;background:var(--bg)}
+.xmedia{border-style:dashed}.xmedia>p{margin:6px 0}
+.xsel{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline}.xsel code.big{font-size:15px;font-weight:700}
+.xspec{font:600 12px ui-monospace,monospace;color:var(--acc2);background:var(--tem);padding:1px 7px;border-radius:12px}
+.xread{margin:6px 0;font-size:14.5px}.xmatch{margin:4px 0;font-size:13.5px}
+.xparts{list-style:none;padding:0;margin:4px 0;font-size:13.5px}.xparts li{margin:3px 0}
+.xchip{display:inline-block;font:700 12.5px ui-monospace,monospace;padding:1px 7px;border-radius:6px;background:var(--chip);color:var(--acc)}
+.xchip.k-id{background:var(--trap);color:var(--bad)}.xchip.k-clase,.xchip.k-atributo{background:var(--hi);color:var(--ink)}.xchip.k-pc,.xchip.k-pe{background:var(--tem);color:var(--acc2)}.xchip.k-comb{background:var(--line);color:var(--ink)}
+.xdecl{margin:6px 0 0;padding-left:18px;font-size:14px}.xdecl>li{margin:5px 0}.xval{margin:2px 0;padding-left:16px;font-size:13px;color:var(--mute)}
+.xconf{font-size:14px;padding-left:18px}.xconf li{margin:5px 0}
+/* ---- 📚 guía ---- */
+.refsec{margin:14px 0}.refsec h3{margin-top:0}
+.anat{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px}
+.anatc{font:15px/1.9 ui-monospace,Consolas,monospace;background:var(--code);border:1px solid var(--line);border-radius:8px;padding:10px 12px;overflow-x:auto}
+.an{border-radius:5px;padding:1px 4px}.a1{background:#dbe7ff;color:#123c8c}.a2{background:#e6dcff;color:#4a2a8c}.a3{background:#fff0c2;color:#7a5200}.a4{background:#ffdcd6;color:#8c2414}.a5{background:#d9f2e6;color:#145c3a}
+.b1{background:#fff0c2;color:#7a5200}.b2{background:#e3e3e3;color:#333}.b3{background:#dbe7ff;color:#123c8c}.b4{background:#d9f2e6;color:#145c3a}
+.anatl{font-size:14px;padding-left:18px}.anatl li{margin:4px 0}
+.anin{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:10px;margin:8px 0}.anin label{display:grid;gap:4px;font-weight:700;font-size:13px}
+.anin textarea{width:100%;box-sizing:border-box;font:13.5px/1.5 ui-monospace,Consolas,monospace}
+.spbars{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}.spb{padding:3px 9px;border-radius:7px;font-size:13px}.spb.a{background:var(--trap)}.spb.b{background:var(--hi)}.spb.c{background:var(--chip)}
+.glgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:10px}
+.gle{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--card);min-width:0}.glh code{font-size:14.5px;font-weight:700}.gld{font-size:14px;margin-top:4px}.gld pre.code{font-size:12.5px;margin:6px 0 0}
+.glv{margin:4px 0;padding-left:16px;font-size:13px}
+.xp code,.gld code,.xat code,.anatl code,.xparts code,.xdecl code,.xconf code,.xread code,.xmatch code{overflow-wrap:anywhere;word-break:break-word}.xp,.gle,.cver,.refsec{min-width:0}
+.anat,.anatl{white-space:normal}#refAn .row>label{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-width:0;max-width:100%}#anCase{max-width:100%;min-width:0;flex:1}
 </style>
 </head>
 <body>
@@ -2667,9 +2723,10 @@ h2 {
   height: 160px;
   object-fit: cover;
 }` }],
-  e: { que: 'El contenedor es flex y envuelve. Cada enlace parte de 200 px y crece para llenar la fila (<code>flex: 1 1 200px</code>). Las fotos ocupan todo su enlace, 160 px de alto, recortadas sin deformarse.', porque: 'Así la galería es responsive sin media queries: cambia el ancho a «móvil 375» y verás menos fotos por fila. <code>display:block</code> quita el hueco que deja una img inline bajo la línea de texto.', vs: ['¿Y si quitas <code>object-fit: cover</code>? Las fotos se estirarían a 160 px de alto y se deformarían.', 'ra45', 'ofit-bg'] } },
+  e: { que: 'El contenedor es flex y envuelve. Cada enlace parte de 200 px y crece para llenar la fila (<code>flex: 1 1 200px</code>). Las fotos ocupan todo su enlace, 160 px de alto, recortadas sin deformarse.', porque: 'Así la galería es responsive sin media queries: cambia el ancho a «móvil 375» y verás menos fotos por fila. <code>display:block</code> quita el hueco que deja una img inline bajo la línea de texto. En el paso siguiente añadiremos <code>position: relative</code> al mismo enlace para que sirva de referencia al rótulo superpuesto; ambas declaraciones convivirán.', vs: ['¿Y si quitas <code>object-fit: cover</code>? Las fotos se estirarían a 160 px de alto y se deformarían.', 'ra45', 'ofit-bg'] } },
 
- { t: 'Hover overlay con ::after y attr()', try: 'pasa el ratón por las fotos', ops: [{ f: 'css', add: `.galeria a {
+ { t: 'Hover overlay con ::after y attr()', try: 'pasa el ratón por las fotos; después usa Tab para enfocar un enlace', ops: [{ f: 'css', add: `.galeria a {
+  /* El enlace será la referencia de posicionamiento de ::after */
   position: relative;
 }
 .galeria a::after {
@@ -2685,10 +2742,15 @@ h2 {
   opacity: 0;
   transition: opacity .4s;
 }
-.galeria a:hover::after {
+.galeria a:hover::after,
+.galeria a:focus-visible::after {
   opacity: 1;
+}
+.galeria a:focus-visible {
+  outline: 3px solid #c0362c;
+  outline-offset: 3px;
 }` }],
-  e: { que: '<code>::after</code> crea una capa dentro de cada enlace con el texto de su <code>data-titulo</code>. Es absolute y cubre todo el enlace (<code>inset: 0</code>); empieza invisible y aparece con un fundido al pasar el ratón.', porque: 'Es el «Image Hover Overlay» (3x4fichas, indice6) sin añadir ningún elemento al HTML. La regla <code>.galeria a</code> aparece dos veces: la cascada <b>suma</b> las declaraciones.', vs: ['¿Y si quitas <code>position: relative</code> del enlace? La capa absolute se mediría desde la página y taparía toda la pantalla.', 'ra45', 'tip-pos'] } },
+  e: { que: '<code>::after</code> genera una capa con el texto de <code>data-titulo</code>. Como tiene <code>position: absolute</code> e <code>inset: 0</code>, ocupa todo el enlace. La capa empieza transparente (<code>opacity: 0</code>) y aparece con una transición al pasar el ratón o al llegar al enlace con el teclado.', porque: '<b>Ojo: <code>position: relative</code> NO activa ni detecta el hover.</b> El estado <code>:hover</code> funciona aunque no haya posicionamiento. Añadimos <code>position: relative</code> al enlace para que este sea el <b>bloque contenedor</b> (la referencia de coordenadas) de su hijo absoluto <code>::after</code>. Así, <code>inset: 0</code> significa «pega los cuatro lados de la capa a los cuatro lados de este enlace». Si quitamos <code>relative</code>, el navegador buscará otro ancestro posicionado; si no encuentra ninguno, usará el bloque contenedor inicial, y la capa ya no quedará ajustada a cada foto. La regla <code>.galeria a</code> aparece en dos pasos: no se sustituye; la cascada conserva <code>flex</code> y añade <code>position</code>.', vs: ['¿Y si quitas <code>position: relative</code> del enlace? El hover seguirá detectándose, pero el <code>::after</code> dejará de tomar ese enlace como referencia y puede colocarse respecto a otro ancestro o al bloque contenedor inicial. Por eso el rótulo ya no cubrirá correctamente cada foto.', 'ra45', 'tip-pos'] } },
 
  { t: 'Los modales: un div por foto (HTML)', ops: [{ f: 'html', add: `<div id="f1" class="modal"><a href="#galeria" class="cerrar">×</a><img src="foto1.jpg" alt="Valle con niebla"></div>
 <div id="f2" class="modal"><a href="#galeria" class="cerrar">×</a><img src="foto2.jpg" alt="Costa rocosa"></div>
@@ -3301,6 +3363,1594 @@ const FC = [
 ['RA1','CDN vs local','CDN: petición a cdn.jsdelivr.net, necesita internet. Local: tu archivo, funciona offline.']
 ];
 
+// ===================== 📚 GLOSARIO HTML + CSS (para la guía y la explicación pieza a pieza) =====================
+// Cada entrada: [explicación, ejemplo, {valores}] · grupos para la pestaña de referencia
+const GL_TAG_GROUPS = {
+  'Estructura del documento': ['html', 'head', 'body', 'title', 'meta', 'link', 'style', 'script'],
+  'Secciones y semántica': ['header', 'nav', 'main', 'section', 'article', 'aside', 'footer', 'div', 'span', 'figure', 'figcaption'],
+  'Títulos y texto': ['h1', 'h2', 'h3', 'h4', 'p', 'br', 'hr', 'strong', 'b', 'em', 'i', 'small', 'blockquote', 'code', 'pre'],
+  'Listas': ['ul', 'ol', 'li', 'dl', 'dt', 'dd'],
+  'Enlaces y multimedia': ['a', 'img', 'picture', 'video', 'audio', 'source', 'iframe'],
+  'Formularios': ['form', 'label', 'input', 'textarea', 'select', 'option', 'button', 'fieldset', 'legend'],
+  'Tablas': ['table', 'thead', 'tbody', 'tr', 'th', 'td'],
+  'Interactivos nativos': ['details', 'summary', 'dialog', 'progress']
+};
+const GL = {
+tag: {
+  html: ['Elemento raíz: contiene todo el documento. Lleva <code>lang="es"</code> para indicar el idioma (accesibilidad y buscadores).', '<html lang="es">…</html>'],
+  head: ['Cabecera <b>invisible</b> del documento: metadatos, título de la pestaña, enlaces a CSS y fuentes. No se pinta en la página.', '<head><meta charset="utf-8"><title>Tienda</title></head>'],
+  body: ['Cuerpo: todo lo que se ve en la página.', '<body>…</body>'],
+  title: ['Título de la pestaña del navegador y del resultado en buscadores.', '<title>PcMadrid · Inicio</title>'],
+  meta: ['Metadatos. Los dos imprescindibles: <code>charset="utf-8"</code> (acentos y ñ) y <code>name="viewport"</code> (diseño responsive en móviles).', '<meta name="viewport" content="width=device-width, initial-scale=1">'],
+  link: ['Enlaza un recurso externo, normalmente una hoja de estilos (<code>rel="stylesheet"</code>). Va en el head. El <b>orden</b> importa: la última hoja gana en caso de empate.', '<link rel="stylesheet" href="css/estilos.css">'],
+  style: ['CSS interno, escrito dentro del propio HTML (en el head).', '<style> p { color: navy; } </style>'],
+  script: ['Código JavaScript (interno o con <code>src</code>). Bootstrap lo necesita para sus componentes interactivos.', '<script src="bootstrap.bundle.min.js"><\/script>'],
+  header: ['Cabecera de la página o de una sección: logotipo, título, a veces el menú. Semántico: sin estilo propio, es un bloque.', '<header><h1>PcMadrid</h1></header>'],
+  nav: ['Bloque de <b>navegación principal</b> (menú, migas de pan). Ayuda a lectores de pantalla y buscadores a reconocer el menú.', '<nav><a href="index.html">Inicio</a> <a href="tienda.html">Tienda</a></nav>'],
+  main: ['Contenido <b>principal y único</b> de la página (solo uno por página).', '<main>…</main>'],
+  section: ['Sección temática con su propio título (capítulos, pestañas, bloques de una página).', '<section id="opiniones"><h2>Opiniones</h2>…</section>'],
+  article: ['Contenido independiente y reutilizable por sí solo: una noticia, un producto, una entrada de blog.', '<article class="producto"><h3>Teclado</h3>…</article>'],
+  aside: ['Contenido complementario o lateral (barra lateral, publicidad, enlaces relacionados).', '<aside>Productos relacionados</aside>'],
+  footer: ['Pie de la página o de una sección: contacto, aviso legal, redes.', '<footer>© 2026 PcMadrid</footer>'],
+  div: ['Contenedor <b>genérico de bloque</b> sin significado. Se usa para agrupar y dar estilo cuando ningún elemento semántico encaja.', '<div class="tarjeta">…</div>'],
+  span: ['Contenedor <b>genérico en línea</b> sin significado, para dar estilo a un trozo de texto.', 'Precio <span class="oferta">19,90 €</span>'],
+  figure: ['Contenido autónomo (imagen, gráfico, código) con su pie de figura.', '<figure><img src="foto.jpg" alt="…"><figcaption>Pie</figcaption></figure>'],
+  figcaption: ['Pie o leyenda de un <code>figure</code>.', '<figcaption>Taller de montaje</figcaption>'],
+  h1: ['Título de nivel 1: el principal de la página (normalmente uno). La jerarquía h1 → h6 organiza el contenido; no se elige por tamaño.', '<h1>Tienda de informática</h1>'],
+  h2: ['Título de nivel 2: secciones principales.', '<h2>Ofertas</h2>'], h3: ['Título de nivel 3: subsecciones.', '<h3>Teclados</h3>'], h4: ['Título de nivel 4.', '<h4>Detalles</h4>'],
+  p: ['Párrafo de texto. Es de bloque y tiene márgenes arriba y abajo por defecto.', '<p>Texto…</p>'],
+  br: ['Salto de línea dentro de un texto (elemento vacío, sin cierre).', 'Calle Mayor 1<br>Madrid'],
+  hr: ['Separación temática (línea horizontal).', '<hr>'],
+  strong: ['Importancia (negrita con significado).', '<strong>Atención</strong>'], b: ['Negrita sin significado especial.', '<b>Nuevo</b>'],
+  em: ['Énfasis (cursiva con significado).', '<em>muy</em> rápido'], i: ['Cursiva sin significado especial (términos, iconos).', '<i>software</i>'],
+  small: ['Texto secundario o letra pequeña.', '<small>IVA incluido</small>'], blockquote: ['Cita larga.', '<blockquote>…</blockquote>'],
+  code: ['Fragmento de código en línea.', '<code>display: flex</code>'], pre: ['Texto preformateado: respeta espacios y saltos.', '<pre>…</pre>'],
+  ul: ['Lista <b>no ordenada</b> (viñetas). Base habitual de los menús de navegación.', '<ul><li>Inicio</li><li>Tienda</li></ul>'],
+  ol: ['Lista <b>ordenada</b> (numerada).', '<ol><li>Paso 1</li></ol>'],
+  li: ['Elemento de una lista (dentro de ul u ol).', '<li>Teclados</li>'],
+  dl: ['Lista de definiciones.', '<dl><dt>CSS</dt><dd>Hojas de estilo</dd></dl>'], dt: ['Término de una lista de definiciones.', '<dt>HTML</dt>'], dd: ['Definición del término.', '<dd>Lenguaje de marcado</dd>'],
+  a: ['<b>Enlace</b> (ancla). <code>href</code> indica el destino: otra página, una URL o un fragmento <code>#id</code> de la misma página. Estados CSS: :link, :visited, :hover, :active, :focus.', '<a href="#contacto">Contacto</a>'],
+  img: ['Imagen (elemento vacío, en línea por defecto). Obligatorios: <code>src</code> y <code>alt</code>. Conviene <code>width</code>/<code>height</code> para reservar el hueco.', '<img src="foto1.jpg" alt="Teclado mecánico" width="300" height="200">'],
+  picture: ['Contenedor de varias fuentes de imagen según condiciones (dirección de arte) con un img de respaldo.', '<picture><source media="(min-width:800px)" srcset="ancha.jpg"><img src="estrecha.jpg" alt=""></picture>'],
+  video: ['Vídeo. Atributos: <code>controls</code>, <code>autoplay</code> (solo con <code>muted</code>), <code>loop</code>, <code>poster</code>, <code>muted</code>, <code>playsinline</code>. Varias fuentes con source.', '<video controls poster="portada.jpg"><source src="v.mp4" type="video/mp4"></video>'],
+  audio: ['Audio, con los mismos atributos de control que video.', '<audio controls src="cancion.mp3"></audio>'],
+  source: ['Fuente alternativa para video/audio/picture. El navegador usa la primera cuyo <code>type</code> o <code>media</code> admita.', '<source src="v.webm" type="video/webm">'],
+  iframe: ['Inserta otra página dentro de la actual (mapas, vídeos de YouTube).', '<iframe src="https://…" title="Mapa"></iframe>'],
+  form: ['Formulario: agrupa los controles y define a dónde se envían (<code>action</code>, <code>method</code>).', '<form action="/buscar">…</form>'],
+  label: ['Etiqueta de un control. Con <code>for="id"</code> se asocia al input: al pulsarla se activa el control (accesibilidad y truco :checked).', '<label for="email">Email</label><input id="email">'],
+  input: ['Control de entrada (elemento vacío). El atributo <code>type</code> decide qué es: text, email, password, checkbox, radio, number…', '<input type="checkbox" id="abrir">'],
+  textarea: ['Campo de texto de varias líneas.', '<textarea rows="4"></textarea>'], select: ['Lista desplegable de opciones.', '<select><option>Madrid</option></select>'], option: ['Opción de un select.', '<option value="m">Madrid</option>'],
+  button: ['Botón. Por defecto es <code>type="submit"</code> dentro de un form. Accesible por teclado de serie.', '<button type="button">Comprar</button>'],
+  fieldset: ['Agrupa controles relacionados de un formulario.', '<fieldset><legend>Envío</legend>…</fieldset>'], legend: ['Título de un fieldset.', '<legend>Datos personales</legend>'],
+  table: ['Tabla de datos (no para maquetar).', '<table><tr><th>Producto</th></tr></table>'], thead: ['Grupo de filas de cabecera de la tabla.', '<thead>…</thead>'], tbody: ['Grupo de filas de datos.', '<tbody>…</tbody>'],
+  tr: ['Fila de tabla.', '<tr><td>…</td></tr>'], th: ['Celda de cabecera (negrita y centrada por defecto).', '<th>Precio</th>'], td: ['Celda de datos.', '<td>19,90 €</td>'],
+  details: ['Desplegable <b>nativo</b> sin JavaScript: muestra el summary y, al pulsarlo, el resto. Con <code>open</code> empieza abierto.', '<details><summary>¿Envío?</summary><p>24 h</p></details>'],
+  summary: ['Título visible y pulsable de un details.', '<summary>Ver más</summary>'],
+  progress: ['Barra de progreso nativa (value y max). Informa del estado del sistema.', '<progress value="70" max="100"></progress>'],
+  dialog: ['Cuadro de diálogo nativo (modal). Con el atributo <code>open</code> se muestra.', '<dialog open>Hola</dialog>']
+},
+attr: {
+  class: ['Una o varias <b>clases</b> separadas por espacios. Una clase es una etiqueta <b>reutilizable</b>: muchos elementos pueden tenerla y el CSS la selecciona con <code>.nombre</code>.', '<p class="aviso grande">'],
+  id: ['Identificador <b>único</b> en la página. El CSS lo selecciona con <code>#nombre</code> (especificidad alta) y un enlace puede saltar a él con <code>href="#nombre"</code> (base de :target).', '<section id="contacto">'],
+  href: ['Destino de un enlace o recurso. <code>#algo</code> = fragmento de la misma página; <code>pagina.html</code> = ruta relativa; <code>https://…</code> = absoluta.', '<a href="#p2">'],
+  src: ['Ruta del archivo que se inserta (imagen, vídeo, script, iframe).', '<img src="img/logo.svg">'],
+  alt: ['Texto alternativo de una imagen: lo leen los lectores de pantalla y se muestra si no carga. Vacío (<code>alt=""</code>) si es decorativa.', '<img alt="Logo de PcMadrid">'],
+  target: ['Dónde se abre el enlace. <code>_blank</code> = pestaña nueva.', '<a target="_blank">'],
+  title: ['Información extra que aparece como tooltip nativo del navegador.', '<abbr title="Hoja de estilos">CSS</abbr>'],
+  style: ['CSS <b>en línea</b> en el propio elemento. Tiene más prioridad que las hojas de estilo (salvo !important). Mejor evitarlo: mezcla contenido y presentación.', '<p style="color:red">'],
+  rel: ['Relación del recurso enlazado: <code>stylesheet</code> en un link de CSS.', '<link rel="stylesheet" href="…">'],
+  type: ['Tipo: en input decide el control (checkbox, email…); en source, el formato (video/mp4); en button, submit/button/reset.', '<input type="email">'],
+  width: ['Ancho intrínseco en píxeles (sin unidad) de img/video/iframe. Reserva el espacio antes de cargar.', '<img width="300">'], height: ['Alto intrínseco en píxeles.', '<img height="200">'],
+  srcset: ['Lista de archivos de la misma imagen a distintos anchos (<code>480w</code>, <code>960w</code>) o densidades (<code>2x</code>) para que el navegador elija.', 'srcset="a-480.jpg 480w, a-960.jpg 960w"'],
+  sizes: ['Ancho que ocupará la imagen según el viewport; con él el navegador elige el archivo de srcset.', 'sizes="(max-width: 600px) 100vw, 50vw"'],
+  autoplay: ['Empieza a reproducirse solo. Los navegadores lo bloquean si el vídeo tiene sonido: añade <code>muted</code>.', '<video autoplay muted>'],
+  muted: ['Empieza sin sonido.', '<video muted>'], loop: ['Repite al terminar.', '<video loop>'], controls: ['Muestra los controles de reproducción.', '<video controls>'],
+  poster: ['Imagen que se muestra antes de reproducir el vídeo.', '<video poster="portada.jpg">'], playsinline: ['En iOS, reproduce dentro de la página y no a pantalla completa.', '<video playsinline>'],
+  preload: ['Cuánto descargar por adelantado: none, metadata o auto.', '<video preload="metadata">'],
+  loading: ['<code>lazy</code> retrasa la carga de imágenes que están fuera de la pantalla.', '<img loading="lazy">'],
+  tabindex: ['Hace enfocable con Tab un elemento que no lo es (<code>0</code>), o lo saca del orden (<code>-1</code>).', '<span tabindex="0">'],
+  for: ['En un label: id del control al que se asocia.', '<label for="abrir">'],
+  hidden: ['Oculta el elemento (equivale a display: none).', '<input hidden>'],
+  open: ['En details o dialog: empieza abierto.', '<details open>'],
+  lang: ['Idioma del contenido.', '<html lang="es">'], charset: ['Codificación de caracteres (utf-8).', '<meta charset="utf-8">'],
+  name: ['Nombre del metadato o del campo de formulario.', '<meta name="viewport">'], content: ['Valor del metadato.', 'content="width=device-width, initial-scale=1"'],
+  value: ['Valor de un campo u opción.', '<option value="m">'], placeholder: ['Texto de ejemplo dentro de un campo vacío (no sustituye al label).', '<input placeholder="tu@email.com">'],
+  required: ['Campo obligatorio (validación nativa).', '<input required>'], checked: ['Casilla marcada de inicio.', '<input type="checkbox" checked>'], disabled: ['Control desactivado.', '<button disabled>'],
+  action: ['URL a la que se envía el formulario.', '<form action="/buscar">'], method: ['Método de envío: get o post.', '<form method="post">'],
+  'aria-label': ['Nombre accesible cuando no hay texto visible (por ejemplo, un botón con solo un icono).', '<button aria-label="Cerrar">×</button>'],
+  'aria-current': ['Marca el elemento actual de un conjunto (página actual del menú o de la paginación).', '<a aria-current="page">2</a>'],
+  'data-*': ['Atributo de datos <b>personalizado</b>: guarda información propia. El CSS puede leerlo con <code>attr()</code> o seleccionarlo con <code>[data-…]</code>.', '<a data-titulo="Playa">'],
+  'data-bs-toggle': ['Bootstrap: qué componente activa el botón (collapse, dropdown, modal…). Necesita el JS de Bootstrap.', 'data-bs-toggle="collapse"'],
+  'data-bs-target': ['Bootstrap: selector del elemento que se abre o cierra.', 'data-bs-target="#menu"']
+},
+sel: {
+  tipo: ['Selector de <b>tipo</b> (etiqueta): todos los elementos de esa etiqueta. Especificidad (0,0,1).', 'p { … }'],
+  clase: ['Selector de <b>clase</b> <code>.nombre</code>: elementos con esa clase en su atributo class. Especificidad (0,1,0).', '.aviso { … }'],
+  id: ['Selector de <b>id</b> <code>#nombre</code>: el elemento con ese id. Especificidad (1,0,0): gana a cualquier cantidad de clases.', '#principal { … }'],
+  universal: ['Selector <b>universal</b> <code>*</code>: todos los elementos. Especificidad 0.', '* { box-sizing: border-box; }'],
+  atributo: ['Selector de <b>atributo</b>: <code>[attr]</code> lo tiene · <code>[attr="v"]</code> igual · <code>^=</code> empieza por · <code>$=</code> termina en · <code>*=</code> contiene. Especificidad (0,1,0).', 'a[href$=".pdf"]'],
+  descendiente: ['Combinador <b>descendiente</b> (espacio): B dentro de A, a cualquier profundidad.', '.menu li'],
+  hijo: ['Combinador <b>hijo directo</b> <code>&gt;</code>: B hijo inmediato de A.', '.menu > li'],
+  adyacente: ['Combinador <b>hermano adyacente</b> <code>+</code>: el B que viene justo después de A (mismo padre).', 'h2 + p'],
+  hermanos: ['Combinador <b>hermanos generales</b> <code>~</code>: todos los B que vienen después de A dentro del mismo padre (nunca antes).', '#abrir:checked ~ nav'],
+  grupo: ['<b>Agrupación</b> con coma: la misma regla para varios selectores independientes.', 'h1, h2, h3 { … }']
+},
+pc: {
+  hover: ['Mientras el puntero está encima. No existe en pantallas táctiles: no ocultes nada importante solo tras un hover.', 'a:hover { color: crimson; }'],
+  focus: ['Cuando el elemento tiene el foco (por teclado con Tab o al hacer clic en un campo).', 'input:focus { outline: 2px solid; }'],
+  'focus-visible': ['Tiene el foco <b>y</b> el navegador cree que hay que mostrarlo (normalmente al usar el teclado). Ideal para el anillo de foco.', 'a:focus-visible { outline: 3px solid; }'],
+  active: ['Mientras se está pulsando.', 'button:active { transform: scale(.95); }'],
+  link: ['Enlace aún no visitado (con href).', 'a:link { color: blue; }'], visited: ['Enlace ya visitado. Orden LVHA: :link, :visited, :hover, :active.', 'a:visited { color: purple; }'],
+  target: ['El elemento cuyo <b>id</b> coincide con el fragmento de la URL (<code>#id</code>). Base de pestañas, modales y acordeones sin JavaScript.', '.panel:target { display: block; }'],
+  checked: ['Checkbox o radio marcado (o option seleccionada). Con <code>~</code> o <code>+</code> permite menús sin JS.', '#abrir:checked ~ nav { display: block; }'],
+  disabled: ['Control desactivado.', 'button:disabled { opacity: .5; }'], enabled: ['Control activo.', 'input:enabled'], required: ['Campo obligatorio.', 'input:required'], valid: ['Campo con valor válido.', 'input:valid'], invalid: ['Campo con valor no válido.', 'input:invalid { border-color: red; }'],
+  'first-child': ['El elemento que es el <b>primer hijo</b> de su padre (si no lo es, no se selecciona aunque sea el primero de su tipo).', 'li:first-child'],
+  'last-child': ['El <b>último hijo</b> de su padre.', 'li:last-child'],
+  'first-of-type': ['El primero de <b>su tipo</b> (etiqueta) entre sus hermanos.', 'p:first-of-type'], 'last-of-type': ['El último de su tipo.', 'p:last-of-type'],
+  'nth-child': ['Por posición entre <b>todos</b> los hermanos: <code>2</code>, <code>odd</code>/<code>2n+1</code> (impares), <code>even</code>/<code>2n</code> (pares), <code>3n</code>…', 'tr:nth-child(even)'],
+  'nth-of-type': ['Por posición entre los hermanos <b>del mismo tipo</b>.', 'img:nth-of-type(2)'], 'only-child': ['Hijo único.', 'li:only-child'],
+  not: ['Negación: elementos que <b>no</b> cumplen el selector. Su especificidad es la de su argumento.', 'li:not(.activo)'],
+  root: ['La raíz del documento (el elemento html). Se usa para definir variables globales.', ':root { --principal: #1f6feb; }'],
+  empty: ['Elemento sin contenido.', 'p:empty { display: none; }'], has: ['Padre que contiene algo (moderno).', '.card:has(img)'], is: ['Agrupa selectores dentro de otro.', ':is(h1, h2) a'], where: ['Como :is pero con especificidad 0.', ':where(ul) li']
+},
+pe: {
+  before: ['Crea un hijo «falso» <b>al principio</b> del contenido del elemento. Necesita <code>content</code>; es en línea por defecto. No vale en elementos vacíos como img o input.', '.nuevo::before { content: "NUEVO"; }'],
+  after: ['Crea un hijo «falso» <b>al final</b> del contenido. Con <code>content</code> y <code>position: absolute</code> se usa para capas, overlays, iconos y tooltips.', '.foto::after { content: ""; position: absolute; inset: 0; }'],
+  'first-letter': ['Primera letra (letra capital).', 'p::first-letter { font-size: 2em; }'], 'first-line': ['Primera línea del texto.', 'p::first-line { font-weight: bold; }'],
+  placeholder: ['Texto de ejemplo de un input.', 'input::placeholder { color: #999; }'], selection: ['Texto seleccionado por el usuario.', '::selection { background: gold; }'], marker: ['Viñeta o número de un li.', 'li::marker { color: crimson; }']
+},
+prop: {
+  color: ['Color del <b>texto</b> (se hereda).', 'color: #1d2433;'],
+  background: ['Atajo de fondo: color, imagen, posición/tamaño, repetición. <code>background: url(f.jpg) center/cover no-repeat</code>.', 'background: rgba(0,0,0,.6);'],
+  'background-color': ['Color de fondo (no se hereda).', 'background-color: #eef2fb;'], 'background-image': ['Imagen o degradado de fondo.', 'background-image: url(foto.jpg);'], 'background-size': ['Tamaño de la imagen de fondo: cover, contain, px.', 'background-size: cover;'], 'background-position': ['Posición de la imagen de fondo.', 'background-position: center;'], 'background-repeat': ['Si la imagen de fondo se repite.', 'background-repeat: no-repeat;'],
+  display: ['Cómo se comporta la caja en el layout.', 'display: flex;', { block: 'Bloque: ocupa todo el ancho y empieza en una línea nueva; admite width/height y margin auto.', inline: 'En línea: fluye con el texto; ignora width/height y margen vertical.', 'inline-block': 'En línea pero admite width, height, padding y margin como un bloque.', none: 'No se muestra ni ocupa espacio (desaparece del layout).', flex: 'Contenedor flexible: coloca a sus <b>hijos</b> en una fila (o columna).', grid: 'Contenedor de rejilla: coloca a sus hijos en filas y columnas.', 'flow-root': 'Bloque que crea un nuevo contexto de formato: contiene a sus hijos flotantes.' }],
+  position: ['Esquema de posicionamiento. Con top/right/bottom/left/inset se desplaza.', 'position: relative;', { static: 'Por defecto: flujo normal; top/left y z-index no tienen efecto.', relative: 'Se queda en su sitio (conserva el hueco) y se puede desplazar respecto a sí mismo. Además es la <b>referencia</b> para sus hijos absolute.', absolute: 'Sale del flujo (no deja hueco) y se coloca respecto al <b>antepasado posicionado</b> más cercano (o a la página).', fixed: 'Sale del flujo y se fija a la <b>ventana</b>: no se mueve al hacer scroll.', sticky: 'Normal hasta que, al hacer scroll, alcanza el umbral (top: 0) y se queda pegado dentro de su contenedor.' }],
+  top: ['Desplazamiento desde arriba (solo en elementos posicionados).', 'top: 10px;'], right: ['Desplazamiento desde la derecha.', 'right: 0;'], bottom: ['Desplazamiento desde abajo. <code>bottom: 100%</code> coloca el elemento justo encima de su referencia.', 'bottom: 100%;'], left: ['Desplazamiento desde la izquierda.', 'left: 0;'],
+  inset: ['Atajo de top, right, bottom y left. <code>inset: 0</code> = pegado a los cuatro bordes de su referencia (cubre todo).', 'inset: 0;'],
+  'z-index': ['Orden de apilamiento (quién queda encima) en elementos posicionados o ítems flex/grid. Se compara dentro de cada contexto de apilamiento.', 'z-index: 10;'],
+  float: ['Saca el elemento hacia la izquierda o derecha y el texto lo rodea. El padre no cuenta su altura.', 'float: left;'], clear: ['Impide que el elemento se coloque al lado de los flotantes (both, left, right).', 'clear: both;'],
+  width: ['Ancho del <b>contenido</b> (o de la caja completa con border-box). En % se calcula sobre el ancho del padre.', 'width: 50%;'], height: ['Alto. Con un valor fijo, el contenido que no cabe desborda.', 'height: 120px;'],
+  'max-width': ['Ancho máximo: la caja puede ser más estrecha, nunca más ancha. Clave en responsive (<code>img { max-width: 100%; }</code>).', 'max-width: 70ch;'], 'min-width': ['Ancho mínimo.', 'min-width: 200px;'], 'min-height': ['Alto mínimo: puede crecer si el contenido lo necesita.', 'min-height: 60px;'], 'max-height': ['Alto máximo.', 'max-height: 300px;'],
+  margin: ['Espacio <b>exterior</b>, transparente. 1 valor = 4 lados · 2 = vertical horizontal · 4 = arriba derecha abajo izquierda. <code>auto</code> horizontal centra bloques con ancho.', 'margin: 0 auto;'],
+  'margin-top': ['Margen superior (los verticales colapsan en flujo normal).', 'margin-top: 30px;'], 'margin-bottom': ['Margen inferior.', 'margin-bottom: 20px;'], 'margin-left': ['Margen izquierdo.', 'margin-left: auto;'], 'margin-right': ['Margen derecho.', 'margin-right: 6px;'],
+  padding: ['Relleno <b>interior</b> entre el contenido y el borde (lleva el fondo). En % se calcula sobre el <b>ancho</b> del padre, también arriba y abajo.', 'padding: 10px 16px;'],
+  'padding-top': ['Relleno superior.', 'padding-top: 8px;'], 'padding-left': ['Relleno izquierdo.', 'padding-left: 20px;'],
+  border: ['Borde: grosor, estilo (solid, dashed, dotted) y color. Suma al tamaño en content-box.', 'border: 3px solid crimson;'], 'border-bottom': ['Solo el borde inferior.', 'border-bottom: 1px dotted;'], 'border-radius': ['Esquinas redondeadas (50% = círculo en una caja cuadrada).', 'border-radius: 8px;'],
+  'box-sizing': ['Qué incluye width/height.', 'box-sizing: border-box;', { 'content-box': 'Por defecto: width = solo contenido; padding y borde se suman.', 'border-box': 'width = contenido + padding + borde: el tamaño final es el que escribes.' }],
+  outline: ['Contorno <b>fuera</b> del borde que no ocupa espacio ni mueve nada. Lo usan los navegadores para el foco: no lo quites sin dar una alternativa.', 'outline: 3px solid crimson;'], 'outline-offset': ['Separación entre el contorno y el borde.', 'outline-offset: 3px;'],
+  overflow: ['Qué hacer con el contenido que no cabe.', 'overflow: auto;', { visible: 'Por defecto: se dibuja fuera de la caja.', hidden: 'Se recorta.', auto: 'Barra de scroll solo si hace falta.', scroll: 'Barra de scroll siempre.' }],
+  'box-shadow': ['Sombra de la caja: x y desenfoque color.', 'box-shadow: 0 2px 8px rgba(0,0,0,.2);'],
+  opacity: ['Transparencia del elemento <b>completo</b> (con su contenido e hijos), de 0 a 1. Sigue ocupando espacio y recibiendo clics. Crea contexto de apilamiento.', 'opacity: .5;'],
+  visibility: ['Visible u oculto <b>conservando el hueco</b>. hidden no recibe clics y sí se puede combinar con transiciones.', 'visibility: hidden;'],
+  content: ['Contenido de ::before/::after: texto, <code>""</code>, <code>attr(data-x)</code>, <code>url()</code>. Sin content el pseudoelemento no existe.', 'content: "Ver foto";'],
+  font: ['Atajo: estilo, grosor, tamaño/interlineado y familia.', 'font: 16px/1.5 Roboto, sans-serif;'],
+  'font-family': ['Familia tipográfica con alternativas, terminando en una genérica (serif, sans-serif, monospace).', 'font-family: Georgia, serif;'],
+  'font-size': ['Tamaño de letra (px, em, rem, %).', 'font-size: 1.5rem;'], 'font-weight': ['Grosor: normal, bold, 100-900.', 'font-weight: bold;'], 'font-style': ['italic o normal.', 'font-style: italic;'],
+  'line-height': ['Interlineado. Sin unidad (1.5) es relativo al tamaño de letra; recomendado 1,4-1,6.', 'line-height: 1.5;'],
+  'text-align': ['Alineación horizontal del contenido en línea (texto, imágenes inline): left, center, right, justify.', 'text-align: center;'],
+  'text-decoration': ['Subrayado, tachado o ninguno (quitar subrayado a enlaces).', 'text-decoration: none;'], 'text-transform': ['Mayúsculas/minúsculas.', 'text-transform: uppercase;'],
+  'letter-spacing': ['Espacio entre letras.', 'letter-spacing: .05em;'], 'white-space': ['Cómo tratar espacios y saltos. <code>nowrap</code> = no partir la línea.', 'white-space: nowrap;'], 'text-shadow': ['Sombra del texto.', 'text-shadow: 1px 1px 2px #000;'],
+  'list-style': ['Tipo de viñeta de las listas (none para menús).', 'list-style: none;'],
+  cursor: ['Forma del puntero (pointer = mano, indica que se puede pulsar).', 'cursor: pointer;'],
+  'pointer-events': ['<code>none</code>: el elemento no recibe clics y los deja pasar a lo que hay debajo.', 'pointer-events: none;'],
+  flex: ['Atajo de los ítems flex: <b>grow shrink basis</b>. <code>1 1 200px</code> = parte de 200 px, puede crecer y encoger.', 'flex: 1 1 200px;'],
+  'flex-grow': ['Proporción del espacio <b>sobrante</b> que recibe el ítem.', 'flex-grow: 2;'], 'flex-shrink': ['Proporción en que encoge si falta espacio (0 = no encoge).', 'flex-shrink: 0;'], 'flex-basis': ['Tamaño inicial del ítem antes de crecer/encoger.', 'flex-basis: 200px;'],
+  'flex-direction': ['Dirección del <b>eje principal</b>: row (fila, por defecto) o column (columna). En column, justify y align intercambian el sentido.', 'flex-direction: column;'],
+  'flex-wrap': ['Si los ítems pueden pasar a otra línea (wrap) o se quedan en una (nowrap, por defecto).', 'flex-wrap: wrap;'],
+  'justify-content': ['Reparte los ítems en el <b>eje principal</b>: flex-start, center, space-between, space-around, space-evenly.', 'justify-content: space-between;'],
+  'align-items': ['Alinea los ítems en el <b>eje cruzado</b>: stretch (por defecto), center, flex-start, flex-end.', 'align-items: center;'],
+  'align-self': ['Alineación de un solo ítem en el eje cruzado.', 'align-self: flex-end;'], order: ['Orden visual del ítem (no cambia el HTML).', 'order: -1;'],
+  gap: ['Separación entre filas y columnas en flex y grid (no hay márgenes que colapsen).', 'gap: 10px;'],
+  'grid-template-columns': ['Columnas de la rejilla: tamaños fijos, %, fr o <code>repeat()</code>.', 'grid-template-columns: 200px 1fr 2fr;'], 'grid-template-rows': ['Filas de la rejilla.', 'grid-template-rows: auto 1fr auto;'],
+  'grid-template-areas': ['Dibuja la maqueta con nombres: una cadena por fila, un nombre por celda; las áreas deben ser rectangulares.', 'grid-template-areas: "cab cab" "lat main";'],
+  'grid-area': ['Coloca el elemento en un área con nombre de grid-template-areas.', 'grid-area: cab;'], 'grid-column': ['Columnas que ocupa el ítem: <code>1 / 3</code> o <code>span 2</code>.', 'grid-column: span 2;'], 'grid-row': ['Filas que ocupa el ítem.', 'grid-row: 1 / 3;'],
+  'place-items': ['Atajo de align-items y justify-items: <code>center</code> centra en los dos ejes en grid.', 'place-items: center;'],
+  'object-fit': ['Cómo encaja una img/video en su caja.', 'object-fit: cover;', { fill: 'Por defecto: se estira y puede deformarse.', cover: 'Mantiene la proporción y llena la caja <b>recortando</b>.', contain: 'Mantiene la proporción y se ve <b>entera</b>, dejando bandas.', none: 'Tamaño original, recortado.', 'scale-down': 'Como none o contain, lo que sea menor.' }],
+  'object-position': ['Qué parte de la imagen se ve cuando object-fit recorta (por defecto 50% 50%, el centro).', 'object-position: top;'],
+  transform: ['Transforma visualmente sin mover a los demás: translate, rotate, scale, skew. Es <b>una</b> propiedad: una regla nueva sustituye la lista entera.', 'transform: rotate(-10deg) scale(1.2);'], 'transform-origin': ['Punto alrededor del que se transforma.', 'transform-origin: top left;'],
+  transition: ['Anima el <b>cambio</b> de una propiedad entre dos estados: propiedad duración curva retraso. Se escribe en el estado normal. display no se anima.', 'transition: opacity .3s ease;'],
+  animation: ['Atajo de animación: nombre duración curva retraso repeticiones dirección fill-mode. Usa un @keyframes.', 'animation: girar 2s linear infinite;'], 'animation-name': ['Nombre del @keyframes (debe coincidir exactamente).', 'animation-name: girar;'], 'animation-duration': ['Duración de una vuelta.', 'animation-duration: 2s;'], 'animation-delay': ['Espera antes de empezar.', 'animation-delay: 1s;'], 'animation-iteration-count': ['Repeticiones (infinite).', 'animation-iteration-count: infinite;'], 'animation-fill-mode': ['forwards conserva el último fotograma al terminar; backwards aplica el primero durante el retraso; both, los dos.', 'animation-fill-mode: forwards;'], 'animation-timing-function': ['Curva de velocidad.', 'animation-timing-function: linear;'],
+  filter: ['Efectos gráficos: grayscale, blur, brightness, contrast, sepia… (crea contexto de apilamiento).', 'filter: grayscale(100%);'],
+  'aspect-ratio': ['Proporción de la caja.', 'aspect-ratio: 16 / 9;'], 'mask-image': ['Máscara: deja ver el elemento solo donde la máscara es opaca.', 'mask-image: url(corazon.svg);'], 'clip-path': ['Recorta el elemento con una forma.', 'clip-path: circle(50%);'],
+  'scroll-behavior': ['smooth = desplazamiento suave al saltar a un #id.', 'html { scroll-behavior: smooth; }']
+},
+fn: {
+  rgba: ['Color con rojo, verde, azul (0-255) y <b>alfa</b> (0-1 de opacidad): solo ese color es transparente.', 'rgba(0, 0, 0, .5)'], rgb: ['Color rojo, verde, azul.', 'rgb(31, 111, 235)'], hsl: ['Color por tono, saturación y luminosidad.', 'hsl(210 80% 50%)'],
+  url: ['Ruta de un archivo (imagen, fuente, máscara).', 'url(foto.jpg)'], var: ['Lee una variable CSS; el segundo valor es el de reserva si no existe.', 'var(--principal, blue)'], attr: ['Lee un atributo HTML (en content de ::before/::after).', 'content: attr(data-titulo);'],
+  calc: ['Calcula mezclando unidades.', 'width: calc(100% - 200px);'], repeat: ['Repite columnas o filas en grid.', 'repeat(3, 1fr)'], minmax: ['Tamaño entre un mínimo y un máximo (grid).', 'minmax(200px, 1fr)'], clamp: ['Valor fluido entre un mínimo y un máximo.', 'clamp(16px, 2vw, 22px)'],
+  rotate: ['Gira (deg, turn).', 'rotate(45deg)'], scale: ['Escala (1 = tamaño original).', 'scale(1.2)'], translate: ['Desplaza visualmente en X e Y.', 'translate(-50%, -50%)'], translatey: ['Desplaza en vertical.', 'translateY(20px)'], translatex: ['Desplaza en horizontal.', 'translateX(10px)'], skew: ['Inclina.', 'skew(10deg)'],
+  grayscale: ['Escala de grises (100% = blanco y negro).', 'grayscale(100%)'], blur: ['Desenfoque.', 'blur(4px)'], brightness: ['Brillo.', 'brightness(1.2)'], sepia: ['Tono sepia.', 'sepia(80%)'],
+  'linear-gradient': ['Degradado lineal entre colores (es una imagen de fondo).', 'linear-gradient(transparent, rgba(0,0,0,.5))'], 'radial-gradient': ['Degradado circular.', 'radial-gradient(circle, gold, orange)'],
+  'cubic-bezier': ['Curva de velocidad personalizada.', 'cubic-bezier(.2,.8,.2,1)'], steps: ['Animación a saltos.', 'steps(4)']
+},
+unit: {
+  px: ['Píxel CSS: unidad <b>absoluta</b>.', '16px'], em: ['Relativa al font-size <b>del propio elemento</b> (en font-size, al del padre): se acumula al anidar.', '1.5em'], rem: ['Relativa al font-size del elemento <b>raíz</b> (html, normalmente 16 px): predecible.', '1rem'],
+  '%': ['Porcentaje de una referencia: en width/padding/margin, del <b>ancho</b> del padre; en font-size, de la letra del padre.', '50%'], vw: ['1% del <b>ancho</b> de la ventana.', '100vw'], vh: ['1% del <b>alto</b> de la ventana.', '100vh'],
+  fr: ['Fracción del espacio <b>libre</b> de la rejilla (grid), después de restar columnas fijas y gaps.', '1fr 2fr'], ch: ['Ancho del carácter «0»: útil para limitar líneas a 60-80 caracteres.', '70ch'],
+  deg: ['Grados (360deg = una vuelta).', 'rotate(45deg)'], s: ['Segundos.', '.3s'], ms: ['Milisegundos.', '300ms']
+},
+kw: {
+  auto: 'Lo calcula el navegador (en margin horizontal: reparte el espacio y centra).', none: 'Ninguno / desactivado.', inherit: 'Copia el valor del padre.', initial: 'Valor inicial de la propiedad.', transparent: 'Color totalmente transparente.',
+  solid: 'Línea continua.', dashed: 'Línea discontinua.', dotted: 'Línea de puntos.', center: 'Centrado.', bold: 'Negrita.', underline: 'Subrayado.', nowrap: 'Sin saltos de línea.', wrap: 'Permite saltar de línea.', column: 'En columna (eje principal vertical).', row: 'En fila.',
+  'space-between': 'Primero y último pegados a los extremos y el resto del espacio repartido entre ellos.', 'flex-start': 'Al principio del eje.', 'flex-end': 'Al final del eje.', stretch: 'Estirado para llenar el eje cruzado.',
+  linear: 'Velocidad constante.', ease: 'Acelera y frena (por defecto).', 'ease-out': 'Empieza rápido y frena al final.', 'ease-in': 'Empieza lento.', 'ease-in-out': 'Lento al empezar y al acabar.', infinite: 'Repite sin fin.', forwards: 'Conserva el último fotograma.', alternate: 'Va y vuelve.',
+  pointer: 'Cursor de mano.', hidden: 'Oculto.', visible: 'Visible.', cover: 'Cubre recortando.', contain: 'Contiene sin recortar.', top: 'Arriba.', left: 'Izquierda.', right: 'Derecha.', bottom: 'Abajo.', justify: 'Justificado (a ambos lados).',
+  'sans-serif': 'Familia genérica sin remates.', serif: 'Familia genérica con remates.', monospace: 'Familia de ancho fijo.', cursive: 'Familia genérica manuscrita (decorativa).', 'system-ui': 'La fuente del sistema operativo.'
+},
+at: {
+  media: ['<b>Media query</b>: las reglas de dentro solo se aplican si se cumple la condición. <code>max-width: 600px</code> = hasta 600 inclusive; <code>min-width</code> = desde. No suma especificidad: el orden sigue importando.', '@media (max-width: 600px) { … }'],
+  keyframes: ['Define los fotogramas de una animación con un nombre (from/to o porcentajes).', '@keyframes girar { from {…} to {…} }'],
+  supports: ['<b>Consulta de soporte</b>: las reglas de dentro solo se aplican si el navegador entiende esa propiedad y valor (mejora progresiva).', '@supports (display: grid) { … }'],
+  import: ['Importa otra hoja de estilos (al principio).', '@import url(fuentes.css);'], 'font-face': ['Declara una fuente propia.', '@font-face { font-family: Mia; src: url(mia.woff2); }']
+}
+};
+// variables CSS
+GL.prop['--*'] = ['<b>Variable CSS</b> (propiedad personalizada). Se declara con <code>--nombre</code>, se lee con <code>var(--nombre)</code>, se hereda y se puede redefinir en un ámbito.', ':root { --principal: #1f6feb; }'];
+
+// ---- Bootstrap 5: explicación por patrones ----
+const BS_BP = { sm: '≥ 576 px', md: '≥ 768 px', lg: '≥ 992 px', xl: '≥ 1200 px', xxl: '≥ 1400 px' };
+const BS_SP = { 0: '0', 1: '.25rem (4 px)', 2: '.5rem (8 px)', 3: '1rem (16 px)', 4: '1.5rem (24 px)', 5: '3rem (48 px)', auto: 'auto' };
+const BS_FIX = { container: 'Contenedor centrado con ancho máximo según el punto de corte y margen lateral. Las filas van dentro.', 'container-fluid': 'Contenedor al 100% del ancho.', row: 'Fila de la rejilla (12 columnas, flex con wrap). Las columnas van directamente dentro.', col: 'Columna que reparte el espacio a partes iguales con sus hermanas.', btn: 'Botón de Bootstrap (base); se combina con un color: btn-primary, btn-outline-…', navbar: 'Barra de navegación responsive.', 'navbar-toggler': 'Botón hamburguesa (necesita el JS de Bootstrap).', collapse: 'Contenido plegable que se abre/cierra con el JS.', card: 'Tarjeta con borde y esquinas redondeadas.', 'card-body': 'Relleno interior de una tarjeta.', 'text-center': 'Texto centrado.', 'text-start': 'Texto a la izquierda.', 'text-end': 'Texto a la derecha.', border: 'Borde fino gris.', rounded: 'Esquinas redondeadas.', shadow: 'Sombra.', 'img-fluid': 'Imagen responsive: max-width 100% y height auto.', 'fw-bold': 'Negrita.', 'w-100': 'Ancho 100%.', 'h-100': 'Alto 100%.', 'align-items-center': 'Flex: centra en el eje cruzado.', 'justify-content-between': 'Flex: space-between.', 'justify-content-center': 'Flex: centra en el eje principal.' };
+function bsExplain(c) {
+  if (BS_FIX[c]) return BS_FIX[c];
+  let m;
+  if ((m = c.match(/^col(?:-(sm|md|lg|xl|xxl))?-(\d{1,2}|auto)$/))) return `Columna de ${m[2] === 'auto' ? 'ancho según su contenido' : `<b>${m[2]} de 12</b> (${Math.round(m[2] / 12 * 1000) / 10}% del ancho)`} ${m[1] ? `a partir de <b>${m[1]}</b> (${BS_BP[m[1]]})` : 'en <b>todos</b> los anchos'}. Las clases son mobile first: valen desde su punto de corte hacia arriba.`;
+  if ((m = c.match(/^d(?:-(sm|md|lg|xl|xxl))?-(none|block|inline|inline-block|flex|grid)$/))) return `display: <b>${m[2]}</b> ${m[1] ? `a partir de ${m[1]} (${BS_BP[m[1]]})` : 'en todos los anchos'}. Combinación típica: <code>d-none d-md-block</code> = oculto en móvil, visible desde 768 px.`;
+  if ((m = c.match(/^([mp])([tbsexy]?)(?:-(sm|md|lg|xl|xxl))?-(\d|auto)$/))) { const side = { t: 'arriba', b: 'abajo', s: 'izquierda (start)', e: 'derecha (end)', x: 'izquierda y derecha', y: 'arriba y abajo', '': 'los cuatro lados' }[m[2]]; return `${m[1] === 'm' ? 'margin' : 'padding'} en ${side} = <b>${BS_SP[m[4]]}</b>${m[3] ? ` a partir de ${m[3]} (${BS_BP[m[3]]})` : ''}.${c === 'mx-auto' ? ' Centra horizontalmente un bloque con ancho.' : ''}`; }
+  if ((m = c.match(/^(bg|text|btn|btn-outline|border|alert)-(primary|secondary|success|danger|warning|info|light|dark|white|body)$/))) return `Color de tema <b>${m[2]}</b> aplicado ${{ bg: 'al fondo', text: 'al texto', btn: 'a un botón (relleno)', 'btn-outline': 'a un botón (solo borde)', border: 'al borde', alert: 'a una alerta' }[m[1]]}.`;
+  if ((m = c.match(/^gap-(\d)$/))) return `gap = ${BS_SP[m[1]]}.`;
+  return '';
+}
+
+// ===================== 🔍 ANALIZADOR: explicación pieza a pieza de un HTML + CSS =====================
+const XP_DYN = ['hover', 'focus', 'focus-visible', 'focus-within', 'active', 'visited', 'link', 'target', 'checked'];
+const XP_PC_TXT = { hover: 'cuando el puntero está encima', focus: 'cuando tiene el foco', 'focus-visible': 'cuando tiene el foco visible (teclado)', 'focus-within': 'cuando algo de dentro tiene el foco', active: 'mientras se está pulsando', visited: 'si ya se ha visitado', link: 'si aún no se ha visitado', target: 'cuando es el destino del #fragmento de la URL', checked: 'cuando está marcado', disabled: 'si está desactivado', 'first-child': 'que es el primer hijo de su padre', 'last-child': 'que es el último hijo de su padre', 'first-of-type': 'que es el primero de su tipo entre sus hermanos', 'last-of-type': 'que es el último de su tipo', root: '(la raíz del documento: html)', empty: 'que está vacío' };
+
+function xpCssParse(src) {
+  src = (src || '').replace(/\/\*[\s\S]*?\*\//g, '');
+  let i = 0;
+  const decls = t => t.split(';').map(x => x.trim()).filter(Boolean).map(d => { const k = d.indexOf(':'); return k < 0 ? null : { p: d.slice(0, k).trim(), v: d.slice(k + 1).trim() }; }).filter(Boolean);
+  const block = () => { const items = [];
+    while (i < src.length) {
+      while (i < src.length && /\s/.test(src[i])) i++;
+      if (i >= src.length) break;
+      if (src[i] === '}') { i++; return items; }
+      let j = i; while (j < src.length && src[j] !== '{' && src[j] !== '}' && src[j] !== ';') j++;
+      const pre = src.slice(i, j).trim();
+      if (src[j] === ';') { if (pre.startsWith('@')) items.push({ at: pre, name: (pre.match(/^@([\w-]+)/) || [])[1] }); i = j + 1; continue; }
+      if (src[j] !== '{') { i = j + 1; continue; }
+      i = j + 1;
+      if (pre.startsWith('@')) { const name = (pre.match(/^@([\w-]+)/) || [])[1];
+        if (/^(media|supports|keyframes|container|layer)$/.test(name)) items.push({ at: pre, name, children: block() });
+        else { const k = src.indexOf('}', i); items.push({ at: pre, name, decls: decls(src.slice(i, k)) }); i = k + 1; } }
+      else { const k = src.indexOf('}', i); items.push({ sel: pre, decls: decls(src.slice(i, k < 0 ? src.length : k)) }); i = k < 0 ? src.length : k + 1; }
+    }
+    return items; };
+  return block();
+}
+const xpSplitTop = (s, ch) => { const out = []; let d = 0, q = '', cur = '';
+  for (const c of s) { if (q) { if (c === q) q = ''; } else if (c === '"' || c === "'") q = c; else if (c === '(' || c === '[') d++; else if (c === ')' || c === ']') d--; if (c === ch && !d && !q) { out.push(cur); cur = ''; } else cur += c; }
+  out.push(cur); return out.map(x => x.trim()).filter(Boolean); };
+
+// tokens de un selector simple (sin comas)
+function xpSelTokens(sel) {
+  const t = []; let i = 0; const s = sel.trim();
+  while (i < s.length) {
+    const c = s[i];
+    if (/\s|>|\+|~/.test(c)) { let j = i, comb = ' '; while (j < s.length && /\s|>|\+|~/.test(s[j])) { if (s[j] !== ' ' && s[j] !== '\n') comb = s[j]; j++; } t.push({ k: 'comb', t: comb }); i = j; continue; }
+    if (c === ':') { const pe = s[i + 1] === ':'; let j = i + (pe ? 2 : 1); while (j < s.length && /[\w-]/.test(s[j])) j++; let name = s.slice(i + (pe ? 2 : 1), j).toLowerCase(), arg = '';
+      if (s[j] === '(') { let d = 0, k = j; for (; k < s.length; k++) { if (s[k] === '(') d++; else if (s[k] === ')') { d--; if (!d) break; } } arg = s.slice(j + 1, k); j = k + 1; }
+      const isPe = pe || ['before', 'after', 'first-letter', 'first-line'].includes(name);
+      t.push({ k: isPe ? 'pe' : 'pc', t: s.slice(i, j), name, arg }); i = j; continue; }
+    if (c === '#') { let j = i + 1; while (j < s.length && /[\w-]/.test(s[j])) j++; t.push({ k: 'id', t: s.slice(i, j), name: s.slice(i + 1, j) }); i = j; continue; }
+    if (c === '.') { let j = i + 1; while (j < s.length && /[\w-]/.test(s[j])) j++; t.push({ k: 'clase', t: s.slice(i, j), name: s.slice(i + 1, j) }); i = j; continue; }
+    if (c === '[') { const j = s.indexOf(']', i); t.push({ k: 'atributo', t: s.slice(i, j + 1) }); i = j + 1; continue; }
+    if (c === '*') { t.push({ k: 'universal', t: '*' }); i++; continue; }
+    let j = i; while (j < s.length && /[\w-]/.test(s[j])) j++;
+    if (j === i) { i++; continue; }
+    t.push({ k: 'tipo', t: s.slice(i, j).toLowerCase(), name: s.slice(i, j).toLowerCase() }); i = j;
+  }
+  // quita combinadores descendientes sobrantes al principio/fin
+  while (t.length && t[0].k === 'comb') t.shift(); while (t.length && t[t.length - 1].k === 'comb') t.pop();
+  return t;
+}
+function xpSpec(sel) { let a = 0, b = 0, c = 0;
+  xpSelTokens(sel).forEach(x => {
+    if (x.k === 'id') a++; else if (x.k === 'clase' || x.k === 'atributo') b++; else if (x.k === 'tipo' || x.k === 'pe') c++;
+    else if (x.k === 'pc') { if (x.name === 'where') return; if (['not', 'is', 'has'].includes(x.name)) { const m = xpSplitTop(x.arg, ',').map(xpSpec).sort(xpCmp).pop() || [0, 0, 0]; a += m[0]; b += m[1]; c += m[2]; } else b++; } });
+  return [a, b, c]; }
+const xpCmp = (x, y) => x[0] - y[0] || x[1] - y[1] || x[2] - y[2];
+
+// lectura en castellano, de derecha a izquierda
+function xpRead(sel) {
+  const toks = xpSelTokens(sel), comps = [[]], combs = [];
+  toks.forEach(x => { if (x.k === 'comb') { combs.push(x.t); comps.push([]); } else comps[comps.length - 1].push(x); });
+  const desc = (cp, first) => { const tag = cp.find(x => x.k === 'tipo'), ids = cp.filter(x => x.k === 'id'), cls = cp.filter(x => x.k === 'clase'), at = cp.filter(x => x.k === 'atributo'), pcs = cp.filter(x => x.k === 'pc'), pe = cp.find(x => x.k === 'pe');
+    let s = tag ? `un <code>&lt;${tag.name}&gt;</code>` : (cp.some(x => x.k === 'universal') ? 'cualquier elemento' : 'un elemento');
+    if (pcs.some(p => p.name === 'root')) s = 'la raíz del documento (<code>html</code>)';
+    if (ids.length) s += ` con id <code>${ids.map(x => x.name).join(', ')}</code>`;
+    if (cls.length) s += ` con ${cls.length > 1 ? 'las clases' : 'la clase'} <code>${cls.map(x => x.name).join('</code> y <code>')}</code>`;
+    if (at.length) s += ` con el atributo <code>${at.map(x => esc(x.t)).join(' ')}</code>`;
+    pcs.filter(p => p.name !== 'root').forEach(p => { s += ' ' + (XP_PC_TXT[p.name] || (p.name === 'nth-child' ? `que ocupa la posición <code>${esc(p.arg)}</code> entre todos sus hermanos` : p.name === 'nth-of-type' ? `que ocupa la posición <code>${esc(p.arg)}</code> entre los de su tipo` : p.name === 'not' ? `que <b>no</b> es <code>${esc(p.arg)}</code>` : `:${p.name}`)); });
+    if (pe && first) s = `el pseudoelemento <code>::${pe.name}</code> de ${s}`;
+    return s; };
+  const W = { ' ': ', que está <b>dentro</b> de ', '>': ', que es <b>hijo directo</b> de ', '+': ', que va <b>justo después</b> de ', '~': ', que va <b>después</b> (hermano) de ' };
+  let out = desc(comps[comps.length - 1], true);
+  for (let k = comps.length - 2; k >= 0; k--) out += W[combs[k]] + desc(comps[k], false);
+  return out.charAt(0).toUpperCase() + out.slice(1) + '.';
+}
+const xpStatic = sel => { let pe = false; const cond = [], parts = [[]], combs = [];
+  xpSelTokens(sel).forEach(x => { if (x.k === 'comb') { combs.push(x.t); parts.push([]); return; }
+    if (x.k === 'pe') { pe = true; return; } if (x.k === 'pc' && XP_DYN.includes(x.name)) { cond.push(x.name); return; } parts[parts.length - 1].push(x.t); });
+  const q = parts.map((p, k) => (p.join('') || '*') + (k < combs.length ? (combs[k] === ' ' ? ' ' : ' ' + combs[k] + ' ') : '')).join('');
+  return { q, pe, cond }; };
+const xpLabel = el => `<code>&lt;${el.tagName.toLowerCase()}${el.id ? '#' + el.id : ''}${[...el.classList].map(c => '.' + c).join('')}&gt;</code>${(el.childNodes[0] && el.childNodes[0].nodeType === 3 && el.childNodes[0].textContent.trim()) ? ` <span class="mute">«${esc(el.childNodes[0].textContent.trim().slice(0, 28))}»</span>` : ''}`;
+
+function xpValue(p, v, seen) {
+  const notes = [], pr = p.startsWith('--') ? GL.prop['--*'] : GL.prop[p.toLowerCase()];
+  const clean = v.replace(/!important/i, '').trim();
+  if (/!important/i.test(v)) notes.push('<b>!important</b>: esta declaración gana a todas las normales, sea cual sea la especificidad.');
+  if (pr && pr[2]) { const key = clean.toLowerCase().split(/\s+/)[0]; if (pr[2][clean.toLowerCase()] || pr[2][key]) notes.push(`<b>${esc(clean)}</b>: ${pr[2][clean.toLowerCase()] || pr[2][key]}`); }
+  if (/^(margin|padding|inset)$/.test(p)) { const n = xpSplitTop(clean, ' ').length; notes.push({ 1: 'Un valor: los <b>cuatro</b> lados.', 2: 'Dos valores: <b>arriba/abajo</b> y <b>derecha/izquierda</b>.', 3: 'Tres valores: arriba, derecha/izquierda y abajo.', 4: 'Cuatro valores en sentido horario: <b>arriba, derecha, abajo, izquierda</b>.' }[n] || ''); }
+  (clean.match(/[a-zA-Z-]+(?=\()/g) || []).forEach(f => { const k = f.toLowerCase(), g = GL.fn[k]; if (g && !seen.has('fn:' + k)) { seen.add('fn:' + k); notes.push(`<code>${k}()</code>: ${g[0]}`); } });
+  (clean.match(/-?\d*\.?\d+(px|rem|em|%|vw|vh|fr|ch|deg|ms|s)(?![a-z])/g) || []).forEach(n => { const u = n.match(/(px|rem|em|%|vw|vh|fr|ch|deg|ms|s)$/)[1]; if (!seen.has('u:' + u)) { seen.add('u:' + u); notes.push(`<code>${u}</code>: ${GL.unit[u][0]}`); } });
+  if (/#[0-9a-f]{3,8}\b/i.test(clean) && !seen.has('hex')) { seen.add('hex'); notes.push('<code>#rrggbb</code>: color en hexadecimal (rojo, verde, azul de 00 a ff).'); }
+  if (/^var\(--/.test(clean) === false && /--[\w-]+/.test(p) === false) clean.replace(/(^|[\s,(/])([a-z][a-z-]+)(?=$|[\s,;)/])/g, (m, a, w) => { if (seen.has('k:' + w) || /^(var|url|rgba?|hsl)$/.test(w)) return m;
+    if (GL.kw[w] && !(pr && pr[2] && pr[2][w])) { seen.add('k:' + w); notes.push(`<code>${w}</code>: ${GL.kw[w]}`); }
+    else if (!GL.kw[w] && !(pr && pr[2] && pr[2][w]) && window.CSS && CSS.supports('color', w) && !/^(inherit|initial|unset|currentcolor)$/.test(w)) { seen.add('k:' + w); notes.push(`<code>${w}</code>: color por su nombre.`); }
+    return m; });
+  return notes.filter(Boolean);
+}
+
+function explainCode(html, css, o = {}) {
+  html = html || ''; css = css || '';
+  const seen = new Set(), doc = new DOMParser().parseFromString(/<html|<head|<body/i.test(html) ? html : `<body>${html}</body>`, 'text/html');
+  const tree = xpCssParse(css), rules = [];
+  const flat = (items, media) => items.forEach(it => { if (it.sel) rules.push({ ...it, media }); else if (it.children && it.name !== 'keyframes') flat(it.children, it.at); });
+  flat(tree, null);
+  const usesCls = n => rules.filter(r => xpSelTokens(r.sel.replace(/,/g, ' ')).some(x => x.k === 'clase' && x.name === n)).map(r => `<code>${esc(r.sel)}</code>`);
+  const usesId = n => rules.filter(r => xpSelTokens(r.sel.replace(/,/g, ' ')).some(x => x.k === 'id' && x.name === n)).map(r => `<code>${esc(r.sel)}</code>`);
+  let out = '';
+
+  // ---------- HTML ----------
+  const roots = [...(/<head/i.test(html) ? doc.head.children : []), ...doc.body.children];
+  if (roots.length) {
+    const lines = [];
+    const walk = (el, d) => { const tag = el.tagName.toLowerCase(), g = GL.tag[tag], first = !seen.has('t:' + tag); seen.add('t:' + tag);
+      const at = [...el.attributes].map(a => { const n = a.name.toLowerCase(), v = a.value;
+        if (n === 'class') return v.split(/\s+/).filter(Boolean).map(c => { const bs = bsExplain(c), u = usesCls(c); return `<li><code>class="${esc(c)}"</code>: ${bs ? `<span class="tag">Bootstrap</span> ${bs}` : (seen.has('a:class') ? 'clase' : GL.attr.class[0])}${u.length ? ` → la usa${u.length > 1 ? 'n' : ''}: ${u.join(', ')}` : bs ? '' : ' <span class="mute">(ninguna regla CSS de este código la usa)</span>'}</li>`; }).join('') + (seen.add('a:class'), '');
+        if (n === 'id') { const u = usesId(v), links = [...doc.querySelectorAll(`a[href="#${CSS.escape(v)}"]`)].length; const r = `<li><code>id="${esc(v)}"</code>: ${seen.has('a:id') ? 'identificador único' : GL.attr.id[0]}${u.length ? ` → en CSS: ${u.join(', ')}` : ''}${links ? ` → ${links} enlace${links > 1 ? 's' : ''} <code>href="#${esc(v)}"</code> saltan aquí` : ''}</li>`; seen.add('a:id'); return r; }
+        let ex = GL.attr[n] ? GL.attr[n][0] : n.startsWith('data-') ? GL.attr['data-*'][0] : n.startsWith('aria-') ? 'Atributo de accesibilidad (ARIA).' : 'Atributo.';
+        if (seen.has('a:' + n) && n !== 'href') ex = ex.split('. ')[0] + '.'; seen.add('a:' + n);
+        if (n === 'href' && v.startsWith('#')) ex = v === '#' ? 'Fragmento vacío: quita el #destino de la URL (cierra un modal o pestaña con :target).' : `Salta al elemento con <code>id="${esc(v.slice(1))}"</code>${doc.getElementById(v.slice(1)) ? '' : ' <span class="bad">(¡no existe ningún elemento con ese id!)</span>'}; ese elemento pasa a ser <code>:target</code>.`;
+        if (n === 'style') ex = GL.attr.style[0];
+        return `<li><code>${esc(n)}${a.value !== '' ? `="${esc(v.length > 60 ? v.slice(0, 57) + '…' : v)}"` : ''}</code>: ${ex}</li>`; }).join('');
+      lines.push(`<li style="--d:${d}"><div class="xel">${xpLabel(el)} ${g ? (first ? g[0] : `<span class="mute">${g[0].split(/[.:]/)[0]}.</span>`) : '<span class="mute">elemento HTML</span>'}</div>${at ? `<ul class="xat">${at}</ul>` : ''}</li>`);
+      [...el.children].forEach(ch => walk(ch, d + 1)); };
+    roots.forEach(r => walk(r, 0));
+    out += `<h4>🧱 HTML, elemento a elemento <span class="mute xs">(sangrado = está dentro del anterior)</span></h4><ul class="xtree">${lines.join('')}</ul>`;
+  }
+
+  // ---------- CSS ----------
+  if (tree.length) {
+    const seenP = new Set();
+    const rule = (r, inMedia) => {
+      const sels = xpSplitTop(r.sel, ',');
+      const head = sels.map(s => { const sp = xpSpec(s), st = xpStatic(s); let matched = [];
+        try { matched = [...doc.querySelectorAll(st.q || '*')]; } catch (e) { matched = null; }
+        const parts = xpSelTokens(s).filter(x => x.k !== 'comb' || x.t !== ' ').map(x => { const kind = x.k === 'comb' ? ({ '>': 'hijo', '+': 'adyacente', '~': 'hermanos' }[x.t]) : x.k === 'pc' ? 'pseudoclase' : x.k === 'pe' ? 'pseudoelemento' : x.k;
+          const ex = x.k === 'pc' ? (GL.pc[x.name] || [''])[0] : x.k === 'pe' ? (GL.pe[x.name] || [''])[0] : x.k === 'comb' ? GL.sel[kind][0] : (GL.sel[x.k] || [''])[0];
+          const key = 's:' + (x.k === 'pc' || x.k === 'pe' ? x.name : x.k === 'comb' ? kind : x.k); const show = !seen.has(key); seen.add(key);
+          return `<li><span class="xchip k-${x.k}">${esc(x.t)}</span> <b>${kind === 'tipo' ? 'tipo (etiqueta)' : kind}</b>${show && ex ? ': ' + ex : ''}</li>`; }).join('');
+        const hasDesc = /\S\s+\S/.test(s.replace(/\s*([>+~])\s*/g, '$1'));
+        return `<div class="xsel"><code class="big">${esc(s)}</code> <span class="xspec" title="(ids, clases/atributos/pseudoclases, elementos/pseudoelementos)">especificidad (${xpSpec(s).join(', ')})</span></div>
+          <p class="xread">📖 ${xpRead(s)}</p>
+          <ul class="xparts">${parts}${hasDesc && !seen.has('s:descendiente') ? (seen.add('s:descendiente'), `<li><span class="xchip k-comb">espacio</span> <b>descendiente</b>: ${GL.sel.descendiente[0]}</li>`) : ''}</ul>
+          ${matched === null ? '' : matched.length ? `<p class="xmatch">🎯 ${st.cond.length ? `Elementos que lo cumplirán <b>${st.cond.map(c => XP_PC_TXT[c] || ':' + c).join(' y ')}</b>` : 'Selecciona'}${st.pe ? ' (y estiliza su pseudoelemento)' : ''}: ${matched.slice(0, 6).map(xpLabel).join(' ')}${matched.length > 6 ? ` y ${matched.length - 6} más` : ''}</p>` : (roots.length ? `<p class="xmatch bad">🎯 No selecciona ningún elemento de este HTML.</p>` : '')}`; }).join('');
+      const decl = r.decls.map(d => { const pk = d.p.startsWith('--') ? '--*' : d.p.toLowerCase(), g = GL.prop[pk], first = !seenP.has(pk); seenP.add(pk);
+        const notes = xpValue(d.p, d.v, seen);
+        return `<li><code>${esc(d.p)}: ${esc(d.v)};</code> ${g ? (first ? g[0] : `<span class="mute">${g[0].split('. ')[0].replace(/<[^>]+>/g, '').replace(/\.$/, '')}.</span>`) : '<span class="mute">propiedad CSS</span>'}${notes.length ? `<ul class="xval">${notes.map(n => `<li>${n}</li>`).join('')}</ul>` : ''}</li>`; }).join('');
+      return `<div class="xrule">${sels.length > 1 ? `<p class="xs mute">Agrupación con comas: ${GL.sel.grupo[0]}</p>` : ''}${head}<ul class="xdecl">${decl}</ul></div>`; };
+    const item = it => {
+      if (it.sel) return rule(it);
+      if (it.name === 'media') return `<div class="xmedia"><div class="xsel"><code class="big">${esc(it.at)}</code></div><p>${GL.at.media[0]}</p><p class="xread">📖 Se aplica ${esc(it.at.replace(/^@media\s*/, '')).replace(/max-width:\s*([\d.]+\w+)/g, 'con un ancho de ventana de <b>hasta $1</b> (incluido)').replace(/min-width:\s*([\d.]+\w+)/g, 'con un ancho de ventana <b>desde $1</b> (incluido)').replace(/\band\b/g, 'y')}.</p>${it.children.map(item).join('')}</div>`;
+      if (it.name === 'supports') return `<div class="xmedia"><div class="xsel"><code class="big">${esc(it.at)}</code></div><p>${GL.at.supports[0]}</p>${it.children.map(item).join('')}</div>`;
+      if (it.name === 'keyframes') return `<div class="xmedia"><div class="xsel"><code class="big">${esc(it.at)}</code></div><p>${GL.at.keyframes[0]} Nombre: <code>${esc(it.at.replace(/^@keyframes\s*/, ''))}</code>; debe coincidir <b>exactamente</b> con <code>animation-name</code>.</p><ul class="xdecl">${it.children.map(f => `<li><b>${esc(f.sel)}</b> ${f.sel === 'from' ? '(= 0%, inicio)' : f.sel === 'to' ? '(= 100%, final)' : ''}: <code>${f.decls.map(d => esc(d.p + ': ' + d.v)).join('; ')}</code></li>`).join('')}</ul></div>`;
+      return `<div class="xmedia"><code>${esc(it.at)}</code> ${GL.at[it.name] ? GL.at[it.name][0] : ''}</div>`; };
+    out += `<h4>🎨 CSS, regla a regla <span class="mute xs">(cada término se explica completo la primera vez que aparece)</span></h4>${tree.map(item).join('')}`;
+
+    // ---------- conflictos de cascada ----------
+    if (roots.length) {
+      const map = new Map(); let ord = 0;
+      rules.forEach(r => xpSplitTop(r.sel, ',').forEach(s => { const st = xpStatic(s); if (st.pe) return; let els; try { els = doc.querySelectorAll(st.q || '*'); } catch (e) { return; }
+        r.decls.forEach(d => { ord++; els.forEach(el => { const k = d.p.toLowerCase(); if (!map.has(el)) map.set(el, {}); const m = map.get(el); (m[k] = m[k] || []).push({ s, v: d.v, imp: /!important/i.test(d.v), sp: xpSpec(s), ord, media: r.media, cond: st.cond }); }); }); }));
+      const conf = [];
+      map.forEach((m, el) => Object.entries(m).forEach(([p, arr]) => { if (arr.length < 2 || new Set(arr.map(a => a.v)).size < 2) return;
+        const base = arr.filter(a => !a.media && !a.cond.length), use = base.length > 1 ? base : arr;
+        const w = use.slice().sort((x, y) => (x.imp - y.imp) || xpCmp(x.sp, y.sp) || x.ord - y.ord).pop();
+        const why = use.filter(a => a !== w).map(a => a.imp !== w.imp ? '!important' : xpCmp(a.sp, w.sp) ? `especificidad (${w.sp}) &gt; (${a.sp})` : 'mismo peso: gana la que va <b>después</b>');
+        conf.push(`<li>${xpLabel(el)} · <code>${esc(p)}</code>: ${use.map(a => `<code>${esc(a.s)} → ${esc(a.v)}</code>`).join(' vs ')} ⇒ gana <b><code>${esc(w.v)}</code></b> (${[...new Set(why)].join('; ')})${arr.some(a => a.media || a.cond.length) ? ` <span class="mute xs">· además hay reglas que solo cuentan ${[...new Set(arr.filter(a => a.media || a.cond.length).map(a => a.media ? esc(a.media) : a.cond.map(c => ':' + c).join(' ')))].join(', ')}</span>` : ''}</li>`); }));
+      if (conf.length) out += `<h4>⚖️ Quién gana cuando varias reglas chocan</h4><p class="xs mute">Orden de la cascada: <b>!important</b> → <b>especificidad</b> → <b>orden</b> (la última). Se calcula sin estados (:hover…) ni media queries; si los hay, se indica.</p><ul class="xconf">${conf.join('')}</ul>`;
+    }
+  }
+  return out || '<p class="mute">No hay código que explicar.</p>';
+}
+
+// ===================== CASOS DE EXAMEN EN PAPEL =====================
+// Cada caso: ra (F | RA1 | RA2 | RA45), tipo, title, css/html (código impreso), text (enunciado sin código),
+// ask, answer (HTML), fix {css, html} (versión corregida), ph (HTML de apoyo solo para la vista previa),
+// pcss (CSS solo para la vista previa), bs (Bootstrap en la vista previa), ws (anchos de vista previa en px).
+const CASE_TIPOS = ['Interpretar', 'Calcular', 'Detectar el fallo', 'Escribir código', 'X en vez de Y', 'Teoría aplicada'];
+const EXAM_CASES = [
+// ======================================================= FUNDAMENTOS
+{ ra: 'F', tipo: 'Interpretar', title: 'Cascada: !important, especificidad y orden',
+  css: `.aviso { color: blue; }
+#principal .aviso { color: green; }
+.aviso { color: red !important; }`,
+  ph: `<div id="principal"><p class="aviso">¿De qué color soy?</p></div>`,
+  ask: '¿De qué color será el texto? Explica qué criterio decide el resultado. ¿Qué ocurriría si quitas <code>!important</code>?',
+  answer: `<p><b>Rojo.</b> Una declaración <code>!important</code> gana a todas las declaraciones normales, aunque su selector tenga menos especificidad.</p><p>Sin <code>!important</code> gana <code>#principal .aviso</code> (verde): especificidad (1,1,0) frente a (0,1,0). Solo si dos reglas empatan en importancia y especificidad decide el <b>orden</b>: gana la última.</p>`,
+  fix: { css: `.aviso { color: blue; }
+#principal .aviso { color: green; }
+.aviso { color: red; }   /* sin !important → verde */` } },
+
+{ ra: 'F', tipo: 'Calcular', title: 'Especificidad: calcula y decide',
+  css: `ul#nav li.activo > a:hover { color: crimson; }
+#nav a.btn { color: navy; }
+nav ul li a { color: gray; }`,
+  html: `<nav><ul id="nav"><li class="activo"><a class="btn" href="#">Inicio</a></li></ul></nav>`,
+  ask: 'Calcula la especificidad (ids, clases/pseudoclases/atributos, elementos) de cada selector. ¿De qué color se ve el enlace en reposo y al pasar el ratón?',
+  answer: `<table><tr><th>Selector</th><th>Especificidad</th></tr><tr><td><code>ul#nav li.activo &gt; a:hover</code></td><td>(1, 2, 3): #nav · .activo + :hover · ul, li, a</td></tr><tr><td><code>#nav a.btn</code></td><td>(1, 1, 1)</td></tr><tr><td><code>nav ul li a</code></td><td>(0, 0, 4)</td></tr></table><p>En reposo la primera regla no se aplica (no hay hover): gana <code>#nav a.btn</code> → <b>navy</b>. Al pasar el ratón se aplica la primera y gana por (1,2,3) &gt; (1,1,1) → <b>crimson</b>. Los combinadores (<code>&gt;</code>, espacio) no suman.</p>` },
+
+{ ra: 'F', tipo: 'Interpretar', title: 'Herencia: qué pasa a los hijos y qué no',
+  css: `.caja {
+  color: darkred;
+  font-family: Georgia, serif;
+  border: 2px solid darkred;
+  padding: 10px;
+}`,
+  html: `<div class="caja">
+  <p>Párrafo dentro de la caja</p>
+</div>`,
+  ask: '¿El párrafo hereda el color, la fuente, el borde y el padding? ¿Cómo forzarías que un hijo herede el borde?',
+  answer: `<p>Heredan las propiedades de <b>texto</b>: <code>color</code> y <code>font-family</code>. <b>No</b> se heredan las de <b>caja</b>: <code>border</code>, <code>padding</code>, <code>margin</code>, <code>width</code>, <code>background</code>. Por eso el párrafo es rojo y en Georgia, pero no tiene borde propio.</p><p>Para forzarlo: <code>.caja p { border: inherit; }</code>. El valor <code>inherit</code> copia el valor del padre en cualquier propiedad.</p>`,
+  fix: { css: `.caja { color: darkred; font-family: Georgia, serif; border: 2px solid darkred; padding: 10px; }
+.caja p { border: inherit; }` } },
+
+{ ra: 'F', tipo: 'Calcular', title: 'Modelo de caja: ancho total',
+  css: `.caja {
+  width: 240px;
+  padding: 12px;
+  border: 3px solid;
+  margin: 10px;
+}`,
+  ph: `<div class="caja">caja</div>`,
+  ask: 'Con el valor predeterminado <code>content-box</code>, ¿cuánto mide la caja de borde a borde? ¿Y cuánto espacio horizontal ocupa con margen? ¿Qué cambia con <code>box-sizing: border-box</code>?',
+  answer: `<p><b>content-box:</b> 240 + 12×2 + 3×2 = <b>270 px</b> de borde a borde; con márgenes ocupa 270 + 10×2 = <b>290 px</b>.</p><p><b>border-box:</b> los 240 px ya incluyen contenido + padding + borde; el contenido queda en 240 − 24 − 6 = <b>210 px</b>. El margen sigue siendo externo (ocupa 260 px).</p>`,
+  fix: { css: `.caja { box-sizing: border-box; width: 240px; padding: 12px; border: 3px solid; margin: 10px; }` } },
+
+{ ra: 'F', tipo: 'Calcular', title: 'Porcentajes: el padding también se mide sobre el ancho',
+  css: `.padre { width: 400px; }
+.hijo {
+  width: 50%;
+  padding: 10%;
+  background: #cfe3ff;
+}`,
+  ph: `<div class="padre"><div class="hijo">hijo</div></div>`, pcss: `.padre{outline:1px dashed #999}`,
+  ask: '¿Cuánto mide el contenido, el padding de cada lado y el ancho total del hijo? Trampa: ¿el padding vertical se calcula sobre la altura?',
+  answer: `<p>Los porcentajes de <code>width</code> <b>y de padding/margin (también arriba y abajo)</b> se calculan sobre el <b>ancho</b> del bloque contenedor (400 px).</p><ul><li>Contenido: 50% de 400 = <b>200 px</b></li><li>Padding: 10% de 400 = <b>40 px</b> en cada lado, también arriba y abajo</li><li>Ancho total: 200 + 40 + 40 = <b>280 px</b> (content-box)</li></ul>` },
+
+{ ra: 'F', tipo: 'Interpretar', title: 'Márgenes que colapsan',
+  css: `p { margin: 0; }
+.uno { margin-bottom: 20px; }
+.dos { margin-top: 30px; }`,
+  html: `<p class="uno">Primer párrafo</p>
+<p class="dos">Segundo párrafo</p>`, pcss: `p{background:#ffe9b3}`,
+  ask: '¿Cuánto espacio vertical hay entre los dos párrafos: 20, 30 o 50 px? ¿Pasaría lo mismo si el padre fuera <code>display: flex</code> en columna?',
+  answer: `<p><b>30 px.</b> En flujo normal, los márgenes verticales de bloques adyacentes <b>colapsan</b>: queda el mayor (max(20, 30)), no la suma.</p><p>En un contenedor <b>flex o grid</b> los márgenes no colapsan: habría 50 px. Tampoco colapsan los márgenes horizontales. Para evitar el colapso en flujo normal, usa solo margen en un sentido o <code>gap</code> en flex/grid.</p>` },
+
+{ ra: 'F', tipo: 'X en vez de Y', title: 'display, visibility y espacio',
+  css: `.uno { display: none; }
+.dos { visibility: hidden; }
+.tres { opacity: 0; }`,
+  html: `<p>Antes</p>
+<p class="uno">UNO</p>
+<p class="dos">DOS</p>
+<p class="tres">TRES</p>
+<p>Después</p>`, pcss: `p{background:#eef2fb;margin:4px 0}`,
+  ask: '¿Qué elementos se ven? ¿Qué ocurre con el espacio de cada uno? ¿Cuál se podría seguir pulsando si fuera un botón?',
+  answer: `<table><tr><th></th><th>¿Se ve?</th><th>¿Ocupa espacio?</th><th>¿Recibe clics?</th></tr><tr><td><code>display:none</code></td><td>No</td><td>No: desaparece del layout</td><td>No</td></tr><tr><td><code>visibility:hidden</code></td><td>No</td><td>Sí: deja el hueco</td><td>No</td></tr><tr><td><code>opacity:0</code></td><td>No</td><td>Sí</td><td><b>Sí</b>: es invisible pero sigue ahí</td></tr></table><p>Por eso en un tooltip o menú oculto con <code>opacity: 0</code> conviene añadir <code>visibility: hidden</code> o <code>pointer-events: none</code>.</p>` },
+
+{ ra: 'F', tipo: 'Interpretar', title: 'Hijo directo (>) o descendiente (espacio)',
+  html: `<ul class="menu">
+  <li>Inicio</li>
+  <li>Productos
+    <ul><li>Teclados</li></ul>
+  </li>
+</ul>`,
+  css: `.menu > li { color: blue; }`,
+  ask: '¿«Teclados» recibe el color azul <i>por este selector</i>? ¿Se ve azul de todas formas? ¿Qué selector seleccionaría también los li anidados?',
+  answer: `<p>El selector <code>.menu &gt; li</code> solo selecciona los li <b>hijos directos</b> de .menu (Inicio y Productos). «Teclados» no lo cumple.</p><p><b>Pero se ve azul</b>: <code>color</code> se hereda del li «Productos». Es una trampa típica: «¿lo selecciona?» (no) no es lo mismo que «¿de qué color se ve?» (azul por herencia). Para comprobarlo usa una propiedad no heredable, por ejemplo <code>border</code>.</p><p>Para todos los descendientes: <code>.menu li</code>.</p>`,
+  fix: { css: `.menu > li { border: 1px solid blue; }   /* no se hereda: Teclados sin borde propio */` } },
+
+{ ra: 'F', tipo: 'Detectar el fallo', title: 'Una imagen que no se centra',
+  css: `img {
+  width: 180px;
+  margin: 0 auto;
+}`,
+  ph: `<img src="foto2.jpg" alt="Paisaje">`,
+  ask: '¿Por qué no se centra horizontalmente? Propón dos correcciones.',
+  answer: `<p>Una <code>img</code> es <b>inline</b> por defecto, y <code>margin: auto</code> horizontal solo centra <b>bloques</b> con ancho definido.</p><ol><li><code>img { display: block; margin: 0 auto; }</code></li><li>Dejarla inline y centrarla desde el padre: <code>.contenedor { text-align: center; }</code>.</li></ol>`,
+  fix: { css: `img { display: block; width: 180px; margin: 0 auto; }` } },
+
+{ ra: 'F', tipo: 'Detectar el fallo', title: '::before que no aparece',
+  css: `.nuevo::before {
+  color: white;
+  background: crimson;
+  padding: 2px 6px;
+  margin-right: 6px;
+}`,
+  html: `<p class="nuevo">Teclado mecánico</p>`,
+  ask: 'Se esperaba una etiqueta «NUEVO» delante del texto, pero no se ve nada. ¿Por qué? Corrígelo.',
+  answer: `<p>Falta la propiedad <b><code>content</code></b>. Sin <code>content</code>, el pseudoelemento <code>::before</code>/<code>::after</code> no se genera, aunque tenga estilos. Incluso para una forma vacía hace falta <code>content: ""</code>.</p>`,
+  fix: { css: `.nuevo::before {
+  content: "NUEVO";
+  color: white;
+  background: crimson;
+  padding: 2px 6px;
+  margin-right: 6px;
+}` } },
+
+{ ra: 'F', tipo: 'Escribir código', title: 'Escribe el selector exacto',
+  text: 'Escribe un selector CSS para cada caso: (a) los párrafos que estén justo después de un h2; (b) todos los párrafos hermanos que vengan después de un h2; (c) los enlaces que abran en otra pestaña; (d) el último elemento de una lista.',
+  html: `<h2>Título</h2>
+<p>Primer párrafo</p>
+<p>Segundo párrafo</p>
+<ul><li>uno</li><li>dos</li><li>tres</li></ul>
+<a href="#" target="_blank">externo</a> · <a href="#">interno</a>`,
+  ask: 'Escribe los cuatro selectores y explica la diferencia entre <code>+</code> y <code>~</code>.',
+  answer: `<ol type="a"><li><code>h2 + p</code>: hermano adyacente, solo el <b>primer</b> p inmediatamente después.</li><li><code>h2 ~ p</code>: hermanos generales, <b>todos</b> los p que vienen después dentro del mismo padre.</li><li><code>a[target="_blank"]</code>: selector de atributo.</li><li><code>li:last-child</code> (o <code>li:last-of-type</code>).</li></ol>`,
+  fix: { css: `h2 + p { background: #ffe9b3; }
+h2 ~ p { font-weight: bold; }
+a[target="_blank"] { color: crimson; }
+li:last-child { text-decoration: underline; }` } },
+
+// ======================================================= RA1 · ESTILOS
+{ ra: 'RA1', tipo: 'X en vez de Y', title: 'position: relative frente a absolute',
+  css: `.contenedor { position: relative; }
+.destacada {
+  position: absolute;
+  top: 10px;
+  right: 0;
+}`,
+  ph: `<div class="contenedor"><div class="tarjeta">Tarjeta 1</div><div class="tarjeta destacada">Destacada</div><div class="tarjeta">Tarjeta 3</div></div>`, pcss: `.contenedor{border:2px dashed #999;padding:8px}.tarjeta{width:100px;background:#cfe3ff;margin:4px;padding:6px}.destacada{background:#ffd6a5}`,
+  ask: '¿Respecto a qué elemento se calculan <code>top</code> y <code>right</code>? ¿La tarjeta destacada conserva su hueco? ¿Qué cambiaría con <code>position: relative</code>?',
+  answer: `<p>Se posiciona respecto al <b>antepasado posicionado más cercano</b> (aquí <code>.contenedor</code>, que tiene <code>relative</code>). Con <code>absolute</code> sale del flujo normal y <b>no reserva su hueco</b>: «Tarjeta 3» sube.</p><p>Con <code>relative</code> se desplazaría 10 px desde su posición original y <b>sí conservaría</b> el hueco.</p>`,
+  fix: { css: `.contenedor { position: relative; }
+.destacada { position: relative; top: 10px; right: 0; }` } },
+
+{ ra: 'RA1', tipo: 'Detectar el fallo', title: 'Cabecera sticky que no se pega',
+  css: `header {
+  position: sticky;
+  background: #1f6feb;
+  color: white;
+}`,
+  ph: `<header>Cabecera</header>${'<p>Contenido largo…</p>'.repeat(30)}`,
+  ask: 'Al hacer scroll la cabecera se va con el contenido. ¿Qué falta? ¿Qué otra causa habitual impide que sticky funcione?',
+  answer: `<p>Falta el <b>umbral</b>: <code>top: 0</code>. Sin top/bottom, sticky se comporta como relative.</p><p>Otra causa: un antepasado con <code>overflow: hidden</code> (o auto) que no es el que hace scroll. sticky se pega dentro de su contenedor con scroll, y nunca sale de su padre.</p>`,
+  fix: { css: `header { position: sticky; top: 0; background: #1f6feb; color: white; }` } },
+
+{ ra: 'RA1', tipo: 'Detectar el fallo', title: 'Floats: el contenedor «desaparece»',
+  css: `.galeria { border: 3px solid crimson; }
+.galeria img {
+  float: left;
+  width: 120px;
+  margin: 4px;
+}`,
+  ph: `<div class="galeria"><img src="foto1.jpg" alt=""><img src="foto2.jpg" alt=""><img src="foto3.jpg" alt=""></div><p>Texto siguiente</p>`,
+  ask: 'El borde rojo aparece como una línea fina arriba y el texto siguiente se mete al lado de las fotos. ¿Por qué? Da dos soluciones.',
+  answer: `<p>Los elementos flotantes salen del flujo normal: el contenedor no los cuenta para su altura y <b>colapsa</b> (altura 0), y el texto siguiente rodea los floats.</p><ul><li>Moderna: <code>.galeria { display: flow-root; }</code> (o <code>overflow: auto</code>): crea un contexto de formato que contiene los floats.</li><li>Clásica: <code>.galeria::after { content: ""; display: block; clear: both; }</code> (clearfix).</li><li>Mejor aún hoy: usar <b>flex</b> o <b>grid</b> para la galería.</li></ul>`,
+  fix: { css: `.galeria { border: 3px solid crimson; display: flow-root; }
+.galeria img { float: left; width: 120px; margin: 4px; }` } },
+
+{ ra: 'RA1', tipo: 'Detectar el fallo', title: 'z-index que no hace nada',
+  css: `.a { background: #cfe3ff; z-index: 10; margin-bottom: -30px; }
+.b { background: #ffd6a5; position: relative; z-index: 1; }`,
+  html: `<div class="a">A (quiero que quede encima)</div>
+<div class="b">B</div>`, pcss: `div{padding:16px}`,
+  ask: 'A tiene <code>z-index: 10</code> y B solo 1, pero B queda encima. ¿Por qué?',
+  answer: `<p><code>z-index</code> solo funciona en elementos <b>posicionados</b> (relative, absolute, fixed, sticky) o en ítems flex/grid. A tiene <code>position: static</code>, así que su z-index se ignora; B, posicionado, se pinta encima.</p><p>Corrección: <code>.a { position: relative; z-index: 10; }</code>.</p>`,
+  fix: { css: `.a { background: #cfe3ff; position: relative; z-index: 10; margin-bottom: -30px; }
+.b { background: #ffd6a5; position: relative; z-index: 1; }` } },
+
+{ ra: 'RA1', tipo: 'Interpretar', title: 'z-index y contextos de apilamiento',
+  css: `.menu  { position: relative; z-index: 2; }
+.modal { position: fixed; z-index: 10; }
+.aviso { position: relative; z-index: 20; }`,
+  text: 'En el HTML real, <code>.aviso</code> está <b>dentro</b> de <code>.menu</code>.',
+  ask: '¿Quedará siempre <code>.aviso</code> por encima de <code>.modal</code> porque tiene <code>z-index: 20</code>?',
+  answer: `<p><b>No.</b> <code>.menu</code> (posicionado con z-index) crea un <b>contexto de apilamiento</b>. Todo lo que hay dentro, incluido <code>.aviso</code>, compite solo dentro de él; hacia fuera, el conjunto cuenta como z-index 2. Frente a <code>.modal</code> (10), gana el modal aunque el aviso diga 20.</p><p>Crean contexto: posicionado + z-index, <code>opacity</code> &lt; 1, <code>transform</code>, <code>filter</code>…</p>` },
+
+{ ra: 'RA1', tipo: 'Calcular', title: 'em frente a rem',
+  css: `html { font-size: 16px; }
+.padre { font-size: 20px; }
+.hijo {
+  font-size: 1.5em;
+  padding: 1em;
+}`,
+  ph: `<div class="padre"><div class="hijo">hijo</div></div>`, pcss: `.hijo{background:#eef2fb}`,
+  ask: 'Calcula el tamaño de letra y el padding del hijo. ¿Y si cambias <code>em</code> por <code>rem</code>?',
+  answer: `<p><b>em:</b> font-size = 1,5 × 20 (padre) = <b>30 px</b>. Para el padding, 1em se refiere al font-size <b>del propio elemento</b> = <b>30 px</b>.</p><p><b>rem:</b> siempre relativo al <code>html</code> (16 px): font-size 1,5rem = <b>24 px</b>; padding 1rem = <b>16 px</b>.</p><p>Por eso <code>em</code> se acumula al anidar y <code>rem</code> es más predecible.</p>`,
+  fix: { css: `html { font-size: 16px; }
+.padre { font-size: 20px; }
+.hijo { font-size: 1.5rem; padding: 1rem; }` } },
+
+{ ra: 'RA1', tipo: 'Interpretar', title: ':first-child, :first-of-type y :nth-child',
+  css: `.lista p:first-child { color: crimson; }
+.lista p:first-of-type { font-weight: bold; }
+.lista p:nth-child(2n+1) { background: #ffe9b3; }`,
+  html: `<div class="lista">
+  <h3>Título</h3>
+  <p>P1</p>
+  <p>P2</p>
+  <p>P3</p>
+</div>`,
+  ask: '¿Qué párrafos quedan rojos, en negrita y con fondo amarillo?',
+  answer: `<ul><li><b>Rojo: ninguno.</b> El primer hijo es el h3, y <code>p:first-child</code> exige que el p sea el primer hijo.</li><li><b>Negrita: P1</b>, el primer p <i>de su tipo</i>.</li><li><b>Fondo: P2</b>. <code>nth-child(2n+1)</code> = hijos impares 1, 3, 5 contando <b>todos</b> los hermanos: 1 = h3 (no es p), 3 = P2, 5 no existe.</li></ul>` },
+
+{ ra: 'RA1', tipo: 'Interpretar', title: 'Selectores de atributo',
+  css: `a[href^="https"]   { color: green; }
+a[href$=".pdf"]    { font-weight: bold; }
+a[class*="btn"]    { border: 1px solid; }`,
+  html: `<a href="https://ies.es/temario.pdf">1</a>
+<a href="http://ies.es/notas.pdf" class="mibtn">2</a>
+<a href="/contacto" class="btn-primario">3</a>`,
+  ask: 'Indica qué enlaces son verdes, cuáles en negrita y cuáles con borde.',
+  answer: `<ul><li><code>^=</code> «empieza por»: verde solo el <b>1</b> (el 2 es http, sin s).</li><li><code>$=</code> «termina en»: negrita <b>1 y 2</b>.</li><li><code>*=</code> «contiene»: borde <b>2 y 3</b> («mibtn» y «btn-primario» contienen «btn»).</li></ul>` },
+
+{ ra: 'RA1', tipo: 'X en vez de Y', title: 'opacity frente a rgba en el fondo',
+  css: `.capa  { background: black; color: white; opacity: .5; }
+.fondo { background: rgba(0, 0, 0, .5); color: white; }`,
+  html: `<div class="capa">opacity: texto también transparente</div>
+<div class="fondo">rgba: solo el fondo</div>`, pcss: `body{background:url(foto3.jpg) center/cover}div{padding:14px;margin:8px;font:bold 18px system-ui}`,
+  ask: '¿Qué diferencia hay entre aplicar <code>opacity</code> al contenedor y usar <code>rgba</code> solo en el fondo?',
+  answer: `<p><code>opacity: .5</code> vuelve semitransparente el elemento <b>completo</b>: fondo, texto, imágenes e hijos (y crea contexto de apilamiento). <code>rgba(…, .5)</code> solo afecta a <b>ese color</b>: el texto sigue opaco y legible. Para rótulos sobre fotos se usa rgba.</p>` },
+
+{ ra: 'RA1', tipo: 'Detectar el fallo', title: 'overflow con altura fija',
+  css: `.noticia {
+  height: 60px;
+  border: 1px solid #999;
+}`,
+  html: `<div class="noticia">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.</div><p>Siguiente bloque</p>`, ws: [300],
+  ask: 'El texto se sale de la caja y pisa el bloque siguiente. ¿Por qué? Compara <code>overflow: hidden</code>, <code>auto</code> y quitar la altura.',
+  answer: `<p>El valor por defecto es <code>overflow: visible</code>: el contenido que no cabe en los 60 px se dibuja fuera, sin empujar a los demás.</p><ul><li><code>hidden</code>: recorta (se pierde texto).</li><li><code>auto</code>: barra de scroll solo si hace falta.</li><li>Mejor: <code>min-height: 60px</code> en vez de <code>height</code>, para que la caja crezca.</li></ul>`,
+  fix: { css: `.noticia { min-height: 60px; border: 1px solid #999; }` } },
+
+{ ra: 'RA1', tipo: 'Calcular', title: 'Flex: base, gap y encoger',
+  css: `.fila {
+  display: flex;
+  width: 300px;
+  gap: 10px;
+}
+.item { flex: 1 1 200px; }`,
+  ph: `<div class="fila"><div class="item">A</div><div class="item">B</div></div>`, pcss: `.fila{outline:2px dashed #999}.item{background:#cfe3ff;padding:8px}`,
+  ask: '¿Caben dos .item con su base de 200 px y el gap? ¿Cuánto medirá cada uno? ¿Qué cambia con <code>flex: 1 0 200px</code> o con <code>flex-wrap: wrap</code>?',
+  answer: `<p>200 + 200 + 10 = 410 px &gt; 300. Sobran −110 px; como <code>flex-shrink: 1</code> en ambos, encogen por igual: cada uno mide 200 − 55 = <b>145 px</b>.</p><p>Con <code>flex: 1 0 200px</code> no encogen: <b>desbordan</b> el contenedor. Con <code>flex-wrap: wrap</code>, B salta a otra línea y, por <code>flex-grow: 1</code>, cada uno ocupa los 300 px de su línea.</p>`,
+  fix: { css: `.fila { display: flex; flex-wrap: wrap; width: 300px; gap: 10px; }
+.item { flex: 1 1 200px; }` } },
+
+{ ra: 'RA1', tipo: 'Calcular', title: 'Flex: repartir el espacio libre con flex-grow',
+  css: `.fila { display: flex; width: 600px; }
+.a, .c { flex: 1 1 100px; }
+.b     { flex: 2 1 100px; }`,
+  ph: `<div class="fila"><div class="a">A</div><div class="b">B</div><div class="c">C</div></div>`, pcss: `.fila>div{background:#cfe3ff;border:1px solid #fff;padding:6px}`,
+  ask: 'Calcula el ancho final de A, B y C.',
+  answer: `<p>Bases: 3 × 100 = 300 px; espacio libre = 600 − 300 = <b>300 px</b>. Se reparte en proporción a flex-grow (1 + 2 + 1 = 4 partes de 75 px).</p><p>A = 100 + 75 = <b>175</b> · B = 100 + 150 = <b>250</b> · C = <b>175</b>. Ojo: B no mide «el doble» que A, sino que <b>recibe el doble del espacio libre</b>.</p>` },
+
+{ ra: 'RA1', tipo: 'X en vez de Y', title: 'Flex en columna: los ejes se intercambian',
+  css: `.panel {
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  justify-content: center;
+}`,
+  ph: `<div class="panel"><button>Entrar</button></div>`, pcss: `.panel{outline:2px dashed #999}`,
+  ask: 'El botón queda centrado verticalmente pero ocupa todo el ancho, pegado a la izquierda. ¿Por qué? ¿Cómo lo centras también horizontalmente?',
+  answer: `<p>Con <code>flex-direction: column</code>, el <b>eje principal es vertical</b>: <code>justify-content</code> centra en vertical y <code>align-items</code> trabaja en horizontal. Su valor por defecto es <code>stretch</code>, por eso el botón se estira.</p><p>Solución: <code>align-items: center;</code></p>`,
+  fix: { css: `.panel { display: flex; flex-direction: column; height: 200px; justify-content: center; align-items: center; }` } },
+
+{ ra: 'RA1', tipo: 'Calcular', title: 'Grid: cuánto vale 1fr',
+  css: `.layout {
+  display: grid;
+  width: 800px;
+  grid-template-columns: 200px 1fr 2fr;
+  gap: 20px;
+}`,
+  ph: `<div class="layout"><div>200px</div><div>1fr</div><div>2fr</div></div>`, pcss: `.layout>div{background:#d9f2e6;padding:6px}`, ws: [840],
+  ask: 'Calcula el ancho de la 2.ª y 3.ª columna.',
+  answer: `<p>Espacio para fr = 800 − 200 (fija) − 2 × 20 (dos gaps) = <b>560 px</b> → 3 partes. 1fr = 560 / 3 ≈ <b>186,7 px</b>; 2fr ≈ <b>373,3 px</b>.</p><p>Primero se restan las columnas fijas y los gaps; el resto se reparte entre las fr.</p>` },
+
+{ ra: 'RA1', tipo: 'Escribir código', title: 'Grid con áreas: cabecera, lateral, contenido y pie',
+  text: 'Escribe el CSS para esta maqueta: cabecera arriba a todo el ancho, debajo un lateral de 200 px y el contenido principal, y un pie a todo el ancho. Separación de 10 px.',
+  html: `<div class="pagina">
+  <header>Cabecera</header>
+  <aside>Lateral</aside>
+  <main>Contenido</main>
+  <footer>Pie</footer>
+</div>`,
+  ask: 'Escríbelo con <code>grid-template-areas</code>. ¿Qué error hace que las áreas no funcionen?',
+  answer: `<p>Cada fila de <code>grid-template-areas</code> es una cadena con un nombre por columna; los nombres deben coincidir con <code>grid-area</code> y formar <b>rectángulos</b>. Si una fila tiene distinto número de celdas o un área queda en forma de L, la declaración es inválida y se ignora entera.</p>`,
+  fix: { css: `.pagina {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-template-areas:
+    "cab  cab"
+    "lat  main"
+    "pie  pie";
+  gap: 10px;
+}
+header { grid-area: cab; }
+aside  { grid-area: lat; }
+main   { grid-area: main; }
+footer { grid-area: pie; }
+.pagina > * { background: #eef2fb; padding: 10px; }` } },
+
+{ ra: 'RA1', tipo: 'Interpretar', title: 'Media query: el límite exacto y el orden',
+  css: `@media (max-width: 600px) {
+  h1 { font-size: 20px; }
+}
+h1 { font-size: 32px; }`,
+  ph: `<h1>Título</h1>`, ws: [375, 700],
+  ask: '¿Qué tamaño tendrá h1 a 600 px? ¿Y a 601 px? ¿Hay un problema de cascada?',
+  answer: `<p><code>max-width: 600px</code> incluye 600 (≤ 600). Pero la regla <code>h1</code> de después tiene la misma especificidad y <b>la sobrescribe</b>: siempre 32 px, a cualquier ancho. La media query no sirve de nada.</p><p>Mejora: regla base <b>antes</b> y media query <b>después</b>.</p>`,
+  fix: { css: `h1 { font-size: 32px; }
+@media (max-width: 600px) {
+  h1 { font-size: 20px; }
+}` } },
+
+{ ra: 'RA1', tipo: 'Detectar el fallo', title: 'Mobile first con min-width en mal orden',
+  css: `.tarjeta { width: 100%; }
+@media (min-width: 900px) { .tarjeta { width: 33%; } }
+@media (min-width: 600px) { .tarjeta { width: 50%; } }`,
+  ph: `<div class="tarjeta">tarjeta</div>`, pcss: `.tarjeta{background:#cfe3ff;padding:8px}`, ws: [400, 700, 1000],
+  ask: '¿Qué ancho tiene la tarjeta a 400, 700 y 1000 px? ¿Qué está mal?',
+  answer: `<p>400 → 100%. 700 → 50%. 1000 → <b>50%</b> (no 33%): a 1000 px se cumplen las dos media queries, y la de 600 está escrita después y gana.</p><p>En mobile first, con <code>min-width</code> se ordena de <b>menor a mayor</b> (600 y luego 900). Con <code>max-width</code> (desktop first), de mayor a menor.</p>`,
+  fix: { css: `.tarjeta { width: 100%; }
+@media (min-width: 600px) { .tarjeta { width: 50%; } }
+@media (min-width: 900px) { .tarjeta { width: 33%; } }` } },
+
+{ ra: 'RA1', tipo: 'Detectar el fallo', title: 'Falta la etiqueta meta viewport',
+  demo: { note: 'El head mínimo de una página responsive.',
+    html: `<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PcMadrid</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>` },
+  text: 'Una web con media queries <code>@media (max-width: 600px)</code> se ve en el móvil como la versión de escritorio, diminuta, y el usuario tiene que hacer zoom. En el ordenador, al estrechar la ventana, sí cambia.',
+  ask: '¿Qué falta en el HTML? ¿Por qué ocurre?',
+  answer: `<p>Falta en el <code>&lt;head&gt;</code>:</p><pre class="code">&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</pre><p>Sin ella, el navegador móvil simula una pantalla de unos 980 px y reduce la página; como el «ancho» es 980, la media query de 600 px nunca se cumple.</p>` },
+
+{ ra: 'RA1', tipo: 'Interpretar', title: 'Variables CSS: ámbito y valor por defecto',
+  css: `:root { --principal: #1f6feb; }
+.oscuro { --principal: #ffd166; }
+.boton {
+  background: var(--principal);
+  color: var(--texto, white);
+}`,
+  html: `<button class="boton">Normal</button>
+<div class="oscuro"><button class="boton">Dentro de .oscuro</button></div>`, pcss: `.oscuro{background:#222;padding:8px;margin-top:6px}.boton{border:0;padding:8px 12px}`,
+  ask: '¿De qué color es el fondo de cada botón? ¿De qué color es el texto, si <code>--texto</code> no está definida?',
+  answer: `<p>Las variables se <b>heredan</b> y se pueden redefinir en un ámbito. El primer botón usa la de <code>:root</code> (<b>azul</b>); el segundo hereda la de <code>.oscuro</code> (<b>amarillo</b>).</p><p><code>var(--texto, white)</code>: como <code>--texto</code> no existe, se usa el valor por defecto, <b>white</b>.</p>` },
+
+{ ra: 'RA1', tipo: 'Interpretar', title: 'Bootstrap: columnas según el ancho',
+  html: `<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-6 col-lg-4">A</div>
+    <div class="col-12 col-md-6 col-lg-4">B</div>
+    <div class="col-12 col-md-6 col-lg-4">C</div>
+  </div>
+</div>`, bs: true, pcss: `.row>div{background:#cfe3ff;border:1px solid #fff;padding:8px}`, ws: [500, 800, 1000],
+  ask: '¿Cuántas columnas por fila a 500, 800 y 1000 px? Recuerda los puntos de corte.',
+  answer: `<p>Puntos de corte de Bootstrap 5: sm ≥ 576, <b>md ≥ 768</b>, <b>lg ≥ 992</b>, xl ≥ 1200, xxl ≥ 1400. Las clases son mobile first: valen desde su punto de corte hacia arriba.</p><ul><li>500 px: solo <code>col-12</code> → <b>1</b> por fila.</li><li>800 px: <code>col-md-6</code> → 6 de 12 → <b>2</b> por fila (C baja).</li><li>1000 px: <code>col-lg-4</code> → <b>3</b> por fila.</li></ul>` },
+
+{ ra: 'RA1', tipo: 'Detectar el fallo', title: 'Bootstrap: columnas que suman más de 12',
+  html: `<div class="container">
+  <div class="row">
+    <div class="col-md-8">Contenido</div>
+    <div class="col-md-6">Lateral</div>
+  </div>
+</div>`, bs: true, pcss: `.row>div{background:#ffd6a5;border:1px solid #fff;padding:8px}`, ws: [900],
+  ask: 'A partir de 768 px el lateral no queda al lado del contenido. ¿Por qué? Corrígelo.',
+  answer: `<p>La fila tiene <b>12</b> columnas: 8 + 6 = 14 &gt; 12, así que la segunda columna salta a una nueva línea. Deben sumar 12 (o menos): por ejemplo <code>col-md-8</code> + <code>col-md-4</code>.</p><p>Las columnas siempre van dentro de <code>.row</code>, y la fila dentro de <code>.container</code>.</p>`,
+  fix: { html: `<div class="container">
+  <div class="row">
+    <div class="col-md-8">Contenido</div>
+    <div class="col-md-4">Lateral</div>
+  </div>
+</div>` } },
+
+{ ra: 'RA1', tipo: 'Interpretar', title: 'Bootstrap: utilidades de display y espaciado',
+  html: `<div class="d-none d-md-block bg-warning p-2">Banner</div>
+<div class="d-md-none bg-info p-2">Menú móvil</div>
+<p class="mt-3 px-md-5 text-center">Texto</p>
+<div class="mx-auto bg-light border" style="width:200px">Centrado</div>`, bs: true, ws: [400, 900],
+  ask: '¿Qué bloque se ve en el móvil y cuál en el escritorio? ¿Cuánto vale <code>mt-3</code>? ¿Qué hacen <code>px-md-5</code> y <code>mx-auto</code>?',
+  answer: `<ul><li><code>d-none d-md-block</code>: oculto por defecto y visible desde md (≥ 768) → <b>solo escritorio</b>.</li><li><code>d-md-none</code>: visible y oculto desde md → <b>solo móvil</b>.</li><li>Escala de espaciado: 0 = 0, 1 = .25rem, 2 = .5rem, <b>3 = 1rem</b>, 4 = 1.5rem, 5 = 3rem. <code>mt-3</code> = margin-top 1rem.</li><li><code>px-md-5</code>: padding izquierdo y derecho de 3rem solo desde md.</li><li><code>mx-auto</code>: margen horizontal auto → centra un bloque con ancho.</li></ul>` },
+
+{ ra: 'RA1', tipo: 'Detectar el fallo', title: 'Mis estilos no pisan a Bootstrap', np: true,
+  html: `<head>
+  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="stylesheet" href="bootstrap.min.css">
+</head>`,
+  css: `/* estilos.css */
+.btn-primary { background: purple; }`,
+  ask: 'El botón sigue siendo azul de Bootstrap. ¿Por qué? Da la corrección correcta y explica por qué <code>!important</code> no es buena solución.',
+  answer: `<p>Ambas reglas tienen la misma especificidad (0,1,0), así que gana la <b>última en cargarse</b>: Bootstrap va después y pisa tu regla.</p><p>Corrección: enlazar <b>primero Bootstrap y después</b> tu hoja. <code>!important</code> funciona, pero rompe la cascada y obliga a seguir usándolo para cualquier cambio posterior.</p>`,
+  fix: { html: `<head>
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>` } },
+
+{ ra: 'RA1', tipo: 'Detectar el fallo', title: 'Bootstrap: el menú hamburguesa no se abre',
+  demo: { note: 'Navbar de Bootstrap completa: el botón apunta al menú con data-bs-target y el JS va al final del body.', bs: true,
+    html: `<nav class="navbar navbar-expand-md bg-dark" data-bs-theme="dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">PcMadrid</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-label="Abrir menú">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link active" href="#">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Tienda</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- al final del body -->
+<script src="bootstrap.bundle.min.js"><\/script>`, ws: [400, 900] },
+  text: 'Una página enlaza solo <code>bootstrap.min.css</code>. La navbar se ve bien y en el móvil aparece el botón hamburguesa (<code>navbar-toggler</code>), pero al pulsarlo no se despliega el menú. Lo mismo pasa con los desplegables (dropdown) y el carrusel.',
+  ask: '¿Qué falta? ¿Dónde se coloca?',
+  answer: `<p>Falta el <b>JavaScript de Bootstrap</b>: los componentes interactivos (collapse, dropdown, modal, carousel) necesitan <code>bootstrap.bundle.min.js</code> (incluye Popper). El CSS solo da la apariencia.</p><pre class="code">&lt;script src="…/bootstrap.bundle.min.js"&gt;&lt;/script&gt;</pre><p>Se coloca al final del <code>&lt;body&gt;</code> (o en el head con <code>defer</code>). Además, el botón debe apuntar al menú: <code>data-bs-toggle="collapse" data-bs-target="#menu"</code>, y el menú tener <code>id="menu"</code>.</p>` },
+
+// ======================================================= RA4 · MULTIMEDIA
+{ ra: 'RA45', tipo: 'Teoría aplicada', title: 'Elegir formato de imagen',
+  demo: { note: 'Cada formato en su sitio: SVG para el logo, JPG para la foto y PNG para el icono con transparencia.',
+    html: `<header>
+  <img src="corazon.svg" alt="PcMadrid" class="logo">
+</header>
+<img src="foto1.jpg" alt="Teclado mecánico retroiluminado" class="producto">
+<img src="estrella.png" alt="" class="icono">`,
+    css: `.logo { width: 80px; }
+.producto { width: 260px; height: auto; }
+.icono { width: 32px; background: #1d2433; padding: 6px; }` },
+  text: 'Una tienda necesita: (a) el logotipo, que debe verse nítido a cualquier tamaño; (b) fotos de productos; (c) un icono con fondo transparente en mapa de bits; (d) una pequeña animación de carga.',
+  ask: 'Elige el formato más adecuado para cada uno y justifícalo.',
+  answer: `<ul><li>(a) <b>SVG</b>: vectorial, escala sin perder calidad y pesa poco.</li><li>(b) <b>JPG</b> o <b>WebP</b>: compresión con pérdida, ideal para fotografías con muchos colores.</li><li>(c) <b>PNG</b> (o WebP): sin pérdida y con canal alfa (transparencia).</li><li>(d) <b>GIF</b> animado o WebP animado (o mejor, una animación CSS).</li></ul><p>Trampa: un PNG de una foto pesa mucho más que un JPG; un JPG no admite transparencia.</p>` },
+
+{ ra: 'RA45', tipo: 'Calcular', title: 'Preparar una foto para la web',
+  demo: { note: 'La miniatura bien preparada: tamaño reservado, carga diferida y responsive.',
+    html: `<img src="foto2.jpg" alt="Ratón inalámbrico"
+     width="300" height="200" loading="lazy" class="mini">`,
+    css: `.mini {
+  max-width: 100%;   /* nunca más ancha que su contenedor */
+  height: auto;      /* conserva la proporción al encoger */
+  object-fit: cover;
+}` },
+  text: 'Una foto de móvil mide 4000 × 3000 px y pesa 4 MB. Se va a mostrar como miniatura de 300 px de ancho en una galería con 20 fotos.',
+  ask: '¿Qué problema hay? ¿A qué tamaño la exportarías y qué más harías?',
+  answer: `<p>El navegador descargaría 20 × 4 MB = <b>80 MB</b> para mostrarlas a 300 px: lentitud y gasto de datos. El tamaño en píxeles debe ajustarse al tamaño mostrado.</p><ul><li>Redimensionar a <b>300 px</b> (o 600 px para pantallas de alta densidad, 2×), manteniendo la proporción → 600 × 450.</li><li>Comprimir (JPG calidad ~70-80 o WebP): de 4 MB a unas decenas de KB.</li><li>Añadir <code>width</code> y <code>height</code> en el img (evita saltos al cargar) y <code>loading="lazy"</code> para las que están fuera de pantalla.</li></ul>` },
+
+{ ra: 'RA45', tipo: 'Detectar el fallo', title: 'El texto alternativo (alt)', np: true,
+  html: `<img src="logo.png">
+<img src="separador-floral.png" alt="imagen">
+<a href="carrito.html"><img src="carrito.svg" alt="carrito.svg"></a>`,
+  ask: 'Detecta los tres errores de accesibilidad y escribe el alt correcto para cada imagen.',
+  answer: `<ol><li>Falta <code>alt</code> (obligatorio). Logo: <code>alt="Tienda PcMadrid"</code> (el nombre de la marca).</li><li>Imagen <b>decorativa</b>: <code>alt=""</code> (vacío) para que el lector de pantalla la ignore. «imagen» no aporta nada.</li><li>Imagen dentro de un enlace: el alt describe el <b>destino o la acción</b>: <code>alt="Ver carrito"</code>, no el nombre del archivo.</li></ol>` },
+
+{ ra: 'RA45', tipo: 'Interpretar', title: 'srcset y sizes: qué archivo descarga', np: true,
+  html: `<img src="foto-480.jpg"
+     srcset="foto-480.jpg 480w, foto-960.jpg 960w, foto-1600.jpg 1600w"
+     sizes="(max-width: 600px) 100vw, 50vw"
+     alt="Teclado">`,
+  ask: 'Pantalla normal (1×): ¿qué archivo elige el navegador con una ventana de 400 px? ¿Y con 1200 px? ¿Y un móvil de 400 px con pantalla 2×?',
+  answer: `<p><code>sizes</code> indica el ancho que <b>ocupará</b> la imagen; con él, el navegador elige el archivo más pequeño que lo cubra.</p><ul><li>400 px: 100vw = 400 px → <b>foto-480</b>.</li><li>1200 px: 50vw = 600 px → <b>foto-960</b>.</li><li>400 px a 2×: necesita 800 px reales → <b>foto-960</b>.</li></ul><p>El navegador puede ajustar la elección (caché, ahorro de datos), pero este es el cálculo que se pide.</p>` },
+
+{ ra: 'RA45', tipo: 'X en vez de Y', title: 'object-fit: cover, contain y fill',
+  css: `img {
+  width: 200px;
+  height: 120px;
+  object-fit: cover;
+}`,
+  ph: `<img src="retrato1.jpg" alt="">`, pcss: `img{border:2px solid #999}`,
+  ask: 'La imagen original es vertical. ¿Se deforma? ¿Se ve completa? ¿Qué pasaría con <code>contain</code> y con <code>fill</code>?',
+  answer: `<ul><li><b>cover</b>: mantiene la proporción y llena la caja <b>recortando</b>: no se deforma, pero no se ve entera.</li><li><b>contain</b>: mantiene la proporción y se ve <b>completa</b>, dejando bandas vacías.</li><li><b>fill</b> (por defecto): se <b>estira</b> a 200 × 120 y se deforma.</li></ul>`,
+  fix: { css: `img { width: 200px; height: 120px; object-fit: contain; background: #eee; }` } },
+
+{ ra: 'RA45', tipo: 'Detectar el fallo', title: 'object-position: el recorte corta las caras',
+  css: `.miniatura {
+  width: 220px;
+  height: 120px;
+  object-fit: cover;
+}`,
+  ph: `<img class="miniatura" src="retrato2.jpg" alt="Retrato">`,
+  ask: 'En los retratos, cover deja ver el centro y corta la cabeza. ¿Qué propiedad lo arregla y qué valor pondrías?',
+  answer: `<p><code>object-fit: cover</code> recorta a partir del centro, porque <code>object-position</code> vale <code>50% 50%</code> por defecto. Para conservar la parte de arriba: <code>object-position: top;</code> (o <code>50% 20%</code>).</p>`,
+  fix: { css: `.miniatura { width: 220px; height: 120px; object-fit: cover; object-position: 50% 15%; }` } },
+
+{ ra: 'RA45', tipo: 'Detectar el fallo', title: 'El vídeo no se reproduce solo', np: true,
+  html: `<video src="anuncio.mp4" autoplay loop width="640"></video>`,
+  ask: 'El cliente quiere que el vídeo de fondo empiece solo, pero el navegador no lo reproduce. Además falta algo de accesibilidad y una imagen mientras carga. Corrige la etiqueta.',
+  answer: `<p>Los navegadores bloquean <code>autoplay</code> <b>con sonido</b>: hay que añadir <code>muted</code> (y <code>playsinline</code> en iOS). Además:</p><ul><li><code>poster="portada.jpg"</code>: imagen mientras carga.</li><li>Varias fuentes con <code>&lt;source type&gt;</code> y texto alternativo para navegadores sin soporte.</li><li>Si no es decorativo, <code>controls</code> para que el usuario pueda pausarlo.</li></ul>`,
+  fix: { html: `<video autoplay muted loop playsinline poster="portada.jpg" width="640">
+  <source src="anuncio.webm" type="video/webm">
+  <source src="anuncio.mp4" type="video/mp4">
+  Tu navegador no puede reproducir este vídeo.
+</video>` } },
+
+{ ra: 'RA45', tipo: 'Detectar el fallo', title: 'La transición no se ve',
+  css: `.caja {
+  width: 100px;
+  height: 60px;
+  background: #1f6feb;
+  transition: width .5s;
+}
+.caja:hover { height: 120px; }`,
+  ph: `<div class="caja"></div>`,
+  ask: 'Al pasar el ratón la caja crece de golpe, sin animación. ¿Por qué? ¿Y si la transición fuera de <code>display: none</code> a <code>block</code>?',
+  answer: `<p>La transición está declarada para <code>width</code>, pero en hover cambia <code>height</code>. Solución: <code>transition: height .5s</code> (o <code>all .5s</code>).</p><p><code>display</code> no se anima: cambia de golpe. Para un fundido se usa <code>opacity</code> (más <code>visibility</code>, que sí respeta la transición).</p>`,
+  fix: { css: `.caja { width: 100px; height: 60px; background: #1f6feb; transition: height .5s ease; }
+.caja:hover { height: 120px; }` } },
+
+{ ra: 'RA45', tipo: 'Detectar el fallo', title: 'transform en hover: se pierde la rotación',
+  css: `.sello { transform: rotate(-10deg); }
+.sello:hover { transform: scale(1.2); }`,
+  ph: `<div class="sello">OFERTA</div>`, pcss: `.sello{display:inline-block;margin:30px;padding:10px 16px;background:crimson;color:#fff;font:bold 20px system-ui;transition:transform .3s}`,
+  ask: 'Al pasar el ratón, el sello crece pero se endereza. ¿Por qué? Corrígelo.',
+  answer: `<p><code>transform</code> es <b>una sola propiedad</b>: la regla de hover sustituye toda la lista, así que se pierde el rotate. Hay que repetir todas las funciones:</p><pre class="code">.sello:hover { transform: rotate(-10deg) scale(1.2); }</pre><p>El orden de las funciones importa: <code>rotate() translate()</code> no da el mismo resultado que <code>translate() rotate()</code>.</p>`,
+  fix: { css: `.sello { transform: rotate(-10deg); }
+.sello:hover { transform: rotate(-10deg) scale(1.2); }` } },
+
+{ ra: 'RA45', tipo: 'Detectar el fallo', title: 'Animación que no arranca',
+  css: `@keyframes girar {
+  from { transform: rotate(0); }
+  to   { transform: rotate(360deg); }
+}
+.icono {
+  animation-name: gira;
+  animation-duration: 2s;
+}`,
+  ph: `<img class="icono" src="estrella.png" alt="" width="60">`,
+  ask: 'La estrella no gira. Encuentra el error. Después: ¿cómo haces que gire sin parar a velocidad constante?',
+  answer: `<p>El nombre no coincide: <code>@keyframes girar</code> frente a <code>animation-name: gira</code>.</p><p>Para que gire sin parar y a velocidad constante: <code>animation: girar 2s linear infinite;</code> (nombre, duración, curva de tiempo, repeticiones). Con <code>ease</code>, el valor por defecto, acelera y frena en cada vuelta.</p>`,
+  fix: { css: `@keyframes girar {
+  from { transform: rotate(0); }
+  to   { transform: rotate(360deg); }
+}
+.icono { animation: girar 2s linear infinite; }` } },
+
+{ ra: 'RA45', tipo: 'Interpretar', title: 'animation-fill-mode y animation-delay',
+  css: `@keyframes aparecer {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.titulo {
+  opacity: 0;
+  animation: aparecer 1s ease-out 1s;
+}`,
+  ph: `<h2 class="titulo">Bienvenido</h2><p class="mute">Recarga la vista previa para verlo otra vez.</p>`,
+  ask: 'Describe qué ve el usuario segundo a segundo. ¿Qué hay que añadir para que el título se quede visible al terminar?',
+  answer: `<p>0-1 s: invisible (retraso de 1 s). 1-2 s: aparece subiendo. Al terminar, la animación deja de aplicarse y vuelve a <code>opacity: 0</code>: <b>desaparece</b>.</p><p>Solución: <code>animation-fill-mode: forwards</code> (o añadir <code>forwards</code> al atajo) para conservar el último fotograma. Con <code>both</code> también aplicaría el primero durante el retraso.</p>`,
+  fix: { css: `@keyframes aparecer {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.titulo { opacity: 0; animation: aparecer 1s ease-out 1s forwards; }` } },
+
+{ ra: 'RA45', tipo: 'Escribir código', title: 'Galería en blanco y negro que se colorea',
+  text: 'Escribe el CSS para que las fotos de la galería se vean en escala de grises y, al pasar el ratón o al enfocarlas con el teclado, recuperen el color y crezcan un 5 %, con una transición de 0,3 s.',
+  html: `<div class="galeria">
+  <a href="#"><img src="foto4.jpg" alt="Foto 4"></a>
+  <a href="#"><img src="foto5.jpg" alt="Foto 5"></a>
+  <a href="#"><img src="foto6.jpg" alt="Foto 6"></a>
+</div>`,
+  ask: 'Escribe el CSS. ¿Qué pseudoclase añades para usuarios de teclado?',
+  answer: `<p>Se combinan <code>filter</code> + <code>transform</code> + <code>transition</code>. La transición va en el estado <b>normal</b>, para que se anime tanto al entrar como al salir. Para el teclado: <code>:focus-visible</code> sobre el enlace.</p>`,
+  fix: { css: `.galeria { display: flex; gap: 8px; flex-wrap: wrap; }
+.galeria img {
+  display: block;
+  width: 150px; height: 100px; object-fit: cover;
+  filter: grayscale(100%);
+  transition: filter .3s, transform .3s;
+}
+.galeria a:hover img,
+.galeria a:focus-visible img {
+  filter: grayscale(0);
+  transform: scale(1.05);
+}` } },
+
+{ ra: 'RA45', tipo: 'Interpretar', title: 'Overlay: :hover no es position',
+  css: `.foto::after {
+  content: "Ver foto";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  color: white;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+}
+.foto:hover::after { opacity: 1; }`,
+  ph: `<p>Texto antes</p><a class="foto" href="#"><img src="foto1.jpg" alt="" width="200"></a>`, pcss: `.foto{display:inline-block}`,
+  ask: 'El hover se activa, pero la capa oscura tapa toda la página en lugar de solo la foto. ¿Qué falta? ¿Dejaría de funcionar <code>:hover</code> si añades <code>position: relative</code>?',
+  answer: `<p>Falta <code>.foto { position: relative; }</code>. Así .foto es el <b>bloque contenedor</b> del <code>::after</code> absoluto, e <code>inset: 0</code> se pega a sus bordes. Sin él, la capa se mide desde el bloque contenedor inicial (la página).</p><p><code>:hover</code> seguirá funcionando: <code>position: relative</code> no activa ni detecta el hover; solo fija la referencia. Para el teclado, añade <code>.foto:focus-visible::after</code>.</p>`,
+  fix: { css: `.foto { position: relative; display: inline-block; }
+.foto img { display: block; }
+.foto::after {
+  content: "Ver foto"; position: absolute; inset: 0;
+  background: rgba(0,0,0,.6); color: white;
+  display: grid; place-items: center;
+  opacity: 0; transition: opacity .3s;
+}
+.foto:hover::after, .foto:focus-visible::after { opacity: 1; }` } },
+
+{ ra: 'RA45', tipo: 'Teoría aplicada', title: 'Licencias Creative Commons',
+  demo: { note: 'Cómo se cita una imagen CC BY: autor, título, enlace a la fuente y a la licencia.',
+    html: `<figure class="credito">
+  <img src="foto5.jpg" alt="Montaña al atardecer">
+  <figcaption>«Atardecer» de <a href="https://ejemplo.org/autora">Ana Ruiz</a>,
+    bajo licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</figcaption>
+</figure>`,
+    css: `.credito { max-width: 320px; margin: 0; }
+.credito img { width: 100%; display: block; }
+.credito figcaption { font-size: 13px; color: #555; }` },
+  text: 'Una empresa quiere usar estas imágenes en un anuncio de pago: (a) una foto CC BY-NC; (b) una foto CC BY-SA, que va a recortar y retocar; (c) una ilustración CC BY-ND, que quiere poner en blanco y negro; (d) una foto CC0.',
+  ask: '¿Puede usar cada una? ¿Qué condiciones debe cumplir?',
+  answer: `<ul><li>(a) <b>No</b>: NC = no comercial, y un anuncio es uso comercial (habría que pedir permiso).</li><li>(b) <b>Sí</b>, citando al autor (BY), y la versión retocada debe publicarse con la <b>misma licencia</b> (SA).</li><li>(c) <b>No</b> puede modificarla (ND = sin obras derivadas); solo usarla tal cual, citando.</li><li>(d) <b>Sí</b>, sin condiciones (dominio público). Citar es opcional, pero es buena práctica.</li></ul>` },
+
+// ======================================================= RA5 · INTERACTIVO SIN JS
+{ ra: 'RA45', tipo: 'Interpretar', title: 'Pestañas con :target',
+  css: `.panel { display: none; }
+.panel:target { display: block; }`,
+  html: `<nav><a href="#p1">Descripción</a> · <a href="#p2">Opiniones</a></nav>
+<section id="p1" class="panel">Texto de descripción</section>
+<section id="p2" class="panel">Opiniones de clientes</section>`, pcss: `.panel{border:1px solid #999;padding:8px;margin-top:8px}`,
+  ask: '¿Qué se ve al cargar la página? ¿Y al pulsar «Opiniones»? ¿Cómo harías que haya un panel visible al entrar?',
+  answer: `<p>Al cargar no hay fragmento en la URL (<code>#…</code>), así que ningún panel es <code>:target</code> y <b>no se ve ninguno</b>. Al pulsar «Opiniones» la URL termina en <code>#p2</code>: ese section pasa a ser :target y se muestra (y si pulsas «Descripción», se oculta y se muestra p1: solo hay un target a la vez).</p><p>Panel por defecto sin JavaScript: colócalo <b>el último</b> del HTML, visible siempre, y ocúltalo cuando un hermano anterior sea target con el combinador <code>~</code> (que solo mira hacia delante):</p>`,
+  fix: { html: `<nav><a href="#p1">Descripción</a> · <a href="#p2">Opiniones</a></nav>
+<section id="p1" class="panel">Texto de descripción</section>
+<section id="p2" class="panel">Opiniones de clientes</section>
+<section class="porDefecto">Elige una pestaña (panel por defecto)</section>`,
+    css: `.panel { display: none; }
+.panel:target { display: block; }
+.panel:target ~ .porDefecto { display: none; }
+.panel, .porDefecto { border: 1px solid #999; padding: 8px; margin-top: 8px; }` } },
+
+{ ra: 'RA45', tipo: 'Detectar el fallo', title: 'Modal con :target que no se abre',
+  css: `.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+}
+.modal:target { display: grid; place-items: center; }
+.modal .caja { background: white; padding: 20px; }`,
+  html: `<a href="#aviso-legal">Ver aviso legal</a>
+<div id="avisolegal" class="modal">
+  <div class="caja">Aviso legal… <a href="#">Cerrar</a></div>
+</div>`,
+  ask: 'Al pulsar el enlace no ocurre nada. Encuentra el error. ¿Cómo funciona el botón «Cerrar»?',
+  answer: `<p>El <code>href</code> apunta a <code>#aviso-legal</code> pero el id es <code>avisolegal</code>: el fragmento no coincide con ningún elemento, así que nada es <code>:target</code>. Deben ser idénticos.</p><p>«Cerrar» enlaza a <code>#</code>: el fragmento cambia, el modal deja de ser :target y vuelve a <code>display: none</code>. <code>position: fixed</code> + <code>inset: 0</code> hacen que la capa cubra la ventana.</p>`,
+  fix: { html: `<a href="#avisolegal">Ver aviso legal</a>
+<div id="avisolegal" class="modal">
+  <div class="caja">Aviso legal… <a href="#">Cerrar</a></div>
+</div>` } },
+
+{ ra: 'RA45', tipo: 'Detectar el fallo', title: 'Tooltip mal colocado',
+  css: `.tip .texto {
+  visibility: hidden;
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  background: #222;
+  color: #fff;
+  padding: 4px 8px;
+}
+.tip:hover .texto { visibility: visible; }`,
+  html: `<p style="margin-top:60px">Precio con <span class="tip">IVA<span class="texto">Impuesto sobre el valor añadido</span></span> incluido</p>`,
+  ask: 'El tooltip aparece, pero arriba del todo de la página en lugar de encima de «IVA». ¿Qué falta? ¿Por qué se usa <code>visibility</code> y no <code>display</code>?',
+  answer: `<p>Falta <code>.tip { position: relative; }</code>: así el texto absoluto se coloca respecto a la palabra.</p><p><code>visibility</code> permite añadir una transición junto con <code>opacity</code> (display cambia de golpe). Mejora de accesibilidad: hacer .tip enfocable (<code>tabindex="0"</code>) y añadir <code>.tip:focus .texto</code>.</p>`,
+  fix: { css: `.tip { position: relative; border-bottom: 1px dotted; }
+.tip .texto {
+  visibility: hidden; opacity: 0; transition: opacity .2s;
+  position: absolute; bottom: 100%; left: 0; white-space: nowrap;
+  background: #222; color: #fff; padding: 4px 8px;
+}
+.tip:hover .texto, .tip:focus .texto { visibility: visible; opacity: 1; }`,
+    html: `<p style="margin-top:60px">Precio con <span class="tip" tabindex="0">IVA<span class="texto">Impuesto sobre el valor añadido</span></span> incluido</p>` } },
+
+{ ra: 'RA45', tipo: 'Detectar el fallo', title: 'Orden de los estados de un enlace (LVHA)',
+  css: `a:link    { color: #1f6feb; }
+a:hover   { color: crimson; }
+a:visited { color: purple; }
+a:active  { color: orange; }`,
+  html: `<a href="#">Enlace</a> (pulsa una vez y luego pasa el ratón)`,
+  ask: 'En los enlaces ya visitados, el color de hover no aparece. ¿Por qué? ¿Cuál es el orden correcto?',
+  answer: `<p>Las cuatro reglas tienen la misma especificidad, así que gana la <b>última</b> que se cumple. Un enlace visitado y con el ratón encima cumple :hover y :visited; como :visited está después, gana el morado.</p><p>Orden correcto <b>LVHA</b>: <code>:link</code> → <code>:visited</code> → <code>:hover</code> → <code>:active</code> (regla nemotécnica: «LoVe HAte»).</p>`,
+  fix: { css: `a:link    { color: #1f6feb; }
+a:visited { color: purple; }
+a:hover   { color: crimson; }
+a:active  { color: orange; }` } },
+
+{ ra: 'RA45', tipo: 'X en vez de Y', title: ':hover, :focus, :focus-visible y :active',
+  css: `button:hover         { background: #cfe3ff; }
+button:focus-visible { outline: 3px solid crimson; }
+button:active        { transform: scale(.95); }`,
+  html: `<button>Comprar</button> <button>Cancelar</button>`, pcss: `button{font:16px system-ui;padding:8px 14px;margin:6px}`,
+  ask: '¿Cuándo se aplica cada regla? ¿Qué pasa con un usuario que navega con Tab? ¿Por qué es un error poner <code>outline: none</code> sin alternativa?',
+  answer: `<ul><li><code>:hover</code>: puntero encima (no existe en pantallas táctiles).</li><li><code>:focus</code>: el elemento tiene el foco (por teclado o al hacer clic).</li><li><code>:focus-visible</code>: tiene el foco <b>y</b> el navegador considera que hay que mostrarlo (normalmente al usar el teclado).</li><li><code>:active</code>: mientras se está pulsando.</li></ul><p>Quitar el <code>outline</code> deja a los usuarios de teclado sin saber dónde están: incumple la accesibilidad. Si se quita, hay que dar otro indicador visible.</p>` },
+
+{ ra: 'RA45', tipo: 'Detectar el fallo', title: 'Menú desplegable con :checked',
+  css: `#abrir:checked ~ nav { display: block; }
+nav { display: none; }`,
+  html: `<nav>Inicio · Productos · Contacto</nav>
+<label for="abrir">☰ Menú</label>
+<input type="checkbox" id="abrir">`,
+  ask: 'Al marcar la casilla el menú no aparece. ¿Por qué? ¿Influye que <code>nav { display: none; }</code> esté escrita después?',
+  answer: `<ol><li>El combinador <code>~</code> solo selecciona hermanos que vienen <b>después</b>. El nav está antes del input, así que <code>#abrir:checked ~ nav</code> no lo encuentra: el input debe ir antes del nav.</li><li>El orden <b>no</b> es el problema: <code>#abrir:checked ~ nav</code> tiene especificidad (1,1,1) y gana a <code>nav</code> (0,0,1) aunque esté antes. Aun así, es más claro escribir primero el estado base y después el modificado.</li></ol><p>El <code>label for="abrir"</code> permite pulsar el texto y ocultar el checkbox.</p>`,
+  fix: { html: `<input type="checkbox" id="abrir" hidden>
+<label for="abrir">☰ Menú</label>
+<nav>Inicio · Productos · Contacto</nav>`, css: `nav { display: none; }
+#abrir:checked ~ nav { display: block; }
+label { cursor: pointer; }` } },
+
+{ ra: 'RA45', tipo: 'X en vez de Y', title: 'Acordeón: details/summary frente a :target',
+  html: `<details>
+  <summary>¿Cuánto tarda el envío?</summary>
+  <p>De 24 a 48 horas.</p>
+</details>
+<details open>
+  <summary>¿Puedo devolverlo?</summary>
+  <p>Sí, durante 30 días.</p>
+</details>`,
+  ask: '¿Qué hace este código sin CSS ni JavaScript? ¿Qué hace el atributo <code>open</code>? ¿Qué ventaja tiene frente a un acordeón con :target?',
+  answer: `<p><code>&lt;details&gt;</code> es un desplegable <b>nativo</b>: al pulsar el <code>summary</code> se muestra u oculta el resto. Con <code>open</code> empieza abierto.</p><p>Ventajas frente a :target: puede haber <b>varios abiertos</b> a la vez, no cambia la URL ni hace saltar el scroll, y es accesible por teclado de serie. Con :target solo puede haber un elemento «target» a la vez.</p>` },
+
+{ ra: 'RA45', tipo: 'Detectar el fallo', title: 'Capa decorativa que bloquea los clics',
+  css: `.tarjeta { position: relative; }
+.tarjeta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,.5));
+}`,
+  html: `<div class="tarjeta"><img src="foto7.jpg" alt="" width="220"><br><a href="#ok">Leer más</a></div>`, pcss: `.tarjeta{display:inline-block;padding:6px}`,
+  ask: 'El degradado se ve bien, pero el enlace «Leer más» ya no se puede pulsar. ¿Por qué? Corrígelo con una propiedad.',
+  answer: `<p>El <code>::after</code> absoluto con <code>inset: 0</code> queda <b>encima</b> de todo el contenido y recibe los clics. Con <code>pointer-events: none</code> la capa deja pasar los clics a lo que hay debajo.</p>`,
+  fix: { css: `.tarjeta { position: relative; }
+.tarjeta::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,.5));
+  pointer-events: none;
+}` } },
+
+// ======================================================= RA2 · PLANIFICACIÓN (teoría aplicada)
+{ ra: 'RA2', tipo: 'Teoría aplicada', title: 'Etapas de planificación: ¿en cuál estamos?',
+  demo: { note: 'El resultado de la arquitectura de la información: un mapa del sitio en forma de lista anidada (árbol de páginas).',
+    html: `<nav class="mapa">
+  <ul>
+    <li>Inicio
+      <ul>
+        <li>Tienda
+          <ul><li>Teclados</li><li>Ratones</li></ul>
+        </li>
+        <li>Quiénes somos</li>
+        <li>Contacto</li>
+      </ul>
+    </li>
+  </ul>
+</nav>`,
+    css: `.mapa ul { list-style: none; border-left: 2px solid #1f6feb; padding-left: 14px; }
+.mapa li { margin: 4px 0; }` },
+  text: 'Durante el proyecto de la web de una tienda de informática: (a) se pregunta al cliente cuál es su público y su presupuesto; (b) 15 usuarios agrupan tarjetas con nombres de productos; (c) se dibujan bocetos en gris de la portada; (d) se valida el HTML con el W3C; (e) seis meses después se cambia sutilmente el menú.',
+  ask: 'Asigna cada actividad a su etapa de planificación de una interfaz web.',
+  answer: `<ul><li>(a) <b>Planificación / análisis de requisitos</b>: objetivos, público, contenidos, presupuesto, plazos.</li><li>(b) <b>Arquitectura de la información</b>: card sorting para organizar y rotular contenidos.</li><li>(c) <b>Diseño / prototipado</b> de baja fidelidad (wireframe).</li><li>(d) <b>Implementación y lanzamiento</b> (validadores de código y accesibilidad).</li><li>(e) <b>Mantenimiento y seguimiento</b>: rediseños sutiles para no desorientar a los habituales.</li></ul>` },
+
+{ ra: 'RA2', tipo: 'Teoría aplicada', title: 'Heurísticas de Nielsen: identifica el principio',
+  demo: { note: 'Dos mejoras llevadas a código: estado del sistema (barra de progreso) y un error que explica la causa y conserva lo escrito.',
+    html: `<label for="adj">Adjuntar archivo</label>
+<progress id="adj" value="70" max="100">70%</progress> <span>Subiendo… 70 %</span>
+
+<form>
+  <label for="email">Email</label>
+  <input id="email" type="email" value="elaine@correo" aria-describedby="err">
+  <p id="err" class="error">⚠ Falta el dominio: escribe algo como nombre@correo.es</p>
+  <button type="submit">Guardar</button>
+</form>`,
+    css: `.error { color: #b3261e; font-weight: bold; }
+input:invalid { border: 2px solid #b3261e; }
+progress { width: 200px; }` },
+  text: '(1) Al adjuntar un archivo de 50 MB no aparece ninguna barra ni mensaje. (2) El botón de guardar dice «Persistir entidad». (3) Un formulario con un error borra todo lo escrito y muestra «Error 0x34». (4) No se puede cancelar un pedido una vez iniciado el pago. (5) Cada sección tiene el menú en un sitio diferente.',
+  ask: 'Indica qué principio de Nielsen incumple cada caso y propón una mejora concreta.',
+  answer: `<ol><li><b>Visibilidad del estado del sistema</b> → barra de progreso o porcentaje.</li><li><b>Adecuación entre el sistema y el mundo real</b> → «Guardar».</li><li><b>Ayudar a reconocer, diagnosticar y recuperarse de errores</b> (y prevención de errores) → conservar lo escrito, señalar el campo y explicar la solución en lenguaje claro.</li><li><b>Libertad y control del usuario</b> → botón «Cancelar» o «Volver».</li><li><b>Consistencia y estándares</b> → mismo menú en el mismo sitio en todas las páginas.</li></ol>` },
+
+{ ra: 'RA2', tipo: 'Teoría aplicada', title: 'Más heurísticas: reconocimiento, flexibilidad, minimalismo',
+  demo: { note: 'Reconocimiento antes que recuerdo: los pedidos anteriores visibles, con un botón para repetirlos, y la ayuda a un clic.',
+    html: `<section class="pedidos">
+  <h2>Tus pedidos</h2>
+  <ul>
+    <li>Teclado K-120 · 19,90 € <button>Repetir</button></li>
+    <li>Ratón M-40 · 12,50 € <button>Repetir</button></li>
+  </ul>
+  <a href="#ayuda">¿Necesitas ayuda?</a>
+</section>`,
+    css: `.pedidos ul { list-style: none; padding: 0; }
+.pedidos li { display: flex; justify-content: space-between; border-bottom: 1px solid #ddd; padding: 6px 0; }` },
+  text: '(1) Para repetir un pedido, el usuario debe recordar el código del producto y escribirlo. (2) Un experto tarda lo mismo que un novato porque no hay atajos ni filtros guardados. (3) La portada tiene un carrusel, tres banners, un vídeo y un chat que tapan el buscador. (4) Para saber cómo pedir factura, hay que llamar por teléfono.',
+  ask: 'Identifica el principio y la mejora para cada caso.',
+  answer: `<ol><li><b>Reconocimiento antes que recuerdo</b> → mostrar los pedidos anteriores con un botón «Repetir».</li><li><b>Flexibilidad y eficiencia de uso</b> → atajos, filtros guardados, compra en un clic, sin complicar a los novatos.</li><li><b>Diseño estético y minimalista</b> → eliminar lo irrelevante; jerarquía clara con el buscador visible.</li><li><b>Ayuda y documentación</b> → sección de ayuda o preguntas frecuentes fácil de encontrar.</li></ol>` },
+
+{ ra: 'RA2', tipo: 'X en vez de Y', title: 'Card sorting abierto o cerrado',
+  demo: { note: 'Resultado típico de un card sorting abierto: las categorías que crearon los usuarios se convierten en el menú (arquitectura de la información).',
+    html: `<nav class="menu">
+  <ul>
+    <li>Ordenadores<ul><li>Portátiles</li><li>Sobremesa</li></ul></li>
+    <li>Componentes<ul><li>Tarjetas gráficas</li><li>Memoria RAM</li></ul></li>
+    <li>Periféricos<ul><li>Teclados</li><li>Ratones</li></ul></li>
+  </ul>
+</nav>`,
+    css: `.menu > ul { display: flex; gap: 24px; list-style: none; padding: 0; }
+.menu li li { font-weight: normal; }
+.menu > ul > li { font-weight: bold; }` },
+  text: 'Caso A: se va a crear el menú de una tienda nueva y no se sabe cómo agrupan los usuarios los productos. Caso B: el menú ya existe con 6 categorías y se quiere comprobar si los usuarios colocan bien 40 productos en ellas.',
+  ask: '¿Qué tipo de card sorting usarías en cada caso? ¿En qué etapa del proyecto se hace y qué produce?',
+  answer: `<p>A: <b>abierto</b>: los participantes agrupan y <b>crean y nombran</b> las categorías; sirve para <b>descubrir</b> su modelo mental. B: <b>cerrado</b>: las categorías ya existen y solo se <b>evalúa</b> si encajan.</p><p>Se hace en etapas tempranas (arquitectura de la información), normalmente primero abierto y después cerrado. Produce la base del mapa del sitio y de los rótulos del menú.</p>` },
+
+{ ra: 'RA2', tipo: 'X en vez de Y', title: 'Evaluación heurística frente a test de usuarios',
+  demo: { note: 'Un informe de evaluación heurística es una tabla: problema, principio que incumple, gravedad y solución. Así se marca con HTML semántico.',
+    html: `<table class="informe">
+  <thead><tr><th>Problema</th><th>Principio</th><th>Gravedad</th><th>Solución</th></tr></thead>
+  <tbody>
+    <tr><td>No hay barra de progreso al subir</td><td>Visibilidad del estado</td><td>3</td><td>Añadir progress</td></tr>
+    <tr><td>Botón «Persistir»</td><td>Mundo real</td><td>2</td><td>«Guardar»</td></tr>
+  </tbody>
+</table>`,
+    css: `.informe { border-collapse: collapse; font-size: 14px; }
+.informe th, .informe td { border: 1px solid #999; padding: 6px; }
+.informe thead { background: #eef2fb; }` },
+  text: 'Un equipo con poco presupuesto tiene un prototipo casi terminado y quiere detectar problemas de usabilidad antes del lanzamiento.',
+  ask: '¿Qué técnica harías primero y por qué? ¿Cuántos participantes recomienda cada una? ¿Cuándo tiene sentido el eye-tracking?',
+  answer: `<ul><li><b>Evaluación heurística</b> primero: <b>3-5 expertos</b> revisan el sitio con los principios de Nielsen, de forma independiente, y hacen un informe común. Es rápida y barata, pero no sustituye a usuarios reales.</li><li><b>Test de usuarios</b> después: observar a usuarios reales haciendo tareas (pensando en voz alta); unos <b>15 participantes</b>, mejor en <b>3 rondas de 5</b>, corrigiendo entre rondas. Es más caro y fiable.</li><li><b>Eye-tracking</b>: caro; solo sobre diseños ya elaborados, para saber dónde miran.</li></ul>` },
+
+{ ra: 'RA2', tipo: 'X en vez de Y', title: 'Boceto, wireframe, mockup y prototipo',
+  demo: { note: 'Un wireframe hecho con HTML y CSS: solo cajas grises que muestran estructura y jerarquía, sin colores ni imágenes definitivas.',
+    html: `<div class="wire">
+  <div class="logo">LOGO</div><div class="menu">MENÚ</div>
+  <div class="hero">IMAGEN PRINCIPAL</div>
+  <div class="caja">Producto</div><div class="caja">Producto</div><div class="caja">Producto</div>
+  <div class="pie">PIE</div>
+</div>`,
+    css: `.wire { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; font: 12px monospace; }
+.wire > div { background: #ddd; border: 1px dashed #888; padding: 14px; text-align: center; }
+.menu { grid-column: span 2; }
+.hero, .pie { grid-column: 1 / -1; }
+.hero { height: 80px; }` },
+  text: '(1) Dibujo a mano en papel en 5 minutos. (2) Esquema en gris con cajas que indican dónde va el logo, el menú y el contenido, sin colores ni imágenes. (3) Imagen estática con los colores, las tipografías y las fotos definitivas. (4) Versión en Figma donde se puede pulsar el menú y pasar de una página a otra.',
+  ask: 'Nombra cada entregable e indica si es de baja o de alta fidelidad.',
+  answer: `<ol><li><b>Boceto (sketch)</b>: baja fidelidad.</li><li><b>Wireframe</b>: baja fidelidad; define estructura y jerarquía, no apariencia.</li><li><b>Mockup</b>: alta fidelidad visual, pero estático.</li><li><b>Prototipo</b> navegable: alta fidelidad e interactivo; sirve para hacer tests de usuarios antes de programar.</li></ol>` },
+
+{ ra: 'RA2', tipo: 'Teoría aplicada', title: 'DCU: persona y escenario',
+  demo: { note: 'Decisiones derivadas de la persona «Carmen»: letra grande, buen contraste, pocos pasos y un botón grande con texto claro.',
+    html: `<main class="cita">
+  <h1>Pedir cita</h1>
+  <label for="dia">Elige el día</label>
+  <input id="dia" type="date">
+  <button>Pedir cita</button>
+</main>`,
+    css: `.cita { font-size: 20px; line-height: 1.5; max-width: 420px; }
+label, input, button { display: block; width: 100%; }
+input { font-size: 20px; padding: 10px; margin: 6px 0 16px; }
+button { font-size: 22px; padding: 14px; background: #0b57d0; color: white; border: 0; border-radius: 10px; }` },
+  text: 'En la fase de diseño de una aplicación de citas médicas, el equipo crea a «Carmen, 68 años, jubilada, usa el móvil para WhatsApp y le cuesta leer letra pequeña» y describe cómo pide cita para su revisión un lunes por la mañana.',
+  ask: '¿Qué técnicas del DCU son estas y en qué subfase del diseño se usan? Propón dos decisiones de interfaz que se deriven de Carmen.',
+  answer: `<p>Carmen es una <b>persona</b> (arquetipo de usuario con identidad inventada) y el relato es un <b>escenario</b> (la persona realizando una tarea en un contexto). Ambas pertenecen al <b>modelado de usuario</b>, la primera subfase del diseño.</p><p>Decisiones: texto ≥ 16-18 px con buen contraste; pocos pasos con botones grandes y rótulos claros («Pedir cita»), sin iconos ambiguos; confirmación visible de la cita.</p>` },
+
+{ ra: 'RA2', tipo: 'Teoría aplicada', title: 'Clasifica sitios web según su objetivo',
+  demo: { note: 'Cada tipo de sitio prioriza zonas distintas. Ejemplo: la cabecera de un comercio electrónico pone el buscador y el carrito siempre a la vista.',
+    html: `<header class="tienda">
+  <a href="#" class="logo">PcComponentes</a>
+  <input type="search" placeholder="Buscar productos">
+  <a href="#" class="carrito">🛒 Carrito (2)</a>
+</header>`,
+    css: `.tienda { display: flex; align-items: center; gap: 12px; padding: 10px; background: #ff6000; }
+.tienda input { flex: 1; padding: 8px; }
+.logo, .carrito { color: white; font-weight: bold; text-decoration: none; }` },
+  text: 'Clasifica: (a) agenciatributaria.gob.es; (b) PcComponentes; (c) Stack Overflow; (d) la web de Inditex que explica la empresa a inversores; (e) el aula virtual Moodle del instituto; (f) El País; (g) un portfolio de un estudiante de DAW.',
+  ask: 'Indica el tipo de cada sitio y el objetivo que lo define.',
+  answer: `<ul><li>(a) <b>Institucional / administración</b>: servicios y trámites públicos.</li><li>(b) <b>Comercio electrónico</b>: vender online.</li><li>(c) <b>Foro / preguntas y respuestas</b>: resolver dudas entre usuarios.</li><li>(d) <b>Corporativa</b>: dar a conocer la empresa y su imagen.</li><li>(e) <b>Educativa / e-learning</b>.</li><li>(f) <b>Informativa / noticias</b>.</li><li>(g) <b>Blog / personal / portfolio</b>: mostrar trabajos.</li></ul>` },
+
+{ ra: 'RA2', tipo: 'Calcular', title: 'Contraste de color (WCAG)',
+  css: `.aviso { color: #999999; background: #ffffff; font-size: 14px; }
+.mejor { color: #595959; background: #ffffff; font-size: 14px; }`,
+  html: `<p class="aviso">Texto gris claro sobre blanco</p>
+<p class="mejor">Texto gris oscuro sobre blanco</p>`,
+  ask: 'El gris #999 sobre blanco tiene un contraste aproximado de 2,8:1. ¿Cumple WCAG AA para texto normal? ¿Qué valor mínimo se pide? ¿Qué otra norma de color se incumple si un formulario marca los errores solo en rojo?',
+  answer: `<p>No cumple: <b>WCAG AA pide 4,5:1</b> para texto normal (3:1 para texto grande, ≥ 24 px o ≥ 18,7 px en negrita). #595959 sobre blanco da unos 7:1 (cumple incluso AAA). #767676 es el gris más claro que llega a 4,5:1.</p><p>Marcar errores solo en rojo incumple «no transmitir información solo con el color» (daltonismo): añade un icono y un texto («Campo obligatorio»).</p>` },
+
+{ ra: 'RA2', tipo: 'Detectar el fallo', title: 'Tipografía de una landing page',
+  css: `body { font: 12px/1 "Comic Sans MS", cursive; }
+main p { text-align: justify; }`,
+  text: 'Una landing usa 5 familias tipográficas (una decorativa en los párrafos), texto de 12 px, interlineado 1 y líneas de 150 caracteres justificadas a ambos lados.',
+  ask: 'Enumera los errores según los criterios del tema y escribe el CSS mejorado para el cuerpo del texto.',
+  answer: `<ul><li>Máximo <b>2 familias</b>; las decorativas, solo en títulos.</li><li>Tamaño de cuerpo <b>≥ 16 px</b>.</li><li>Interlineado <b>1,4-1,6</b>.</li><li>Líneas de <b>60-80 caracteres</b>.</li><li>Evitar justificar en pantalla (crea «ríos» de espacios); mejor alineado a la izquierda.</li></ul><pre class="code">body { font: 16px/1.5 Roboto, Arial, sans-serif; }
+main p { max-width: 70ch; text-align: left; }
+h1, h2 { font-family: Georgia, serif; }</pre>`,
+  ph: `<main><h1>Oferta</h1><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa.</p></main>`,
+  fix: { css: `body { font: 16px/1.5 Roboto, Arial, sans-serif; }
+main p { max-width: 70ch; text-align: left; }
+h1, h2 { font-family: Georgia, serif; }` } },
+
+{ ra: 'RA2', tipo: 'Teoría aplicada', title: '«No me hagas pensar»: el test del maletero',
+  demo: { note: 'Navegación persistente: identificador del sitio, secciones con la actual marcada, buscador, nombre de página y migas de pan.',
+    html: `<header class="cab">
+  <a href="index.html" class="logo">PcMadrid</a>
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="teclados.html" aria-current="page">Teclados</a>
+    <a href="ratones.html">Ratones</a>
+  </nav>
+  <input type="search" placeholder="Buscar">
+</header>
+<nav class="migas"><a href="index.html">Inicio</a> › <a href="perifericos.html">Periféricos</a> › Teclados</nav>
+<h1>Teclados</h1>`,
+    css: `.cab { display: flex; gap: 16px; align-items: center; background: #1d2433; padding: 8px 12px; }
+.cab a { color: white; text-decoration: none; }
+.logo { font-weight: bold; font-size: 20px; }
+nav a[aria-current="page"] { border-bottom: 3px solid gold; }
+.migas { font-size: 14px; margin: 8px 0; }` },
+  text: 'Abres una página interior cualquiera de una web: no hay logotipo, el título de la página no se distingue, no hay migas de pan y el menú no marca la sección actual.',
+  ask: '¿Qué preguntas del «test del maletero» de Krug no se pueden responder? Propón cuatro elementos de navegación persistente.',
+  answer: `<p>El test pregunta: ¿qué sitio es?, ¿en qué página estoy?, ¿cuáles son las secciones principales?, ¿qué opciones tengo aquí?, ¿dónde estoy dentro del sitio? y ¿cómo busco? Aquí fallan las de sitio, página y ubicación.</p><p>Navegación persistente: <b>identificador del sitio</b> (logo arriba a la izquierda que enlaza a inicio), <b>secciones</b> con la actual destacada, <b>buscador</b>, <b>nombre de página</b> visible y <b>migas de pan</b>.</p>` },
+
+{ ra: 'RA2', tipo: 'Teoría aplicada', title: 'Navegadores y compatibilidad',
+  demo: { note: 'Compatibilidad en CSS: un diseño base que funciona en todos y una mejora solo si el navegador soporta grid (@supports).',
+    css: `.productos { display: flex; flex-wrap: wrap; gap: 10px; }
+@supports (display: grid) {
+  .productos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.productos > div { background: #eef2fb; padding: 10px; }`,
+    html: `<div class="productos"><div>A</div><div>B</div><div>C</div><div>D</div></div>` },
+  text: 'Un cliente dice: «En mi Chrome se ve perfecto, no hace falta probar más». La web usa CSS Grid y la etiqueta &lt;dialog&gt;, y la usarán clientes con iPhone y con Firefox.',
+  ask: '¿Qué respondes? Indica los motores de renderizado de Chrome, Firefox, Safari y Edge, y dos herramientas para comprobar compatibilidad.',
+  answer: `<p>Cada navegador usa un motor que puede interpretar distinto: Chrome y Edge usan <b>Blink</b>, Firefox <b>Gecko</b> y Safari <b>WebKit</b> (en iPhone, históricamente todos los navegadores usaban WebKit). Hay que probar en varios navegadores, versiones y dispositivos.</p><p>Herramientas: <b>caniuse.com</b> (qué versiones soportan cada propiedad o etiqueta), <b>html5test.com</b> y las herramientas de desarrollo (F12) con el modo de dispositivo.</p>` },
+
+{ ra: 'RA2', tipo: 'Teoría aplicada', title: 'Usabilidad, accesibilidad y UX',
+  demo: { note: 'Accesibilidad en código: label asociado, foco visible para el teclado, texto alternativo y botón con texto claro.',
+    html: `<form class="acc">
+  <label for="nombre">Nombre</label>
+  <input id="nombre" type="text" required>
+  <img src="estrella.png" alt="Producto destacado" width="24">
+  <button type="submit">Finalizar compra</button>
+</form>`,
+    css: `.acc label { display: block; font-weight: bold; }
+.acc input { font-size: 16px; padding: 8px; }
+.acc button:focus-visible, .acc input:focus-visible { outline: 3px solid #b3261e; outline-offset: 2px; }` },
+  text: 'Una web: (1) se usa con el teclado y un lector de pantalla; (2) permite comprar en 3 pasos con pocos errores; (3) al terminar, el usuario dice que la experiencia le ha resultado agradable y que volvería.',
+  ask: 'Relaciona cada frase con accesibilidad, usabilidad (eficacia, eficiencia, satisfacción) y experiencia de usuario. ¿Qué atributos de la usabilidad son objetivos y cuál es subjetivo?',
+  answer: `<ul><li>(1) <b>Accesibilidad</b>: que todas las personas accedan en igualdad, sea cual sea su tecnología o discapacidad.</li><li>(2) <b>Usabilidad</b>: <b>eficacia</b> (pocos errores, se consigue el objetivo) y <b>eficiencia</b> (pocos pasos, poco tiempo), los atributos <b>objetivos</b> y medibles.</li><li>(3) <b>Satisfacción</b>, el atributo <b>subjetivo</b> (se pregunta al usuario), y forma parte de la <b>UX</b>: las sensaciones y emociones que genera la interacción.</li></ul>` },
+];
+
+// ---------- 📝 Casos de examen en papel (pestaña propia) ----------
+const CASE_RA = { F: 'Fundamentos', RA2: 'RA2 · Planificación', RA45: 'RA4 + RA5', RA1: 'RA1 · Estilos y Bootstrap' };
+const caseKey = c => c.ra + '|' + c.title;
+const casePreviewable = c => !c.np && !!(c.ph || c.html || c.css);
+
+function caseFrames(c, which) {
+  const d = which === 'demo' ? c.demo : null, fx2 = which === 'fix' && c.fix ? c.fix : {};
+  const html = d ? (d.html || '') : (fx2.html || c.ph || c.html || '');
+  const css = d ? (d.css || '') : (fx2.css !== undefined ? fx2.css : (c.css || '')) + '\n' + (c.pcss || '');
+  const doc = frameDoc(html, css, { bs: d ? d.bs : c.bs });
+  const ws = (d ? d.ws : c.ws) || [0], lab = { fix: '✅ Con la corrección', demo: '💡 Ejemplo llevado a código', orig: '👁 Tal como está' }[which];
+  return `<div class="cframes">${ws.map(w => `<figure class="cfr"${w ? ` style="width:${w}px"` : ''}><iframe title="${lab}${w ? ' a ' + w + ' px' : ''}" srcdoc="${esc(doc)}"></iframe><figcaption>${lab}${w ? ` · ancho ${w} px` : ''}</figcaption></figure>`).join('')}</div>`;
+}
+// código completo de una versión del caso
+function caseVersions(c) {
+  const v = [];
+  if (c.html || c.ph || c.css) v.push({ id: 'orig', t: c.fix ? '📄 Tal como está en el enunciado' : '📄 Código del caso', html: c.html || c.ph || '', css: c.css || '', aux: c.pcss || '', shownHtml: !!c.html, pv: casePreviewable(c) });
+  if (c.fix) v.push({ id: 'fix', t: '✅ Corregido / solución', html: c.fix.html || c.ph || c.html || '', css: c.fix.css !== undefined ? c.fix.css : (c.css || ''), aux: c.pcss || '', pv: casePreviewable(c) });
+  if (c.demo) v.push({ id: 'demo', t: '💡 Llevado a código', note: c.demo.note, html: c.demo.html || '', css: c.demo.css || '', pv: true });
+  return v;
+}
+const lineDiff = (a, b) => { const A = a.split('\n').map(x => x.trim()).filter(Boolean), B = b.split('\n').map(x => x.trim()).filter(Boolean);
+  return { add: B.filter(x => !A.includes(x)), del: A.filter(x => !B.includes(x)) }; };
+function caseFull(c) {
+  const vs = caseVersions(c); if (!vs.length) return '';
+  const blocks = vs.map(v => `<div class="cver"><h5>${v.t}</h5>${v.note ? `<p class="xs">${v.note}</p>` : ''}
+    <p class="clab">HTML${v.id === 'orig' && !v.shownHtml && v.html ? ' <span class="mute">(no aparecía en el enunciado: es el HTML sobre el que se aplica el CSS)</span>' : ''}</p>${v.html ? codeBlock(v.html, 'html') : '<p class="mute xs">— sin HTML —</p>'}
+    <p class="clab">CSS</p>${v.css ? codeBlock(v.css, 'css') : '<p class="mute xs">— sin CSS propio' + (c.bs || (v.id === 'demo' && c.demo.bs) ? ': todo el estilo lo ponen las clases de Bootstrap' : '') + ' —</p>'}
+    ${v.aux ? `<details class="caux"><summary class="xs">Estilos de apoyo de la vista previa (solo para que se vea mejor)</summary>${codeBlock(v.aux, 'css')}</details>` : ''}
+    ${v.pv ? caseFrames(c, v.id) : ''}</div>`).join('');
+  const o = vs.find(v => v.id === 'orig'), f = vs.find(v => v.id === 'fix');
+  let diff = '';
+  if (o && f) { const dc = lineDiff(o.css, f.css), dh = lineDiff(o.html, f.html), rows = [...dh.del.map(x => ['-', x]), ...dh.add.map(x => ['+', x]), ...dc.del.map(x => ['-', x]), ...dc.add.map(x => ['+', x])];
+    if (rows.length) diff = `<div class="cdiff"><h5>🔁 Qué cambia de una versión a otra</h5><pre class="code">${rows.map(([s, x]) => `<span class="${s === '+' ? 'dadd' : 'ddel'}">${s} ${esc(x)}</span>`).join('\n')}</pre></div>`; }
+  return `<details class="cfull" open><summary>📄 Código completo (HTML y CSS)</summary><div class="cvers">${blocks}</div>${diff}</details>`;
+}
+function caseExplain(c) {
+  const vs = caseVersions(c); if (!vs.length) return '';
+  const t = vs.find(v => v.id === 'demo') || vs.find(v => v.id === 'fix') || vs[0];
+  return `<details class="cexp" open><summary>🔍 Explicación pieza a pieza ${vs.length > 1 ? `<span class="mute xs">(de la versión «${t.t.replace(/^\S+\s/, '')}»)</span>` : ''}</summary>
+   <div class="xp">${explainCode(t.html, t.css)}</div>
+   <p class="xs mute">¿Quieres analizar otro código? Pégalo en <a href="#ref" data-goref>📚 Guía HTML y CSS → Analizador</a>.</p></details>`;
+}
+
+function buildCasos(host) {
+  const st = store.get('cs_st', {}), drafts = store.get('cs_d', {});
+  const f = { ra: '', tipo: '', est: '' };
+  let list = [], i = 0, sim = null;
+  host.innerHTML = `<div class="rahead"><div><h2>📝 Casos de examen en papel</h2><p class="lead">${EXAM_CASES.length} casos como los del examen escrito: te dan un código o una situación y tienes que <b>interpretar</b> qué pasa, <b>calcular</b>, <b>detectar el fallo</b>, <b>escribir el código</b> o explicar <b>qué cambia si usas X en vez de Y</b>. Escribe tu respuesta, compárala con la solución razonada y comprueba el resultado en el navegador, tal como está y con la corrección.</p></div>
+   <div class="card cstats" id="csStats"></div></div>
+  <details class="sec" id="csHow"><summary>Cómo responder en el examen (método)</summary><div class="body cmethod">
+   <div><h4>Si hay código CSS/HTML</h4><ol><li><b>Selectores</b>: a qué elementos apunta cada uno (hijo directo <code>&gt;</code>, descendiente, <code>+</code>, <code>~</code>, pseudoclases).</li><li><b>Cascada</b>: <code>!important</code> → especificidad (ids, clases, elementos) → orden. Y qué se <b>hereda</b>.</li><li><b>Medidas y flujo</b>: modelo de caja, unidades (%, em, rem), display, flex/grid, position.</li><li><b>Condiciones</b>: ancho exacto de la media query, estados :hover/:focus/:target/:checked, antepasado posicionado.</li><li>Responde en tres partes: <b>resultado</b> → <b>por qué</b> → <b>mejora concreta</b> (con el código).</li></ol></div>
+   <div><h4>Si es una situación (RA2)</h4><ol><li>Identifica <b>qué se está preguntando</b>: etapa, principio, técnica, tipo de sitio…</li><li><b>Nómbralo</b> con el término exacto del tema (p. ej. «visibilidad del estado del sistema»).</li><li><b>Defínelo</b> en una frase.</li><li><b>Aplícalo</b> al caso: qué parte del enunciado lo demuestra.</li><li><b>Propón una mejora</b> concreta y comprobable.</li></ol><p class="xs mute">Un «sí/no» sin justificar casi no puntúa: el profesor quiere ver el razonamiento.</p></div>
+  </div></details>
+  <div class="cfilters">
+   <label>Bloque <select id="csRa"><option value="">Todos</option>${Object.entries(CASE_RA).map(([k, v]) => `<option value="${k}">${v} (${EXAM_CASES.filter(c => c.ra === k).length})</option>`).join('')}</select></label>
+   <label>Tipo <select id="csTipo"><option value="">Todos</option>${CASE_TIPOS.map(t => `<option>${t}</option>`).join('')}</select></label>
+   <label>Estado <select id="csEst"><option value="">Todos</option><option value="pend">Sin hacer</option><option value="rep">Para repasar</option><option value="ok">Dominados</option></select></label>
+   <button class="btn" id="csSim">🎲 Simulacro: 5 casos al azar</button>
+  </div>
+  <div class="cgrid" id="csGrid" aria-label="Índice de casos"></div>
+  <div id="csCard"></div>`;
+
+  const stats = () => { const ok = EXAM_CASES.filter(c => st[caseKey(c)] === 'ok').length, rep = EXAM_CASES.filter(c => st[caseKey(c)] === 'rep').length;
+    $('#csStats').innerHTML = `<div class="count">${ok}/${EXAM_CASES.length}<small>dominados</small></div><div class="xs">${rep ? `<span class="bad">${rep}</span> para repasar` : 'ninguno para repasar'}</div><div class="prog"><i style="width:${ok / EXAM_CASES.length * 100}%"></i></div>`; };
+  const filter = () => { sim = null; list = EXAM_CASES.filter(c => (!f.ra || c.ra === f.ra) && (!f.tipo || c.tipo === f.tipo) && (!f.est || (f.est === 'pend' ? !st[caseKey(c)] : st[caseKey(c)] === f.est))); i = 0; draw(); };
+  const grid = () => { $('#csGrid').innerHTML = (sim ? `<span class="tag x">Simulacro</span>` : '') + list.map((c, k) => `<button class="cgi ${st[caseKey(c)] || ''}${k === i ? ' cur' : ''}" data-k="${k}" title="${esc(c.title)}" aria-label="Caso ${k + 1}: ${esc(c.title)}">${k + 1}</button>`).join('') + (sim ? ` <button class="btn xs" id="csSimEnd">Salir del simulacro</button>` : ''); };
+  const draw = () => { stats(); grid(); const c = list[i];
+    if (!c) { $('#csCard').innerHTML = `<div class="card"><p>No hay casos con estos filtros.</p></div>`; return; }
+    const k = caseKey(c), code = (c.html ? codeBlock(c.html, 'html') : '') + (c.css ? codeBlock(c.css, 'css') : '');
+    $('#csCard').innerHTML = `<article class="card ccard">
+     <div class="row" style="justify-content:space-between"><span><span class="tag">${CASE_RA[c.ra]}</span> <span class="tag t">${c.tipo}</span>${st[k] === 'ok' ? ' <span class="tag t">✓ dominado</span>' : st[k] === 'rep' ? ' <span class="tag x">↻ repasar</span>' : ''}</span><span class="mute xs">${sim ? 'Simulacro · ' : ''}Caso ${i + 1} / ${list.length}</span></div>
+     <h3>${esc(c.title)}</h3>
+     ${c.text ? `<div class="ctext">${c.text}</div>` : ''}${code}
+     <h4>Pregunta</h4><div class="cask">${c.ask}</div>
+     <label class="xs mute" for="csTa">Tu respuesta (resultado → por qué → mejora):</label>
+     <textarea id="csTa" class="cta" rows="5" placeholder="Escríbela como en el examen. Se guarda en este navegador.">${esc(drafts[k] || '')}</textarea>
+     <div class="row">${casePreviewable(c) ? `<button class="btn" id="csPrev">👁 Ver en el navegador</button>` : ''}<button class="btn p" id="csRev">Mostrar solución razonada</button></div>
+     <div id="csPv"></div><div id="csAns"></div>
+     <div class="row cnav"><button class="btn" id="csP" ${i === 0 ? 'disabled' : ''}>← Anterior</button><button class="btn" id="csN">${i === list.length - 1 ? (sim ? 'Terminar simulacro' : 'Volver al primero ↺') : 'Siguiente →'}</button></div>
+    </article>`;
+    $('#csTa').oninput = e => { drafts[k] = e.target.value; store.set('cs_d', drafts); };
+    if ($('#csPrev')) $('#csPrev').onclick = () => { $('#csPv').innerHTML = $('#csPv').innerHTML ? '' : caseFrames(c, 'orig'); };
+    $('#csRev').onclick = () => {
+      $('#csAns').innerHTML = `<div class="box t csol"><b>Solución razonada</b>${c.answer}</div>
+       ${caseFull(c)}${caseExplain(c)}
+       <div class="row cself"><span class="xs mute">¿Cómo te ha ido?</span><button class="btn sm" data-g="ok">✓ Lo tenía bien</button><button class="btn sm" data-g="rep">↻ Tengo que repasarlo</button></div>`;
+      const gr = $('#csAns [data-goref]'); if (gr) gr.onclick = e => { e.preventDefault(); go('ref'); };
+      $('#csRev').disabled = true;
+      $$('#csAns [data-g]').forEach(b => b.onclick = () => { st[k] = b.dataset.g; store.set('cs_st', st); stats(); grid(); b.classList.add('on'); $$('#csAns [data-g]').forEach(x => { if (x !== b) x.classList.remove('on'); }); });
+    };
+    $('#csP').onclick = () => { if (i > 0) { i--; draw(); top(); } };
+    $('#csN').onclick = () => { if (sim && i === list.length - 1) return endSim(); i = (i + 1) % list.length; draw(); top(); };
+    if (sim && $('#csSimEnd')) $('#csSimEnd').onclick = filter;
+  };
+  const top = () => { const el = $('#csGrid'); if (el && el.getBoundingClientRect().top < 0) el.scrollIntoView({ block: 'start' }); };
+  const endSim = () => { const ok = sim.filter(c => st[caseKey(c)] === 'ok').length;
+    $('#csCard').innerHTML = `<div class="card"><h3>Simulacro terminado: ${ok} / ${sim.length} marcados como «lo tenía bien»</h3><ul>${sim.map(c => `<li>${st[caseKey(c)] === 'ok' ? '✓' : st[caseKey(c)] === 'rep' ? '↻' : '·'} ${esc(c.title)} <span class="mute xs">(${CASE_RA[c.ra]})</span></li>`).join('')}</ul><div class="row"><button class="btn p" id="csSimAgain">Otro simulacro</button><button class="btn" id="csSimBack">Volver a la lista</button></div></div>`;
+    $('#csSimAgain').onclick = startSim; $('#csSimBack').onclick = filter; };
+  const startSim = () => { const pool = EXAM_CASES.filter(c => !f.ra || c.ra === f.ra); sim = shuffle(pool.slice()).slice(0, 5); list = sim; i = 0; draw(); };
+  $('#csGrid').onclick = e => { const b = e.target.closest('[data-k]'); if (b) { i = +b.dataset.k; draw(); } };
+  $('#csRa').onchange = e => { f.ra = e.target.value; filter(); };
+  $('#csTipo').onchange = e => { f.tipo = e.target.value; filter(); };
+  $('#csEst').onchange = e => { f.est = e.target.value; filter(); };
+  $('#csSim').onclick = startSim;
+  filter();
+}
+
+// ---------- 📚 Guía HTML y CSS: anatomía, analizador, especificidad y glosario ----------
+const GL_PROP_GROUPS = [
+  ['Caja y tamaño', /^(width|height|max-|min-|margin|padding|border|box-|outline|overflow|aspect)/],
+  ['Posición y capas', /^(position|top|right|bottom|left|inset|z-index|float|clear)$/],
+  ['Display y Flexbox', /^(display|flex|justify|align|order|gap)/],
+  ['Grid', /^(grid|place)/],
+  ['Texto y fuentes', /^(color|font|line-height|text|letter|white|list)/],
+  ['Fondo, transparencia y efectos', /^(background|opacity|visibility|filter|mask|clip)/],
+  ['Imágenes y vídeo', /^object/],
+  ['Transformaciones, transiciones y animaciones', /^(transform|transition|animation)/],
+  ['Interacción y contenido generado', /^(cursor|pointer|content|scroll)/],
+  ['Variables', /^--/]
+];
+const glEntry = (name, d, ex, lang = 'css') => `<div class="gle" data-s="${esc((name + ' ' + d).replace(/<[^>]+>/g, '').toLowerCase())}"><div class="glh"><code>${esc(name)}</code></div><div class="gld">${d}${ex ? codeBlock(ex, lang) : ''}</div></div>`;
+const glSec = (title, body, n) => `<details class="sec gls"><summary>${title} <span class="mute xs">(${n})</span></summary><div class="body glgrid">${body}</div></details>`;
+
+function buildRef(host) {
+  const tagsDone = new Set();
+  let gl = '';
+  Object.entries(GL_TAG_GROUPS).forEach(([g, list]) => { const ents = list.filter(t => GL.tag[t]).map(t => { tagsDone.add(t); return glEntry(`<${t}>`, GL.tag[t][0], GL.tag[t][1], 'html'); }); gl += glSec(`HTML · ${g}`, ents.join(''), ents.length); });
+  const restT = Object.keys(GL.tag).filter(t => !tagsDone.has(t)); if (restT.length) gl += glSec('HTML · Otros elementos', restT.map(t => glEntry(`<${t}>`, GL.tag[t][0], GL.tag[t][1], 'html')).join(''), restT.length);
+  gl += glSec('HTML · Atributos', Object.entries(GL.attr).map(([k, v]) => glEntry(k, v[0], v[1], 'html')).join(''), Object.keys(GL.attr).length);
+  gl += glSec('CSS · Selectores y combinadores', Object.entries(GL.sel).map(([k, v]) => glEntry(k, v[0], v[1])).join(''), Object.keys(GL.sel).length);
+  gl += glSec('CSS · Pseudoclases (:estado)', Object.entries(GL.pc).map(([k, v]) => glEntry(':' + k, v[0], v[1])).join(''), Object.keys(GL.pc).length);
+  gl += glSec('CSS · Pseudoelementos (::parte)', Object.entries(GL.pe).map(([k, v]) => glEntry('::' + k, v[0], v[1])).join(''), Object.keys(GL.pe).length);
+  const used = new Set();
+  GL_PROP_GROUPS.forEach(([g, re]) => { const ps = Object.keys(GL.prop).filter(p => !used.has(p) && re.test(p)); ps.forEach(p => used.add(p));
+    gl += glSec(`CSS · Propiedades · ${g}`, ps.map(p => { const v = GL.prop[p]; return glEntry(p, v[0] + (v[2] ? `<ul class="glv">${Object.entries(v[2]).map(([a, b]) => `<li><code>${a}</code>: ${b}</li>`).join('')}</ul>` : ''), v[1]); }).join(''), ps.length); });
+  const restP = Object.keys(GL.prop).filter(p => !used.has(p)); if (restP.length) gl += glSec('CSS · Otras propiedades', restP.map(p => glEntry(p, GL.prop[p][0], GL.prop[p][1])).join(''), restP.length);
+  gl += glSec('CSS · Funciones de valor', Object.entries(GL.fn).map(([k, v]) => glEntry(k + '()', v[0], v[1])).join(''), Object.keys(GL.fn).length);
+  gl += glSec('CSS · Unidades', Object.entries(GL.unit).map(([k, v]) => glEntry(k, v[0], v[1])).join(''), Object.keys(GL.unit).length);
+  gl += glSec('CSS · Palabras clave frecuentes', Object.entries(GL.kw).map(([k, v]) => glEntry(k, v, '')).join(''), Object.keys(GL.kw).length);
+  gl += glSec('CSS · Reglas @', Object.entries(GL.at).map(([k, v]) => glEntry('@' + k, v[0], v[1])).join(''), Object.keys(GL.at).length);
+  const bsEx = ['container', 'row', 'col-12', 'col-md-6', 'col-lg-4', 'col-auto', 'd-none', 'd-md-block', 'd-flex', 'mt-3', 'px-md-5', 'mx-auto', 'p-2', 'gap-3', 'bg-primary', 'text-white', 'btn', 'btn-primary', 'btn-outline-secondary', 'text-center', 'img-fluid', 'navbar', 'navbar-toggler', 'collapse', 'card', 'card-body', 'border', 'rounded', 'shadow', 'w-100', 'justify-content-between', 'align-items-center'];
+  gl += glSec('Bootstrap 5 · Clases (se explican por su patrón)', `<div class="gle"><div class="gld">Puntos de corte: ${Object.entries(BS_BP).map(([k, v]) => `<code>${k}</code> ${v}`).join(' · ')}. Escala de espaciado: ${Object.entries(BS_SP).map(([k, v]) => `<code>${k}</code> = ${v}`).join(' · ')}. Patrón: <code>{propiedad}{lado}-{punto de corte}-{tamaño}</code>, por ejemplo <code>px-md-5</code>.</div></div>` + bsEx.map(c => glEntry('.' + c, bsExplain(c), '')).join(''), bsEx.length);
+
+  const ex0 = EXAM_CASES.find(c => c.title.startsWith('Overlay')) || EXAM_CASES[0];
+  host.innerHTML = `<div class="rahead"><div><h2>📚 Guía HTML y CSS</h2><p class="lead">Todo lo que aparece en el código de los casos y del curso, explicado: <b>elementos HTML</b> (div, nav, section…), <b>atributos</b> (class, id, href…), <b>selectores</b> y combinadores, <b>pseudoclases</b> y <b>pseudoelementos</b>, <b>propiedades</b> con sus valores importantes, unidades, funciones y clases de <b>Bootstrap</b>. Usa el <b>analizador</b> con cualquier código del examen y te lo explica pieza a pieza.</p></div></div>
+
+  <section class="card refsec"><h3>1 · Anatomía: cómo se lee el código</h3>
+   <div class="anat">
+    <div><h4>Un elemento HTML</h4><div class="anatc"><span class="an a1">&lt;a</span> <span class="an a2">href="#contacto"</span> <span class="an a3">class="btn"</span> <span class="an a4">id="cta"</span><span class="an a1">&gt;</span><span class="an a5">Escríbenos</span><span class="an a1">&lt;/a&gt;</span></div>
+     <ul class="anatl"><li><span class="an a1">etiqueta</span> de apertura y cierre: qué es el elemento (aquí, un enlace).</li><li><span class="an a2">atributo</span> = <b>nombre="valor"</b>: configura el elemento (destino del enlace).</li><li><span class="an a3">class</span>: etiqueta <b>reutilizable</b> para el CSS (<code>.btn</code>); un elemento puede tener varias.</li><li><span class="an a4">id</span>: nombre <b>único</b> (<code>#cta</code> en CSS, <code>href="#cta"</code> en enlaces).</li><li><span class="an a5">contenido</span>: texto u otros elementos anidados (hijos).</li></ul></div>
+    <div><h4>Una regla CSS</h4><div class="anatc"><span class="an b1">.menu &gt; li:hover</span> <span class="an b2">{</span><br>&nbsp;&nbsp;<span class="an b3">color</span>: <span class="an b4">crimson</span>;<br>&nbsp;&nbsp;<span class="an b3">padding</span>: <span class="an b4">8px 12px</span>;<br><span class="an b2">}</span></div>
+     <ul class="anatl"><li><span class="an b1">selector</span>: a qué elementos se aplica (se lee de <b>derecha a izquierda</b>).</li><li><span class="an b2">bloque de declaraciones</span> entre llaves.</li><li><span class="an b3">propiedad</span>: qué característica cambias.</li><li><span class="an b4">valor</span>: cómo la cambias; cada declaración termina en <code>;</code>.</li></ul></div>
+   </div>
+   <div class="box w xs"><b>Prioridad (cascada):</b> 1) <code>!important</code> → 2) estilo en línea (<code>style=""</code>) → 3) <b>especificidad</b> (ids, clases/atributos/pseudoclases, elementos/pseudoelementos) → 4) <b>orden</b>: a igualdad, gana la última. Las propiedades de texto (color, font…) se <b>heredan</b>; las de caja (margin, border…) no.</div>
+  </section>
+
+  <section class="card refsec" id="refAn"><h3>2 · 🔍 Analizador: pega un código y te lo explico pieza a pieza</h3>
+   <div class="row"><label>Cargar el código de un caso: <select id="anCase"><option value="">— elige —</option>${EXAM_CASES.map((c, k) => `<option value="${k}">${esc(CASE_RA[c.ra])} · ${esc(c.title)}</option>`).join('')}</select></label></div>
+   <div class="anin"><label>HTML<textarea id="anH" rows="9" spellcheck="false"></textarea></label><label>CSS<textarea id="anC" rows="9" spellcheck="false"></textarea></label></div>
+   <div class="row"><button class="btn p" id="anGo">🔍 Explicar pieza a pieza</button><label class="xs"><input type="checkbox" id="anBs"> con Bootstrap</label></div>
+   <div id="anPv"></div><div id="anOut" class="xp"></div>
+  </section>
+
+  <section class="card refsec"><h3>3 · 🧮 Calculadora de especificidad y lector de selectores</h3>
+   <div class="row"><input id="spIn" value="ul#nav li.activo > a:hover" spellcheck="false" style="flex:1;min-width:0;font-family:ui-monospace,monospace" aria-label="Selector"><button class="btn p" id="spGo">Calcular</button></div>
+   <div class="row xs">Prueba: ${['p', '.aviso', '#principal .aviso', 'nav ul li a', 'h2 + p', '#abrir:checked ~ nav', '.galeria a:hover::after', 'a[href$=".pdf"]', 'li:not(.activo)', '.menu > li:first-child'].map(x => `<button class="btn xs" data-sp="${esc(x)}">${esc(x)}</button>`).join('')}</div>
+   <div id="spOut"></div>
+  </section>
+
+  <section class="refsec"><h3>4 · Glosario completo</h3>
+   <div class="row"><input id="glQ" type="search" placeholder="Busca: nav, ::after, flex, :target, rem, col-md…" style="flex:1;min-width:0" aria-label="Buscar en el glosario"><span class="xs mute" id="glN"></span></div>
+   <div id="glB">${gl}</div>
+  </section>`;
+
+  // analizador
+  const load = c => { const v = caseVersions(c), t = v.find(x => x.id === 'fix') || v.find(x => x.id === 'demo') || v[0];
+    $('#anH').value = t ? t.html : ''; $('#anC').value = t ? t.css : ''; $('#anBs').checked = !!(c.bs || (c.demo && c.demo.bs)); };
+  const run = () => { const h = $('#anH').value, c = $('#anC').value;
+    $('#anPv').innerHTML = `<div class="cframes"><figure class="cfr"><iframe title="Vista previa del analizador" srcdoc="${esc(frameDoc(h, c, { bs: $('#anBs').checked }))}"></iframe><figcaption>Resultado en el navegador</figcaption></figure></div>`;
+    $('#anOut').innerHTML = explainCode(h, c); store.set('an_last', { h, c }); };
+  const last = store.get('an_last', null);
+  if (last) { $('#anH').value = last.h; $('#anC').value = last.c; } else load(ex0);
+  $('#anCase').onchange = e => { if (e.target.value !== '') { load(EXAM_CASES[+e.target.value]); run(); } };
+  $('#anGo').onclick = run;
+
+  // especificidad
+  const sp = () => { const v = $('#spIn').value.trim(); if (!v) return;
+    $('#spOut').innerHTML = xpSplitTop(v, ',').map(s => { const p = xpSpec(s);
+      return `<div class="xrule"><div class="xsel"><code class="big">${esc(s)}</code> <span class="xspec">(${p.join(', ')})</span></div>
+       <div class="spbars"><span class="spb a"><b>${p[0]}</b> ids</span><span class="spb b"><b>${p[1]}</b> clases · atributos · pseudoclases</span><span class="spb c"><b>${p[2]}</b> elementos · pseudoelementos</span></div>
+       <p class="xread">📖 ${xpRead(s)}</p>
+       <ul class="xparts">${xpSelTokens(s).map(x => { const kind = x.k === 'comb' ? ({ ' ': 'descendiente', '>': 'hijo', '+': 'adyacente', '~': 'hermanos' }[x.t]) : x.k === 'pc' ? 'pseudoclase' : x.k === 'pe' ? 'pseudoelemento' : x.k;
+         const ex = x.k === 'pc' ? (GL.pc[x.name] || [''])[0] : x.k === 'pe' ? (GL.pe[x.name] || [''])[0] : x.k === 'comb' ? GL.sel[kind][0] : (GL.sel[x.k] || [''])[0];
+         return `<li><span class="xchip k-${x.k}">${x.t === ' ' ? 'espacio' : esc(x.t)}</span> <b>${kind === 'tipo' ? 'tipo (etiqueta)' : kind}</b>: ${ex}</li>`; }).join('')}</ul></div>`; }).join('') +
+      '<p class="xs mute">Se compara columna a columna, de izquierda a derecha: (1,0,0) gana a (0,15,0). Los combinadores y <code>*</code> no suman. <code>:not()</code> e <code>:is()</code> valen lo que su argumento; <code>:where()</code> vale 0.</p>'; };
+  $('#spGo').onclick = sp; $('#spIn').onkeydown = e => { if (e.key === 'Enter') sp(); };
+  host.querySelectorAll('[data-sp]').forEach(b => b.onclick = () => { $('#spIn').value = b.dataset.sp; sp(); });
+  sp();
+
+  // buscador del glosario
+  const total = host.querySelectorAll('.gle[data-s]').length; $('#glN').textContent = total + ' entradas';
+  $('#glQ').oninput = e => { const q = e.target.value.trim().toLowerCase(); let n = 0;
+    host.querySelectorAll('.gls').forEach(sec => { let any = 0; sec.querySelectorAll('.gle[data-s]').forEach(g => { const ok = !q || g.dataset.s.includes(q); g.hidden = !ok; if (ok) { any++; n++; } }); sec.hidden = !any; sec.open = !!q && any > 0; });
+    $('#glN').textContent = q ? `${n} resultados` : total + ' entradas'; };
+}
+
 // ============================ APP ============================
 (function () { const t = store.get('theme', null); if (t) document.documentElement.dataset.theme = t;
   $('#themeBtn').onclick = () => { const cur = document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); const nx = cur === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = nx; store.set('theme', nx); }; })();
@@ -3316,6 +4966,8 @@ const TABS = [
  { id: 'ra45', name: 'RA4 + RA5 · Multimedia e interactivo', sub: '4 dic', date: '2026-12-04T09:00', sections: RA45_SECTIONS, teach: TEACH_RA45, lead: 'Tema 04 (multimedia) y 05 (interactivo, «ver tema 4»). Según el profesor: «estos contenidos están en el tema 1.1». <b>Sin JavaScript</b>: todo con CSS. Cada apartado tiene laboratorio, comparaciones <b>⇄ «X en vez de Y»</b> (lo que te preguntarán) y retos <b>✍️ Escribe</b> que comprueban tu código.' },
  { id: 'ra1', name: 'RA1 · Estilos y Bootstrap', sub: '15 dic', date: '2026-12-15T09:00', sections: RA1_SECTIONS, teach: TEACH_RA1, lead: 'Tema 01.1 Uso de estilos (G1–G7 y CSS avanzado de W3Schools) y 01.2 Bootstrap 5 (va embebido: los laboratorios funcionan sin conexión). Con comparaciones <b>⇄ «X en vez de Y»</b> y retos <b>✍️ Escribe</b>.' },
  { id: 'guia', name: '🧭 Guía paso a paso', sub: 'construye una página' },
+ { id: 'casos', name: '📝 Casos de examen', sub: 'en papel · ' + EXAM_CASES.length },
+ { id: 'ref', name: '📚 Guía HTML y CSS', sub: 'glosario y analizador' },
  { id: 'rev', name: 'Repaso', sub: 'test y tarjetas' }
 ];
 $('#nav').innerHTML = TABS.map(t => `<button data-t="${t.id}">${t.name}<small>${t.sub}</small></button>`).join('');
@@ -3329,6 +4981,8 @@ const dom = store.get('dom', {});
 function daysTo(d) { const ms = new Date(d) - new Date(); return Math.ceil(ms / 864e5); }
 function buildTab(T, host) {
   if (T.id === 'rev') return buildRev(host);
+  if (T.id === 'casos') return buildCasos(host);
+  if (T.id === 'ref') return buildRef(host);
   if (T.id === 'guia') return buildGuia(host);
   const head = `<div class="rahead"><div><h2>${T.name}</h2><p class="lead">${T.lead}</p></div>${T.date ? `<div class="card" style="text-align:center;min-width:150px"><div class="count">${Math.max(0, daysTo(T.date))} días<small>examen: ${new Date(T.date).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}</small></div></div>` : ''}</div>`;
   if (T.soon) { host.innerHTML = head + `<div class="soon"><b>🛠 En construcción.</b> Este bloque llega en la próxima entrega con laboratorios en vivo para cada punto. Esto es lo que va a cubrir (sacado del tema del profesor):</div>` + Object.entries(T.soon).map(([k, l]) => `<div class="card" style="margin-top:10px"><b>${k}</b><ul>${l.map(x => `<li>${x}</li>`).join('')}</ul></div>`).join(''); return; }
@@ -3431,11 +5085,14 @@ function widgetCardSort(host) {
   draw();
 }
 
+
 // ---------- repaso ----------
 function buildRev(host) {
-  host.innerHTML = `<h2>Repaso</h2><div class="row"><label>Bloque <select id="rvR"><option value="">Todos</option><option value="F">Fundamentos</option><option value="RA2">RA2 · Planificación</option><option value="RA45">RA4 + RA5 · Multimedia e interactivo</option><option value="RA1">RA1 · Estilos y Bootstrap</option><option value="VS">Solo «X en vez de Y»</option></select></label><button class="btn on" data-m="test">Test</button><button class="btn" data-m="fc">Tarjetas</button></div><div id="rvB" style="margin-top:12px"></div>`;
+  host.innerHTML = `<h2>Repaso</h2>
+  <div class="row"><label>Bloque <select id="rvR"><option value="">Todos</option><option value="F">Fundamentos</option><option value="RA2">RA2 · Planificación</option><option value="RA45">RA4 + RA5 · Multimedia e interactivo</option><option value="RA1">RA1 · Estilos y Bootstrap</option><option value="VS">Solo «X en vez de Y»</option></select></label><button class="btn on" data-m="test">Test</button><button class="btn" data-m="fc">Tarjetas</button><button class="btn" data-go="casos">📝 Casos de examen en papel →</button></div><div id="rvB" style="margin-top:12px"></div>`;
   let mode = 'test';
   const run = () => { const r = $('#rvR').value; if (mode === 'test') test(r); else cards(r); };
+  $('[data-go]', host).onclick = () => go('casos');
   $$('[data-m]', host).forEach(b => b.onclick = () => { mode = b.dataset.m; $$('[data-m]', host).forEach(x => x.classList.toggle('on', x === b)); run(); }); $('#rvR').onchange = run;
   const test = r => { const Q = shuffle(QZ.filter(q => !r || q[0] === r || (r === 'VS' && q[1].startsWith('⇄')))).slice(0, 20); let k = 0, ok = 0;
     const show = () => { if (k >= Q.length) { $('#rvB').innerHTML = `<div class="card"><h3>${ok} / ${Q.length}</h3><button class="btn p" id="rvA">Otra ronda</button></div>`; $('#rvA').onclick = run; return; }

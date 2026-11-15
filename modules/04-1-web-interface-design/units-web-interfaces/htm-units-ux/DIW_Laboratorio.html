@@ -178,6 +178,21 @@ table.vst td:first-child,table.vst td:nth-child(2){white-space:nowrap}@media (ma
 .glv{margin:4px 0;padding-left:16px;font-size:13px}
 .xp code,.gld code,.xat code,.anatl code,.xparts code,.xdecl code,.xconf code,.xread code,.xmatch code{overflow-wrap:anywhere;word-break:break-word}.xp,.gle,.cver,.refsec{min-width:0}
 .anat,.anatl{white-space:normal}#refAn .row>label{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-width:0;max-width:100%}#anCase{max-width:100%;min-width:0;flex:1}
+
+/* ---- 🎯 especificidad ---- */
+.spflow{padding-left:22px}.spflow li{margin:6px 0}
+.spcols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:10px;margin:8px 0}
+.spcol{border-radius:10px;padding:10px 12px;display:grid;gap:4px}.spcol span{font-size:13px}.spcol code{font-size:12.5px;overflow-wrap:anywhere}
+.spcol.a,.ca,.spm-a{background:#ffe2a8;color:#5c3d00}.spcol.b,.cb,.spm-b{background:#e4e8ef;color:#2b3340}.spcol.c,.cc,.spm-c{background:#f3d2b5;color:#5a2e0c}
+.spm{display:inline-flex;border-radius:7px;overflow:hidden;font:700 13px ui-monospace,monospace;vertical-align:middle}.spm span{padding:2px 8px}
+.sptab{border-collapse:collapse;font-size:14px;margin:8px 0;display:block;overflow-x:auto;max-width:100%}.sptab th,.sptab td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+.sptab td.ca,.sptab td.cb,.sptab td.cc,.sptab th.ca,.sptab th.cb,.sptab th.cc{text-align:center;min-width:52px}
+.spin{flex:1;min-width:0;font-family:ui-monospace,Consolas,monospace;font-size:15px;padding:7px 9px}
+.spdin{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}.spdin label{display:flex;gap:6px;align-items:center;min-width:0}.spdin label .spin{width:220px;max-width:60vw}
+.spduel{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:8px;margin:8px 0}.spduel>div{border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:var(--bg);display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-width:0}.spduel code{overflow-wrap:anywhere}
+.spsteps{padding-left:20px;font-size:14px}.spsteps li{margin:4px 0}.spwin{font-size:16px}
+#t-esp .refsec{overflow:hidden}
+.swatch{display:inline-block;width:18px;height:18px;border-radius:5px;border:1px solid var(--line);vertical-align:middle}.ecomp{margin:8px 0 0;font-size:14px}
 </style>
 </head>
 <body>
@@ -3743,7 +3758,7 @@ function explainCode(html, css, o = {}) {
           const key = 's:' + (x.k === 'pc' || x.k === 'pe' ? x.name : x.k === 'comb' ? kind : x.k); const show = !seen.has(key); seen.add(key);
           return `<li><span class="xchip k-${x.k}">${esc(x.t)}</span> <b>${kind === 'tipo' ? 'tipo (etiqueta)' : kind}</b>${show && ex ? ': ' + ex : ''}</li>`; }).join('');
         const hasDesc = /\S\s+\S/.test(s.replace(/\s*([>+~])\s*/g, '$1'));
-        return `<div class="xsel"><code class="big">${esc(s)}</code> <span class="xspec" title="(ids, clases/atributos/pseudoclases, elementos/pseudoelementos)">especificidad (${xpSpec(s).join(', ')})</span></div>
+        return `<div class="xsel"><code class="big">${esc(s)}</code> <span class="xspec" title="(ids, clases/atributos/pseudoclases, etiquetas/pseudoelementos)">especificidad (${xpSpec(s).join(', ')})</span> <span class="xs mute">= ${spSay(xpSpec(s))}</span></div>
           <p class="xread">📖 ${xpRead(s)}</p>
           <ul class="xparts">${parts}${hasDesc && !seen.has('s:descendiente') ? (seen.add('s:descendiente'), `<li><span class="xchip k-comb">espacio</span> <b>descendiente</b>: ${GL.sel.descendiente[0]}</li>`) : ''}</ul>
           ${matched === null ? '' : matched.length ? `<p class="xmatch">🎯 ${st.cond.length ? `Elementos que lo cumplirán <b>${st.cond.map(c => XP_PC_TXT[c] || ':' + c).join(' y ')}</b>` : 'Selecciona'}${st.pe ? ' (y estiliza su pseudoelemento)' : ''}: ${matched.slice(0, 6).map(xpLabel).join(' ')}${matched.length > 6 ? ` y ${matched.length - 6} más` : ''}</p>` : (roots.length ? `<p class="xmatch bad">🎯 No selecciona ningún elemento de este HTML.</p>` : '')}`; }).join('');
@@ -3775,6 +3790,361 @@ function explainCode(html, css, o = {}) {
   }
   return out || '<p class="mute">No hay código que explicar.</p>';
 }
+
+// ===================== 🎯 ESPECIFICIDAD Y CASCADA, PASO A PASO =====================
+// Desglose token a token: a qué columna va cada trozo del selector y por qué
+function spBreak(sel) {
+  return xpSelTokens(sel).map(x => {
+    if (x.k === 'comb') return { t: x.t === ' ' ? '␣ (espacio)' : x.t, col: 0, why: { ' ': 'combinador descendiente: <b>no suma</b>', '>': 'combinador hijo directo: <b>no suma</b>', '+': 'combinador hermano adyacente: <b>no suma</b>', '~': 'combinador hermanos: <b>no suma</b>' }[x.t] };
+    if (x.k === 'universal') return { t: '*', col: 0, why: 'selector universal: <b>no suma</b>' };
+    if (x.k === 'id') return { t: x.t, col: 'a', why: 'id → <b>columna 1</b>' };
+    if (x.k === 'clase') return { t: x.t, col: 'b', why: 'clase → <b>columna 2</b>' };
+    if (x.k === 'atributo') return { t: x.t, col: 'b', why: 'atributo → <b>columna 2</b> (aunque sea <code>[id="…"]</code>: cuenta como clase, no como id)' };
+    if (x.k === 'tipo') return { t: x.t, col: 'c', why: 'etiqueta → <b>columna 3</b>' };
+    if (x.k === 'pe') return { t: x.t, col: 'c', why: 'pseudoelemento → <b>columna 3</b> (como una etiqueta)' };
+    if (x.name === 'where') return { t: x.t, col: 0, why: '<code>:where()</code> vale <b>siempre 0</b>, tenga lo que tenga dentro' };
+    if (['not', 'is', 'has'].includes(x.name)) { const m = xpSplitTop(x.arg, ',').map(xpSpec).sort(xpCmp).pop() || [0, 0, 0]; return { t: x.t, col: 'arg', v: m, why: `<code>:${x.name}()</code> no suma por sí misma: vale lo que <b>su argumento más específico</b> → (${m.join(',')})` }; }
+    return { t: x.t, col: 'b', why: 'pseudoclase → <b>columna 2</b> (como una clase)' };
+  });
+}
+const SP_COL = { a: 'ids', b: 'clases · atributos · pseudoclases', c: 'etiquetas · pseudoelementos' };
+function spMedals(p) { return `<span class="spm"><span class="spm-a" title="ids">${p[0]}</span><span class="spm-b" title="clases, atributos, pseudoclases">${p[1]}</span><span class="spm-c" title="etiquetas, pseudoelementos">${p[2]}</span></span>`; }
+function spSay(p) { const n = (x, s, pl) => `${x} ${x === 1 ? s : pl}`; return `${n(p[0], 'id', 'ids')}, ${n(p[1], 'clase/atributo/pseudoclase', 'clases/atributos/pseudoclases')}, ${n(p[2], 'etiqueta/pseudoelemento', 'etiquetas/pseudoelementos')}`; }
+function spTable(sel) {
+  const rows = spBreak(sel), p = xpSpec(sel);
+  return `<table class="sptab"><thead><tr><th>Trozo</th><th class="ca">ids</th><th class="cb">clases…</th><th class="cc">etiquetas…</th><th>Por qué</th></tr></thead><tbody>${rows.map(r => `<tr><td><code>${esc(r.t)}</code></td>${['a', 'b', 'c'].map((c, k) => `<td class="c${c}">${r.col === c ? '+1' : r.col === 'arg' && r.v[k] ? '+' + r.v[k] : ''}</td>`).join('')}<td>${r.why}</td></tr>`).join('')}</tbody><tfoot><tr><td><b>Total</b></td><td class="ca"><b>${p[0]}</b></td><td class="cb"><b>${p[1]}</b></td><td class="cc"><b>${p[2]}</b></td><td>= <b>(${p.join(',')})</b> · ${spSay(p)}</td></tr></tfoot></table>`;
+}
+// Comparación columna a columna, como un medallero
+function spDuel(A, B, o = {}) {
+  const pa = xpSpec(A), pb = xpSpec(B), lines = [];
+  if (o.ia !== o.ib) return { w: o.ia ? 'A' : 'B', html: `<p>⚡ <b>${o.ia ? 'A' : 'B'}</b> tiene <code>!important</code> y la otra no: gana <b>sin mirar la especificidad</b>.</p>` };
+  if (o.ia && o.ib) lines.push('<p>Las dos tienen <code>!important</code>: se anulan entre sí y se decide por especificidad, como si no lo tuvieran.</p>');
+  let w = null;
+  ['ids (oros 🥇)', 'clases/atributos/pseudoclases (platas 🥈)', 'etiquetas/pseudoelementos (bronces 🥉)'].forEach((name, k) => {
+    if (w) { lines.push(`<li class="mute">Columna ${k + 1}, ${name}: no hace falta mirarla.</li>`); return; }
+    if (pa[k] === pb[k]) lines.push(`<li>Columna ${k + 1}, ${name}: ${pa[k]} = ${pb[k]} → <b>empate</b>, pasamos a la siguiente.</li>`);
+    else { w = pa[k] > pb[k] ? 'A' : 'B'; lines.push(`<li>Columna ${k + 1}, ${name}: ${pa[k]} ${pa[k] > pb[k] ? '&gt;' : '&lt;'} ${pb[k]} → <b>gana ${w}</b>. Se acabó la comparación.</li>`); }
+  });
+  if (!w) { if (o.order === 'none') { w = '='; lines.push('<li>Empate total: <b>misma especificidad</b>. En una hoja real ganaría la regla escrita <b>después</b>.</li>'); } else { w = o.order === 'A' ? 'A' : 'B'; lines.push(`<li>Empate total → decide el <b>orden</b>: gana la regla escrita <b>después</b> (${w}).</li>`); } }
+  return { w, html: `${lines[0] && lines[0].startsWith('<p>') ? lines.shift() : ''}<div class="spduel"><div><b>A</b> <code>${esc(A)}</code> ${spMedals(pa)}</div><div><b>B</b> <code>${esc(B)}</code> ${spMedals(pb)}</div></div><ol class="spsteps">${lines.join('')}</ol>` };
+}
+
+// Casos límite de la cascada: código + pregunta + vista previa
+const SP_EDGE = [
+ { t: 'Empate exacto: decide el orden', css: `.aviso { color: green; }
+.aviso { color: crimson; }`, html: `<p class="aviso">¿De qué color soy?</p>`, opts: ['verde', 'rojo'], a: 1, why: 'Las dos reglas tienen (0,1,0). Con el mismo peso, gana la <b>última</b> que aparece en el CSS.' },
+ { t: 'Un id gana a diez clases', css: `#caja { color: green; }
+.a.b.c.d.e.f.g.h.i.j { color: crimson; }`, html: `<p id="caja" class="a b c d e f g h i j">¿De qué color soy?</p>`, opts: ['verde (#caja)', 'rojo (10 clases)'], a: 0, why: '(1,0,0) frente a (0,10,0). Se compara la <b>primera columna</b>: 1 &gt; 0 y ya gana. No es un número de base 10: diez clases no «suben» a un id. Como en el medallero: 1 oro gana a 10 platas.' },
+ { t: 'El combinador > no suma', css: `ul > li { color: green; }
+ul li { color: crimson; }`, html: `<ul><li>¿De qué color soy?</li></ul>`, opts: ['verde (ul > li)', 'rojo (ul li)'], a: 1, why: '<code>ul &gt; li</code> y <code>ul li</code> valen lo mismo: <b>(0,0,2)</b>. El <code>&gt;</code> cambia <b>a quién</b> selecciona (solo hijos directos), pero <b>no</b> añade peso. Empate → gana la última.' },
+ { t: 'La herencia pierde contra cualquier regla directa', css: `#padre { color: green; }
+p { color: crimson; }`, html: `<div id="padre"><p>¿De qué color soy?</p></div>`, opts: ['verde (#padre, más específico)', 'rojo (p)'], a: 1, why: '<code>#padre</code> no selecciona al p: le da color al div, y el p solo lo <b>heredaría</b>. Un valor heredado no tiene especificidad: cualquier regla que apunte <b>directamente</b> al p (aunque sea <code>p</code>, (0,0,1)) gana. Primero se pregunta «¿esta regla selecciona a este elemento?»; solo después se compara la especificidad.' },
+ { t: 'El universal * también gana a la herencia', css: `body { color: green; }
+* { color: crimson; }`, html: `<p>¿De qué color soy?</p>`, opts: ['verde (body)', 'rojo (*)'], a: 1, why: '<code>*</code> vale (0,0,0), pero selecciona <b>directamente</b> al p. body solo se hereda. Un (0,0,0) directo gana a cualquier herencia.' },
+ { t: 'Estilo en línea contra un id', css: `#titulo { color: green; }`, html: `<h2 id="titulo" style="color: crimson">¿De qué color soy?</h2>`, opts: ['verde (#titulo)', 'rojo (style="")'], a: 1, why: 'El atributo <code>style</code> va <b>por encima</b> de cualquier selector de una hoja de estilos: es como una columna extra antes de los ids, (1,0,0,0).' },
+ { t: '!important gana al estilo en línea', css: `h2 { color: green !important; }`, html: `<h2 style="color: crimson">¿De qué color soy?</h2>`, opts: ['verde (h2 !important)', 'rojo (style="")'], a: 0, why: 'Una declaración <code>!important</code> pasa a otro nivel de la cascada que está por encima de todas las normales, incluido el estilo en línea. (Solo un <code>style="… !important"</code> le ganaría.)' },
+ { t: 'Dos !important: vuelve a decidir la especificidad', css: `#caja { color: green !important; }
+.caja { color: crimson !important; }`, html: `<p id="caja" class="caja">¿De qué color soy?</p>`, opts: ['verde (#caja)', 'rojo (.caja, va después)'], a: 0, why: 'Si las dos son !important, entre ellas se compara la especificidad: (1,0,0) &gt; (0,1,0). El orden solo decide si también empatan.' },
+ { t: '[id="x"] no es un id', css: `[id="caja"] { color: green; }
+.texto { color: crimson; }`, html: `<p id="caja" class="texto">¿De qué color soy?</p>`, opts: ['verde ([id="caja"])', 'rojo (.texto)'], a: 1, why: 'Un selector de atributo vale como una <b>clase</b>, (0,1,0), aunque el atributo sea id. Empate con <code>.texto</code> → gana la última.' },
+ { t: ':not() vale lo que tiene dentro', css: `p:not(#otro) { color: green; }
+p.texto { color: crimson; }`, html: `<p class="texto">¿De qué color soy?</p>`, opts: ['verde (p:not(#otro))', 'rojo (p.texto)'], a: 0, why: '<code>:not()</code> no suma por sí misma, pero suma su argumento: <code>p:not(#otro)</code> = p (0,0,1) + #otro (1,0,0) = <b>(1,0,1)</b>, aunque el p no tenga ese id. Frente a <code>p.texto</code> (0,1,1) gana.' },
+ { t: ':where() vale cero', css: `:where(#menu) a { color: green; }
+a { color: crimson; }`, html: `<nav id="menu"><a href="#">¿De qué color soy?</a></nav>`, opts: ['verde (:where(#menu) a)', 'rojo (a)'], a: 1, why: '<code>:where()</code> siempre vale 0: el selector queda en (0,0,1), igual que <code>a</code>. Empate → gana la última. Se usa para estilos base fáciles de sobrescribir.' },
+ { t: 'El :hover que nunca se ve', css: `a:hover { color: crimson; }
+.menu a { color: green; }`, html: `<nav class="menu"><a href="#">Pasa el ratón por encima</a></nav>`, opts: ['al pasar el ratón se pone rojo', 'se queda verde siempre'], a: 1, why: '<code>a:hover</code> (0,1,1) y <code>.menu a</code> (0,1,1) empatan, y <code>.menu a</code> va <b>después</b>: también gana durante el hover. Solución: <code>.menu a:hover</code> (0,2,1), o escribir el hover después.' },
+ { t: 'El atajo pisa a la propiedad individual', css: `.caja { padding-top: 40px; }
+.caja { padding: 5px; }`, html: `<div class="caja" style="background:#cfe3ff">¿Cuánto padding arriba tengo?</div>`, opts: ['40 px arriba', '5 px arriba'], a: 1, why: '<code>padding</code> es un atajo que <b>reescribe los cuatro lados</b>, incluido padding-top. Mismo peso, va después → arriba quedan 5 px. Al revés (primero el atajo, después padding-top) sí funcionaría.' },
+ { t: 'Dentro de la misma regla, gana la última línea', css: `.boton {
+  background: green;
+  background: crimson;
+}`, html: `<button class="boton" style="color:white;border:0;padding:8px">¿Qué fondo tengo?</button>`, opts: ['verde', 'rojo'], a: 1, why: 'Dos declaraciones de la misma propiedad en la misma regla: gana la <b>última</b>. Se usa a propósito como «respaldo» (por ejemplo, un color normal antes de uno moderno).' },
+ { t: 'La media query no suma especificidad', css: `@media (min-width: 1px) {
+  p { color: green; }
+}
+p { color: crimson; }`, html: `<p>¿De qué color soy?</p>`, opts: ['verde (está en la media query)', 'rojo (va después)'], a: 1, why: 'Estar dentro de <code>@media</code> no da peso extra. Si la condición se cumple, compite como cualquier otra regla: (0,0,1) contra (0,0,1) → gana la última.' },
+ { t: 'Clase repetida: .a.a', css: `.aviso.aviso { color: green; }
+p.aviso { color: crimson; }`, html: `<p class="aviso">¿De qué color soy?</p>`, opts: ['verde (.aviso.aviso)', 'rojo (p.aviso)'], a: 0, why: '<code>.aviso.aviso</code> = (0,2,0) aunque sea la misma clase. <code>p.aviso</code> = (0,1,1). Columna 2: 2 &gt; 1 → gana la primera. Es un truco legítimo para subir especificidad sin usar ids ni !important.' },
+ { t: 'Pseudoelemento contra pseudoclase', css: `p::first-line { color: green; }
+p:first-child { color: crimson; }`, html: `<div><p>Primera línea del primer párrafo, que es bastante larga para que se parta en dos líneas en la vista previa estrecha.</p></div>`, opts: ['la primera línea verde', 'todo rojo'], a: 0, why: 'Trampa: no compiten por el mismo «elemento». <code>::first-line</code> es una parte <b>dentro</b> del p y recibe su propio color; el resto del p es rojo. La especificidad solo se compara entre reglas que apuntan al <b>mismo</b> objetivo.' },
+ { t: 'Orden de las hojas: link y style', css: `/* estilos.css (enlazado PRIMERO) */
+.titulo { color: green; }
+
+/* <style> en el head, DESPUÉS del link */
+.titulo { color: crimson; }`, html: `<h2 class="titulo">¿De qué color soy?</h2>`, opts: ['verde (archivo externo)', 'rojo (style interno, después)'], a: 1, why: 'Externa, interna o en un archivo da igual: todas las hojas se juntan <b>en el orden en que aparecen</b> en el HTML. El <code>&lt;style&gt;</code> va después del <code>&lt;link&gt;</code> → gana en empate. (El atributo style="" es otra cosa: siempre gana a los selectores.)' }
+];
+
+// Banco del entrenador: selectores variados (incluye > + ~ :has :not :where)
+const SP_POOL = ['p', 'div p', 'ul > li', 'ul li a', '.menu', 'li.activo', '.menu > li', '.menu .activo', 'nav ul li a', '#nav', '#nav a', '#nav > li.activo', 'a:hover', '.menu a:hover', 'a[href^="https"]', '[type="text"]', 'input[type="text"]:focus', 'h2 + p', 'h2 ~ p', 'p::first-line', 'p:first-child', 'li:nth-child(2n)', 'li:not(.activo)', 'p:not(#x)', ':where(#nav) a', ':is(#nav, .menu) a', 'li:has(> a.activo)', '*', 'body *', '.a.a', '.card .titulo span', 'article > h2:first-of-type', '#main .card:hover > img', 'form input:invalid', '.foto::after', '.btn.btn-primary'];
+
+function buildEsp(host) {
+  const stS = store.get('sp_score', { ok: 0, n: 0 });
+  host.innerHTML = `<div class="rahead"><div><h2>🎯 Especificidad y cascada, paso a paso</h2><p class="lead">Cuando varias reglas CSS quieren cambiar la misma propiedad del mismo elemento, el navegador decide cuál gana con la <b>cascada</b>. Aquí aprendes a calcular la especificidad <b>(a, b, c)</b>, a leer qué significa <b>(0,1,0)</b> o <b>(1,1,0)</b>, y a resolver los casos límite que caen en el examen.</p></div><div class="card cstats"><div class="count" id="spSc">${stS.ok}/${stS.n}</div><div class="xs">aciertos en el entrenador</div></div></div>
+
+  <section class="card refsec"><h3>1 · El orden completo de la cascada</h3>
+   <p>Para cada propiedad de cada elemento, el navegador recorre estos pasos <b>en orden</b> y se para en el primero que decide:</p>
+   <ol class="spflow">
+    <li><b>¿La regla selecciona a este elemento?</b> Si no, no compite. Si ninguna regla le da valor, se <b>hereda</b> del padre (solo propiedades heredables: color, font…) o se usa el valor inicial.</li>
+    <li><b><code>!important</code></b>: una declaración importante gana a todas las normales. Si varias lo son, se sigue con los pasos siguientes solo entre ellas.</li>
+    <li><b>Estilo en línea</b> (<code>style="…"</code> en la etiqueta): gana a cualquier selector de una hoja.</li>
+    <li><b>Especificidad (a, b, c)</b> del selector: se compara columna a columna.</li>
+    <li><b>Orden</b>: con todo empatado gana la que aparece <b>después</b> (en el mismo archivo, entre archivos según el orden de los <code>&lt;link&gt;</code> y <code>&lt;style&gt;</code>, y dentro de una misma regla, la última línea).</li>
+   </ol>
+   <div class="box w xs">No suman especificidad: los combinadores (espacio, <code>&gt;</code>, <code>+</code>, <code>~</code>), el universal <code>*</code>, <code>:where()</code> y las media queries.</div>
+  </section>
+
+  <section class="card refsec"><h3>2 · Qué significa (a, b, c): el medallero</h3>
+   <div class="spcols"><div class="spcol a"><b>a · 🥇 oros</b><span>ids</span><code>#menu</code></div><div class="spcol b"><b>b · 🥈 platas</b><span>clases, atributos, pseudoclases</span><code>.activo [type="text"] :hover :first-child</code></div><div class="spcol c"><b>c · 🥉 bronces</b><span>etiquetas y pseudoelementos</span><code>p li a ::before ::after</code></div></div>
+   <p>Se ordena como un <b>medallero olímpico</b>: primero se comparan los oros; solo si empatan, las platas; solo si empatan, los bronces. Por eso <b>(1,0,0)</b> (un oro) gana a <b>(0,15,0)</b> (quince platas): no se suman como un número de tres cifras.</p>
+   <table class="sptab"><thead><tr><th>Se lee</th><th>Significa</th><th>Ejemplo</th></tr></thead><tbody>
+    <tr><td><b>(0,0,1)</b></td><td>0 ids, 0 clases, 1 etiqueta</td><td><code>p</code></td></tr>
+    <tr><td><b>(0,0,2)</b></td><td>2 etiquetas</td><td><code>ul li</code> · <code>ul &gt; li</code> · <code>h2 + p</code></td></tr>
+    <tr><td><b>(0,1,0)</b></td><td>1 clase (o atributo, o pseudoclase)</td><td><code>.aviso</code> · <code>[type="text"]</code> · <code>:hover</code></td></tr>
+    <tr><td><b>(0,1,1)</b></td><td>1 clase + 1 etiqueta</td><td><code>p.aviso</code> · <code>a:hover</code> · <code>.menu a</code></td></tr>
+    <tr><td><b>(0,2,0)</b></td><td>2 clases</td><td><code>.menu .activo</code> · <code>.btn:focus</code></td></tr>
+    <tr><td><b>(1,0,0)</b></td><td>1 id</td><td><code>#principal</code></td></tr>
+    <tr><td><b>(1,1,0)</b></td><td>1 id + 1 clase</td><td><code>#principal .aviso</code> · <code>#nav:hover</code></td></tr>
+    <tr><td><b>(1,2,3)</b></td><td>1 id, 2 clases/pseudoclases, 3 etiquetas</td><td><code>ul#nav li.activo &gt; a:hover</code></td></tr>
+   </tbody></table>
+  </section>
+
+  <section class="card refsec"><h3>3 · Calcula cualquier selector, trozo a trozo</h3>
+   <div class="row"><input id="spX" value="ul#nav li.activo > a:hover" spellcheck="false" class="spin" aria-label="Selector"><button class="btn p" id="spXgo">Calcular</button></div>
+   <div class="row xs">${['nav ul li a', '.menu > li:first-child', '#abrir:checked ~ nav', 'a[href$=".pdf"]', 'li:not(.activo)', 'p:not(#x)', ':where(#nav) a', 'li:has(> a.activo)', '.galeria a:hover::after', '*'].map(x => `<button class="btn xs" data-spx="${esc(x)}">${esc(x)}</button>`).join('')}</div>
+   <div id="spXout"></div>
+  </section>
+
+  <section class="card refsec"><h3>4 · Duelo: ¿qué regla gana?</h3>
+   <p class="xs mute">Escribe dos selectores que apunten al <b>mismo</b> elemento. Marca !important si quieres y elige cuál va después en el CSS.</p>
+   <div class="spdin"><label>Regla A <input id="dA" value=".menu a" spellcheck="false" class="spin"></label><label class="xs"><input type="checkbox" id="dAi"> !important</label>
+    <label>Regla B <input id="dB" value="a:hover" spellcheck="false" class="spin"></label><label class="xs"><input type="checkbox" id="dBi"> !important</label>
+    <label class="xs">Escrita después: <select id="dO"><option value="B">B</option><option value="A">A</option></select></label><button class="btn p" id="dGo">⚔️ Comparar</button></div>
+   <div id="dOut"></div>
+  </section>
+
+  <section class="card refsec"><h3>5 · Casos límite (${SP_EDGE.length}): adivina y compruébalo en vivo</h3>
+   <p class="xs mute">Basados en la chuleta CSS3: selectores de atributo, pseudoclases estructurales y de formulario, <code>:is()</code>/<code>:not()</code>/<code>:where()</code>/<code>:has()</code>, herencia (<code>inherit</code>, <code>initial</code>, <code>unset</code>, <code>currentColor</code>), atajos, variables, pseudoelementos, <code>@media</code> y <code>@supports</code>. Después de responder, el navegador te dice el valor calculado real.</p>
+   <div class="cfilters"><label>Categoría <select id="eCat"><option value="">Todas (${SP_EDGE.length})</option>${SP_CATS.map(c => `<option value="${esc(c)}">${esc(c)} (${SP_EDGE.filter(e => e.cat === c).length})</option>`).join('')}</select></label><span class="xs" id="eProg"></span><button class="btn xs" id="eReset">Reiniciar progreso</button></div>
+   <div class="cgrid" id="eGrid"></div><div id="eCard"></div>
+  </section>
+
+  <section class="card refsec"><h3>6 · ¿Y el «&lt;»? Combinadores y símbolos que confunden</h3>
+   <table class="sptab"><thead><tr><th>Símbolo</th><th>Qué hace</th><th>Ejemplo</th><th>Especificidad</th></tr></thead><tbody>
+    <tr><td><code>A B</code> (espacio)</td><td>B <b>descendiente</b> de A, a cualquier profundidad</td><td><code>nav a</code></td><td>(0,0,2): el espacio no suma</td></tr>
+    <tr><td><code>A &gt; B</code></td><td>B <b>hijo directo</b> de A (un solo nivel)</td><td><code>.menu &gt; li</code></td><td>(0,1,1): el &gt; no suma</td></tr>
+    <tr><td><code>A + B</code></td><td>el B que va <b>justo después</b> de A (mismo padre)</td><td><code>h2 + p</code></td><td>(0,0,2)</td></tr>
+    <tr><td><code>A ~ B</code></td><td><b>todos</b> los B que van después de A (mismo padre)</td><td><code>#abrir:checked ~ nav</code></td><td>(1,1,1)</td></tr>
+    <tr><td><code>A &lt; B</code></td><td><b>❌ No existe en CSS.</b> No hay combinador «padre de». Escribirlo invalida la regla entera.</td><td>—</td><td>—</td></tr>
+    <tr><td><code>A:has(&gt; B)</code></td><td>Lo que se buscaba con «&lt;»: selecciona <b>A</b> si tiene un hijo directo B (selector «padre», moderno)</td><td><code>li:has(&gt; a.activo)</code></td><td>(0,1,2): li + el argumento a.activo</td></tr>
+    <tr><td><code>(width &lt; 600px)</code></td><td>Aquí sí: <b>sintaxis de rango</b> de las media queries modernas. Equivale a <code>max-width: 599.98px</code>; <code>&lt;=</code> equivale a max-width.</td><td><code>@media (width &lt; 600px)</code></td><td>no aplica: las media queries no suman</td></tr>
+   </tbody></table>
+   <div class="cframes">${[['li:has(> a.activo)', `<ul class="lista"><li><a href="#">Inicio</a></li><li><a class="activo" href="#">Tienda</a></li><li><a href="#">Contacto</a></li></ul>`, `.lista li { padding: 6px; }\nli:has(> a.activo) { background: gold; }   /* el li PADRE del enlace activo */`], ['(width < 600px)', `<p class="aviso">Estrecha la ventana: menos de 600 px → fondo rojo</p>`, `.aviso { background: #cfe3ff; padding: 8px; }\n@media (width < 600px) { .aviso { background: #ffd6d6; } }`]].map(([t, h, c]) => `<figure class="cfr"><p class="clab">${esc(t)}</p>${codeBlock(c, 'css')}<iframe title="${esc(t)}" srcdoc="${esc(frameDoc(h, c, {}))}" style="height:150px"></iframe></figure>`).join('')}</div>
+  </section>
+
+  <section class="card refsec"><h3>7 · Entrenador: ¿cuál es más específico?</h3>
+   <div id="tCard"></div>
+  </section>`;
+
+  // 3 · calculadora
+  const calc = () => { const v = $('#spX').value.trim(); if (!v) return;
+    if (/</.test(v)) { const m = v.match(/^\s*(.+?)\s*<\s*(.+?)\s*$/); const par = m ? `${m[1]}:has(> ${m[2]})` : 'padre:has(> hijo)';
+      $('#spXout').innerHTML = `<div class="box x csol"><b>⚠ «&lt;» no existe como combinador en CSS</b><p>Un selector con <code>&lt;</code> es <b>inválido</b> y el navegador ignora la regla entera (no se calcula especificidad). CSS solo tiene <code>espacio</code>, <code>&gt;</code>, <code>+</code> y <code>~</code>, y todos van «hacia abajo» o «hacia delante» en el HTML.</p>${m ? `<p>Si querías «el <code>${esc(m[1])}</code> que contiene un <code>${esc(m[2])}</code> como hijo» (seleccionar el <b>padre</b>), se escribe con <code>:has()</code>:</p><p><code class="big">${esc(par)}</code> ${spMedals(xpSpec(par))}</p><p class="xs">Y si querías «<code>${esc(m[2])}</code> hijo directo de <code>${esc(m[1])}</code>», es <code>${esc(m[1])} &gt; ${esc(m[2])}</code>.</p>` : ''}</div>`; return; }
+    $('#spXout').innerHTML = xpSplitTop(v, ',').map(s => `<div class="xrule"><div class="xsel"><code class="big">${esc(s)}</code> ${spMedals(xpSpec(s))}</div><p class="xread">📖 ${xpRead(s)}</p>${spTable(s)}</div>`).join('') + (xpSplitTop(v, ',').length > 1 ? '<p class="xs mute">Con comas son selectores independientes: cada uno tiene su propia especificidad.</p>' : '') + ''; };
+  $('#spXgo').onclick = calc; $('#spX').onkeydown = e => { if (e.key === 'Enter') calc(); };
+  host.querySelectorAll('[data-spx]').forEach(b => b.onclick = () => { $('#spX').value = b.dataset.spx; calc(); }); calc();
+
+  // 4 · duelo
+  const duel = () => { const A = $('#dA').value.trim(), B = $('#dB').value.trim(); if (!A || !B) return;
+    const r = spDuel(A, B, { ia: $('#dAi').checked, ib: $('#dBi').checked, order: $('#dO').value });
+    $('#dOut').innerHTML = `${r.html}<p class="spwin">🏆 Gana <b>${r.w}</b>: <code>${esc(r.w === 'A' ? A : B)}</code></p><details class="xs"><summary>Ver el desglose de cada selector</summary>${spTable(A)}${spTable(B)}</details>`; };
+  $('#dGo').onclick = duel; duel();
+
+  // 5 · casos límite (con filtro por categoría y valor calculado por el navegador)
+  const est = store.get('sp_edge', {}); let ei = 0, ecat = '';
+  const elist = () => SP_EDGE.map((e, k) => k).filter(k => !ecat || SP_EDGE[k].cat === ecat);
+  const egrid = () => { const L = elist(); if (!L.includes(ei)) ei = L[0];
+    const ok = Object.values(est).filter(v => v === 'ok').length;
+    $('#eProg').textContent = `${ok} / ${SP_EDGE.length} acertados · ${Object.keys(est).length} intentados`;
+    $('#eGrid').innerHTML = L.map(k => `<button class="cgi ${est[k] || ''}${k === ei ? ' cur' : ''}" data-ek="${k}" title="${esc(SP_EDGE[k].t)}">${k + 1}</button>`).join(''); };
+  const NAMES = { 'rgb(0, 128, 0)': 'verde', 'rgb(220, 20, 60)': 'rojo (crimson)', 'rgb(0, 0, 0)': 'negro', 'rgb(0, 0, 238)': 'azul (enlace por defecto)', 'rgba(0, 0, 0, 0)': 'transparente', 'rgb(255, 255, 255)': 'blanco' };
+  const computed = (ifr, e) => { try { const d = ifr.contentDocument, el = d && d.querySelector(e.chk[0]); if (!el) return;
+      const v = ifr.contentWindow.getComputedStyle(el, e.chk[2] || null).getPropertyValue(e.chk[1]).trim(), isCol = /^rgba?\(/.test(v);
+      const box = $('#eComp'); if (!box) return;
+      box.innerHTML = `🔬 <b>El navegador calcula</b> para <code>${esc(e.chk[0])}${e.chk[2] ? esc(e.chk[2]) : ''}</code>: <code>${esc(e.chk[1])}: ${esc(v)}</code> ${isCol ? `<span class="swatch" style="background:${v}"></span> <b>${NAMES[v] || ''}</b>` : ''}<br><span class="xs mute">Es lo que verías en F12 → pestaña «Computed» (valor calculado final, después de la cascada y la herencia).</span>`; } catch (err) { } };
+  const edraw = () => { egrid(); const e = SP_EDGE[ei], L = elist(), pos = L.indexOf(ei);
+    $('#eCard').innerHTML = `<article class="ccard"><div class="row" style="justify-content:space-between"><span class="tag">${esc(e.cat)}</span><span class="mute xs">${pos + 1} / ${L.length}${ecat ? ' en esta categoría' : ''}</span></div><h4>${ei + 1}. ${esc(e.t)}</h4><div class="cvers"><div class="cver"><p class="clab">HTML</p>${codeBlock(e.html, 'html')}</div><div class="cver"><p class="clab">CSS</p>${codeBlock(e.css, 'css')}</div></div>
+     <p class="cask">¿Qué se verá?</p><div class="row" id="eOpts">${e.opts.map((o, k) => `<button class="btn" data-eo="${k}">${esc(o)}</button>`).join('')}</div><div id="eAns"></div>
+     <div class="row cnav"><button class="btn" id="eP" ${pos ? '' : 'disabled'}>← Anterior</button><button class="btn" id="eN">${pos === L.length - 1 ? 'Volver al primero ↺' : 'Siguiente →'}</button></div></article>`;
+    host.querySelectorAll('[data-eo]').forEach(b => b.onclick = () => { const ok = +b.dataset.eo === e.a; est[ei] = ok ? 'ok' : 'rep'; store.set('sp_edge', est); egrid();
+      host.querySelectorAll('[data-eo]').forEach(x => { x.disabled = true; if (+x.dataset.eo === e.a) x.classList.add('good'); else if (x === b) x.classList.add('wrong'); });
+      const rules = []; xpCssParse(e.css).forEach(function f(it) { if (it.sel) rules.push(it.sel); else if (it.children) it.children.forEach(f); });
+      $('#eAns').innerHTML = `<div class="box ${ok ? 't' : 'x'} csol"><b>${ok ? '✓ ¡Correcto!' : '✗ No exactamente'}</b><p>${e.why}</p>${rules.length ? `<p class="xs">${rules.map(s => `<code>${esc(s)}</code> ${spMedals(xpSpec(s))}`).join(' · ')}</p>` : ''}
+        <div class="cframes"><figure class="cfr"><iframe id="eIfr" title="Resultado" srcdoc="${esc(frameDoc(e.html, e.css, {}))}" style="height:140px"></iframe><figcaption>👁 Resultado real en el navegador</figcaption></figure></div><p id="eComp" class="ecomp"></p></div>`;
+      const ifr = $('#eIfr'); if (ifr && e.chk) ifr.addEventListener('load', () => computed(ifr, e)); });
+    $('#eP').onclick = () => { if (pos) { ei = L[pos - 1]; edraw(); } }; $('#eN').onclick = () => { ei = L[(pos + 1) % L.length]; edraw(); }; };
+  $('#eGrid').onclick = e => { const b = e.target.closest('[data-ek]'); if (b) { ei = +b.dataset.ek; edraw(); } };
+  $('#eCat').onchange = e => { ecat = e.target.value; ei = elist()[0]; edraw(); };
+  $('#eReset').onclick = () => { Object.keys(est).forEach(k => delete est[k]); store.set('sp_edge', est); edraw(); };
+  edraw();
+
+  // 7 · entrenador
+  const tnew = () => { let A, B; do { [A, B] = shuffle(SP_POOL).slice(0, 2); } while (A === B);
+    const pa = xpSpec(A), pb = xpSpec(B), c = xpCmp(pa, pb), ans = c > 0 ? 0 : c < 0 ? 1 : 2;
+    $('#tCard').innerHTML = `<p>¿Qué selector tiene <b>más especificidad</b>?</p><div class="spduel"><div><b>A</b> <code class="big">${esc(A)}</code></div><div><b>B</b> <code class="big">${esc(B)}</code></div></div>
+     <div class="row" id="tOpts"><button class="btn" data-t="0">A</button><button class="btn" data-t="1">B</button><button class="btn" data-t="2">Empate (decide el orden)</button></div><div id="tAns"></div>`;
+    host.querySelectorAll('[data-t]').forEach(b => b.onclick = () => { const ok = +b.dataset.t === ans; stS.n++; if (ok) stS.ok++; store.set('sp_score', stS); $('#spSc').textContent = `${stS.ok}/${stS.n}`;
+      host.querySelectorAll('[data-t]').forEach(x => { x.disabled = true; if (+x.dataset.t === ans) x.classList.add('good'); else if (x === b) x.classList.add('wrong'); });
+      $('#tAns').innerHTML = `<div class="box ${ok ? 't' : 'x'} csol"><b>${ok ? '✓ ¡Bien!' : '✗ Repasa este'}</b>${spDuel(A, B, { order: 'none' }).html}<details class="xs"><summary>Desglose trozo a trozo</summary>${spTable(A)}${spTable(B)}</details><div class="row"><button class="btn p" id="tNext">Otro par →</button></div></div>`;
+      $('#tNext').onclick = tnew; }); };
+  tnew();
+}
+
+// ===================== 🎯 MÁS CASOS DE ESPECIFICIDAD Y CASCADA (basados en la chuleta CSS3 de Manz) =====================
+// cat: categoría · chk: [selector objetivo, propiedad, pseudoelemento?] · exp: valor calculado esperado (se comprueba en los tests)
+const SP_CATS = ['Cascada y orden', 'Especificidad', 'Selectores de atributo', 'Pseudoclases estructurales', 'Pseudoclases de formulario', ':is() :not() :where() :has()', 'Herencia y valores globales', '!important y estilo en línea', 'Atajos (shorthands)', 'Variables CSS', 'Pseudoelementos', '@media y @supports'];
+const _G = 'rgb(0, 128, 0)', _R = 'rgb(220, 20, 60)';
+// categoría y comprobación de los 18 casos originales (mismo orden)
+[['Cascada y orden', ['p', 'color'], _R], ['Especificidad', ['p', 'color'], _G], ['Especificidad', ['li', 'color'], _R], ['Herencia y valores globales', ['p', 'color'], _R], ['Herencia y valores globales', ['p', 'color'], _R], ['!important y estilo en línea', ['h2', 'color'], _R], ['!important y estilo en línea', ['h2', 'color'], _G], ['!important y estilo en línea', ['p', 'color'], _G], ['Selectores de atributo', ['p', 'color'], _R], [':is() :not() :where() :has()', ['p', 'color'], _G], [':is() :not() :where() :has()', ['a', 'color'], _R], ['Cascada y orden', ['a', 'color'], _G], ['Atajos (shorthands)', ['.caja', 'padding-top'], '5px'], ['Cascada y orden', ['button', 'background-color'], _R], ['@media y @supports', ['p', 'color'], _R], ['Especificidad', ['p', 'color'], _G], ['Pseudoelementos', ['p', 'color', '::first-line'], _G], ['Cascada y orden', ['h2', 'color'], _R]]
+  .forEach(([cat, chk, exp], k) => Object.assign(SP_EDGE[k], { cat, chk, exp }));
+
+SP_EDGE.push(
+// ---------- Especificidad
+{ cat: 'Especificidad', t: 'Más etiquetas también suman', css: `body p { color: green; }
+p { color: crimson; }`, html: `<p>¿De qué color soy?</p>`, opts: ['verde (body p)', 'rojo (p, va después)'], a: 0, chk: ['p', 'color'], exp: _G,
+  why: '<code>body p</code> = (0,0,2) y <code>p</code> = (0,0,1). En la tercera columna 2 &gt; 1: gana aunque vaya antes. El orden solo cuenta si hay <b>empate</b>.' },
+{ cat: 'Especificidad', t: 'Una clase gana a cinco etiquetas', css: `.item { color: crimson; }
+html body div ul li { color: green; }`, html: `<div><ul><li class="item">¿De qué color soy?</li></ul></div>`, opts: ['verde (5 etiquetas, va después)', 'rojo (.item)'], a: 1, chk: ['li', 'color'], exp: _R,
+  why: '(0,1,0) frente a (0,0,5). Se decide en la <b>segunda</b> columna (1 &gt; 0) antes de mirar las etiquetas. Ni 100 etiquetas igualan a una clase.' },
+{ cat: 'Especificidad', t: 'En un grupo con comas, cada selector va por su cuenta', css: `#oferta, p { color: green; }
+p.texto { color: crimson; }`, html: `<p class="texto">¿De qué color soy?</p>`, opts: ['verde (el grupo tiene un #id)', 'rojo (p.texto)'], a: 1, chk: ['p', 'color'], exp: _R,
+  why: 'La coma separa selectores <b>independientes</b>. Al p lo selecciona <code>p</code> (0,0,1), no <code>#oferta</code> (no tiene ese id). <code>p.texto</code> (0,1,1) gana. El #id del grupo no «presta» su peso.' },
+{ cat: 'Cascada y orden', t: 'Un selector inválido anula todo el grupo (y el «<»)', css: `p { color: green; }
+p, ul < li { color: crimson; }`, html: `<p>¿De qué color soy?</p>`, opts: ['verde', 'rojo (p está en el grupo y va después)'], a: 0, chk: ['p', 'color'], exp: _G,
+  why: 'En una lista con comas, si <b>un</b> selector es inválido (aquí <code>ul &lt; li</code>: el combinador «&lt;» no existe), el navegador descarta la <b>regla entera</b>, también para <code>p</code>. Solo queda la primera regla → verde. Lo mismo pasaría con una pseudoclase mal escrita como <code>a:hoverr</code>.' },
+{ cat: 'Pseudoclases estructurales', t: ':root pesa más que html', css: `:root { color: green; }
+html { color: crimson; }`, html: `<p>¿De qué color soy? (heredo de la raíz)</p>`, opts: ['verde (:root)', 'rojo (html, va después)'], a: 0, chk: ['p', 'color'], exp: _G,
+  why: 'Los dos seleccionan el mismo elemento (la raíz html), pero <code>:root</code> es una pseudoclase (0,1,0) y <code>html</code> una etiqueta (0,0,1). Por eso las variables globales se declaran en <code>:root</code>.' },
+// ---------- Atributos (CSS3)
+{ cat: 'Selectores de atributo', t: '[attr~="val"]: palabra completa, no trozo', css: `p[class*="rojo"] { color: green; }
+p[class~="rojo"] { color: crimson; }`, html: `<p class="naranja-rojo">¿De qué color soy?</p>`, opts: ['verde (*= rojo)', 'rojo (~= rojo, va después)'], a: 0, chk: ['p', 'color'], exp: _G,
+  why: '<code>*=</code> busca el texto en cualquier parte («naranja-<b>rojo</b>» lo contiene). <code>~=</code> exige una <b>palabra completa</b> separada por espacios, y «naranja-rojo» es una sola palabra. La segunda regla no selecciona al p, así que no compite.' },
+{ cat: 'Selectores de atributo', t: '[lang|="es"]: «es» o «es-…»', css: `[lang|="es"] { color: green; }
+p { color: crimson; }`, html: `<p lang="es-MX">¿De qué color soy?</p>`, opts: ['verde ([lang|="es"])', 'rojo (p, va después)'], a: 0, chk: ['p', 'color'], exp: _G,
+  why: '<code>|=</code> selecciona el valor exacto «es» o que empiece por «es-» (es-ES, es-MX). Como atributo vale (0,1,0) y gana a <code>p</code> (0,0,1) aunque vaya antes.' },
+{ cat: 'Selectores de atributo', t: 'El modificador i: sin distinguir mayúsculas', css: `a[href$=".PDF" i] { color: green; }
+a { color: crimson; }`, html: `<a href="temario.pdf">temario.pdf</a>`, opts: ['verde (termina en .PDF, con i)', 'rojo (a)'], a: 0, chk: ['a', 'color'], exp: _G,
+  why: 'Con <code>i</code> antes del corchete, la comparación del valor ignora mayúsculas: «.pdf» coincide con «.PDF». El selector es (0,1,1) frente a (0,0,1).' },
+{ cat: 'Selectores de atributo', t: 'Atributo y clase pesan lo mismo', css: `input[type="text"] { color: green; }
+input.campo { color: crimson; }`, html: `<input type="text" class="campo" value="¿De qué color soy?">`, opts: ['verde ([type="text"])', 'rojo (.campo, va después)'], a: 1, chk: ['input', 'color'], exp: _R,
+  why: 'Los dos valen (0,1,1): una etiqueta + un atributo o una clase. Empate → gana la última.' },
+// ---------- Estructurales
+{ cat: 'Pseudoclases estructurales', t: ':nth-child(2) o :nth-of-type(2)', css: `div p:nth-child(2) { color: green; }
+div p:nth-of-type(2) { color: crimson; }`, html: `<div><h3>Título</h3><p>Primer párrafo: ¿de qué color soy?</p><p>Segundo párrafo</p></div>`, opts: ['verde (nth-child(2))', 'rojo (nth-of-type(2), va después)'], a: 0, chk: ['p', 'color'], exp: _G,
+  why: 'El primer p es el <b>2.º hijo</b> del div (después del h3), así que cumple <code>:nth-child(2)</code>. Pero es el <b>1.º de su tipo</b>, así que no cumple <code>:nth-of-type(2)</code>, que selecciona al segundo párrafo. Mismo peso, pero la segunda no apunta a este elemento.' },
+{ cat: 'Pseudoclases estructurales', t: 'El argumento de :nth-* no suma', css: `li:last-child { color: green; }
+li:nth-last-child(1) { color: crimson; }`, html: `<ul><li>Uno</li><li>Último: ¿de qué color soy?</li></ul>`, opts: ['verde (:last-child)', 'rojo (:nth-last-child(1), va después)'], a: 1, chk: ['li:last-child', 'color'], exp: _R,
+  why: 'Una pseudoclase cuenta <b>una vez</b> en la columna b, tenga el argumento que tenga: las dos reglas valen (0,1,1). Son equivalentes, así que empate → gana la última.' },
+{ cat: 'Pseudoclases estructurales', t: ':only-child frente a :first-child:last-child', css: `li:first-child:last-child { color: green; }
+li:only-child { color: crimson; }`, html: `<ul><li>Hijo único: ¿de qué color soy?</li></ul>`, opts: ['verde (dos pseudoclases)', 'rojo (:only-child, va después)'], a: 0, chk: ['li', 'color'], exp: _G,
+  why: 'Seleccionan lo mismo, pero no pesan lo mismo: <code>li:first-child:last-child</code> = (0,2,1) y <code>li:only-child</code> = (0,1,1). Cada pseudoclase encadenada suma.' },
+{ cat: 'Pseudoclases estructurales', t: ':lang() cuenta como pseudoclase', css: `p:lang(en) { color: green; }
+p { color: crimson; }`, html: `<div lang="en"><p>Am I green?</p></div>`, opts: ['verde (:lang(en))', 'rojo (p, va después)'], a: 0, chk: ['p', 'color'], exp: _G,
+  why: '<code>:lang(en)</code> selecciona elementos en ese idioma, también por <b>herencia</b> del atributo lang del padre. Vale (0,1,1) frente a (0,0,1).' },
+// ---------- Formulario
+{ cat: 'Pseudoclases de formulario', t: ':disabled gana a la clase', css: `input:disabled { color: green; }
+.campo { color: crimson; }`, html: `<input class="campo" disabled value="¿De qué color soy?">`, opts: ['verde (input:disabled)', 'rojo (.campo, va después)'], a: 0, chk: ['input', 'color'], exp: _G,
+  why: '<code>input:disabled</code> = (0,1,1) y <code>.campo</code> = (0,1,0). La etiqueta extra desempata en la tercera columna.' },
+{ cat: 'Pseudoclases de formulario', t: ':checked + label', css: `input:checked + label { color: green; }
+label.opcion { color: crimson; }`, html: `<input type="checkbox" id="c1" checked><label for="c1" class="opcion">¿De qué color soy?</label>`, opts: ['verde (input:checked + label)', 'rojo (label.opcion, va después)'], a: 0, chk: ['label', 'color'], exp: _G,
+  why: '<code>input:checked + label</code> = (0,1,2): pseudoclase + dos etiquetas (el <code>+</code> no suma). <code>label.opcion</code> = (0,1,1). Gana el primero mientras la casilla esté marcada.' },
+{ cat: 'Pseudoclases de formulario', t: ':invalid y :required empatan', css: `input:invalid { color: crimson; }
+input:required { color: green; }`, html: `<input required value="" placeholder="vacío y obligatorio">`, opts: ['rojo (:invalid)', 'verde (:required, va después)'], a: 1, chk: ['input', 'color'], exp: _G,
+  why: 'Un campo obligatorio vacío cumple las dos pseudoclases. Ambas valen (0,1,1) → gana la última. Si quieres que el error destaque siempre, escribe <code>:invalid</code> después (o súbele el peso).' },
+// ---------- :is :not :where :has
+{ cat: ':is() :not() :where() :has()', t: ':is() pesa como su argumento MÁS específico', css: `:is(#destacado, .caja) p { color: green; }
+.caja p.texto { color: crimson; }`, html: `<div class="caja"><p class="texto">¿De qué color soy?</p></div>`, opts: ['verde (:is(...) p)', 'rojo (.caja p.texto)'], a: 0, chk: ['p', 'color'], exp: _G,
+  why: 'Sorpresa: <code>:is()</code> toma el peso del argumento <b>más específico de la lista</b> (#destacado), aunque haya coincidido gracias a <code>.caja</code>. Así <code>:is(#destacado, .caja) p</code> = (1,0,1) gana a (0,2,1). Con <code>:where()</code> en su lugar sería (0,0,1).' },
+{ cat: ':is() :not() :where() :has()', t: ':has(): el padre que contiene…', css: `div { color: crimson; }
+div:has(> p.aviso) { color: green; }`, html: `<div><p class="aviso">Mi div tiene un p.aviso: ¿de qué color es?</p></div>`, opts: ['rojo (div)', 'verde (div:has(> p.aviso))'], a: 1, chk: ['div', 'color'], exp: _G,
+  why: '<code>div:has(&gt; p.aviso)</code> selecciona el <b>div</b> (el padre) si tiene un hijo directo p.aviso: es el «selector de padre» que no se puede escribir con «&lt;». Pesa div + su argumento p.aviso = (0,1,2) &gt; (0,0,1).' },
+{ cat: ':is() :not() :where() :has()', t: ':not() con varias negaciones', css: `li:not(.a):not(.b) { color: green; }
+li.c { color: crimson; }`, html: `<ul><li class="c">¿De qué color soy?</li></ul>`, opts: ['verde (dos :not)', 'rojo (li.c, va después)'], a: 0, chk: ['li', 'color'], exp: _G,
+  why: 'Cada <code>:not()</code> suma el peso de su argumento: li (0,0,1) + .a (0,1,0) + .b (0,1,0) = (0,2,1), frente a <code>li.c</code> (0,1,1).' },
+// ---------- Herencia y valores globales
+{ cat: 'Herencia y valores globales', t: 'El enlace que no hereda el color', css: `nav { color: green; }`, html: `<nav><a href="#">¿De qué color es este enlace?</a></nav>`, opts: ['verde (lo hereda de nav)', 'azul (color por defecto del navegador)'], a: 1, chk: ['a', 'color'], exp: 'rgb(0, 0, 238)',
+  why: 'La hoja de estilos <b>del navegador</b> ya tiene una regla para los enlaces (<code>a:link { color: … }</code>, azul). Es una regla que apunta directamente al <code>a</code>, así que gana a la herencia. Solución: <code>nav a { color: inherit; }</code> (o un color propio).' },
+{ cat: 'Herencia y valores globales', t: 'inherit hereda lo que no se hereda', css: `.caja { border: 3px solid green; padding: 6px; }
+.caja p { border: inherit; }`, html: `<div class="caja"><p>¿Tengo borde?</p></div>`, opts: ['sí, verde (inherit)', 'no: el borde no se hereda'], a: 0, chk: ['p', 'border-top-color'], exp: _G,
+  why: '<code>border</code> no es heredable, pero el valor <code>inherit</code> obliga a copiar el valor del padre, en cualquier propiedad.' },
+{ cat: 'Herencia y valores globales', t: 'initial: el valor de fábrica, no el del padre', css: `div { color: green; }
+p { color: initial; }`, html: `<div><p>¿De qué color soy?</p></div>`, opts: ['verde (heredado del div)', 'negro (valor inicial de color)'], a: 1, chk: ['p', 'color'], exp: 'rgb(0, 0, 0)',
+  why: '<code>initial</code> pone el valor inicial que define la especificación (para color, el del texto del sistema: negro), <b>no</b> el del padre. Para heredar, se usa <code>inherit</code>.' },
+{ cat: 'Herencia y valores globales', t: 'unset: hereda si la propiedad es heredable', css: `div { color: green; }
+p { color: crimson; }
+p.normal { color: unset; }`, html: `<div><p class="normal">¿De qué color soy?</p></div>`, opts: ['rojo (p)', 'verde (hereda del div)'], a: 1, chk: ['p', 'color'], exp: _G,
+  why: '<code>p.normal</code> (0,1,1) gana y su valor es <code>unset</code>: en propiedades heredables (color) actúa como <code>inherit</code> y en las no heredables como <code>initial</code>. Así que el p toma el verde del div.' },
+{ cat: 'Herencia y valores globales', t: 'currentColor sigue al color final', css: `.boton { color: green; border: 3px solid currentColor; }
+.boton { color: crimson; }`, html: `<button class="boton">¿De qué color es mi borde?</button>`, opts: ['verde (el color de la primera regla)', 'rojo (el color final)'], a: 1, chk: ['button', 'border-top-color'], exp: _R,
+  why: '<code>currentColor</code> no se «congela» al leer la regla: vale el <code>color</code> <b>final</b> del elemento después de la cascada (rojo).' },
+// ---------- !important y en línea
+{ cat: '!important y estilo en línea', t: '!important en una regla débil gana a un id', css: `p { color: green !important; }
+#titular { color: crimson; }`, html: `<p id="titular">¿De qué color soy?</p>`, opts: ['verde (p !important)', 'rojo (#titular)'], a: 0, chk: ['p', 'color'], exp: _G,
+  why: '<code>!important</code> se mira <b>antes</b> que la especificidad: (0,0,1) importante gana a (1,0,0) normal.' },
+{ cat: '!important y estilo en línea', t: 'style con !important gana a todo', css: `#titular { color: crimson !important; }`, html: `<p id="titular" style="color: green !important">¿De qué color soy?</p>`, opts: ['rojo (#titular !important)', 'verde (style="… !important")'], a: 1, chk: ['p', 'color'], exp: _G,
+  why: 'Entre declaraciones importantes, el estilo en línea sigue estando por encima de cualquier selector. Es el «arma final», y por eso conviene no usarla.' },
+{ cat: '!important y estilo en línea', t: '!important solo afecta a su línea', css: `.boton { color: white !important; background: green; }
+#comprar { color: black; background: crimson; }`, html: `<button id="comprar" class="boton">¿Qué fondo tengo?</button>`, opts: ['verde (la regla tiene !important)', 'rojo (#comprar)'], a: 1, chk: ['button', 'background-color'], exp: _R,
+  why: '<code>!important</code> se aplica a <b>una declaración</b>, no a la regla entera. El texto es blanco (importante), pero el fondo se decide normal: #comprar (1,0,0) gana a .boton (0,1,0) → rojo.' },
+{ cat: '!important y estilo en línea', t: 'Un !important mal escrito no vale', css: `#titular { color: crimson; }
+p { color: green !importnt; }`, html: `<p id="titular">¿De qué color soy?</p>`, opts: ['verde (lleva !important)', 'rojo (#titular)'], a: 1, chk: ['p', 'color'], exp: _R,
+  why: '«!importnt» no es válido: el navegador descarta <b>esa declaración</b> entera (no solo la palabra). Queda #titular → rojo. Los errores de escritura se ven en las herramientas de desarrollo (F12) como propiedades tachadas o con aviso.' },
+// ---------- Atajos
+{ cat: 'Atajos (shorthands)', t: 'background reinicia el background-color', css: `.tarjeta { background-color: green; }
+.tarjeta { background: url(textura.png); }`, html: `<div class="tarjeta" style="padding:10px">¿Qué color de fondo tengo?</div>`, opts: ['verde', 'ninguno (transparente)'], a: 1, chk: ['.tarjeta', 'background-color'], exp: 'rgba(0, 0, 0, 0)',
+  why: 'Un atajo da valor a <b>todas</b> sus subpropiedades: lo que no escribes vuelve a su valor inicial. <code>background: url(…)</code> pone <code>background-color: transparent</code>. Solución: <code>background: green url(textura.png)</code>, o poner background-color después.' },
+{ cat: 'Atajos (shorthands)', t: 'border reinicia el border-color', css: `.caja { color: crimson; border-color: green; border: 3px solid; }`, html: `<div class="caja" style="padding:8px">¿De qué color es mi borde?</div>`, opts: ['verde (border-color)', 'rojo (currentColor)'], a: 1, chk: ['.caja', 'border-top-color'], exp: _R,
+  why: '<code>border: 3px solid</code> va después y reinicia el color al inicial, que es <code>currentColor</code> (el color del texto: rojo). El orden <b>dentro</b> de la regla también cuenta.' },
+{ cat: 'Atajos (shorthands)', t: 'font reinicia la negrita', css: `p { font-weight: bold; }
+p { font: 16px Arial, sans-serif; }`, html: `<p>¿Estoy en negrita?</p>`, opts: ['sí, negrita', 'no, normal'], a: 1, chk: ['p', 'font-weight'], exp: '400',
+  why: 'El atajo <code>font</code> reinicia estilo, variante, grosor e interlineado. Sin «bold» en el atajo, el grosor vuelve a <code>normal</code> (400).' },
+{ cat: 'Atajos (shorthands)', t: 'La propiedad individual después del atajo', css: `.caja { margin: 10px 20px; }
+.caja { margin-left: 0; }`, html: `<div class="caja" style="background:#cfe3ff">¿Cuánto margen izquierdo tengo?</div>`, opts: ['20px (margin: 10px 20px)', '0 (margin-left, va después)'], a: 1, chk: ['.caja', 'margin-left'], exp: '0px',
+  why: '<code>margin: 10px 20px</code> = arriba/abajo 10, derecha/izquierda 20. Después, <code>margin-left: 0</code> pisa solo el lado izquierdo. El resto se mantiene.' },
+// ---------- Variables
+{ cat: 'Variables CSS', t: 'La variable se resuelve donde se usa', css: `:root   { --principal: green; }
+.alerta { --principal: crimson; }
+p { color: var(--principal); }`, html: `<div class="alerta"><p>¿De qué color soy?</p></div>`, opts: ['verde (:root)', 'rojo (.alerta)'], a: 1, chk: ['p', 'color'], exp: _R,
+  why: 'Las variables se <b>heredan</b>: el p toma la <code>--principal</code> de su antepasado más cercano que la define (.alerta), no la de :root.' },
+{ cat: 'Variables CSS', t: 'Las variables también compiten por especificidad', css: `#caja  { --c: green; }
+.caja  { --c: crimson; }
+p { color: var(--c); }`, html: `<div id="caja" class="caja"><p>¿De qué color soy?</p></div>`, opts: ['verde (#caja)', 'rojo (.caja, va después)'], a: 0, chk: ['p', 'color'], exp: _G,
+  why: 'Declarar <code>--c</code> es una declaración más: en el div compiten <code>#caja</code> (1,0,0) y <code>.caja</code> (0,1,0). Gana el id y el p hereda --c: green.' },
+{ cat: 'Variables CSS', t: 'Variable inexistente: ni rojo ni negro', css: `div { color: green; }
+p { color: crimson; }
+p { color: var(--no-existe); }`, html: `<div><p>¿De qué color soy?</p></div>`, opts: ['rojo (se ignora la última)', 'verde (hereda del div)'], a: 1, chk: ['p', 'color'], exp: _G,
+  why: 'Trampa avanzada: la última regla <b>gana la cascada</b> (es válida al leerla), pero al calcularla la variable no existe y no hay valor de reserva. Entonces la propiedad se comporta como <code>unset</code>: color es heredable → toma el verde del div. Se evita con un valor de reserva: <code>var(--no-existe, crimson)</code>.' },
+// ---------- Pseudoelementos
+{ cat: 'Pseudoelementos', t: '::before hereda de su elemento', css: `.nuevo { color: crimson; }
+.nuevo::before { content: "★ "; }`, html: `<p class="nuevo">Producto nuevo</p>`, opts: ['negra (color por defecto)', 'roja (hereda de .nuevo)'], a: 1, chk: ['.nuevo', 'color', '::before'], exp: _R,
+  why: 'El <code>::before</code> es como un hijo del elemento: <b>hereda</b> sus propiedades heredables (color, fuente). Solo si le das su propio color cambia.' },
+{ cat: 'Pseudoelementos', t: '::marker: la viñeta por separado', css: `li { color: crimson; }
+li::marker { color: green; }`, html: `<ul><li>Texto de la lista</li></ul>`, opts: ['la viñeta verde y el texto rojo', 'todo rojo'], a: 0, chk: ['li', 'color', '::marker'], exp: _G,
+  why: '<code>::marker</code> apunta solo a la viñeta o número del li. No compite con la regla del li: son objetivos distintos.' },
+{ cat: 'Pseudoelementos', t: '::first-letter frente a la clase del párrafo', css: `p::first-letter { color: green; }
+p.intro { color: crimson; }`, html: `<p class="intro">Érase una vez…</p>`, opts: ['la primera letra verde, el resto rojo', 'todo rojo (p.intro pesa más)'], a: 0, chk: ['p', 'color', '::first-letter'], exp: _G,
+  why: '<code>p.intro</code> (0,1,1) pesa más que <code>p::first-letter</code> (0,0,2), pero no apuntan a lo mismo: la letra es un pseudoelemento con su propia regla, y la herencia del p solo se usaría si nadie le diera color.' },
+// ---------- @media y @supports
+{ cat: '@media y @supports', t: '@supports con una condición falsa', css: `p { color: green; }
+@supports (display: nada-valido) {
+  p { color: crimson; }
+}`, html: `<p>¿De qué color soy?</p>`, opts: ['verde', 'rojo (va después)'], a: 0, chk: ['p', 'color'], exp: _G,
+  why: 'El navegador no entiende <code>display: nada-valido</code>: la condición es falsa y el bloque se ignora entero. Así se escriben mejoras solo para navegadores que las soportan.' },
+{ cat: '@media y @supports', t: '@media print no cuenta en pantalla', css: `p { color: green; }
+@media print {
+  p { color: crimson; }
+}`, html: `<p>¿De qué color me ves en pantalla?</p>`, opts: ['verde', 'rojo (va después)'], a: 0, chk: ['p', 'color'], exp: _G,
+  why: 'Las reglas de <code>@media print</code> solo se aplican al imprimir (o en la vista previa de impresión). En pantalla no compiten.' }
+);
 
 // ===================== CASOS DE EXAMEN EN PAPEL =====================
 // Cada caso: ra (F | RA1 | RA2 | RA45), tipo, title, css/html (código impreso), text (enunciado sin código),
@@ -4909,6 +5279,7 @@ function buildRef(host) {
   </section>
 
   <section class="card refsec"><h3>3 · 🧮 Calculadora de especificidad y lector de selectores</h3>
+   <p class="xs">Explicación completa, casos límite y entrenador en la pestaña <a href="#esp" data-goesp>🎯 Especificidad</a>.</p>
    <div class="row"><input id="spIn" value="ul#nav li.activo > a:hover" spellcheck="false" style="flex:1;min-width:0;font-family:ui-monospace,monospace" aria-label="Selector"><button class="btn p" id="spGo">Calcular</button></div>
    <div class="row xs">Prueba: ${['p', '.aviso', '#principal .aviso', 'nav ul li a', 'h2 + p', '#abrir:checked ~ nav', '.galeria a:hover::after', 'a[href$=".pdf"]', 'li:not(.activo)', '.menu > li:first-child'].map(x => `<button class="btn xs" data-sp="${esc(x)}">${esc(x)}</button>`).join('')}</div>
    <div id="spOut"></div>
@@ -4919,6 +5290,7 @@ function buildRef(host) {
    <div id="glB">${gl}</div>
   </section>`;
 
+  const ge = host.querySelector('[data-goesp]'); if (ge) ge.onclick = e => { e.preventDefault(); go('esp'); };
   // analizador
   const load = c => { const v = caseVersions(c), t = v.find(x => x.id === 'fix') || v.find(x => x.id === 'demo') || v[0];
     $('#anH').value = t ? t.html : ''; $('#anC').value = t ? t.css : ''; $('#anBs').checked = !!(c.bs || (c.demo && c.demo.bs)); };
@@ -4968,6 +5340,7 @@ const TABS = [
  { id: 'guia', name: '🧭 Guía paso a paso', sub: 'construye una página' },
  { id: 'casos', name: '📝 Casos de examen', sub: 'en papel · ' + EXAM_CASES.length },
  { id: 'ref', name: '📚 Guía HTML y CSS', sub: 'glosario y analizador' },
+ { id: 'esp', name: '🎯 Especificidad', sub: 'cascada paso a paso' },
  { id: 'rev', name: 'Repaso', sub: 'test y tarjetas' }
 ];
 $('#nav').innerHTML = TABS.map(t => `<button data-t="${t.id}">${t.name}<small>${t.sub}</small></button>`).join('');
@@ -4983,6 +5356,7 @@ function buildTab(T, host) {
   if (T.id === 'rev') return buildRev(host);
   if (T.id === 'casos') return buildCasos(host);
   if (T.id === 'ref') return buildRef(host);
+  if (T.id === 'esp') return buildEsp(host);
   if (T.id === 'guia') return buildGuia(host);
   const head = `<div class="rahead"><div><h2>${T.name}</h2><p class="lead">${T.lead}</p></div>${T.date ? `<div class="card" style="text-align:center;min-width:150px"><div class="count">${Math.max(0, daysTo(T.date))} días<small>examen: ${new Date(T.date).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}</small></div></div>` : ''}</div>`;
   if (T.soon) { host.innerHTML = head + `<div class="soon"><b>🛠 En construcción.</b> Este bloque llega en la próxima entrega con laboratorios en vivo para cada punto. Esto es lo que va a cubrir (sacado del tema del profesor):</div>` + Object.entries(T.soon).map(([k, l]) => `<div class="card" style="margin-top:10px"><b>${k}</b><ul>${l.map(x => `<li>${x}</li>`).join('')}</ul></div>`).join(''); return; }

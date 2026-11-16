@@ -72,6 +72,21 @@ textarea{display:block;width:100%;border:2px solid var(--ink);background:var(--b
 .score div{padding:6px 10px;border-right:2px solid var(--ink)}.score div:last-child{border:0}
 .score b{display:block;font:800 40px/1 Archivo;font-stretch:125%}.score small{font-size:12px;color:var(--mut)}
 .toks{display:flex;flex-wrap:wrap;gap:5px;margin:10px 0 4px}.tok{border:1.5px solid var(--ink);font:12.5px "JetBrains Mono",monospace;padding:2px 6px}.tok em{font-style:normal;background:var(--ink);color:var(--bg);padding:0 4px;margin-left:5px}
+.cheat{margin-top:18px}[hidden]{display:none!important}
+.chbar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0;border-bottom:2px solid var(--ink);display:grid;gap:8px}
+.chbar input{min-height:44px;border:2px solid var(--ink);background:var(--bg);padding:6px 12px;font-size:16px;width:100%}
+.chtabs{display:flex;flex-wrap:wrap;gap:5px}
+.chc{border-top:2px solid var(--ink);padding:12px 0 18px}.chc header{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px;align-items:baseline}
+.chc h3{margin:0;font-size:20px;font-weight:800;font-stretch:112%;display:flex;gap:8px;align-items:center}.chc h3 code{font-size:19px}
+.chm{display:flex;flex-wrap:wrap;gap:5px;align-items:center;font-size:12px}.chm a{color:var(--mut)}
+.chd{margin:4px 0 10px;max-width:80ch;font-size:14.5px}
+.sws{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.sw{margin:0;border:1.5px solid var(--ink);display:flex;flex-direction:column}
+.swh{height:118px;border-bottom:1.5px solid var(--ink);cursor:pointer}
+.sw figcaption{display:flex;justify-content:space-between;align-items:center;gap:4px;padding:4px 6px;background:var(--soft)}
+.sw figcaption code{font-size:11.5px;overflow-wrap:anywhere}.sw figcaption button{flex:none;font-size:11px;border:1px solid var(--ink);background:var(--bg);padding:2px 5px;cursor:pointer;min-height:26px}
+.sw figcaption button:hover{background:var(--ink);color:var(--bg)}
+.mqg{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:0 20px}.mq{list-style:none;padding:0;margin:6px 0}.mq li{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid var(--soft);padding:5px 0;font-size:13px}
 .explain{margin-top:26px;border-top:6px solid var(--ink);padding-top:14px}
 .explain summary{cursor:pointer;list-style:none}.explain summary h2{display:inline}.explain summary::before{content:"▸ ";font-weight:800}.explain details[open] summary::before{content:"▾ "}
 .xl{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:12px;margin-top:10px}
@@ -144,6 +159,7 @@ td code{font-size:12px;overflow-wrap:anywhere}
         <div class="legend"><span><i class="lm"></i>margin</span><span><i class="lb"></i>border</span><span><i class="lp"></i>padding</span><span><i class="lc"></i>content</span><span>Click any element to inspect it. Hover shows a dashed outline.</span></div>
       </div>
     </section>
+    <section class="cheat" id="cheat" hidden></section>
     <section class="explain" id="explain"></section>
     <section class="insp" id="insp" aria-live="polite"></section>
     <div class="pager"><button type="button" id="prev"></button><button type="button" id="next"></button></div>
@@ -152,6 +168,15 @@ td code{font-size:12px;overflow-wrap:anywhere}
 <script>
 {
 const LESSONS = [
+{id:'cheatsheet',g:'Cheatsheet',t:'Cheatsheet: every value, side by side',cheat:true,
+body:`<p>A live companion to your CSS3 PDF cheat sheet (topics follow Manz's sheet, lenguajecss.com). The PDF lists the syntax; here each property is applied to a real element, <b>once per value</b>, so you can compare the results at a glance. Every preview is real CSS rendering, not a picture.</p>
+<ul><li><b>Search</b> any property, value or selector, or pick a topic.</li>
+<li><b>Hover or click</b> the previews: <code>:hover</code>, <code>cursor</code>, transitions and form states react, and clicking replays animations.</li>
+<li><b>open in lab</b> loads that exact example into the Playground, with the inspector and "CSS explained", so you can edit it.</li>
+<li>Each card shows the <b>initial</b> value and whether the property is <b>inherited</b>. <span class="badge">modern</span> marks features newer than the PDF.</li></ul>`,html:'',css:''},
+{id:'playground',g:'Cheatsheet',t:'Playground',
+body:`<p>Your scratch area. Use <b>open in lab</b> on any cheatsheet preview to load it here, or type your own HTML and CSS. Click an element in the preview to inspect it.</p>`,
+html:`<div class="t">Edit me</div>`,css:`.t {\n  width: 120px;\n  padding: 10px;\n  border: 2px solid black;\n}`},
 /* ---------------- CASCADE ---------------- */
 {id:'cascade',g:'Cascade',t:'The cascade: who wins a conflict',
 body:`<p>When several declarations set the <b>same property</b> on the <b>same element</b>, the browser doesn't mix them. It sorts them and the first one wins. Each step only matters if the step before it is a tie:</p>
@@ -1474,6 +1499,8 @@ function load(id){
   const i=LESSONS.indexOf(l),p=LESSONS[i-1],n=LESSONS[i+1];
   $('#prev').textContent=p?'← '+p.t:'';$('#prev').style.visibility=p?'visible':'hidden';$('#prev').onclick=()=>p&&go(p.id);
   $('#next').textContent=n?n.t+' →':'';$('#next').style.visibility=n?'visible':'hidden';$('#next').onclick=()=>n&&go(n.id);
+  const ch=!!l.cheat;document.querySelector('.work').hidden=ch;$('#explain').hidden=ch;$('#insp').hidden=ch;$('#cheat').hidden=!ch;
+  if(ch){renderCheat();window.scrollTo(0,0);return}
   setWidth(l.w||'fit');renderWidget();renderCtls();writeCode();
   window.scrollTo(0,0);
 }
@@ -2052,9 +2079,253 @@ function renderExplain(){
 function markHits(){if(!selEl)return;document.querySelectorAll('#explain .xr[data-i]').forEach(c=>{const x=EXP[c.dataset.i];let hit=false;
   if(x&&x.raw)splitTop(x.raw).forEach(p=>{try{if(selEl.matches(p))hit=true}catch(e){}});c.classList.toggle('hit',hit)})}
 
+/* ---------- CHEATSHEET: every value rendered live, side by side ---------- */
+const IMG="data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100"><rect width="200" height="100" fill="#bbb"/><circle cx="50" cy="50" r="38" fill="#000"/><rect x="110" y="20" width="70" height="60" fill="#fff" stroke="#000" stroke-width="4"/><text x="145" y="58" font-size="20" text-anchor="middle" font-family="sans-serif">IMG</text></svg>');
+const TPL={
+ box:{h:'<div class="t">Box</div>',c:'.t{width:90px;height:50px;background:#ddd;border:2px solid #000;padding:4px}'},
+ txt:{h:'<p class="t">The quick brown fox jumps over the lazy dog.</p>',c:'.t{margin:0;font:14px/1.3 Georgia,serif;width:150px}'},
+ long:{h:'<p class="t">Supercalifragilistic expialidocious words   and    spaces\nwith a line break.</p>',c:'.t{margin:0;width:110px;border:1px dashed #000;font-size:13px}'},
+ inl:{h:'<div class="w">Text <span class="t">span</span> more text that wraps around.</div>',c:'.w{width:150px}.t{background:#000;color:#fff;width:70px;height:30px;margin:6px;padding:2px}'},
+ flex:{h:'<div class="t"><i>1</i><i class="b">2</i><i>3</i></div>',c:'.t{display:flex;width:100%;height:84px;border:2px solid #000;gap:3px}.t i{font-style:normal;border:2px solid #000;background:#ddd;padding:2px 6px}.t .b{font-size:20px}'},
+ fitem:{h:'<div class="w"><i>1</i><i class="t">2</i><i>3</i></div>',c:'.w{display:flex;height:80px;border:2px solid #000;gap:3px}.w i{font-style:normal;border:2px solid #000;background:#ddd;padding:2px 6px}.w .t{background:#000;color:#fff}'},
+ grid:{h:'<div class="t"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i></div>',c:'.t{display:grid;gap:3px;width:100%}.t i{font-style:normal;border:2px solid #000;background:#ddd;padding:2px 4px;text-align:center}'},
+ list:{h:'<ul class="t"><li>Apple</li><li>Pear</li><li>Plum</li></ul>',c:'.t{margin:0;padding-left:34px;font-size:13px}'},
+ img:{h:`<img class="t" src="${IMG}" alt="">`,c:'.t{width:130px;height:80px;border:2px solid #000;background:#eee}'},
+ bg:{h:'<div class="t"></div>',c:`.t{width:140px;height:84px;border:2px solid #000;background-image:url("${IMG}");background-repeat:no-repeat;background-size:70px}`},
+ pos:{h:'<div class="w">parent<div class="t">box</div><p>next content</p></div>',c:'.w{position:relative;height:84px;border:2px dashed #000;padding:3px;font-size:12px}.w p{margin:0;border-top:1px dotted #000}.t{top:14px;left:24px;background:#000;color:#fff;padding:2px 6px;width:max-content}'},
+ mar:{h:'<div class="w"><div class="t">box</div></div>',c:'.w{background:repeating-linear-gradient(45deg,#000 0 1px,#fff 1px 5px);width:max-content;max-width:100%}.t{background:#ddd;border:2px solid #000;width:80px;padding:2px 4px}'},
+ col:{h:'<div class="t"></div>',c:'.t{width:100%;height:84px;border:2px solid #000}'},
+ unit:{h:'<div class="w"><div class="t"></div></div>',c:'.w{width:150px;font-size:16px;border:1px dashed #000}.t{height:22px;background:#000}'},
+ sel:{ht:160,h:'<div class="r"><h3>h3</h3><p class="c1">p.c1</p><p id="unique">p#unique</p><div><p>div &gt; p</p><span><p>span &gt; p</p></span></div><p lang="es-ES" data-x="value-is-ok">p[lang][data-x]</p></div>',c:'.r{font-size:11px;line-height:1.15}.r *{margin:1px 0;padding:0 3px;font-size:11px;border:1px solid #bbb}.r h3{font-weight:800}'},
+ str:{h:'<ul class="r"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li></li></ul>',c:'.r{list-style:none;padding:0;margin:0;display:flex;gap:3px;flex-wrap:wrap}.r li{border:1.5px solid #000;width:20px;height:22px;text-align:center}'},
+ typ:{ht:135,h:'<div class="r"><h4>h4</h4><p>p</p><p>p</p><span>span</span><p>p</p><span>span</span></div>',c:'.r *{display:block;margin:1px 0;padding:0 3px;font-size:11px;border:1px solid #bbb;font-weight:400}'},
+ form:{ht:150,h:'<div class="r"><input placeholder="type here" required><input value="7" type="number" min="1" max="5"><label><input type="checkbox" checked> on</label> <label><input type="checkbox" class="ind"> ?</label><input value="disabled" disabled><input value="readonly" readonly></div>',c:'.r input{width:100%;margin:1px 0;font-size:11px}.r label{font-size:11px}'},
+ link:{h:'<p><a href="#a">link with href</a></p><p><a>a without href</a></p><button>button</button>',c:'a{color:#000}p{margin:2px 0}'},
+ anim:{h:'<div class="t"></div>',c:'.t{width:22px;height:22px;background:#000;border-radius:50%}@keyframes mv{to{transform:translateX(110px)}}'},
+ tbl:{h:'<table class="t"><caption>caption</caption><tr><td>A</td><td>B</td></tr><tr><td>C</td><td></td></tr></table>',c:'.t td{border:2px solid #000;padding:2px 8px;font-size:12px}.t caption{font-size:11px}'},
+ cols:{ht:140,h:'<p class="t"><b>Title</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>',c:'.t{margin:0;font-size:11px;line-height:1.25}'},
+};
+const SEL_RULE='${background:#000;color:#fff;outline:2px solid #000}';
+const CH=[
+{t:'Selectors',items:[
+ {g:'Basic selectors',d:'Which elements a rule targets.',T:'sel',r:SEL_RULE,v:['*','p','.c1','#unique','h3, .c1']},
+ {g:'Combinators',d:'Relationships: descendant (space), direct child (>), next sibling (+), any later sibling (~).',T:'sel',r:SEL_RULE,v:['div p','div > p','h3 + p','h3 ~ p','.c1 ~ *']},
+ {g:'Attribute selectors',d:'Filter by an attribute and its value. Count as a class in specificity.',T:'sel',r:SEL_RULE,v:['[lang]','[lang="es-ES"]','[lang|="es"]','[data-x^="value"]','[data-x$="ok"]','[data-x*="is"]','[id="unique"]']},
+ {g:'Structural pseudo-classes',d:'Select by position among siblings.',T:'str',r:SEL_RULE,v:['li:first-child','li:last-child','li:nth-child(2)','li:nth-child(odd)','li:nth-child(even)','li:nth-child(n+3)','li:nth-child(-n+3)','li:nth-last-child(2)','li:empty','li:not(:nth-child(3))']},
+ {g:'Of-type pseudo-classes',d:'Count only siblings with the same tag.',T:'typ',r:SEL_RULE,v:['p:first-of-type','p:last-of-type','p:nth-of-type(2)','span:only-of-type','h4:only-of-type','p:nth-child(2)']},
+ {g:'Logical pseudo-classes',tag:'new',d:':is() = any of (OR) · :where() = same with 0 specificity · :not() · :has() = contains (parent selector).',T:'sel',r:SEL_RULE,v:[':is(h3, #unique)',':where(.c1, #unique)','p:not(.c1)','div:has(> span)','span:has(p)']},
+ {g:'User-action pseudo-classes',d:'States set by the browser while you interact. Try them in the preview.',T:'link',r:'${outline:3px solid #000;background:#000;color:#fff}',v:['a:hover','button:active','a:focus','a:focus-visible','p:focus-within','a:link','a:any-link']},
+ {g:'Form pseudo-classes',d:'Form states from HTML attributes and validation.',T:'form',r:SEL_RULE,v:[':required',':optional',':placeholder-shown',':invalid',':valid',':out-of-range',':checked',':disabled',':enabled',':read-only',':default']},
+ {g:'Pseudo-elements',d:'Style a part of an element, or generate a box (::before/::after need content).',T:'txt',r:'$',v:['.t::first-line{font-weight:800}','.t::first-letter{font-size:2.2em;float:left;line-height:1}','.t::before{content:"[before] ";font-weight:800}','.t::after{content:" [after]";font-weight:800}','.t::selection{background:#000;color:#fff}'],lab:'select text for ::selection'},
+]},
+{t:'Colors',items:[
+ {p:'color',d:'Text color (inherited). Formats below all give a color.',i:'canvastext',h:1,T:'txt',r:'.t{color:$;font-weight:700;font-size:16px}',v:['black','royalblue','#416AE1','#46E','rgb(65 106 225)','rgb(65 106 225 / 50%)','hsl(225 73% 57%)','currentColor']},
+ {p:'background-color',d:'Fill behind content and padding.',i:'transparent',T:'col',v:['#000','#777','rgba(0,0,0,.25)','hsl(0 0% 85%)','transparent','color-mix(in srgb, black 30%, white)'],tag:'new'},
+ {p:'opacity',d:'Transparency of the whole element and its children; below 1 it creates a stacking context.',i:'1',T:'box',c:'.f{background:repeating-linear-gradient(45deg,#000 0 2px,#fff 2px 8px)}.t{background:#000;color:#fff}',v:['1','0.75','0.5','0.2','0']},
+]},
+{t:'Units & values',items:[
+ {g:'Absolute lengths',d:'Fixed sizes. px is the CSS pixel (1/96 in); physical units are only real on paper.',T:'unit',r:'.t{width:$}',v:['100px','3cm','25mm','1in','72pt','6pc']},
+ {g:'Relative lengths',d:'em = this font-size · rem = root font-size · ch = width of "0" · ex = x-height · % = of the parent.',T:'unit',r:'.t{width:$}',v:['5em','5rem','10ch','10ex','50%','100%']},
+ {g:'Viewport units',d:'1vw = 1% of the viewport width. Resize the window to see them change.',T:'unit',r:'.t{width:$}',v:['10vw','10vh','10vmin','10vmax','10dvw'],tag:'new'},
+ {g:'Math functions',d:'calc() mixes units; min()/max()/clamp() choose a value at run time.',T:'unit',r:'.t{width:$}',v:['calc(100% - 40px)','calc(50% + 2em)','min(100%, 80px)','max(30%, 90px)','clamp(40px, 10vw, 140px)']},
+ {g:'Custom properties',d:'--name stores a value, var(--name, fallback) uses it. Inherited.',T:'unit',c:'.w{--size:60%}',r:'.t{width:$}',v:['var(--size)','var(--nope, 30px)','calc(var(--size) / 2)']},
+ {g:'Global keywords',d:'Work on every property (here: font-size, inherited, parent = 20px).',T:'txt',c:'.f{font-size:20px}',r:'.t{font-size:$}',v:['inherit','initial','unset','revert','12px !important']},
+]},
+{t:'Text & fonts',items:[
+ {p:'font-family',d:'List of typefaces; the first available is used. End with a generic family.',i:'browser',h:1,T:'txt',v:['serif','sans-serif','monospace','cursive','system-ui','Georgia, serif']},
+ {p:'font-size',d:'Keywords, lengths, or relative to the parent.',i:'medium',h:1,T:'txt',v:['x-small','medium','x-large','larger','0.8em','18px']},
+ {p:'font-weight',d:'100–900; 400 = normal, 700 = bold. bolder/lighter are relative.',i:'400',h:1,T:'txt',r:'.t{font-family:system-ui,sans-serif;font-weight:$}',v:['100','300','400','600','800','bolder']},
+ {p:'font-style',i:'normal',h:1,T:'txt',v:['normal','italic','oblique']},
+ {p:'font-variant',i:'normal',h:1,T:'txt',v:['normal','small-caps']},
+ {p:'line-height',d:'A plain number (multiplier) is best: children inherit the factor.',i:'normal',h:1,T:'txt',c:'.t{border:1px dashed #000}',v:['normal','1','1.6','30px','150%']},
+ {p:'letter-spacing',i:'normal',h:1,T:'txt',v:['normal','2px','0.2em','-1px']},
+ {p:'word-spacing',i:'normal',h:1,T:'txt',v:['normal','10px','-2px']},
+ {p:'text-align',d:'Aligns the inline content inside the box (not the box itself).',i:'start',h:1,T:'txt',c:'.t{border:1px dashed #000}',v:['left','center','right','justify']},
+ {p:'text-transform',i:'none',h:1,T:'txt',v:['none','uppercase','lowercase','capitalize']},
+ {p:'text-decoration',d:'Shorthand: line style color thickness.',i:'none',T:'txt',v:['none','underline','overline','line-through','underline wavy','underline dotted 2px','underline double']},
+ {p:'text-indent',i:'0',h:1,T:'txt',v:['0','20px','-10px','30%']},
+ {p:'text-shadow',d:'x y blur color.',i:'none',h:1,T:'txt',r:'.t{font-size:18px;font-weight:800;text-shadow:$}',v:['none','2px 2px #999','0 0 4px #000','3px 3px 0 #ccc, 6px 6px 0 #999']},
+ {p:'white-space',d:'How spaces and line breaks in the source are kept.',i:'normal',h:1,T:'long',v:['normal','nowrap','pre','pre-wrap','pre-line']},
+ {p:'word-break',i:'normal',h:1,T:'long',v:['normal','break-all','keep-all']},
+ {p:'overflow-wrap',d:'Modern name of the legacy word-wrap.',i:'normal',h:1,T:'long',v:['normal','break-word','anywhere']},
+ {p:'text-overflow',d:'Needs overflow: hidden and white-space: nowrap.',i:'clip',T:'long',c:'.t{overflow:hidden;white-space:nowrap}',v:['clip','ellipsis']},
+ {p:'hyphens',d:'Needs a lang attribute on the page.',i:'manual',h:1,T:'long',v:['manual','auto','none']},
+ {p:'vertical-align',d:'Aligns an inline box on its line (also table cells).',i:'baseline',T:'inl',c:'.t{display:inline-block;height:auto;width:auto;font-size:9px}.w{line-height:2.2;border:1px dashed #000}',v:['baseline','top','middle','bottom','sub','super','text-top']},
+ {p:'text-wrap',tag:'new',d:'balance evens out the lines of a heading.',i:'wrap',h:1,T:'txt',v:['wrap','balance','nowrap']},
+]},
+{t:'Box model',items:[
+ {p:'display',d:'How the box behaves (outer) and how it lays out its children (inner).',i:'inline',T:'inl',v:['inline','block','inline-block','none','contents','flex']},
+ {p:'box-sizing',d:'width: 80px + padding 10px + border 6px.',i:'content-box',T:'box',r:'.t{width:80px;padding:10px;border-width:6px;box-sizing:$}',v:['content-box','border-box']},
+ {p:'margin',d:'1 value: all sides · 2: vertical horizontal · 3: top horizontal bottom · 4: top right bottom left (clockwise). Hatched = margin.',i:'0',T:'mar',v:['10px','5px 20px','0 10px 20px','2px 4px 8px 16px','0 auto','-5px']},
+ {p:'padding',d:'Same 1–4 value shorthand as margin, but inside the border (it shows the background).',i:'0',T:'box',r:'.t{height:auto;width:auto;padding:$}',v:['0','10px','4px 20px','2px 4px 8px 16px']},
+ {p:'width',d:'With max-width / min-width as limits. The hatched parent is 150px wide.',i:'auto',T:'mar',c:'.w{width:150px}',r:'.t{width:$}',v:['auto','50%','200px','fit-content','min-content','max-content']},
+ {p:'max-width',i:'none',T:'mar',c:'.w{width:150px}',r:'.t{width:100%;max-width:$}',v:['none','100px','50%']},
+ {p:'height',d:'% only works if the parent has a definite height (here 70px).',i:'auto',T:'mar',c:'.w{height:70px}',r:'.t{height:$}',v:['auto','40px','100%','50%']},
+ {p:'aspect-ratio',tag:'new',i:'auto',T:'box',r:'.t{height:auto;width:60px;aspect-ratio:$}',v:['auto','1','16 / 9','3 / 4']},
+ {p:'overflow',d:'What happens when content is too big for the box.',i:'visible',T:'long',c:'.t{height:40px}',v:['visible','hidden','clip','scroll','auto']},
+ {p:'visibility',d:'hidden keeps the space (compare display: none).',i:'visible',h:1,T:'inl',v:['visible','hidden']},
+ {p:'object-fit',d:'How an <img> fills a box with another shape.',i:'fill',T:'img',v:['fill','contain','cover','none','scale-down']},
+ {p:'object-position',i:'50% 50%',T:'img',c:'.t{object-fit:none}',v:['50% 50%','left top','right bottom','10px 20px']},
+]},
+{t:'Backgrounds & borders',items:[
+ {p:'background-size',i:'auto',T:'bg',v:['auto','70px','50% 100%','cover','contain']},
+ {p:'background-repeat',i:'repeat',T:'bg',c:'.t{background-size:50px}',v:['repeat','no-repeat','repeat-x','repeat-y','space','round']},
+ {p:'background-position',i:'0% 0%',T:'bg',v:['left top','center','right bottom','20px 10px','100% 50%']},
+ {p:'background-clip',d:'Where the background is painted (dashed border to show it).',i:'border-box',T:'box',r:'.t{background:#000;border:8px dashed #000;padding:8px;color:#fff;background-clip:$}',v:['border-box','padding-box','content-box']},
+ {p:'background-image',d:'Images and gradients.',i:'none',T:'col',v:['linear-gradient(#000, #fff)','linear-gradient(90deg, #000 50%, #fff 50%)','radial-gradient(circle, #000, #fff)','repeating-linear-gradient(45deg, #000 0 4px, #fff 4px 10px)','conic-gradient(#000, #fff, #000)']},
+ {p:'border-style',i:'none',T:'box',r:'.t{border:6px $ #000}',v:['solid','dashed','dotted','double','groove','ridge','inset','outset','none']},
+ {p:'border-width',i:'medium',T:'box',r:'.t{border-style:solid;border-width:$}',v:['thin','medium','thick','8px','2px 10px']},
+ {p:'border-radius',d:'1–4 values like margin; "/" gives elliptical corners.',i:'0',T:'box',v:['0','8px','50%','20px 0','30px / 10px','0 20px 0 20px']},
+ {p:'box-shadow',d:'x y blur spread color; inset for inner shadows; comma for several.',i:'none',T:'box',v:['none','4px 4px #000','0 0 10px #000','0 0 0 4px #000','inset 3px 3px 6px #000','4px 4px 0 #999, 8px 8px 0 #000']},
+ {p:'outline',d:'Drawn outside the border; takes no space.',i:'none',T:'box',v:['none','3px solid #000','3px dashed #000','4px double #000']},
+ {p:'outline-offset',i:'0',T:'box',c:'.t{outline:2px solid #000}',v:['0','4px','-6px']},
+]},
+{t:'Positioning',items:[
+ {p:'position',d:'top:14px; left:24px on the black box. Only static ignores them.',i:'static',T:'pos',v:['static','relative','absolute','fixed','sticky']},
+ {p:'float',d:'Out of normal flow; following text wraps around it.',i:'none',T:'inl',c:'.w{width:150px}.t{width:50px;height:40px}',v:['none','left','right']},
+ {p:'clear',i:'none',x:'<div class="a">float</div><p class="t">clear me</p>',c:'.a{float:left;width:50px;height:50px;background:#000;color:#fff}.t{margin:0;border:1px dashed #000}',v:['none','left','both']},
+ {p:'z-index',d:'B has z-index 1. Only works on positioned elements (or flex/grid items).',i:'auto',x:'<div class="a">A (target)</div><div class="b">B (z:1)</div>',c:'.a,.b{position:absolute;width:80px;height:50px;border:2px solid #000;padding:2px}.a{background:#000;color:#fff;top:8px;left:8px}.b{background:#ddd;top:30px;left:50px;z-index:1}',r:'.a{z-index:$}',v:['auto','0','2','-1']},
+ {p:'inset',tag:'new',d:'Shorthand for top right bottom left.',i:'auto',T:'pos',c:'.t{position:absolute}',v:['0','10px 40px','auto 0 0 auto']},
+]},
+{t:'Flexbox',items:[
+ {p:'flex-direction',i:'row',T:'flex',v:['row','row-reverse','column','column-reverse']},
+ {p:'flex-wrap',i:'nowrap',T:'flex',c:'.t i{width:60px}',v:['nowrap','wrap','wrap-reverse']},
+ {p:'justify-content',d:'Distribution on the main axis.',i:'flex-start',T:'flex',v:['flex-start','center','flex-end','space-between','space-around','space-evenly']},
+ {p:'align-items',d:'Alignment on the cross axis.',i:'stretch',T:'flex',v:['stretch','flex-start','center','flex-end','baseline']},
+ {p:'align-content',d:'Distribution of the lines (only with wrap).',i:'normal',T:'flex',c:'.t{flex-wrap:wrap}.t i{width:45%}',v:['flex-start','center','space-between','stretch']},
+ {p:'gap',i:'normal',T:'flex',v:['0','10px','20px']},
+ {p:'flex',d:'grow shrink basis, on the black item.',i:'0 1 auto',T:'fitem',v:['0 1 auto','1','2','none','0 0 80px']},
+ {p:'align-self',i:'auto',T:'fitem',v:['auto','flex-start','center','flex-end','stretch']},
+ {p:'order',d:'Visual order only; the DOM order stays the same.',i:'0',T:'fitem',v:['0','-1','1']},
+ {p:'margin (in flex)',d:'auto margins absorb free space: push items apart.',i:'0',T:'fitem',r:'.t{margin:$}',v:['0','0 auto','0 0 0 auto','auto']},
+]},
+{t:'Grid',items:[
+ {p:'grid-template-columns',d:'fr = share of free space; repeat(); minmax(); auto-fit = responsive.',i:'none',T:'grid',v:['1fr 1fr','repeat(3, 1fr)','40px 1fr 2fr','repeat(auto-fit, minmax(50px, 1fr))','auto auto']},
+ {p:'gap',i:'normal',T:'grid',c:'.t{grid-template-columns:repeat(3,1fr)}',v:['0','4px','12px 2px']},
+ {p:'grid-column',d:'On the first item.',i:'auto',T:'grid',c:'.t{grid-template-columns:repeat(3,1fr)}',r:'.t i:first-child{grid-column:$;background:#000;color:#fff}',v:['auto','span 2','1 / -1','2 / 4']},
+ {p:'grid-template-areas',i:'none',x:'<div class="t"><i class="h">head</i><i class="s">side</i><i class="m">main</i></div>',c:'.t{display:grid;gap:3px;grid-template-columns:1fr 2fr}.t i{font-style:normal;border:2px solid #000;background:#ddd;padding:2px}.h{grid-area:h}.s{grid-area:s}.m{grid-area:m}',v:['"h h" "s m"','"s h" "s m"','"h m" "s m"']},
+ {p:'justify-items',i:'legacy',T:'grid',c:'.t{grid-template-columns:1fr 1fr}',v:['stretch','start','center','end']},
+ {p:'place-items',i:'normal',T:'grid',c:'.t{grid-template-columns:1fr 1fr;height:84px}',v:['stretch','center','start end']},
+ {p:'grid-auto-flow',i:'row',T:'grid',c:'.t{grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr} .t i:first-child{grid-column:span 2}',v:['row','column','row dense']},
+]},
+{t:'Lists, content & tables',items:[
+ {p:'list-style-type',i:'disc',h:1,T:'list',v:['disc','circle','square','decimal','decimal-leading-zero','upper-roman','lower-alpha','"→ "','none']},
+ {p:'list-style-position',i:'outside',h:1,T:'list',c:'.t li{border:1px dashed #000}',v:['outside','inside']},
+ {p:'content',d:'Only on ::before / ::after (and ::marker).',i:'normal',x:'<p class="t" data-tip="from attr()">Text</p>',r:'.t::before{content:$;font-weight:800;margin-right:4px}',v:['"→"','attr(data-tip)','open-quote','counter(item) ". "','""'],c:'.t{counter-reset:item 4;counter-increment:item}'},
+ {p:'border-collapse',i:'separate',h:1,T:'tbl',v:['separate','collapse']},
+ {p:'border-spacing',i:'0',h:1,T:'tbl',v:['2px','8px 2px']},
+ {p:'caption-side',i:'top',h:1,T:'tbl',v:['top','bottom']},
+ {p:'empty-cells',i:'show',h:1,T:'tbl',c:'.t td:empty{background:#000}',v:['show','hide']},
+ {p:'table-layout',i:'auto',T:'tbl',c:'.t{width:100%}',v:['auto','fixed']},
+]},
+{t:'Interface',items:[
+ {p:'cursor',d:'Hover each preview to see the pointer.',i:'auto',h:1,T:'col',v:['default','pointer','text','move','help','wait','progress','not-allowed','grab','crosshair','zoom-in','col-resize']},
+ {p:'pointer-events',d:'none: clicks go through the element.',i:'auto',h:1,T:'link',r:'a{pointer-events:$}',v:['auto','none']},
+ {p:'user-select',i:'auto',T:'txt',v:['auto','none','all']},
+ {p:'resize',d:'Drag the bottom-right corner (needs overflow other than visible).',i:'none',T:'box',c:'.t{overflow:auto}',v:['none','both','horizontal','vertical']},
+ {p:'caret-color',i:'auto',h:1,x:'<input class="t" value="click me">',v:['auto','red','transparent']},
+ {p:'accent-color',tag:'new',i:'auto',h:1,x:'<input class="t" type="checkbox" checked> <input class="t" type="radio" checked> <input class="t" type="range">',v:['auto','black','crimson']},
+ {p:'scroll-snap-type',d:'Scroll the strip: it snaps to the items (they have scroll-snap-align: start).',i:'none',x:'<div class="t"><i>1</i><i>2</i><i>3</i><i>4</i></div>',c:'.t{display:flex;overflow-x:auto;gap:4px}.t i{flex:0 0 80%;height:50px;border:2px solid #000;scroll-snap-align:start;font-style:normal}',v:['none','x mandatory','x proximity']},
+]},
+{t:'Effects',items:[
+ {p:'filter',d:'0%/0 = original for most functions.',i:'none',T:'img',v:['none','blur(2px)','brightness(1.6)','contrast(2)','grayscale(100%)','invert(100%)','sepia(100%)','hue-rotate(90deg)','drop-shadow(4px 4px 0 #000)','opacity(30%)']},
+ {p:'mix-blend-mode',d:'How the black circle mixes with what is behind it.',i:'normal',x:'<div class="w"><div class="t"></div></div>',c:'.w{height:84px;background:linear-gradient(90deg,#fff,#000)}.t{width:60px;height:60px;border-radius:50%;background:#888;margin:12px 40px}',v:['normal','multiply','screen','overlay','difference','exclusion']},
+ {p:'clip-path',d:'Cuts the element to a shape.',i:'none',T:'img',v:['none','circle(40%)','ellipse(45% 35%)','inset(10px round 10px)','polygon(50% 0, 100% 100%, 0 100%)']},
+ {p:'transform',d:'Moves/scales/rotates the drawing without affecting layout (dashed = original place).',i:'none',T:'box',c:'.f::before{content:"";position:absolute;left:8px;top:8px;width:90px;height:50px;border:1px dashed #000}',v:['none','translate(20px, 10px)','scale(0.6)','rotate(20deg)','skewX(20deg)','scale(1.2) rotate(-10deg)']},
+ {p:'transform-origin',d:'Pivot for rotate(30deg).',i:'50% 50%',T:'box',c:'.t{margin:12px 20px;transform:rotate(30deg)}',v:['center','top left','bottom right']},
+ {p:'perspective + rotateY',d:'3D: the parent sets the depth.',i:'none',x:'<div class="w"><div class="t">3D</div></div>',c:'.w{perspective:200px;padding:8px 30px}.t{width:80px;height:50px;background:#000;color:#fff}',r:'.t{transform:$}',v:['rotateY(0)','rotateY(45deg)','rotateX(50deg)','rotateY(180deg)']},
+ {p:'transition-timing-function',d:'Hover a preview: the dot travels with this easing.',i:'ease',T:'anim',r:'.t{transition:transform 1.4s $}.f:hover .t{transform:translateX(110px)}',v:['ease','linear','ease-in','ease-out','ease-in-out','steps(4)','cubic-bezier(.5,-0.6,.5,1.6)']},
+ {p:'animation-direction',d:'@keyframes mv moves the dot right; 1.2s infinite.',i:'normal',T:'anim',r:'.t{animation:mv 1.2s infinite $}',v:['normal','reverse','alternate','alternate-reverse']},
+ {p:'animation-fill-mode',d:'Click the preview to replay (runs once after a 0.5s delay).',i:'none',T:'anim',c:'.t{background:#999}',r:'.t{animation:mv 1s .5s 1 $}@keyframes mv{from{background:#000}to{transform:translateX(110px);background:#000}}',v:['none','forwards','backwards','both']},
+ {p:'animation-iteration-count',d:'Click to replay.',i:'1',T:'anim',r:'.t{animation:mv .8s $ alternate}',v:['1','2','3','infinite']},
+]},
+{t:'Multi-column',items:[
+ {p:'column-count',i:'auto',T:'cols',v:['1','2','3']},
+ {p:'column-width',i:'auto',T:'cols',v:['auto','60px','100px']},
+ {p:'column-rule',i:'medium none',T:'cols',c:'.t{column-count:2}',v:['1px solid #000','3px dotted #000','4px double #000']},
+ {p:'column-span',d:'On the title.',i:'none',T:'cols',c:'.t{column-count:2} .t b{display:block}',r:'.t b{column-span:$}',v:['none','all']},
+]},
+];
+const MQ=[['width','(min-width: 600px)','(max-width: 600px)','(600px <= width <= 1200px)'],['orientation','(orientation: portrait)','(orientation: landscape)'],['aspect-ratio','(min-aspect-ratio: 16/9)'],
+ ['prefers-color-scheme','(prefers-color-scheme: dark)','(prefers-color-scheme: light)'],['prefers-reduced-motion','(prefers-reduced-motion: reduce)'],['hover / pointer','(hover: hover)','(pointer: coarse)','(pointer: fine)'],
+ ['resolution','(min-resolution: 2dppx)','(min-resolution: 300dpi)'],['type','print','screen']];
+function fmtCss(s){
+  let out='',d=0,buf='',q=null,p=0;const ind=()=>'  '.repeat(Math.max(d,0));
+  const decl=x=>x.replace(/^([\w-]+)\s*:\s*/,'$1: ');
+  for(let k=0;k<s.length;k++){const ch=s[k];
+    if(q){buf+=ch;if(ch===q)q=null;continue}
+    if(ch==='"'||ch==="'"){q=ch;buf+=ch;continue}
+    if(ch==='/'&&s[k+1]==='*'&&!p){const e=s.indexOf('*/',k+2),c=s.slice(k,e<0?s.length:e+2);if(buf.trim()){buf+=c}else out+=ind()+c+'\n';k=(e<0?s.length:e+1);continue}
+    if(ch==='('){p++;buf+=ch;continue}if(ch===')'){p--;buf+=ch;continue}
+    if(p){buf+=ch;continue}
+    if(ch==='{'){out+=ind()+buf.trim().replace(/\s*,\s*/g,', ')+' {\n';d++;buf=''}
+    else if(ch===';'){if(buf.trim())out+=ind()+decl(buf.trim())+';\n';buf=''}
+    else if(ch==='}'){if(buf.trim())out+=ind()+decl(buf.trim())+';\n';buf='';d--;out+=ind()+'}\n'+(d===0?'\n':'')}
+    else buf+=ch}
+  return out.trim();
+}
+function ruleOf(it,v){return it.r?it.r.split('$').join(v):`.t{${it.p}:${v}}`}
+function partsOf(it,v){const T=TPL[it.T]||{h:'',c:''};return{h:it.x||T.h,css:T.c+(it.c||'')+ruleOf(it,v)}}
+function mount(host,it,v){const{h,css}=partsOf(it,v);const sh=host.shadowRoot||host.attachShadow({mode:'open'});
+  sh.innerHTML=`<style>:host{display:block}*{box-sizing:border-box}.f{position:relative;width:100%;height:100%;overflow:hidden;transform:translateZ(0);font:13px/1.3 Archivo,system-ui,sans-serif;color:#000;background:#fff;padding:8px}${css}</style><div class="f">${h}</div>`;
+  sh.querySelectorAll('.ind').forEach(e=>e.indeterminate=true)}
+
+function prettyHTML(src){
+  const t=document.createElement('template');t.innerHTML=src;
+  const VOID=/^(input|img|br|hr|meta|link|source|col|area|wbr)$/,INL=/^(a|span|b|i|em|strong|code|small|label|input|img|br|abbr|sub|sup)$/;
+  const tx=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const at=e=>[...e.attributes].map(a=>a.value===''&&!/^(alt|value|placeholder|href|src)$/.test(a.name)?` ${a.name}`:` ${a.name}="${a.value.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}"`).join('');
+  const out=[];
+  const walk=(n,d)=>{const ind='  '.repeat(d);for(const c of n.childNodes){
+    if(c.nodeType===3){const v=c.textContent.trim();if(v)out.push(ind+tx(v));continue}
+    if(c.nodeType===8){out.push(ind+'<!--'+c.data+'-->');continue}
+    if(c.nodeType!==1)continue;
+    const tag=c.tagName.toLowerCase(),open=`<${tag}${at(c)}>`;
+    if(VOID.test(tag)){out.push(ind+open);continue}
+    const kids=[...c.childNodes].filter(k=>k.nodeType===1||(k.nodeType===3&&k.textContent.trim()));
+    const ser=e=>e.nodeType===3?tx(e.textContent):e.nodeType!==1?'':VOID.test(e.tagName.toLowerCase())?`<${e.tagName.toLowerCase()}${at(e)}>`:`<${e.tagName.toLowerCase()}${at(e)}>${[...e.childNodes].map(ser).join('')}</${e.tagName.toLowerCase()}>`;
+    const flat=[...c.childNodes].map(ser).join('').trim();
+    if(!kids.length){out.push(ind+open+`</${tag}>`);continue}
+    if(kids.every(k=>k.nodeType===3||INL.test(k.tagName.toLowerCase()))&&(ind+open+flat).length<=80&&!flat.includes('\n')){out.push(ind+open+flat+`</${tag}>`);continue}
+    if(kids.every(k=>k.nodeType===3)){out.push(ind+open+tx(c.textContent)+`</${tag}>`);continue}
+    out.push(ind+open);walk(c,d+1);out.push(ind+`</${tag}>`)}};
+  walk(t.content,0);return out.join('\n');
+}
+let chCat=0;
+function renderCheat(){
+  const box=$('#cheat');
+  box.innerHTML=`<div class="chbar"><input id="chq" type="search" placeholder="Search: justify, cover, :nth-child, ::before…" aria-label="Search the cheatsheet"><div class="chtabs">${CH.map((c,i)=>`<button type="button" class="ob" data-ct="${i}" aria-pressed="${i===chCat}">${esc(c.t)}</button>`).join('')}<button type="button" class="ob" data-ct="mq" aria-pressed="${chCat==='mq'}">Media features</button></div></div><div id="chbody"></div>`;
+  box.querySelector('.chtabs').addEventListener('click',e=>{const b=e.target.closest('[data-ct]');if(!b)return;chCat=b.dataset.ct==='mq'?'mq':+b.dataset.ct;$('#chq').value='';renderCheat()});
+  let t;$('#chq').addEventListener('input',e=>{clearTimeout(t);t=setTimeout(()=>showCheat(e.target.value.trim().toLowerCase()),200)});
+  showCheat('');
+}
+function showCheat(q){
+  const body=$('#chbody');let list=[];
+  if(q){CH.forEach(c=>c.items.forEach(it=>{const hay=[it.p,it.g,it.d,...it.v].join(' ').toLowerCase();if(hay.includes(q))list.push([c.t,it])}))}
+  else if(chCat==='mq'){body.innerHTML=mqHtml();return}
+  else list=CH[chCat].items.map(it=>[CH[chCat].t,it]);
+  if(!list.length){body.innerHTML='<p class="muted">Nothing found. Try a property name (margin), a value (cover) or a selector (:hover).</p>';return}
+  body.innerHTML=list.map(([cat,it],k)=>`<section class="chc"><header><h3><code>${esc(it.p||it.g)}</code>${it.tag==='new'?'<span class="badge">modern</span>':''}</h3>
+    <div class="chm">${q?`<span class="badge">${esc(cat)}</span>`:''}${it.i!==undefined?`<span class="badge">initial: ${esc(it.i)}</span>`:''}${it.p&&!it.p.includes(' ')?`<span class="badge">${it.h?'inherited':'not inherited'}</span>`:''}${it.p&&!it.p.includes(' ')?`<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/${encodeURIComponent(it.p)}" target="_blank" rel="noopener">MDN</a>`:''}</div></header>
+    ${it.d?`<p class="chd">${esc(it.d)}</p>`:''}<div class="sws">${it.v.map((v,j)=>`<figure class="sw"><div class="swh" data-k="${k}" data-j="${j}" title="click to replay" style="${(TPL[it.T]&&TPL[it.T].ht)?`height:${TPL[it.T].ht}px`:''}"></div><figcaption><code>${esc(it.p&&!it.r?it.p+': '+v:v)}</code><button type="button" data-k="${k}" data-j="${j}">open in lab</button></figcaption></figure>`).join('')}</div></section>`).join('');
+  body.querySelectorAll('.swh').forEach(h=>{const[,it]=list[h.dataset.k];mount(h,it,it.v[h.dataset.j]);h.addEventListener('click',()=>mount(h,it,it.v[h.dataset.j]))});
+  body.querySelectorAll('figcaption button').forEach(b=>b.addEventListener('click',()=>{const[,it]=list[b.dataset.k],v=it.v[b.dataset.j],{h,css}=partsOf(it,v);
+    let rule=ruleOf(it,v);
+    if(it.r&&it.r.startsWith('$')&&it.r.length>1){const sc=splitTop(v).map(x=>/^[:*]/.test(x)?'.f '+x:x).join(', ');rule=it.r.split('$').join(sc)}
+    const T=TPL[it.T]||{c:''},base='.f{padding:8px;font:13px/1.3 system-ui,sans-serif;color:#000}';
+    const P=LESSONS.find(l=>l.id==='playground');P.t=`Playground: ${it.p&&!it.r?it.p+': '+v:v}`;
+    P.html=prettyHTML(`<div class="f">${it.x||T.h||''}</div>`);P.css=fmtCss(base+T.c+(it.c||'')+'/* the property you are testing */ '+rule);go('playground')}));
+}
+function mqHtml(){
+  const w=Math.round(innerWidth);
+  return`<p class="chd">Media features are conditions, so they have no look of their own. Each line says whether it is true <b>right now</b> on this screen (window width ${w}px). Use them as <code>@media (feature) { … }</code>; combine with <code>and</code>, a comma (or) and <code>not</code>.</p>
+  <div class="mqg">${MQ.map(([n,...qs])=>`<section class="chc"><header><h3><code>${esc(n)}</code></h3></header><ul class="mq">${qs.map(q=>{const ok=matchMedia(q).matches;return`<li><code>@media ${esc(q)}</code><b>${ok?'✓ true now':'✗ false now'}</b></li>`}).join('')}</ul></section>`).join('')}</div>
+  <p class="muted">Legacy, avoid: <code>device-width</code>, <code>device-height</code>, <code>device-aspect-ratio</code> (deprecated), <code>scan</code> and <code>grid</code> (TV/terminal devices).</p>`;
+}
+
 buildNav();
 addEventListener('hashchange',()=>load(location.hash.slice(1)));
-load(location.hash.slice(1)||LESSONS[0].id);
+load(location.hash.slice(1)||'cascade');
 }
 </script>
 </body>

@@ -87,6 +87,14 @@ abbr.ty{text-decoration:underline dotted;cursor:help;font-style:italic}.or{color
 .sth{font-size:18px;font-weight:800;font-stretch:112%;margin:18px 0 8px}
 .tyg{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:6px 18px}.tyg div{display:grid;grid-template-columns:9.5em 1fr;gap:8px;font-size:13px;border-bottom:1px solid var(--soft);padding:4px 0}.tyg code{font-weight:600}
 .syn td:nth-child(2){min-width:280px}.syn td code{font-size:12px}
+.story{margin-top:14px;max-width:900px}
+.stp{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;border-top:2px solid var(--ink);padding:16px 0}
+.stn{font:800 30px/1 Archivo;font-stretch:125%}
+.stb>p{margin:0 0 10px;max-width:72ch;font-size:16px}.stb code{background:var(--soft);padding:0 4px;font-size:.88em}
+.str{margin:0 0 10px;padding:8px 10px;border-left:4px solid var(--ink);background:var(--soft);overflow-x:auto}.str code{background:none;font-size:13px}
+.stf{display:block;width:100%;max-width:560px;height:160px;border:1.5px solid var(--ink);background:#fff;color-scheme:light}
+.stl{margin-top:6px;min-height:34px;padding:2px 10px;border:1.5px solid var(--ink);background:var(--bg);cursor:pointer;font-size:13px}.stl:hover{background:var(--ink);color:var(--bg)}
+@media(max-width:600px){.stp{grid-template-columns:30px minmax(0,1fr);gap:8px}.stn{font-size:22px}}
 .cheat{margin-top:18px}[hidden]{display:none!important}
 .chbar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0;border-bottom:2px solid var(--ink);display:grid;gap:8px}
 .chbar input{min-height:44px;border:2px solid var(--ink);background:var(--bg);padding:6px 12px;font-size:16px;width:100%}
@@ -178,6 +186,7 @@ td code{font-size:12px;overflow-wrap:anywhere}
       </div>
     </section>
     <section class="cheat" id="cheat" hidden></section>
+    <section class="story" id="story" hidden></section>
     <section class="explain" id="explain"></section>
     <section class="insp" id="insp" aria-live="polite"></section>
     <div class="pager"><button type="button" id="prev"></button><button type="button" id="next"></button></div>
@@ -195,6 +204,17 @@ body:`<p>A live companion to your CSS3 PDF cheat sheet (topics follow Manz's she
 {id:'playground',g:'Cheatsheet',t:'Playground',
 body:`<p>Your scratch area. Use <b>open in lab</b> on any cheatsheet preview to load it here, or type your own HTML and CSS. Click an element in the preview to inspect it.</p>`,
 html:`<div class="t">Edit me</div>`,css:`.t {\n  width: 120px;\n  padding: 10px;\n  border: 2px solid black;\n}`},
+{id:'st-position',g:'Explained step by step',t:'Positioning: static, relative, absolute, fixed, sticky',story:true,body:'',html:'',css:''},
+{id:'st-selectors',g:'Explained step by step',t:'Selectors: which elements a rule picks',story:true,body:'',html:'',css:''},
+{id:'st-pseudo-classes',g:'Explained step by step',t:'Pseudo-classes: states and positions',story:true,body:'',html:'',css:''},
+{id:'st-pseudo-elements',g:'Explained step by step',t:'Pseudo-elements: ::before, ::after and parts of an element',story:true,body:'',html:'',css:''},
+{id:'st-cascade',g:'Explained step by step',t:'The cascade: who wins when rules disagree',story:true,body:'',html:'',css:''},
+{id:'st-inheritance',g:'Explained step by step',t:'Inheritance: what passes from parent to child',story:true,body:'',html:'',css:''},
+{id:'st-display',g:'Explained step by step',t:'display: block, inline, inline-block, none',story:true,body:'',html:'',css:''},
+{id:'st-float',g:'Explained step by step',t:'float and clear',story:true,body:'',html:'',css:''},
+{id:'st-flex',g:'Explained step by step',t:'Flexbox: from a column to a row',story:true,body:'',html:'',css:''},
+{id:'st-zindex',g:'Explained step by step',t:'z-index and stacking contexts',story:true,body:'',html:'',css:''},
+{id:'st-margins',g:'Explained step by step',t:'Margins that collapse',story:true,body:'',html:'',css:''},
 /* ---------------- CASCADE ---------------- */
 {id:'cascade',g:'Cascade',t:'The cascade: who wins a conflict',
 body:`<p>When several declarations set the <b>same property</b> on the <b>same element</b>, the browser doesn't mix them. It sorts them and the first one wins. Each step only matters if the step before it is a tie:</p>
@@ -1517,8 +1537,9 @@ function load(id){
   const i=LESSONS.indexOf(l),p=LESSONS[i-1],n=LESSONS[i+1];
   $('#prev').textContent=p?'← '+p.t:'';$('#prev').style.visibility=p?'visible':'hidden';$('#prev').onclick=()=>p&&go(p.id);
   $('#next').textContent=n?n.t+' →':'';$('#next').style.visibility=n?'visible':'hidden';$('#next').onclick=()=>n&&go(n.id);
-  const ch=!!l.cheat;document.querySelector('.work').hidden=ch;$('#explain').hidden=ch;$('#insp').hidden=ch;$('#cheat').hidden=!ch;
+  const ch=!!l.cheat,sty=!!l.story,full=ch||sty;document.querySelector('.work').hidden=full;$('#explain').hidden=full;$('#insp').hidden=full;$('#cheat').hidden=!ch;$('#story').hidden=!sty;
   if(ch){renderCheat();window.scrollTo(0,0);return}
+  if(sty){$('#body').innerHTML='<p class="muted">Each step changes one thing. Every box shows its own HTML and the CSS applied to it. Interact with the diagrams where the text says so, and use <b>open in lab</b> to edit any step.</p>';renderStory(l);window.scrollTo(0,0);return}
   setWidth(l.w||'fit');renderWidget();renderCtls();writeCode();
   window.scrollTo(0,0);
 }
@@ -2310,6 +2331,155 @@ function synTab(){
   const types=`<div class="tyg">${Object.entries(TYPES).map(([k,v])=>`<div><code>${esc(k)}</code><span>${esc(v)}</span></div>`).join('')}</div>`;
   const rows=SYN.map(r=>`<tr><td data-l="property"><code><b>${esc(r[0])}</b></code></td><td data-l="accepts"><code>${typeChips(r[1])}</code>${r[6]?`<br><span class="muted">${esc(r[6])}</span>`:''}</td><td data-l="initial"><code>${esc(r[2])}</code></td><td data-l="inherited">${r[3]?'yes':'no'}</td><td data-l="applies to">${esc(r[4])}</td><td data-l="% of">${esc(r[5])}</td></tr>`).join('');
   return`${legend}<h3 class="sth">Value types</h3>${types}<h3 class="sth">Properties (${SYN.length})</h3><div class="scroll"><table class="stack syn"><thead><tr><th>property</th><th>accepts</th><th>initial</th><th>inherited</th><th>applies to</th><th>% refers to</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
+/* ---------- EXPLAINED STEP BY STEP: one change per diagram ---------- */
+const STB='body{margin:0;padding:12px 14px;font:15px/1.35 Georgia,"Times New Roman",serif;color:#111;background:#fff}*{box-sizing:border-box}'+
+':where(.ct){border:1px dashed #888;padding:4px 10px 10px;width:330px;max-width:100%}:where(.lab){display:block;font-size:13px;color:#444}:where(.lab code){display:inline;margin-left:6px}'+
+':where(.el){border:1px solid #888;padding:3px 8px;margin:6px 0;background:#fff;width:230px;max-width:100%}:where(.el .el){width:auto}'+
+':where(span.el,a.el,em.el,label.el,b.el){display:inline-block;width:auto;margin:2px}:where(.tg){color:#444}'+
+':where(.el>code,.lab code,.cs){display:block;font:12px/1.3 ui-monospace,Menlo,monospace;color:#666}:where(span.el>code){display:inline;margin-left:4px}'+
+':where(ul.el,ol.el){padding-left:30px}:where(li.el){width:auto}:where(input.el,button.el){font:inherit}';
+const L=(tag,attrs)=>`<span class="tg">&lt;${tag}${attrs?' '+esc(attrs):''}&gt;</span>`;
+function B(tag,attrs='',inner='element',css=''){let cls='el';const a=(attrs||'').replace(/class="([^"]*)"/,(m,c)=>{cls+=' '+c;return''}).trim();
+  const vd=/^(input|img|br)$/.test(tag);if(vd)return`<${tag} class="${cls}"${a?' '+a:''}${css?` style="${css}"`:''}>`;
+  return`<${tag} class="${cls}"${a?' '+a:''}${css?` style="${css}"`:''}>${L(tag,attrs)} ${inner} <span class="tg">&lt;/${tag}&gt;</span>${css?`<code>${esc(css)}</code>`:''}</${tag}>`}
+const CT=(inner,css='',lab='#container')=>`<div id="container" class="ct"${css?` style="${css}"`:''}><span class="lab">${lab}${css?`<code>${esc(css)}</code>`:''}</span>${inner}</div>`;
+const D3=(mid='')=>CT(B('div')+B('div','','element',mid)+B('div'));
+const HIT=s=>`${s}{background:#111;color:#fff}${s.split(',').map(x=>x.trim()+'>.tg').join(',')}{color:#fff}${s.split(',').map(x=>x.trim()+'>code').join(',')}{color:#ccc}`;
+const SELTREE=CT(B('h3','','title')+B('p','class="intro"','text')+B('p','','text')+B('div','class="box"',B('p','','inside')+B('span','','span'))+B('p','id="last"','text'));
+const LIST5=B('ul','',[1,2,3,4,5].map(n=>B('li','',n)).join(''));
+const MIXED=CT(B('h3','','child 1')+B('p','','child 2')+B('p','class="x"','child 3')+B('h3','','child 4')+B('p','class="x"','child 5')+B('p','','child 6'),'','.list');
+const TALL='<div style="height:600px"></div>';
+const STORIES=[
+{id:'st-position',t:'Positioning: static, relative, absolute, fixed, sticky',
+intro:'Three boxes in a container. Every diagram changes <b>one thing</b> on the middle box (or its parent), and each box is labelled with its own HTML and the CSS applied to it.',
+steps:[
+ {p:'<b>static</b> is the default. Boxes are laid out in normal flow, one under the other. A static box <b>ignores</b> <code>top</code>, <code>right</code>, <code>bottom</code> and <code>left</code>: the middle box below has <code>left: 20px</code> and nothing happens.',h:D3('position: static; left: 20px;')},
+ {p:'<b>relative</b> moves the box from <i>where it would normally be</i>. The space it had stays reserved, so the third box does not move up.',h:D3('position: relative; left: 20px;')},
+ {p:'Offsets work like "push from that side": <code>top: 20px</code> pushes it 20px <b>down</b>. A relative box can overlap its neighbours, because the others still act as if it were in its original place.',h:D3('position: relative; top: 20px; left: 20px;')},
+ {p:'<b>absolute</b> takes the box <b>out of the flow</b>: the third box moves up into the empty space. The offsets are measured from the containing block. No ancestor is positioned here, so they are measured from the page itself, outside the container.',h:D3('position: absolute; left: 100px; top: 150px;'),ht:250},
+ {p:'Give the <b>parent</b> <code>position: relative</code> and it becomes the containing block: the same absolute box is now measured from the container’s corner. This "relative parent + absolute child" pair is the most common positioning pattern.',h:CT(B('div')+B('div','','element','position: absolute; left: 100px; top: 150px;')+B('div'),'position: relative;'),ht:260},
+ {p:'An absolute box <b>without offsets</b> stays where it would have been (its static position), but it still takes no space: the third box slides underneath it.',h:D3('position: absolute; background: #ddd;')},
+ {p:'<b>fixed</b> is measured from the <b>viewport</b> (the visible window) and stays there while you scroll. <b>Scroll inside this diagram.</b>',h:D3('position: fixed; right: 10px; bottom: 10px;')+TALL,ht:230},
+ {p:'<b>sticky</b> behaves like relative until scrolling would carry it past its offset, then it sticks, but only while its parent is visible. <b>Scroll inside this diagram.</b>',h:'<p class="cs">scroll ↓</p>'+CT(B('div')+B('div','','element','position: sticky; top: 0; background: #ddd;')+B('div')+'<div style="height:260px"></div>')+TALL,ht:230},
+ {p:'In short: <b>static</b> and <b>relative</b> stay in the flow (their space is kept). <b>absolute</b> and <b>fixed</b> leave the flow (their space is given to the others). <b>sticky</b> stays in the flow and only sticks while scrolling.'},
+]},
+{id:'st-selectors',t:'Selectors: which elements a rule picks',
+intro:'The same small page in every diagram. The rule written above it paints the elements it selects <b>black</b>, so you see exactly what each selector reaches.',
+steps:[
+ {p:'A <b>type selector</b> picks every element with that tag.',rule:'p',h:SELTREE},
+ {p:'A <b>class selector</b> (dot) picks elements whose <code>class</code> attribute contains that word.',rule:'.intro',h:SELTREE},
+ {p:'An <b>id selector</b> (hash) picks the element with that <code>id</code>. An id must be unique in the page.',rule:'#last',h:SELTREE},
+ {p:'A <b>comma</b> makes a group: one rule for several selectors. It reads as "h3 <b>or</b> #last".',rule:'h3, #last',h:SELTREE},
+ {p:'A <b>space</b> means "inside, at any depth" (descendant). This picks only the <code>p</code> inside <code>.box</code>.',rule:'.box p',h:SELTREE},
+ {p:'<code>&gt;</code> means <b>direct child</b>. These are the <code>p</code> elements whose parent is #container, so the one inside .box is not selected.',rule:'#container > p',h:SELTREE},
+ {p:'<code>+</code> means the element <b>right after</b> a sibling: the <code>p</code> immediately following the <code>h3</code>.',rule:'h3 + p',h:SELTREE},
+ {p:'<code>~</code> means <b>any later sibling</b>: every <code>p</code> after the <code>h3</code> with the same parent (not the one inside .box).',rule:'h3 ~ p',h:SELTREE},
+ {p:'Chaining with <b>no space</b> means AND: an element that is a <code>p</code> <b>and</b> has the class <code>intro</code>. Compare with <code>p .intro</code> (with a space), which would mean "an .intro <i>inside</i> a p" and select nothing here.',rule:'p.intro',h:SELTREE},
+ {p:'<b>Attribute selectors</b> filter by attribute: <code>[id]</code> = has an id (the container and #last), <code>[class~="box"]</code> = the class list contains the word "box", which is exactly what <code>.box</code> means.',rule:'[id], [class~="box"]',h:SELTREE},
+]},
+{id:'st-pseudo-classes',t:'Pseudo-classes: states and positions',
+intro:'A pseudo-class is a condition: the browser applies the rule only <b>while the condition is true</b>. Some depend on what you do (hover, focus, check), others on the element’s position among its siblings.',
+steps:[
+ {p:'<code>:hover</code>: <b>move the mouse over the items</b>. The browser adds the state while the pointer is on the element and removes it when you leave, so you never add it yourself.',rule:'li:hover',h:CT(B('ul','',B('li','','one')+B('li','','two')+B('li','','three')))},
+ {p:'A state on the <b>parent</b> can style a <b>child</b>: <code>.card:hover .price</code> means "the .price inside a .card that is being hovered". <b>Hover anywhere on the card.</b>',rule:'.card:hover .price',h:CT(B('div','class="card"',B('p','','name')+B('p','class="price"','20 €')))},
+ {p:'<code>:focus</code> applies to the input you clicked into (or reached with Tab). <code>:focus-within</code> applies to a parent while <b>anything inside it</b> has focus. <b>Click into the input.</b>',rule:'input:focus, form:focus-within',c:'input.el{width:200px;font:inherit}',h:CT(B('form','',B('input','placeholder="click me"')))},
+ {p:'<code>:checked</code> is true while a checkbox is ticked. An input has no children, so we style the <b>label right after it</b> with <code>+</code>. <b>Tick the box.</b>',rule:'input:checked + label',h:CT(B('input','type="checkbox" id="c1"')+' '+B('label','for="c1"','accept'))},
+ {p:'<code>:first-child</code> and <code>:last-child</code> depend on <b>position</b>, not on state: the first and last child of their parent.',rule:'li:first-child, li:last-child',h:CT(LIST5)},
+ {p:'<code>:nth-child(2n)</code> picks positions 2, 4, 6… (n counts 0, 1, 2…). <code>odd</code> and <code>even</code> are shortcuts.',rule:'li:nth-child(2n)',h:CT(LIST5)},
+ {p:'In a <b>mixed</b> list, <code>p:nth-child(2)</code> means "the 2nd child, <i>if</i> it is a p" and counts siblings of any tag.',rule:'p:nth-child(2)',h:MIXED},
+ {p:'<code>p:nth-of-type(2)</code> counts <b>only the p elements</b>: the 2nd p is child 3. Same list, different result.',rule:'p:nth-of-type(2)',h:MIXED},
+ {p:'<code>:not()</code> selects everything that does <b>not</b> match its argument.',rule:'p:not(.x)',h:MIXED},
+ {p:'<code>:has()</code> selects an element by <b>what it contains</b>, which lets you style a parent. Here: the cards that contain an <code>em</code>.',rule:'.card:has(em)',h:CT(B('div','class="card"',B('p','','plain'))+B('div','class="card"',B('p','',B('em','','featured'))))},
+ {p:'<b>Class vs pseudo-class</b>: <code>.active</code> is a class you put in the HTML (or JavaScript adds it); <code>:active</code> is a state the browser applies only while you <b>hold the mouse button down</b>. <b>Press and hold the second button.</b>',rule:'.active, button:active',c:'button.el{font:inherit;cursor:pointer}',h:CT(B('button','class="active"','class="active"')+B('button','','press and hold'))},
+]},
+{id:'st-pseudo-elements',t:'Pseudo-elements: ::before, ::after and parts of an element',
+intro:'A pseudo-element (two colons) is a box the browser <b>generates</b>, or a <b>part</b> of an element you can style. In these diagrams the generated boxes have a dashed outline so you can see where they go.',
+steps:[
+ {p:'<code>::before</code> and <code>::after</code> create a box <b>inside</b> the element, before and after its content. They only exist if <code>content</code> is set.',rule:'',c:'.demo::before{content:"::before";border:1px dashed #000;padding:0 4px;margin-right:6px}.demo::after{content:"::after";border:1px dashed #000;padding:0 4px;margin-left:6px}',h:CT(B('p','class="demo"','text'))},
+ {p:'They are <b>inline</b> by default. With <code>display: block</code> they become full lines inside the element.',c:'.demo::before,.demo::after{display:block;border:1px dashed #000;padding:0 4px}.demo::before{content:"::before (display: block)"}.demo::after{content:"::after (display: block)"}',h:CT(B('p','class="demo"','text'))},
+ {p:'<code>content: ""</code> (empty) plus a size gives a purely decorative shape. Here, a black square before each item.',c:'.demo li::before{content:"";display:inline-block;width:10px;height:10px;background:#000;margin-right:8px}.demo{list-style:none;padding-left:10px}',h:CT(B('ul','class="demo"',B('li','','one')+B('li','','two')))},
+ {p:'<code>::first-letter</code> and <code>::first-line</code> style a part of the text. The first line depends on the width, so it changes when the box gets narrower or wider.',c:'.demo::first-letter{font-size:2.4em;float:left;line-height:1;margin-right:4px}.demo::first-line{font-weight:700}',h:CT(B('p','class="demo"','This paragraph shows a big first letter and a bold first line that follows the width.'))},
+ {p:'<code>::marker</code> is the bullet or number of a list item.',c:'.demo li::marker{content:"→ ";font-weight:700}',h:CT(B('ul','class="demo"',B('li','','one')+B('li','','two')))},
+ {p:'<code>::placeholder</code> styles the hint text of an input. <code>::selection</code> styles text while the user selects it. <b>Select some text here.</b>',c:'input.el{width:240px;font:inherit}input::placeholder{font-style:italic;letter-spacing:2px}::selection{background:#000;color:#fff}',h:CT(B('input','placeholder="::placeholder text"')+B('p','','Select me to see ::selection.'))},
+ {p:'A pseudo-class and a pseudo-element can be <b>combined</b>: the pseudo-class comes first, the pseudo-element last. <b>Hover the items.</b>',rule:'',c:'li:hover::after{content:" ← :hover::after";font-style:italic;border:1px dashed #000;padding:0 4px;margin-left:4px}',h:CT(B('ul','',B('li','','one')+B('li','','two')))},
+]},
+{id:'st-cascade',t:'The cascade: who wins when rules disagree',
+intro:'One paragraph, and rules that all set its <b>border</b>. Each step adds one rule; the border you see is the winner.',
+steps:[
+ {p:'One rule, nothing to fight about: the type selector gives a solid border.',rule0:'p { border: 4px solid black; }',h:CT(B('p','id="msg" class="note"','Which border?'))},
+ {p:'A <b>class</b> rule is more specific (0,1,0) than a type rule (0,0,1), so dashed wins, <b>even though it is written first</b>.',rule0:'.note { border: 4px dashed black; }\np { border: 4px solid black; }',h:CT(B('p','id="msg" class="note"','Which border?'))},
+ {p:'An <b>id</b> (1,0,0) beats any number of classes.',rule0:'#msg { border: 4px dotted black; }\n.note { border: 4px dashed black; }\np { border: 4px solid black; }',h:CT(B('p','id="msg" class="note"','Which border?'))},
+ {p:'With <b>equal specificity</b>, the rule written <b>later</b> wins.',rule0:'.note { border: 4px dashed black; }\n.note { border: 4px double black; }',h:CT(B('p','id="msg" class="note"','Which border?'))},
+ {p:'An <b>inline style</b> (the <code>style</code> attribute) beats every selector, even the id.',rule0:'#msg { border: 4px dotted black; }',h:CT(B('p','id="msg" class="note"','Which border?','border: 4px double black;'))},
+ {p:'<code>!important</code> beats every normal declaration, even inline styles, whatever the specificity. Use it rarely: the only way to beat it is another !important.',rule0:'p { border: 4px solid black !important; }\n#msg { border: 4px dotted black; }',h:CT(B('p','id="msg" class="note"','Which border?','border: 4px double black;'))},
+ {p:'The order of the checks: <b>!important</b> → <b>inline style</b> → <b>@layer</b> → <b>specificity</b> → <b>order of appearance</b>. Each step only matters when the previous one is a tie. Rules that set <i>different</i> properties never fight: all of them apply.'},
+]},
+{id:'st-inheritance',t:'Inheritance: what passes from parent to child',
+intro:'The container gets the styles; the boxes inside are its children. Watch which properties reach them.',
+steps:[
+ {p:'Text properties (<code>color</code>, <code>font-*</code>, <code>line-height</code>, <code>letter-spacing</code>…) are <b>inherited</b>: the children get them without any rule of their own.',h:CT(B('div')+B('div'),'font-style: italic; letter-spacing: 2px;')},
+ {p:'Box properties (<code>border</code>, <code>padding</code>, <code>background</code>, <code>width</code>…) are <b>not inherited</b>: the thick border stays on the container only.',h:CT(B('div')+B('div'),'border: 4px solid black; padding: 14px;')},
+ {p:'A child’s <b>own rule always beats</b> what it inherits, even a weak rule. The second child sets its own font-style.',h:CT(B('div')+B('div','','element','font-style: normal;'),'font-style: italic;')},
+ {p:'<code>inherit</code> forces a property to copy the parent’s value, even a non-inherited one like border.',h:CT(B('div')+B('div','','element','border: inherit;'),'border: 4px solid black;')},
+ {p:'Links and form controls are special: the browser gives them their <b>own</b> color and font, so they ignore the parent’s. That’s why <code>a { color: inherit }</code> and <code>button { font: inherit }</code> are so common.',c:'a.el,button.el{display:inline-block}',h:CT(B('p','','text '+B('a','href="#"','link'))+B('button','','button')+B('a','href="#"','link with inherit','color: inherit; font: inherit;'),'color: dimgray; font-family: monospace;')},
+]},
+{id:'st-display',t:'display: block, inline, inline-block, none',
+intro:'Three <code>span</code> elements in a line of text. Only the middle one changes. It also has <code>width: 120px; height: 40px</code> in every step.',
+steps:[
+ {p:'<b>inline</b> (default for span): flows inside the text. <code>width</code> and <code>height</code> are <b>ignored</b>, and so are vertical margins.',h:CT('Text '+B('span','','A')+B('span','','B','display: inline; width: 120px; height: 40px;')+B('span','','C')+' text')},
+ {p:'<b>block</b>: starts on a new line and takes the full width available. Width and height work.',h:CT('Text '+B('span','','A')+B('span','','B','display: block; width: 120px; height: 40px;')+B('span','','C')+' text')},
+ {p:'<b>inline-block</b>: stays inside the line like text, but respects width, height and margins.',h:CT('Text '+B('span','','A')+B('span','','B','display: inline-block; width: 120px; height: 40px;')+B('span','','C')+' text')},
+ {p:'<b>none</b>: no box at all. It takes no space and the others close the gap (its label is gone too, because the whole element is gone).',h:CT('Text '+B('span','','A')+B('span','','B','display: none;')+B('span','','C')+' text')},
+ {p:'Compare <code>visibility: hidden</code>: invisible, but its space stays.',h:CT('Text '+B('span','','A')+B('span','','B','display: inline-block; width: 120px; height: 40px; visibility: hidden;')+B('span','','C')+' text')},
+]},
+{id:'st-float',t:'float and clear',
+intro:'A floated box and some text, step by step.',
+steps:[
+ {p:'Without float, the box is a normal block: the text starts below it.',h:CT(B('div','','box','width: 90px; height: 70px; background: #ddd;')+B('p','','Text that comes after the box in the HTML, long enough to wrap onto several lines.'))},
+ {p:'<code>float: left</code> moves it to the left and <b>out of the normal flow</b>: the text wraps around it.',h:CT(B('div','','box','float: left; width: 90px; height: 70px; background: #ddd;')+B('p','','Text that comes after the box in the HTML, long enough to wrap onto several lines.'))},
+ {p:'Problem: the container <b>does not grow</b> to contain the float, which sticks out at the bottom (look at the dashed border).',h:CT(B('div','','box','float: left; width: 90px; height: 90px; background: #ddd;')+'short text')+B('p','','next element')},
+ {p:'<code>display: flow-root</code> on the container makes it contain its floats.',h:CT(B('div','','box','float: left; width: 90px; height: 90px; background: #ddd;')+'short text','display: flow-root;')+B('p','','next element')},
+ {p:'<code>clear: both</code> on an element moves it <b>below</b> any earlier floats.',h:CT(B('div','','box','float: left; width: 90px; height: 70px; background: #ddd;')+B('p','','I clear the float','clear: both;'))},
+]},
+{id:'st-flex',t:'Flexbox: from a column to a row',
+intro:'Three children in a container. Every step adds one property to the <b>container</b> (or one item).',
+steps:[
+ {p:'Without flex, the divs are blocks: one per line.',h:CT(B('div','','1')+B('div','','2')+B('div','','3'),'','#container')},
+ {p:'<code>display: flex</code> turns the children into <b>flex items</b> placed in a row (the main axis). They shrink to their content.',c:'.el .el,.ct .el{width:auto}',h:CT(B('div','','1')+B('div','','2')+B('div','','3'),'display: flex; gap: 6px;')},
+ {p:'<code>justify-content</code> distributes the items along the row.',c:'.ct .el{width:auto}',h:CT(B('div','','1')+B('div','','2')+B('div','','3'),'display: flex; justify-content: space-between;')},
+ {p:'<code>align-items</code> aligns them on the cross axis (vertically, in a row). The container has a height so you can see it.',c:'.ct .el{width:auto}',h:CT(B('div','','1')+B('div','','2')+B('div','','3'),'display: flex; gap: 6px; height: 110px; align-items: center;')},
+ {p:'<code>flex: 1</code> on one item makes it take <b>all the free space</b>.',c:'.ct .el{width:auto}',h:CT(B('div','','1')+B('div','','2','flex: 1;')+B('div','','3'),'display: flex; gap: 6px;')},
+ {p:'<code>flex-direction: column</code> turns the main axis vertical: now <code>justify-content</code> works vertically and <code>align-items</code> horizontally.',c:'.ct .el{width:auto;margin:0}',h:CT(B('div','','1')+B('div','','2')+B('div','','3'),'display: flex; flex-direction: column; align-items: flex-end;')},
+]},
+{id:'st-zindex',t:'z-index and stacking contexts',
+intro:'Overlapping boxes. z-index decides which one is in front, but only under some conditions.',
+steps:[
+ {p:'Two overlapping positioned boxes: the one later in the HTML is painted <b>on top</b>.',c:'.el{position:relative;width:240px;min-height:84px}',h:CT(B('div','class="a"','A','background: #fff;')+B('div','class="b"','B','margin-top: -40px; margin-left: 90px; background: #ddd;'))},
+ {p:'A higher <code>z-index</code> brings A to the front.',c:'.el{position:relative;width:240px;min-height:84px}',h:CT(B('div','class="a"','A','z-index: 2; background: #fff;')+B('div','class="b"','B','margin-top: -40px; margin-left: 90px; background: #ddd; z-index: 1;'))},
+ {p:'z-index <b>does nothing on a static element</b>. Here A is static, so its z-index: 2 is ignored and B stays on top.',c:'.el{width:240px;min-height:84px}.b{position:relative}',h:CT(B('div','class="a"','A','position: static; z-index: 2; background: #fff;')+B('div','class="b"','B','margin-top: -40px; margin-left: 90px; background: #ddd; z-index: 1;'))},
+ {p:'A child with <b>z-index: 99</b> inside a parent that has <code>z-index: 1</code> is <b>trapped</b> in its parent’s stacking context: it can never go above B (z-index: 2), because the whole parent is below B.',c:'.el{position:relative}.p{width:240px;height:120px}.k{position:absolute;left:180px;top:46px;width:150px;background:#111;color:#fff}.k>.tg{color:#fff}.k>code{color:#ccc}.b{width:220px;min-height:90px}',h:CT(B('div','class="p"','parent '+B('div','class="k"','child','z-index: 99;'),'z-index: 1; background: #fff;')+B('div','class="b"','B','margin-top: -50px; margin-left: 70px; background: #ddd; z-index: 2;'),'','#container'),ht:260},
+]},
+{id:'st-margins',t:'Margins that collapse',
+intro:'Vertical margins between blocks sometimes merge. The gray area is the container.',
+steps:[
+ {p:'Two paragraphs: 30px below the first, 20px above the second. You might expect 50px between them, but you get <b>30px</b>: the margins collapse into the larger one.',h:CT(B('p','','margin-bottom: 30px','margin: 0 0 30px;')+B('p','','margin-top: 20px','margin: 20px 0 0;'),'background: #e5e5e5;')},
+ {p:'A first child’s top margin <b>escapes</b> through its parent when nothing separates them: the 30px appear <i>above</i> the gray container, not inside it.',h:'<div style="border-top:1px solid #000">top of the page</div>'+CT(B('p','','margin-top: 30px','margin: 30px 0 0;'),'background: #e5e5e5;')},
+ {p:'Anything between them stops it: padding, a border, or a new formatting context like <code>display: flow-root</code>. Now the 30px are inside the container.',h:'<div style="border-top:1px solid #000">top of the page</div>'+CT(B('p','','margin-top: 30px','margin: 30px 0 0;'),'background: #e5e5e5; display: flow-root;')},
+ {p:'Flex (and grid) items <b>never</b> collapse: in a flex column, the two margins add up to 50px.',h:CT(B('p','','margin-bottom: 30px','margin: 0 0 30px;')+B('p','','margin-top: 20px','margin: 20px 0 0;'),'background: #e5e5e5; display: flex; flex-direction: column;')},
+]},
+];
+function stepCss(s){const r=s.rule?HIT(s.rule):'';return STB+(s.c||'')+r+(s.rule0?s.rule0.replace(/;\s*\}/g,';}'):'')}
+function renderStory(l){
+  const S=STORIES.find(x=>x.id===l.id);const box=$('#story');
+  box.innerHTML=`<p class="chd">${S.intro}</p>`+S.steps.map((s,i)=>`<section class="stp"><div class="stn">${i+1}</div><div class="stb"><p>${s.p}</p>${s.rule!==undefined&&s.rule?`<pre class="str"><code>${esc(s.rule)} { /* painted black */ }</code></pre>`:''}${s.rule0?`<pre class="str"><code>${esc(s.rule0)}</code></pre>`:''}${s.h?`<iframe class="stf" data-i="${i}" title="Diagram ${i+1}" loading="lazy"></iframe><button type="button" class="stl" data-i="${i}">open in lab</button>`:''}</div></section>`).join('');
+  box.querySelectorAll('.stf').forEach(f=>{const s=S.steps[f.dataset.i];
+    f.onload=()=>{try{const d=f.contentDocument;if(s.ht){f.style.height=s.ht+'px'}else{f.style.height=(d.documentElement.scrollHeight+2)+'px'}}catch(e){}};
+    f.srcdoc=`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="color-scheme" content="light"><style>${stepCss(s)}</style></head><body>${s.h}</body></html>`});
+  box.querySelectorAll('.stl').forEach(b=>b.addEventListener('click',()=>{const s=S.steps[b.dataset.i];const P=LESSONS.find(x=>x.id==='playground');
+    P.t=`Playground: ${S.t.split(':')[0]}, step ${+b.dataset.i+1}`;const t=document.createElement('template');t.innerHTML=s.h;t.content.querySelectorAll('.tg,.el>code,.lab').forEach(e=>e.remove());P.html=prettyHTML(t.innerHTML);
+    P.css=fmtCss('/* diagram look */'+STB+(s.c||'')+(s.rule?'/* the selector of this step */ '+s.rule+'{background:#111;color:#fff}':'')+(s.rule0||''));go('playground')}));
 }
 
 /* ---------- CHEATSHEET: every value rendered live, side by side ---------- */

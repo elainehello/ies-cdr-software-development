@@ -82,6 +82,11 @@ body.focus .work>div:last-child{position:static;display:flex;flex-direction:colu
 body.focus .vp{flex:1;min-height:0}body.focus .stage{height:100%}
 body.focus #css{min-height:50vh}
 @media(max-width:800px){body.focus .work{grid-template-columns:minmax(0,1fr);height:auto}body.focus .work>div:last-child{order:-1;position:sticky;top:0;z-index:4;background:var(--bg);height:55vh}}
+.acc{display:block;font-size:12.5px;margin:2px 0}.acc code{background:none!important;padding:0!important;font-size:12px}.acc i{color:var(--mut);font-style:normal}
+abbr.ty{text-decoration:underline dotted;cursor:help;font-style:italic}.or{color:var(--mut);font-weight:400}
+.sth{font-size:18px;font-weight:800;font-stretch:112%;margin:18px 0 8px}
+.tyg{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:6px 18px}.tyg div{display:grid;grid-template-columns:9.5em 1fr;gap:8px;font-size:13px;border-bottom:1px solid var(--soft);padding:4px 0}.tyg code{font-weight:600}
+.syn td:nth-child(2){min-width:280px}.syn td code{font-size:12px}
 .cheat{margin-top:18px}[hidden]{display:none!important}
 .chbar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0;border-bottom:2px solid var(--ink);display:grid;gap:8px}
 .chbar input{min-height:44px;border:2px solid var(--ink);background:var(--bg);padding:6px 12px;font-size:16px;width:100%}
@@ -109,6 +114,7 @@ body.focus #css{min-height:50vh}
 .read code,.decl code,.alt>code{background:var(--soft);padding:0 3px;font-size:12px}
 .alt{border-left:2px solid var(--mut);padding-left:8px;margin:6px 0}
 .decl{list-style:none;padding:0;margin:0;border-top:1px solid var(--mut)}.decl li{padding:5px 0;border-bottom:1px solid var(--soft);font-size:13px;line-height:1.45}
+.decl li.lost>code{text-decoration:line-through;opacity:.6}.sttl{display:block;font-size:12.5px;margin:1px 0 3px}.decl li.noeff>code{text-decoration:underline wavy}
 .decl li>code{display:block;font-weight:600;font-size:12.5px;margin-bottom:2px}.decl a{font-size:11.5px;color:var(--mut)}
 .insp{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,5fr) minmax(0,5fr);gap:24px;margin-top:26px;border-top:6px solid var(--ink);padding-top:14px}
 .tree{position:relative;max-height:220px;overflow:auto;border:1.5px solid var(--ink);margin-bottom:16px}
@@ -1854,10 +1860,10 @@ function inspect(){
   const rk=r=>r.decls.some(d=>d.imp)?[1,...r.keyI]:[0,...r.keyN];
   const sorted=[...rules].sort((x,y)=>(y.active-x.active)||cmp(rk(y),rk(x)));
   const rh=sorted.length?sorted.map(r=>`<div class="rule${r.active?'':' off'}"><div class="rh"><code>${esc(r.sel)}</code>${r.inline?'<span class="badge">beats selectors</span>':`<span class="badge" title="specificity (A,B,C)">(${r.spec.join(',')})</span>`}${r.layer?`<span class="badge">@layer ${esc(r.layer)}</span>`:''}${r.conds.map(x=>`<span class="badge">${esc(x.t)} ${x.ok?'✓':'✗'}</span>`).join('')}${r.wait?`<span class="badge">waits for ${esc(r.wait)}</span>`:''}</div>
-    <ul>${r.decls.map(d=>`<li class="${d.lost?'lost':r.active?'win':''}"><code>${esc(d.prop)}: ${esc(d.val)}${d.imp?' !important':''};</code>${r.wait?`<small>applies only while ${esc(r.wait)} is true</small>`:!r.active?'<small>inactive: condition is false</small>':d.lost?`<small>overridden by ${esc(d.by)}</small>`:d.part?`<small>partly overridden by ${esc(d.by)}</small>`:''}</li>`).join('')}</ul></div>`).join('')
+    <ul>${r.decls.map(d=>`<li class="${d.lost?'lost':r.active?'win':''}"><code>${esc(d.prop)}: ${esc(d.val)}${d.imp?' !important':''};</code>${r.wait?`<small>applies only while ${esc(r.wait)} is true</small>`:!r.active?'<small>inactive: condition is false</small>':d.lost?`<small>overridden by ${esc(d.by)}</small>`:d.part?`<small>partly overridden by ${esc(d.by)}</small>`:(r.active&&inactive(el,d.prop)?`<small>⚠ wins, but no visible effect: ${esc(inactive(el,d.prop))}</small>`:'')}</li>`).join('')}</ul></div>`).join('')
     :'<p class="muted">No rule in your CSS matches this element. Everything comes from inheritance, browser defaults and initial values.</p>';
   const rows=props.map(p=>{const w=win[p];const v=c.getPropertyValue(p).trim();
-    return`<tr><td data-l="property"><code>${esc(p)}</code></td><td data-l="declared">${w?`<code>${esc(w.d.prop)}: ${esc(w.d.val)}${w.d.imp?' !important':''}</code>`:'<span class="muted">—</span>'}</td><td data-l="computed"><code>${esc(v||'—')}</code></td><td data-l="source">${esc(source(p,el,c,win))}${w&&!w.r.inline?`<br><span class="muted">${esc(w.r.sel)}</span>`:''}</td></tr>`}).join('');
+    const sy=synFor(p);return`<tr><td data-l="property"><code${sy?` title="Accepts: ${esc(sy[1])}"`:''}>${esc(p)}</code></td><td data-l="declared">${w?`<code>${esc(w.d.prop)}: ${esc(w.d.val)}${w.d.imp?' !important':''}</code>`:'<span class="muted">—</span>'}</td><td data-l="computed"><code>${esc(v||'—')}</code></td><td data-l="source">${esc(source(p,el,c,win))}${w&&!w.r.inline?`<br><span class="muted">${esc(w.r.sel)}</span>`:''}</td></tr>`}).join('');
   const fOn=s=>forced&&forced.path.join()===selPath.join()&&forced.s.has(s);
   const fh=`<div class="force"><span>Force state on <code>${esc(label(el))}</code></span>${DYN.map(s=>`<button type="button" class="ob" data-fs="${s}" aria-pressed="${fOn(s)}">:${s}</button>`).join('')}</div>`;
   const pse=rules.pse||[];
@@ -2060,10 +2066,36 @@ function mediaText(t){let s=esc(t);
 let EXP=[];
 function countM(raw){let n=0;const els=new Set();splitTop(raw).forEach(p=>{const m=p.match(/::?(before|after|marker|placeholder|selection|first-line|first-letter|backdrop|file-selector-button)(?![\w-])/);
   let q=m?p.slice(0,m.index).trim()||'*':p;try{fdoc.querySelectorAll(q).forEach(e=>{if(e.closest('head')===null&&!/^(SCRIPT|STYLE|LINK)$/.test(e.tagName))els.add(e)})}catch(e){}});return[...els]}
+
+const REPL=/^(IMG|INPUT|SELECT|TEXTAREA|BUTTON|VIDEO|CANVAS|IFRAME|svg|OBJECT)$/i;
+function inactive(e,p){
+  const c=cso(e),pc=e.parentElement?cso(e.parentElement):null,inl=c.display==='inline'&&!REPL.test(e.tagName),fi=pc&&/flex|grid/.test(pc.display);
+  if(c.display==='none'&&p!=='display')return'the element has display: none';
+  if(/^(width|height|min-width|max-width|min-height|max-height|aspect-ratio)$/.test(p)&&inl)return'display: inline ignores width and height';
+  if(/^(margin-top|margin-bottom)$/.test(p)&&inl)return'inline elements ignore vertical margins';
+  if(/^(top|right|bottom|left|inset)$/.test(p)&&c.position==='static')return'position is static, so offsets are ignored';
+  if(p==='z-index'&&c.position==='static'&&!fi)return'not positioned (and not a flex/grid item)';
+  if(p==='float'&&c.float==='none'&&!/^none$/i.test(e.style.float)&&(/absolute|fixed/.test(c.position)||fi))return'float is ignored on absolute/fixed elements and flex/grid items';
+  if(/^(justify-content|align-items|align-content|flex-direction|flex-wrap|flex-flow|grid-template-columns|grid-template-rows|grid-template-areas|grid-auto-flow|place-items|justify-items)$/.test(p)&&!/flex|grid/.test(c.display))return'it is not a flex/grid container (no display: flex/grid)';
+  if(/^(gap|row-gap|column-gap)$/.test(p)&&!/flex|grid/.test(c.display)&&c.columnCount==='auto')return'it is not a flex/grid/multi-column container';
+  if(/^(flex|flex-grow|flex-shrink|flex-basis|align-self|order)$/.test(p)&&!fi)return'its parent is not a flex/grid container';
+  if(/^(grid-column|grid-row|grid-area|grid-column-start|grid-column-end|grid-row-start|grid-row-end)$/.test(p)&&!(pc&&/grid/.test(pc.display)))return'its parent is not a grid';
+  if(p==='vertical-align'&&!/inline|table-cell/.test(c.display))return'vertical-align only works on inline and table-cell boxes';
+  if(p==='text-overflow'&&c.overflowX==='visible')return'needs overflow: hidden (and white-space: nowrap)';
+  if(p==='object-fit'&&!/^(IMG|VIDEO|CANVAS)$/.test(e.tagName))return'object-fit only works on replaced elements like <img>';
+  if(p==='content'&&!document.contains(e)&&false)return'';
+  return'';
+}
+function declStatus(x,els){
+  const st=x.decls.map(()=>({win:0,lost:0,by:new Set(),no:new Map()}));let n=0;
+  els.slice(0,40).forEach(e=>{const rs=collect(e);winners(rs);const me=rs.find(r=>r.order===x.ord&&!r.inline);if(!me||!me.active)return;n++;
+    me.decls.forEach((d,k)=>{const S=st[k];if(!S)return;if(d.lost){S.lost++;if(d.by)S.by.add(d.by)}else{S.win++;if(d.part&&d.by)S.by.add(d.by+' (partly)');const w=inactive(e,d.prop);if(w)S.no.set(w,(S.no.get(w)||0)+1)}})});
+  return{st,n};
+}
 function renderExplain(){
   const box=$('#explain');if(!fdoc){box.innerHTML='';return}
-  EXP=[];const walk=(rules,ctx)=>{for(const r of rules){const k=r.constructor.name;
-    if(k==='CSSStyleRule')EXP.push({sel:unfix(r.selectorText),raw:r.selectorText,decls:parseDecls(r.style.cssText),ctx});
+  EXP=[];let si=0;const walk=(rules,ctx)=>{for(const r of rules){const k=r.constructor.name;
+    if(k==='CSSStyleRule')EXP.push({sel:unfix(r.selectorText),raw:r.selectorText,decls:parseDecls(r.style.cssText),ctx,ord:++si});
     else if(k==='CSSMediaRule'){const ok=fwin.matchMedia(r.media.mediaText).matches;walk(r.cssRules,[...ctx,`<span class="badge">@media ${esc(r.media.mediaText)} ${ok?'✓ active now':'✗ not active now'}</span> <span class="muted">${mediaText(r.media.mediaText)}</span>`])}
     else if(k==='CSSKeyframesRule')EXP.push({kf:r.name,frames:[...r.cssRules].map(f=>`${f.keyText} { ${f.style.cssText} }`),ctx});
     else if(k==='CSSSupportsRule'||k==='CSSContainerRule'||k==='CSSLayerBlockRule')walk(r.cssRules,[...ctx,`<span class="badge">${esc(r.cssText.split('{')[0].trim())}</span>`]);
@@ -2080,8 +2112,14 @@ function renderExplain(){
       const n2=need.size?countM(stripped).length:0;if(n2)later=`<span class="badge">${n2} when ${esc([...need].join(' '))}</span>`;
       else later=/\.[\w-]/.test(x.sel)?'<span class="badge">nothing matches right now (a script may add the class later)</span>':'<span class="badge">nothing matches: this rule does nothing on this page</span>'}
     const sp=splitTop(x.sel).map(s=>'('+spec(s).join(',')+')').join(' / ');
-    const dl=x.decls.map(d=>{const n=valNote(d.prop,d.val,x.decls);const mdn=d.prop.startsWith('--')?'':`<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/${encodeURIComponent(d.prop)}" target="_blank" rel="noopener">MDN</a>`;
-      return`<li><code>${esc(d.prop)}: ${esc(d.val)}${d.imp?' !important':''};</code><span>${d.prop.startsWith('--')?'Custom property (variable): store a value and use it with <code>var('+esc(d.prop)+')</code>. Inherited.':(PX[d.prop]||`Sets <code>${esc(d.prop)}</code>.`)}${n.length?' '+n.join(' '):''}${d.imp?' <b>!important</b>: beats every normal declaration, whatever the specificity.':''} ${mdn}</span></li>`}).join('');
+    const DS=els.length?declStatus(x,els):null;
+    const dl=x.decls.map((d,k)=>{const n=valNote(d.prop,d.val,x.decls);
+      let stt='',cls='';if(!els.length&&later.includes(' when '))stt='<b class="stt">⏸ waits</b>: applies only while the state is true (hover, or use Force state in the inspector)';if(DS&&DS.n){const S=DS.st[k],N=DS.n;
+        const nn=v=>N>1?` on ${v} of ${N}`:'';
+        if(S.lost===N){cls='lost';stt=`<b class="stt">✗ overridden${nn(N)}</b> by <code>${esc([...S.by].join(', '))}</code>. It has no effect.`}
+        else{stt=`<b class="stt">✓ applies${nn(S.win)}</b>`+(S.lost?` · ✗ overridden${nn(S.lost)} by <code>${esc([...S.by].join(', '))}</code>`:(S.by.size?` · partly overridden by <code>${esc([...S.by].join(', '))}</code>`:''));
+          if(S.no.size){cls='noeff';stt+=` · <b>⚠ no visible effect</b>${[...S.no].map(([w,c])=>`${nn(c)}: ${esc(w)}`).join('; ')}`}}}const mdn=d.prop.startsWith('--')?'':`<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/${encodeURIComponent(d.prop)}" target="_blank" rel="noopener">MDN</a>`;
+      return`<li class="${cls}"><code>${esc(d.prop)}: ${esc(d.val)}${d.imp?' !important':''};</code>${stt?`<span class="sttl">${stt}</span>`:''}${accHtml(d.prop)}<span>${d.prop.startsWith('--')?'Custom property (variable): store a value and use it with <code>var('+esc(d.prop)+')</code>. Inherited.':(PX[d.prop]||`Sets <code>${esc(d.prop)}</code>.`)}${n.length?' '+n.join(' '):''}${d.imp?' <b>!important</b>: beats every normal declaration, whatever the specificity.':''} ${mdn}</span></li>`}).join('');
     return`<article class="xr" data-i="${i}" tabindex="0">${ctx}<header><code class="sel">${esc(x.sel)}</code><span class="badge" title="specificity (A,B,C)">${sp}</span><span class="badge">${els.length} match${els.length===1?'':'es'} now</span>${later}<span class="badge hitb">matches selected</span></header>${readSel(x.sel)}<ul class="decl">${dl}</ul></article>`});
   box.innerHTML=`<details open><summary><h2>CSS explained, rule by rule (${EXP.length})</h2></summary><p class="muted">Every rule of the CSS editor read in plain English, bottom-up as the browser does: first <i>what</i> is selected, then the conditions on its parents and siblings. Click a rule to outline the elements it selects in the preview. A rule with <b>0 matches</b> does nothing on this page.</p><div class="xl">${cards.join('')}</div></details>`;
   box.querySelectorAll('.xr[data-i]').forEach(c=>c.addEventListener('click',e=>{if(e.target.closest('a'))return;const x=EXP[c.dataset.i];if(!x||!x.raw)return;
@@ -2090,6 +2128,189 @@ function renderExplain(){
 }
 function markHits(){if(!selEl)return;document.querySelectorAll('#explain .xr[data-i]').forEach(c=>{const x=EXP[c.dataset.i];let hit=false;
   if(x&&x.raw)splitTop(x.raw).forEach(p=>{try{if(selEl.matches(p))hit=true}catch(e){}});c.classList.toggle('hit',hit)})}
+
+/* ---------- PROPERTY SYNTAX: what values each property accepts ---------- */
+const TYPES={
+ '<length>':'A number + unit: px, em, rem, %-free units like vw, vh, ch, cm… (0 may omit the unit). Ex: 12px, 1.5em, 50vw',
+ '<percentage>':'A number + %. What it is a % of depends on the property (see the % column). Ex: 50%',
+ '<number>':'A plain number, decimals allowed, no unit. Ex: 1.5, 0.8',
+ '<integer>':'A whole number, may be negative. Ex: 3, -1',
+ '<color>':'Named (black), hex (#000, #000000, #0008), rgb(0 0 0 / 50%), hsl(), hwb(), oklch(), color-mix(), currentColor, transparent',
+ '<image>':'url("pic.jpg"), linear-gradient(), radial-gradient(), conic-gradient(), repeating-*-gradient()',
+ '<url>':'url("file.ext"), quotes optional',
+ '<string>':'Text in quotes. Ex: "→ "',
+ '<time>':'s or ms. Ex: 0.3s, 300ms',
+ '<angle>':'deg, rad, grad or turn. Ex: 45deg, 0.25turn',
+ '<ratio>':'width / height. Ex: 16 / 9, or a single number (1)',
+ '<line-width>':'thin | medium | thick | <length>',
+ '<line-style>':'none | hidden | dotted | dashed | solid | double | groove | ridge | inset | outset',
+ '<shadow>':'inset? <offset-x> <offset-y> <blur>? <spread>? <color>?',
+ '<track>':'Grid track size: <length> | <percentage> | <flex> (fr) | auto | min-content | max-content | minmax(min, max) | fit-content(<length>), or repeat(n | auto-fill | auto-fit, tracks)',
+ '<flex>':'A number + fr: a share of the free space. Ex: 1fr, 2fr',
+ '<line>':'A grid line: auto | <integer> (line number, negative counts from the end) | span <integer> | a line or area name',
+ '<position>':'1–4 values: left | center | right | top | bottom | <length> | <percentage>. Ex: center, right 10px bottom 20%',
+ '<basic-shape>':'inset(), circle(), ellipse(), polygon(), path()',
+ '<timing-function>':'ease | linear | ease-in | ease-out | ease-in-out | steps(n, start|end) | cubic-bezier(x1, y1, x2, y2)',
+ '<family>':'A font name ("Open Sans" in quotes if it has spaces) or a generic family: serif | sans-serif | monospace | cursive | fantasy | system-ui',
+ '<filter-fn>':'blur(<length>) | brightness() | contrast() | grayscale() | invert() | opacity() | saturate() | sepia() (number or %) | hue-rotate(<angle>) | drop-shadow(x y blur color)',
+ '<transform-fn>':'translate(x, y) | translateX/Y/Z() | scale(x, y) | scaleX/Y() | rotate(<angle>) | rotateX/Y/Z() | skew(x, y) | skewX/Y() | perspective(<length>) | matrix()',
+ '<keyframes-name>':'The name given in @keyframes name { … }',
+};
+/* [property, accepts, initial, inherited 0/1, applies to, % refers to, multiple values / note] */
+const SYN=[
+['display','block | inline | inline-block | flex | inline-flex | grid | inline-grid | flow-root | list-item | contents | none | table…','inline',0,'all elements','—','One keyword (or the two-value form: outer inner, e.g. inline flex)'],
+['position','static | relative | absolute | fixed | sticky','static',0,'all elements','—',''],
+['top','auto | <length> | <percentage>','auto',0,'positioned elements','height of the containing block','Same for bottom. Negative values allowed'],
+['bottom','auto | <length> | <percentage>','auto',0,'positioned elements','height of the containing block',''],
+['left','auto | <length> | <percentage>','auto',0,'positioned elements','width of the containing block','Same for right'],
+['right','auto | <length> | <percentage>','auto',0,'positioned elements','width of the containing block',''],
+['inset','1–4 × (auto | <length> | <percentage>)','auto',0,'positioned elements','containing block','top right bottom left, like margin'],
+['z-index','auto | <integer>','auto',0,'positioned elements, flex and grid items','—','Higher = in front, within the same stacking context'],
+['float','none | left | right | inline-start | inline-end','none',0,'all elements (ignored on absolute/fixed and flex/grid items)','—',''],
+['clear','none | left | right | both | inline-start | inline-end','none',0,'block-level elements','—',''],
+['width','auto | <length> | <percentage> | min-content | max-content | fit-content','auto',0,'all except inline non-replaced elements (span, a…)','width of the containing block',''],
+['height','auto | <length> | <percentage> | min-content | max-content | fit-content','auto',0,'all except inline non-replaced elements','height of the containing block (only if that height is definite)',''],
+['min-width','auto | <length> | <percentage> | min-content | max-content | fit-content','auto',0,'same as width','width of the containing block',''],
+['max-width','none | <length> | <percentage> | min-content | max-content | fit-content','none',0,'same as width','width of the containing block',''],
+['min-height','auto | <length> | <percentage> | min-content | max-content','auto',0,'same as height','height of the containing block',''],
+['max-height','none | <length> | <percentage> | min-content | max-content','none',0,'same as height','height of the containing block',''],
+['aspect-ratio','auto | <ratio> | auto <ratio>','auto',0,'all except inline boxes and table internals','—',''],
+['box-sizing','content-box | border-box','content-box',0,'elements that accept width/height','—',''],
+['margin','1–4 × (auto | <length> | <percentage>)','0',0,'all elements (vertical margins ignored on inline non-replaced)','width of the containing block (also for top/bottom)','1: all · 2: vertical horizontal · 3: top horizontal bottom · 4: top right bottom left. Negatives allowed'],
+['margin-top','auto | <length> | <percentage>','0',0,'same as margin','width of the containing block','Same for margin-right/bottom/left'],
+['padding','1–4 × (<length> | <percentage>)','0',0,'all elements except table internals','width of the containing block (also for top/bottom)','Same 1–4 pattern as margin. No negatives, no auto'],
+['padding-top','<length> | <percentage>','0',0,'same as padding','width of the containing block','Same for padding-right/bottom/left'],
+['border','<line-width> || <line-style> || <color>','medium none currentColor',0,'all elements','—','Any order, each part optional; style is needed for the border to show. Also border-top/right/bottom/left'],
+['border-width','1–4 × <line-width>','medium',0,'all elements','—','Same 1–4 pattern as margin'],
+['border-style','1–4 × <line-style>','none',0,'all elements','—','Same 1–4 pattern as margin'],
+['border-color','1–4 × <color>','currentColor',0,'all elements','—','Same 1–4 pattern as margin'],
+['border-radius','1–4 × (<length> | <percentage>) [ / 1–4 × (<length> | <percentage>) ]','0',0,'all elements','width/height of the border box','Order: top-left top-right bottom-right bottom-left; after / = vertical radii'],
+['box-shadow','none | <shadow>#','none',0,'all elements','—','# = comma-separated list, the first is on top'],
+['outline','<color> || <line-style> || <line-width>','medium none currentColor',0,'all elements','—','Style also accepts auto. Takes no space'],
+['outline-offset','<length>','0',0,'all elements','—',''],
+['background','[<image> || <position> [/ <size>]? || <repeat> || attachment || origin || clip]# , + <color> in the last layer','see longhands',0,'all elements','—','Several layers separated by commas; the color only in the last one'],
+['background-color','<color>','transparent',0,'all elements','—',''],
+['background-image','none | <image>#','none',0,'all elements','—','Comma list: the first image is on top'],
+['background-size','cover | contain | 1–2 × (auto | <length> | <percentage>)','auto',0,'all elements','size of the background area (padding box by default)','2 values = width height'],
+['background-repeat','repeat | no-repeat | repeat-x | repeat-y | space | round (1–2 values)','repeat',0,'all elements','—','2 values = horizontal vertical'],
+['background-position','<position>','0% 0%',0,'all elements','box size minus image size','Also background-position-x / -y'],
+['background-attachment','scroll | fixed | local','scroll',0,'all elements','—',''],
+['background-clip','border-box | padding-box | content-box | text','border-box',0,'all elements','—',''],
+['background-origin','border-box | padding-box | content-box','padding-box',0,'all elements','—',''],
+['color','<color>','canvastext (black)',1,'all elements','—',''],
+['opacity','<number> (0–1) | <percentage>','1',0,'all elements','—','Below 1 creates a stacking context'],
+['font','[style || variant || weight || stretch]? size [/ line-height]? family','see longhands',1,'all elements','—','size and family are required; also system keywords like caption, menu'],
+['font-family','[<family>]#','depends on the browser',1,'all elements','—','Comma list, the first available font is used; end with a generic family'],
+['font-size','xx-small … xxx-large | smaller | larger | <length> | <percentage>','medium (16px)',1,'all elements','parent’s font size','em also refers to the parent here'],
+['font-weight','normal | bold | bolder | lighter | <number> (1–1000)','normal (400)',1,'all elements','—','100–900 steps are the usual ones'],
+['font-style','normal | italic | oblique <angle>?','normal',1,'all elements','—',''],
+['font-variant','normal | small-caps | none | …','normal',1,'all elements','—',''],
+['line-height','normal | <number> | <length> | <percentage>','normal',1,'all elements','the element’s own font size','A plain number is best: children inherit the factor'],
+['letter-spacing','normal | <length>','normal',1,'all elements','—','Negative allowed'],
+['word-spacing','normal | <length>','normal',1,'all elements','—',''],
+['text-align','start | end | left | right | center | justify | match-parent','start',1,'block containers (aligns their inline content)','—',''],
+['text-decoration','<line> || <style> || <color> || <thickness>','none',0,'all elements','—','line: none | underline | overline | line-through · style: solid | double | dotted | dashed | wavy'],
+['text-transform','none | capitalize | uppercase | lowercase | full-width','none',1,'all elements','—',''],
+['text-indent','<length> | <percentage> [hanging || each-line]?','0',1,'block containers','width of the containing block',''],
+['text-shadow','none | [<offset-x> <offset-y> <blur>? <color>?]#','none',1,'all elements','—',''],
+['white-space','normal | nowrap | pre | pre-wrap | pre-line | break-spaces','normal',1,'all elements','—',''],
+['word-break','normal | break-all | keep-all','normal',1,'all elements','—',''],
+['overflow-wrap','normal | break-word | anywhere','normal',1,'all elements','—','Old name: word-wrap'],
+['text-overflow','clip | ellipsis | <string> (1–2 values)','clip',0,'block containers with overflow other than visible','—',''],
+['hyphens','none | manual | auto','manual',1,'all elements','—','auto needs a lang attribute'],
+['vertical-align','baseline | sub | super | text-top | text-bottom | middle | top | bottom | <length> | <percentage>','baseline',0,'inline, inline-block and table-cell boxes','the element’s line-height',''],
+['text-wrap','wrap | nowrap | balance | pretty | stable','wrap',1,'all elements','—',''],
+['overflow','1–2 × (visible | hidden | clip | scroll | auto)','visible',0,'block containers, flex and grid containers','—','2 values = x y. Also overflow-x / overflow-y'],
+['overflow-x','visible | hidden | clip | scroll | auto','visible',0,'same as overflow','—',''],
+['overflow-y','visible | hidden | clip | scroll | auto','visible',0,'same as overflow','—',''],
+['visibility','visible | hidden | collapse','visible',1,'all elements','—',''],
+['cursor','[<url> [x y]?,]* keyword','auto',1,'all elements','—','keywords: auto default pointer text move help wait progress not-allowed grab grabbing crosshair zoom-in zoom-out col-resize row-resize…'],
+['pointer-events','auto | none','auto',1,'all elements','—','(SVG has more values)'],
+['user-select','auto | none | text | all','auto',0,'all elements','—',''],
+['resize','none | both | horizontal | vertical | block | inline','none',0,'elements with overflow other than visible','—',''],
+['caret-color','auto | <color>','auto',1,'all elements','—',''],
+['accent-color','auto | <color>','auto',1,'checkbox, radio, range, progress','—',''],
+['list-style','<type> || <position> || <image>','disc outside none',1,'list items','—',''],
+['list-style-type','disc | circle | square | decimal | decimal-leading-zero | lower-alpha | upper-roman | … | <string> | none','disc',1,'list items','—',''],
+['list-style-position','inside | outside','outside',1,'list items','—',''],
+['list-style-image','none | <image>','none',1,'list items','—',''],
+['content','normal | none | [<string> | <image> | counter() | counters() | attr() | open-quote | close-quote]+','normal',0,'::before, ::after, ::marker (and elements, to replace them with an image)','—',''],
+['counter-reset','none | [name <integer>?]+','none',0,'all elements','—',''],
+['counter-increment','none | [name <integer>?]+','none',0,'all elements','—',''],
+['flex','none | auto | <number> | [<grow> <shrink>? || <basis>]','0 1 auto',0,'flex items','flex container’s inner size (basis)','flex: 1 = 1 1 0% · flex: auto = 1 1 auto · flex: none = 0 0 auto'],
+['flex-grow','<number> (≥ 0)','0',0,'flex items','—',''],
+['flex-shrink','<number> (≥ 0)','1',0,'flex items','—',''],
+['flex-basis','auto | content | <length> | <percentage> | min-content | max-content','auto',0,'flex items','flex container’s inner size',''],
+['flex-direction','row | row-reverse | column | column-reverse','row',0,'flex containers','—',''],
+['flex-wrap','nowrap | wrap | wrap-reverse','nowrap',0,'flex containers','—',''],
+['flex-flow','<flex-direction> || <flex-wrap>','row nowrap',0,'flex containers','—',''],
+['justify-content','normal | flex-start | flex-end | center | start | end | left | right | space-between | space-around | space-evenly | stretch','normal',0,'flex and grid containers','—','main axis'],
+['align-items','normal | stretch | flex-start | flex-end | center | start | end | baseline | self-start | self-end','normal (stretch)',0,'flex and grid containers','—','cross axis'],
+['align-content','normal | flex-start | flex-end | center | space-between | space-around | space-evenly | stretch','normal',0,'multi-line flex containers, grid containers','—',''],
+['align-self','auto | normal | stretch | flex-start | flex-end | center | start | end | baseline','auto',0,'flex and grid items','—',''],
+['justify-items','legacy | normal | stretch | start | end | center | baseline','legacy',0,'grid containers','—',''],
+['justify-self','auto | normal | stretch | start | end | center | baseline','auto',0,'grid items','—',''],
+['place-items','<align-items> <justify-items>?','normal',0,'grid containers','—','1 value sets both'],
+['place-content','<align-content> <justify-content>?','normal',0,'flex and grid containers','—',''],
+['order','<integer>','0',0,'flex and grid items','—','Visual order only'],
+['gap','<row-gap> <column-gap>? each: normal | <length> | <percentage>','normal',0,'flex, grid and multi-column containers','container’s size','Old names: grid-gap, grid-row-gap, grid-column-gap'],
+['row-gap','normal | <length> | <percentage>','normal',0,'flex and grid containers','container height',''],
+['column-gap','normal | <length> | <percentage>','normal',0,'flex, grid and multi-column containers','container width',''],
+['grid-template-columns','none | <track>+ | subgrid','none',0,'grid containers','container width','Line names in [brackets] between tracks'],
+['grid-template-rows','none | <track>+ | subgrid','none',0,'grid containers','container height',''],
+['grid-template-areas','none | <string>+','none',0,'grid containers','—','One string per row; same name = same area; . = empty cell'],
+['grid-auto-flow','row | column || dense','row',0,'grid containers','—',''],
+['grid-auto-rows','<track>+','auto',0,'grid containers','—',''],
+['grid-auto-columns','<track>+','auto',0,'grid containers','—',''],
+['grid-column','<line> [/ <line>]?','auto',0,'grid items','—','start / end. Same for grid-row'],
+['grid-row','<line> [/ <line>]?','auto',0,'grid items','—',''],
+['grid-area','name | <line> [/ <line>]{0,3}','auto',0,'grid items','—','row-start / column-start / row-end / column-end'],
+['transform','none | <transform-fn>+','none',0,'transformable elements (not inline non-replaced)','size of the element’s border box','Space-separated, applied right to left'],
+['transform-origin','1–3 values: left | center | right | top | bottom | <length> | <percentage>','50% 50% 0',0,'transformable elements','size of the border box',''],
+['perspective','none | <length>','none',0,'transformable elements (affects its children)','—',''],
+['transition','[property || <time> || <timing-function> || <time>]#','all 0s ease 0s',0,'all elements','—','The first time is the duration, the second the delay'],
+['transition-property','none | all | property names#','all',0,'all elements','—',''],
+['transition-duration','<time>#','0s',0,'all elements','—',''],
+['transition-timing-function','<timing-function>#','ease',0,'all elements','—',''],
+['transition-delay','<time>#','0s',0,'all elements','—',''],
+['animation','[name || <time> || <timing-function> || <time> || count || direction || fill-mode || play-state]#','none',0,'all elements','—','First time = duration, second = delay'],
+['animation-name','none | <keyframes-name>#','none',0,'all elements','—',''],
+['animation-duration','<time>#','0s (auto)',0,'all elements','—',''],
+['animation-iteration-count','infinite | <number>#','1',0,'all elements','—',''],
+['animation-direction','normal | reverse | alternate | alternate-reverse','normal',0,'all elements','—',''],
+['animation-fill-mode','none | forwards | backwards | both','none',0,'all elements','—',''],
+['animation-play-state','running | paused','running',0,'all elements','—',''],
+['filter','none | <filter-fn>+','none',0,'all elements','—','Several functions are applied in order'],
+['mix-blend-mode','normal | multiply | screen | overlay | darken | lighten | color-dodge | color-burn | hard-light | soft-light | difference | exclusion | hue | saturation | color | luminosity','normal',0,'all elements','—',''],
+['clip-path','none | <basic-shape> | <url>','none',0,'all elements','reference box (border box)',''],
+['object-fit','fill | contain | cover | none | scale-down','fill',0,'replaced elements (img, video)','—',''],
+['object-position','<position>','50% 50%',0,'replaced elements','box size minus content size',''],
+['isolation','auto | isolate','auto',0,'all elements','—',''],
+['column-count','auto | <integer>','auto',0,'block containers','—',''],
+['column-width','auto | <length>','auto',0,'block containers','—',''],
+['columns','<column-width> || <column-count>','auto auto',0,'block containers','—',''],
+['column-rule','<line-width> || <line-style> || <color>','medium none currentColor',0,'multi-column containers','—',''],
+['column-span','none | all','none',0,'block elements inside a multi-column container','—',''],
+['border-collapse','separate | collapse','separate',1,'tables','—',''],
+['border-spacing','<length> <length>?','0',1,'tables','—','2 values = horizontal vertical'],
+['caption-side','top | bottom','top',1,'table captions','—',''],
+['empty-cells','show | hide','show',1,'table cells','—',''],
+['table-layout','auto | fixed','auto',0,'tables','—',''],
+['scroll-snap-type','none | [x | y | block | inline | both] [mandatory | proximity]?','none',0,'scroll containers','—',''],
+['scroll-snap-align','1–2 × (none | start | end | center)','none',0,'children of a scroll container','—',''],
+['container-type','normal | size | inline-size','normal',0,'all elements','—',''],
+['will-change','auto | property names#','auto',0,'all elements','—',''],
+];
+const SYNM=Object.fromEntries(SYN.map(r=>[r[0],r]));
+const synFor=p=>SYNM[p]||(/^margin-(right|bottom|left)$/.test(p)?SYNM['margin-top']:/^padding-(right|bottom|left)$/.test(p)?SYNM['padding-top']:/^border-(top|right|bottom|left)$/.test(p)?SYNM.border:/^border-.*-(width|style|color)$/.test(p)?SYNM['border-'+p.split('-').pop()]:/^border-.*-radius$/.test(p)?SYNM['border-radius']:null);
+const typeChips=s=>esc(s).replace(/ \| /g,' <b class="or">|</b> ').replace(/&lt;([\w-]+)&gt;/g,(m,t)=>{const k='<'+t+'>';return TYPES[k]?`<abbr class="ty" title="${esc(TYPES[k])}">&lt;${t}&gt;</abbr>`:m});
+function accHtml(p){const r=synFor(p);if(!r)return'';return`<span class="acc"><b>Accepts:</b> <code>${typeChips(r[1])}</code>${r[6]?` <i>· ${esc(r[6])}</i>`:''}${r[5]&&r[5]!=='—'?` <i>· % of ${esc(r[5])}</i>`:''}</span>`}
+function synTab(){
+  const legend=`<p class="chd">How to read the syntax: <code>|</code> = one of them · <code>||</code> = one or more, any order · <code>[ ]</code> = group · <code>?</code> = optional · <code>+</code> = one or more (space-separated) · <code>#</code> = one or more, comma-separated · <code>1–4 ×</code> = up to four values (top right bottom left). Types in <code>&lt;angle brackets&gt;</code> are explained below; hover them anywhere for a reminder.</p>`;
+  const types=`<div class="tyg">${Object.entries(TYPES).map(([k,v])=>`<div><code>${esc(k)}</code><span>${esc(v)}</span></div>`).join('')}</div>`;
+  const rows=SYN.map(r=>`<tr><td data-l="property"><code><b>${esc(r[0])}</b></code></td><td data-l="accepts"><code>${typeChips(r[1])}</code>${r[6]?`<br><span class="muted">${esc(r[6])}</span>`:''}</td><td data-l="initial"><code>${esc(r[2])}</code></td><td data-l="inherited">${r[3]?'yes':'no'}</td><td data-l="applies to">${esc(r[4])}</td><td data-l="% of">${esc(r[5])}</td></tr>`).join('');
+  return`${legend}<h3 class="sth">Value types</h3>${types}<h3 class="sth">Properties (${SYN.length})</h3><div class="scroll"><table class="stack syn"><thead><tr><th>property</th><th>accepts</th><th>initial</th><th>inherited</th><th>applies to</th><th>% refers to</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
 
 /* ---------- CHEATSHEET: every value rendered live, side by side ---------- */
 const IMG="data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100"><rect width="200" height="100" fill="#bbb"/><circle cx="50" cy="50" r="38" fill="#000"/><rect x="110" y="20" width="70" height="60" fill="#fff" stroke="#000" stroke-width="4"/><text x="145" y="58" font-size="20" text-anchor="middle" font-family="sans-serif">IMG</text></svg>');
@@ -2306,20 +2527,21 @@ function prettyHTML(src){
 let chCat=0;
 function renderCheat(){
   const box=$('#cheat');
-  box.innerHTML=`<div class="chbar"><input id="chq" type="search" placeholder="Search: justify, cover, :nth-child, ::before…" aria-label="Search the cheatsheet"><div class="chtabs">${CH.map((c,i)=>`<button type="button" class="ob" data-ct="${i}" aria-pressed="${i===chCat}">${esc(c.t)}</button>`).join('')}<button type="button" class="ob" data-ct="mq" aria-pressed="${chCat==='mq'}">Media features</button></div></div><div id="chbody"></div>`;
-  box.querySelector('.chtabs').addEventListener('click',e=>{const b=e.target.closest('[data-ct]');if(!b)return;chCat=b.dataset.ct==='mq'?'mq':+b.dataset.ct;$('#chq').value='';renderCheat()});
+  box.innerHTML=`<div class="chbar"><input id="chq" type="search" placeholder="Search: justify, cover, :nth-child, ::before…" aria-label="Search the cheatsheet"><div class="chtabs">${CH.map((c,i)=>`<button type="button" class="ob" data-ct="${i}" aria-pressed="${i===chCat}">${esc(c.t)}</button>`).join('')}<button type="button" class="ob" data-ct="mq" aria-pressed="${chCat==='mq'}">Media features</button><button type="button" class="ob" data-ct="syn" aria-pressed="${chCat==='syn'}">Syntax table</button></div></div><div id="chbody"></div>`;
+  box.querySelector('.chtabs').addEventListener('click',e=>{const b=e.target.closest('[data-ct]');if(!b)return;chCat=/^(mq|syn)$/.test(b.dataset.ct)?b.dataset.ct:+b.dataset.ct;$('#chq').value='';renderCheat()});
   let t;$('#chq').addEventListener('input',e=>{clearTimeout(t);t=setTimeout(()=>showCheat(e.target.value.trim().toLowerCase()),200)});
   showCheat('');
 }
 function showCheat(q){
   const body=$('#chbody');let list=[];
+  if(chCat==='syn'){body.innerHTML=synTab();if(q)body.querySelectorAll('.syn tbody tr').forEach(tr=>tr.hidden=!tr.textContent.toLowerCase().includes(q));return}
   if(q){CH.forEach(c=>c.items.forEach(it=>{const hay=[it.p,it.g,it.d,...it.v].join(' ').toLowerCase();if(hay.includes(q))list.push([c.t,it])}))}
   else if(chCat==='mq'){body.innerHTML=mqHtml();return}
   else list=CH[chCat].items.map(it=>[CH[chCat].t,it]);
   if(!list.length){body.innerHTML='<p class="muted">Nothing found. Try a property name (margin), a value (cover) or a selector (:hover).</p>';return}
   body.innerHTML=list.map(([cat,it],k)=>`<section class="chc"><header><h3><code>${esc(it.p||it.g)}</code>${it.tag==='new'?'<span class="badge">modern</span>':''}</h3>
     <div class="chm">${q?`<span class="badge">${esc(cat)}</span>`:''}${it.i!==undefined?`<span class="badge">initial: ${esc(it.i)}</span>`:''}${it.p&&!it.p.includes(' ')?`<span class="badge">${it.h?'inherited':'not inherited'}</span>`:''}${it.p&&!it.p.includes(' ')?`<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/${encodeURIComponent(it.p)}" target="_blank" rel="noopener">MDN</a>`:''}</div></header>
-    ${it.d?`<p class="chd">${esc(it.d)}</p>`:''}<div class="sws">${it.v.map((v,j)=>`<figure class="sw"><div class="swh" data-k="${k}" data-j="${j}" title="click to replay" style="${(TPL[it.T]&&TPL[it.T].ht)?`height:${TPL[it.T].ht}px`:''}"></div><figcaption><code>${esc(it.p&&!it.r?it.p+': '+v:v)}</code><button type="button" data-k="${k}" data-j="${j}">open in lab</button></figcaption></figure>`).join('')}</div></section>`).join('');
+    ${it.d?`<p class="chd">${esc(it.d)}</p>`:''}${it.p&&synFor(it.p)?`<p class="chd">${accHtml(it.p)}</p>`:''}<div class="sws">${it.v.map((v,j)=>`<figure class="sw"><div class="swh" data-k="${k}" data-j="${j}" title="click to replay" style="${(TPL[it.T]&&TPL[it.T].ht)?`height:${TPL[it.T].ht}px`:''}"></div><figcaption><code>${esc(it.p&&!it.r?it.p+': '+v:v)}</code><button type="button" data-k="${k}" data-j="${j}">open in lab</button></figcaption></figure>`).join('')}</div></section>`).join('');
   body.querySelectorAll('.swh').forEach(h=>{const[,it]=list[h.dataset.k];mount(h,it,it.v[h.dataset.j]);h.addEventListener('click',()=>mount(h,it,it.v[h.dataset.j]))});
   body.querySelectorAll('figcaption button').forEach(b=>b.addEventListener('click',()=>{const[,it]=list[b.dataset.k],v=it.v[b.dataset.j],{h,css}=partsOf(it,v);
     let rule=ruleOf(it,v);

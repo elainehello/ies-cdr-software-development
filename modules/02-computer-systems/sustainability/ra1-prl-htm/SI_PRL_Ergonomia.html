@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PRL y Ergonomía · SI</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+:root{--bg:#f4f6f8;--surface:#fff;--surface2:#eef1f4;--fg:#1b2027;--muted:#5b6470;--line:#d8dde3;--accent:#0f6fd1;--accent-soft:#e2eefb;--ok:#1d7f45;--ok-soft:#e3f4ea;--bad:#c4332b;--bad-soft:#fbe7e5;--warn:#a96a00;--warn-soft:#fff3d6;--vio:#6a4bc4;--vio-soft:#efe9fb;--hi:#fff3c4;--fig:#1b2027;--fig2:#9aa4af}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121519;--surface:#1b1f25;--surface2:#242a31;--fg:#e7eaee;--muted:#a1a9b3;--line:#333a43;--accent:#6aaef2;--accent-soft:#1b2c40;--ok:#5cc485;--ok-soft:#183224;--bad:#ef7a70;--bad-soft:#3a1f1d;--warn:#f0b54a;--warn-soft:#3a2f17;--vio:#ab95ee;--vio-soft:#2a2442;--hi:#3d3415;--fig:#e7eaee;--fig2:#6b7580;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121519;--surface:#1b1f25;--surface2:#242a31;--fg:#e7eaee;--muted:#a1a9b3;--line:#333a43;--accent:#6aaef2;--accent-soft:#1b2c40;--ok:#5cc485;--ok-soft:#183224;--bad:#ef7a70;--bad-soft:#3a1f1d;--warn:#f0b54a;--warn-soft:#3a2f17;--vio:#ab95ee;--vio-soft:#2a2442;--hi:#3d3415;--fig:#e7eaee;--fig2:#6b7580;color-scheme:dark}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+h1,h2,h3,h4{font-family:"Space Grotesk",Inter,system-ui,sans-serif;line-height:1.25;text-wrap:balance;margin:0}
+h2{font-size:1.4rem;margin-bottom:.5rem}h3{font-size:1.12rem;margin:1.3rem 0 .4rem}h4{margin:1rem 0 .3rem}
+p{margin:.45rem 0}ul,ol{margin:.35rem 0;padding-left:1.25rem}li{margin:.15rem 0}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:21;background:var(--surface)}
+.bar{display:flex;align-items:center;gap:12px;max-width:1120px;margin:0 auto;padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.brand{display:flex;flex-direction:column;min-width:0;flex:1}.brand b{font-family:"Space Grotesk",sans-serif;font-size:1.05rem}.brand small{color:var(--muted);font-size:.78rem}
+.iconbtn{border:1px solid var(--line);background:var(--surface2);color:var(--fg);border-radius:10px;padding:6px 10px;font:inherit;font-size:.85rem;cursor:pointer}
+nav.tabs{display:flex;gap:4px;overflow-x:auto;max-width:1120px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right,0px)) 8px max(16px,env(safe-area-inset-left,0px))}
+nav.tabs button{flex:0 0 auto;border:1px solid transparent;background:none;color:var(--muted);font:600 .86rem Inter,sans-serif;padding:7px 11px;border-radius:999px;cursor:pointer;white-space:nowrap}
+nav.tabs button[aria-selected="true"]{background:var(--fg);color:var(--bg)}
+main{max-width:1120px;margin:0 auto;padding-block:20px 60px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section.view{display:none}section.view.on{display:block}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;min-width:0;margin-bottom:14px}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
+.muted{color:var(--muted)}.small{font-size:.86rem}
+.pill{display:inline-block;font-size:.74rem;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.pill.r{background:var(--bad-soft);color:var(--bad)}
+.box{border-radius:12px;padding:10px 14px;margin:.7rem 0;border:1px solid var(--line);border-left-width:5px;background:var(--surface)}
+.box .lbl{display:block;font:700 .72rem Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+.box.key{border-left-color:var(--accent);background:var(--accent-soft)}.box.key .lbl{color:var(--accent)}
+.box.trap{border-left-color:var(--warn);background:var(--warn-soft)}.box.trap .lbl{color:var(--warn)}
+.box.ok{border-left-color:var(--ok);background:var(--ok-soft)}.box.ok .lbl{color:var(--ok)}
+.box.vio{border-left-color:var(--vio);background:var(--vio-soft)}.box.vio .lbl{color:var(--vio)}
+.tbl{overflow-x:auto;margin:.6rem 0;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:.88rem}th,td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}th{background:var(--surface2);font-weight:600}tr:last-child td{border-bottom:none}
+.num{font-family:"Space Grotesk",sans-serif;font-weight:700;color:var(--accent);white-space:nowrap}
+.nums{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:8px}
+.nb{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}.nb b{display:block;font:700 1.25rem "Space Grotesk",sans-serif;color:var(--accent)}.nb span{font-size:.84rem;color:var(--muted)}
+.fig{background:var(--surface2);border-radius:12px;padding:8px;overflow-x:auto}.fig svg{display:block;max-width:100%;height:auto;margin:0 auto}
+.fig text{font-family:Inter,system-ui,sans-serif;fill:var(--fg)}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 14px}.toc a{font-size:.8rem;text-decoration:none;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.btn{border:1px solid var(--fg);background:var(--fg);color:var(--bg);font:600 .9rem Inter,sans-serif;padding:8px 14px;border-radius:10px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--fg);border-color:var(--line)}.btn.sm{padding:5px 10px;font-size:.8rem}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+select,input[type=number]{font:inherit;padding:7px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface2);color:var(--fg)}
+.opts{display:grid;gap:8px;margin:.8rem 0}
+.opt{text-align:left;border:1px solid var(--line);background:var(--surface2);color:var(--fg);border-radius:10px;padding:10px 12px;font:inherit;cursor:pointer}
+.opt:hover{border-color:var(--accent)}.opt.right{background:var(--ok-soft);border-color:var(--ok)}.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}.opt[disabled]{cursor:default}
+.progress{height:6px;background:var(--surface2);border-radius:99px;overflow:hidden;margin:.4rem 0 .8rem}.progress i{display:block;height:100%;background:var(--accent)}
+.out{margin-top:10px;padding:12px 14px;border-radius:12px;background:var(--surface2);border:1px solid var(--line)}
+.score{display:flex;gap:18px;flex-wrap:wrap}.score b{display:block;font:700 1.4rem "Space Grotesk",sans-serif}
+.chk td:nth-child(3){white-space:nowrap}.chk label{margin-right:8px;cursor:pointer}
+.flash{max-width:620px;margin:0 auto;perspective:1200px}.flash .inner{position:relative;min-height:280px;transition:transform .45s;transform-style:preserve-3d;cursor:pointer}.flash.flip .inner{transform:rotateY(180deg)}
+.flash .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;border:1px solid var(--line);background:var(--surface);padding:22px;display:flex;flex-direction:column;justify-content:center;overflow:auto}
+.flash .back{transform:rotateY(180deg);background:var(--accent-soft);justify-content:flex-start}.fl-item summary{cursor:pointer;font-weight:600;padding:8px 0}.fl-item{border-bottom:1px solid var(--line)}.fl-item .a{padding:0 0 10px 14px}.fl-known{color:var(--ok)}.flash .t{font:600 1.15rem "Space Grotesk",sans-serif}
+.timer{font:700 3rem/1 "Space Grotesk",sans-serif;font-variant-numeric:tabular-nums}
+.fill input{width:90px}.fill .q{margin:8px 0}.fill .res{font-weight:600;margin-left:6px}
+@media (max-width:560px){.flash .inner{min-height:360px}}
+footer{color:var(--muted);font-size:.8rem;text-align:center;padding:20px}
+</style>
+</head>
+<body>
+<header class="top">
+ <div class="bar"><div class="brand"><b>PRL y ergonomía en sistemas informáticos</b><small>Sistemas Informáticos · DAW · Cuestionario del Aula Virtual</small></div><button class="iconbtn" id="themeBtn">🌓 Tema</button></div>
+ <nav class="tabs" id="tabs">
+  <button data-v="resumen">⚡ Chuleta</button><button data-v="c1">1 · Marco legal</button><button data-v="c2">2 · Puesto</button><button data-v="c3">3 · Ambiente</button><button data-v="c4">4 · Patologías</button><button data-v="c5">5 · Psicosocial</button><button data-v="c6">6 · Chequeo</button><button data-v="test">✅ Test</button><button data-v="num">🔢 Números</button><button data-v="flash">🃏 Fichas</button>
+ </nav>
+</header>
+<main>
+
+<!-- ============ CHULETA ============ -->
+<section class="view" id="v-resumen">
+ <h2>Chuleta de 5 minutos</h2>
+ <p class="muted">Todo lo que se puede preguntar en forma de número o de norma. Basado en el manual del Aula Virtual (6 capítulos) y en la presentación «PRL en los sistemas informáticos» (16 diapositivas).</p>
+ <div class="nums">
+  <div class="nb"><b>Ley 31/1995</b><span>de 8 de noviembre, de PRL · transpone la Directiva Marco 89/391/CEE</span></div>
+  <div class="nb"><b>RD 488/1997</b><span>de 14 de abril · Pantallas de Visualización de Datos (PVD)</span></div>
+  <div class="nb"><b>&gt; 4 h/día o &gt; 20 h/semana</b><span>= trabajador usuario de PVD (criterio INSST)</span></div>
+  <div class="nb"><b>UNE-EN 1335</b><span>norma de la silla de oficina</span></div>
+  <div class="nb"><b>5 puntos</b><span>base de la silla con ruedas · −60 % de sobrepresión discal (con apoyo lumbar)</span></div>
+  <div class="nb"><b>L1–L5 · L4-L5 / L5-S1</b><span>apoyo lumbar · discos más sobrecargados</span></div>
+  <div class="nb"><b>C1–C7</b><span>vértebras cervicales afectadas por la pantalla</span></div>
+  <div class="nb"><b>90°–100°</b><span>ángulo poplíteo (rodilla), pies apoyados</span></div>
+  <div class="nb"><b>90°–110°</b><span>ángulo del codo, antebrazos paralelos a la mesa</span></div>
+  <div class="nb"><b>40–75 cm</b><span>distancia ojo-pantalla (manual) · 60–70 cm en monitores de 27–32″</span></div>
+  <div class="nb"><b>50–70 cm</b><span>distancia en la lista de chequeo y las diapositivas</span></div>
+  <div class="nb"><b>10°–20°</b><span>mirada inclinada hacia abajo · borde superior a la altura de los ojos</span></div>
+  <div class="nb"><b>máx. 30°</b><span>monitor secundario respecto al principal · evitar giros &gt; 45°</span></div>
+  <div class="nb"><b>0°–15°</b><span>inclinación del teclado</span></div>
+  <div class="nb"><b>≥ 10 cm</b><span>espacio libre delante del teclado para las muñecas</span></div>
+  <div class="nb"><b>57°</b><span>inclinación del ratón vertical</span></div>
+  <div class="nb"><b>68–75 cm</b><span>altura de mesa fija · 65–125 cm mesa regulable (sit-stand)</span></div>
+  <div class="nb"><b>300–500 lux</b><span>iluminación ambiental</span></div>
+  <div class="nb"><b>≤ 3:1</b><span>relación de luminancias monitor/fondo</span></div>
+  <div class="nb"><b>20–24 °C / 23–26 °C</b><span>invierno (calefacción) / verano (aire acondicionado)</span></div>
+  <div class="nb"><b>40–60 %</b><span>humedad relativa · &lt; 30 % → ojo seco</span></div>
+  <div class="nb"><b>&lt; 0,25 m/s</b><span>velocidad del aire</span></div>
+  <div class="nb"><b>≤ 55 dBA</b><span>ruido máximo para tareas de alta atención (programar)</span></div>
+  <div class="nb"><b>&gt; 65 %</b><span>de las bajas temporales en IT son por TME</span></div>
+  <div class="nb"><b>15–20 → 5–7</b><span>parpadeos por minuto: normal → programando</span></div>
+  <div class="nb"><b>&lt; 10 s</b><span>Break-Up Time: rotura de la película lagrimal</span></div>
+  <div class="nb"><b>20-20-20</b><span>cada 20 min, 20 s, mirar a 20 pies (≈ 6 m)</span></div>
+  <div class="nb"><b>5 min / hora</b><span>micro-pausa · alta intensidad: 5–10 min cada 60 min</span></div>
+  <div class="nb"><b>15 min / 90–120 min</b><span>pausa en intensidad moderada</span></div>
+  <div class="nb"><b>2 semanas</b><span>duración típica de un sprint ágil</span></div>
+  <div class="nb"><b>Art. 88 LOPDGDD</b><span>LO 3/2018 + art. 20 bis ET · desconexión digital</span></div>
+ </div>
+ <div class="box trap"><span class="lbl">⚠ Ojo con las dos fuentes</span>
+  <ul>
+   <li><b>Distancia a la pantalla:</b> el manual dice <b>40–75 cm</b> (60–70 cm en monitores grandes). La tabla de chequeo y las diapositivas 4 y 6 dicen <b>50–70 cm</b>. Si la pregunta habla del rango general, usa 40–75. Si habla de la lista de chequeo o del valor recomendado del puesto, 50–70.</li>
+   <li><b>Temperatura y humedad:</b> en este tema se usan 20–24 / 23–26 °C y 40–60 %. Son distintos de los del RD 486/1997 que viste en IPE (17–27 °C en trabajo sedentario y 30–70 %). En este cuestionario, usa los de este tema.</li>
+   <li><b>Iluminación:</b> aquí son 300–500 lux. En IPE, el RD 486 pedía 500 lux para exigencia visual alta.</li>
+   <li><b>¿Paralela o perpendicular?</b> La <b>pantalla</b> se coloca <b>perpendicular a la pared de la ventana</b>, de modo que la <b>línea de visión quede paralela</b> a la ventana. El manual lo dice así: «perpendiculares (paralelas a las fuentes de luz natural)». Nunca de frente ni de espaldas a la ventana.</li>
+  </ul>
+ </div>
+</section>
+
+<!-- ============ C1 ============ -->
+<section class="view" id="v-c1">
+ <h2>Capítulo 1 · Marco legal y fundamentos de la PRL en el sector IT</h2>
+ <div class="card">
+  <h3 style="margin-top:0">1.1 La Ley 31/1995 de Prevención de Riesgos Laborales</h3>
+  <ul>
+   <li>Ley 31/1995, <b>de 8 de noviembre</b>. Transpone la <b>Directiva Marco Europea 89/391/CEE</b>.</li>
+   <li>Principio general: la seguridad y la salud se protegen <b>de forma integral</b>, eliminando o mitigando el riesgo <b>en el origen</b>.</li>
+   <li>Muchos estudiantes de DAW y DAM creen que trabajar con el ordenador no es peligroso. Es falso: la exposición continuada genera riesgos <b>biomecánicos, neurosensoriales y psicosociales</b> de carácter <b>acumulativo</b>, que clasifica el INSST.</li>
+  </ul>
+  <h3>1.2 El RD 488/1997 sobre Pantallas de Visualización de Datos (PVD)</h3>
+  <p>Real Decreto 488/1997, <b>de 14 de abril</b>: disposiciones mínimas de seguridad y salud para el trabajo con equipos que incluyen pantallas de visualización. Define tres conceptos:</p>
+  <div class="tbl"><table>
+   <tr><th>Concepto</th><th>Definición</th></tr>
+   <tr><td><b>Pantalla de visualización (PVD)</b></td><td>Toda pantalla <b>alfanumérica o gráfica</b>, sea cual sea su método de representación: CRT, LCD, OLED, portátiles o tabletas.</td></tr>
+   <tr><td><b>Puesto de trabajo con PVD</b></td><td>El equipo (pantalla, teclado, ratón, periféricos), los accesorios, el <b>asiento</b> y la <b>mesa</b>, y el <b>entorno laboral inmediato</b> (iluminación, ruido, humedad y temperatura).</td></tr>
+   <tr><td><b>Trabajador usuario de PVD</b></td><td>Quien la usa <b>habitualmente</b> y durante una <b>parte relevante</b> de su jornada. El INSST lo concreta en <b>más de 4 horas diarias o más de 20 horas semanales</b>.</td></tr>
+  </table></div>
+  <div class="box key"><span class="lbl">💡 Criterio legal del INSST</span>Quien supera las <b>4 horas diarias</b> con PVD (desarrolladores, analistas de datos, administradores de sistemas) pasa a ser <b>usuario de PVD</b>. La empresa queda obligada a hacer <b>evaluaciones ergonómicas específicas</b> del puesto y <b>reconocimientos médicos periódicos</b> del aparato locomotor y de la vista.</div>
+  <div class="row"><b>¿Eres usuario de PVD?</b> <label>Horas al día <input type="number" id="pvdD" value="6" min="0" max="24" step="0.5"></label><label>Días a la semana <input type="number" id="pvdS" value="5" min="0" max="7"></label></div>
+  <div class="out" id="pvdOut"></div>
+  <h3>1.3 El INSST y la Comisión Nacional de Seguridad y Salud en el Trabajo</h3>
+  <p>El <b>INSST</b> (Instituto Nacional de Seguridad y Salud en el Trabajo) es el <b>órgano científico-técnico</b> especializado de la Administración General del Estado en prevención. Elabora la <b>Guía Técnica para la evaluación y prevención de los riesgos relativos al trabajo con PVD</b>, con los criterios objetivos que deben cumplir las empresas.</p>
+  <p class="small muted">La Comisión Nacional de Seguridad y Salud en el Trabajo (CNSST) es el órgano asesor de las Administraciones Públicas en políticas de prevención. El manual solo la nombra en el título del apartado.</p>
+  <h4>Tabla 1.1 · Obligaciones del empleador (Ley 31/1995 y RD 488/1997)</h4>
+  <div class="tbl"><table>
+   <tr><th>Ámbito preventivo</th><th>Exigencia legal</th><th>Aplicación práctica en desarrollo web</th></tr>
+   <tr><td><b>Evaluación de riesgos</b></td><td>Análisis obligatorio de riesgos físicos, visuales y mentales</td><td>Auditoría ergonómica del puesto, también en teletrabajo</td></tr>
+   <tr><td><b>Organización del trabajo</b></td><td>Planificar pausas o cambios de actividad periódicos</td><td>Interrupciones estructuradas: <b>5 min por hora</b> ante alta carga cognitiva</td></tr>
+   <tr><td><b>Formación e información</b></td><td>Instrucción en el uso correcto del puesto</td><td>Formar en higiene postural y ajuste de la silla</td></tr>
+   <tr><td><b>Vigilancia de la salud</b></td><td>Reconocimientos médicos específicos (vista y huesos)</td><td>Revisiones oftalmológicas periódicas (acomodación foveal)</td></tr>
+  </table></div>
+  <div class="box ok"><span class="lbl">Diapositiva 2</span>Las garantías preventivas se aplican <b>por igual en teletrabajo y en presencial</b>. Obligaciones del empresario: evaluación inicial de los puestos, vigilancia de la salud visual y formación postural.</div>
+  <div class="box trap"><span class="lbl">Matiz</span>La diapositiva 2 dice que «el RD 488/1997 califica como usuario PVD» a quien supera las 4 h. En rigor, el RD habla de una «parte relevante» de la jornada, y las <b>4 h y 20 h las concreta el INSST</b> en su guía técnica, como dice el manual. Si te preguntan de dónde sale la cifra, responde el INSST.</div>
+ </div>
+</section>
+
+<!-- ============ C2 ============ -->
+<section class="view" id="v-c2">
+ <h2>Capítulo 2 · Ergonomía físico-espacial del puesto del programador</h2>
+ <div class="toc"><a href="#c2-fig">Esquema del puesto</a><a href="#c2-1">2.1 Silla</a><a href="#c2-2">2.2 Pantalla</a><a href="#c2-3">2.3 Teclado y ratón</a><a href="#c2-t">Tabla 2.1</a></div>
+ <div class="card" id="c2-fig">
+  <h3 style="margin-top:0">El puesto correcto, con todas sus medidas</h3>
+  <div class="fig"><svg viewBox="0 0 720 430" role="img" aria-label="Esquema lateral del puesto informático con ángulos y distancias">
+   <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0f6fd1"/></marker></defs>
+   <line x1="20" y1="400" x2="700" y2="400" stroke="var(--fig2)" stroke-width="3"/>
+   <rect x="330" y="236" width="300" height="10" rx="3" fill="var(--fig2)"/><rect x="600" y="246" width="10" height="154" fill="var(--fig2)"/>
+   <rect x="540" y="200" width="10" height="36" fill="var(--fig2)"/><rect x="520" y="230" width="50" height="6" fill="var(--fig2)"/>
+   <rect x="548" y="96" width="14" height="110" rx="3" fill="#0f6fd1"/>
+   <rect x="400" y="228" width="80" height="8" rx="2" fill="var(--fig)"/>
+   <rect x="120" y="260" width="140" height="14" rx="5" fill="var(--fig2)"/><rect x="115" y="140" width="16" height="130" rx="6" fill="var(--fig2)"/>
+   <rect x="185" y="274" width="10" height="90" fill="var(--fig2)"/><line x1="140" y1="395" x2="240" y2="395" stroke="var(--fig2)" stroke-width="6" stroke-linecap="round"/>
+   <circle cx="140" cy="395" r="5" fill="var(--fig)"/><circle cx="190" cy="395" r="5" fill="var(--fig)"/><circle cx="240" cy="395" r="5" fill="var(--fig)"/>
+   <rect x="196" y="236" width="70" height="8" rx="3" fill="var(--fig2)"/>
+   <circle cx="160" cy="96" r="24" fill="none" stroke="var(--fig)" stroke-width="5"/>
+   <circle cx="174" cy="92" r="3" fill="var(--fig)"/>
+   <line x1="150" y1="122" x2="142" y2="250" stroke="var(--fig)" stroke-width="7" stroke-linecap="round"/>
+   <line x1="146" y1="140" x2="160" y2="226" stroke="var(--fig)" stroke-width="6" stroke-linecap="round"/>
+   <line x1="160" y1="226" x2="250" y2="228" stroke="var(--fig)" stroke-width="6" stroke-linecap="round"/>
+   <line x1="250" y1="228" x2="400" y2="226" stroke="var(--fig)" stroke-width="4" stroke-dasharray="2 0"/>
+   <line x1="142" y1="252" x2="262" y2="254" stroke="var(--fig)" stroke-width="8" stroke-linecap="round"/>
+   <line x1="262" y1="254" x2="264" y2="388" stroke="var(--fig)" stroke-width="7" stroke-linecap="round"/>
+   <line x1="264" y1="390" x2="296" y2="392" stroke="var(--fig)" stroke-width="6" stroke-linecap="round"/>
+   <line x1="174" y1="92" x2="548" y2="92" stroke="#0f6fd1" stroke-width="1.5" stroke-dasharray="6 5"/>
+   <line x1="174" y1="92" x2="548" y2="170" stroke="#d6336c" stroke-width="1.5" stroke-dasharray="6 5"/>
+   <text x="300" y="84" font-size="13" font-weight="700" fill="#0f6fd1">línea de los ojos = borde superior de la pantalla</text>
+   <text x="330" y="150" font-size="13" font-weight="700" fill="#d6336c">mirada 10°–20° hacia abajo</text>
+   <line x1="180" y1="40" x2="545" y2="40" stroke="#0f6fd1" stroke-width="2" marker-start="url(#ar)" marker-end="url(#ar)"/>
+   <text x="250" y="32" font-size="13" font-weight="700">distancia ojo-pantalla 40–75 cm (lista de chequeo: 50–70)</text>
+   <path d="M170 226 A 14 14 0 0 0 158 212" fill="none" stroke="#d6336c" stroke-width="2"/>
+   <text x="176" y="214" font-size="13" font-weight="700" fill="#d6336c">codo 90°–110°</text>
+   <path d="M262 268 A 14 14 0 0 1 248 254" fill="none" stroke="#d6336c" stroke-width="2"/>
+   <text x="275" y="300" font-size="13" font-weight="700" fill="#d6336c">rodilla 90°–100°</text>
+   <text x="275" y="316" font-size="12">(ángulo poplíteo)</text>
+   <text x="300" y="385" font-size="12">pies apoyados en el suelo</text>
+   <text x="20" y="165" font-size="12" font-weight="700">apoyo lumbar</text><text x="20" y="180" font-size="12">L1–L5</text>
+   <text x="30" y="300" font-size="12">base de 5 puntos</text><text x="30" y="315" font-size="12">con ruedas</text>
+   <text x="30" y="350" font-size="12">reposabrazos</text><text x="30" y="365" font-size="12">regulables 3D/4D</text>
+   <line x1="330" y1="216" x2="398" y2="216" stroke="#1d7f45" stroke-width="2" marker-start="url(#ar)" marker-end="url(#ar)"/>
+   <text x="330" y="208" font-size="12" font-weight="700" fill="#1d7f45">≥ 10 cm</text>
+   <text x="410" y="222" font-size="12">teclado 0°–15°</text>
+   <line x1="650" y1="241" x2="650" y2="398" stroke="#0f6fd1" stroke-width="2" marker-start="url(#ar)" marker-end="url(#ar)"/>
+   <text x="657" y="315" font-size="12" font-weight="700">mesa</text><text x="657" y="330" font-size="12">68–75</text><text x="657" y="345" font-size="12">cm</text>
+   <text x="570" y="120" font-size="12">PVD</text>
+  </svg></div>
+  <p class="small muted">Esquema propio a partir de las medidas del manual. Los ángulos son los de la Tabla 2.1.</p>
+ </div>
+ <div class="card" id="c2-1">
+  <h3 style="margin-top:0">2.1 El eje biomecánico: la silla y la postura neutra</h3>
+  <p>El cuerpo no está diseñado para estar sentado mucho tiempo sin moverse. La <b>sedestación</b> continuada genera sobrepresión en los discos intervertebrales <b>L4-L5 y L5-S1</b> de la columna lumbar. La silla debe cumplir la norma <b>UNE-EN 1335</b>:</p>
+  <div class="tbl"><table>
+   <tr><th>Elemento</th><th>Especificación</th><th>Para qué</th></tr>
+   <tr><td><b>Base de apoyo de 5 puntos con ruedas</b></td><td>Estabilidad dinámica</td><td>Moverse suavemente y girar sin torsión de la columna; evita vuelcos.</td></tr>
+   <tr><td><b>Regulación de altura oleoneumática</b></td><td>Muslos horizontales; <b>ángulo poplíteo de 90°–100°</b> entre muslo y pierna; plantas de los pies apoyadas</td><td>Evitar la compresión vascular del muslo y los problemas de retorno venoso.</td></tr>
+   <tr><td><b>Respaldo con apoyo lumbar regulable</b></td><td>Se adapta a la <b>lordosis fisiológica</b> (L1–L5), con inclinación basculante sincronizada con la pelvis</td><td>Preservar la lordosis y evitar el aplastamiento discal L4-L5/S1.</td></tr>
+   <tr><td><b>Reposabrazos regulables 3D/4D</b></td><td>Altura, profundidad y ángulo; antebrazos paralelos a la mesa; <b>codo a 90°–110°</b> sin elevar los hombros</td><td>Descanso de los trapecios.</td></tr>
+  </table></div>
+  <div class="box key"><span class="lbl">Diapositiva 3</span>Cinco puntos de apoyo y regulación lumbar <b>reducen un 60 %</b> la sobrepresión en los discos intervertebrales.</div>
+ </div>
+ <div class="card" id="c2-2">
+  <h3 style="margin-top:0">2.2 Configuración de la pantalla (PVD)</h3>
+  <p>La posición del monitor condiciona la columna <b>cervical (C1–C7)</b>. Hay dos variables críticas: la <b>distancia</b> de visión y el <b>ángulo de inclinación de la mirada</b>.</p>
+  <ol>
+   <li><b>Distancia: entre 40 y 75 cm</b>, aproximadamente la longitud del brazo extendido. En monitores panorámicos de <b>27 a 32 pulgadas</b> sube a <b>60–70 cm</b>, para abarcar el campo visual sin girar mucho el cuello. La lista de chequeo usa <b>50–70 cm</b>.</li>
+   <li><b>Altura:</b> el <b>borde superior</b> de la pantalla, a la altura de los ojos o un poco por debajo. Así la mirada baja de forma natural entre <b>10° y 20°</b> y la musculatura cervical posterior queda relajada.</li>
+   <li><b>Evitar la protrusión cervical:</b> es mejor acercar la pantalla que adelantar el cuello («cuello de texto»).</li>
+  </ol>
+  <h4>Dos monitores (dual-monitor)</h4>
+  <div class="grid g2">
+   <div class="fig"><svg viewBox="0 0 300 170" role="img" aria-label="Dos monitores usados por igual"><text x="150" y="18" text-anchor="middle" font-size="13" font-weight="700">Uso simétrico 50/50</text><rect x="62" y="40" width="88" height="10" fill="#0f6fd1"/><rect x="150" y="40" width="88" height="10" fill="#0f6fd1"/><circle cx="150" cy="140" r="12" fill="var(--fig)"/><line x1="150" y1="128" x2="150" y2="54" stroke="#d6336c" stroke-dasharray="4 4" stroke-width="2"/><text x="150" y="70" font-size="11" text-anchor="middle">la unión, en el centro</text><text x="150" y="84" font-size="11" text-anchor="middle">del eje de visión</text></svg></div>
+   <div class="fig"><svg viewBox="0 0 300 170" role="img" aria-label="Monitor principal centrado y auxiliar a 30 grados"><text x="150" y="18" text-anchor="middle" font-size="13" font-weight="700">Principal + auxiliar</text><rect x="100" y="40" width="100" height="10" fill="#0f6fd1"/><g transform="rotate(30 200 45)"><rect x="200" y="40" width="80" height="10" fill="var(--fig2)"/></g><circle cx="150" cy="140" r="12" fill="var(--fig)"/><line x1="150" y1="128" x2="150" y2="54" stroke="#d6336c" stroke-dasharray="4 4" stroke-width="2"/><text x="150" y="72" font-size="11" text-anchor="middle">código, centrado</text><text x="245" y="110" font-size="11" text-anchor="middle">consola/navegador</text><text x="245" y="124" font-size="11" text-anchor="middle" font-weight="700">máx. 30°</text></svg></div>
+  </div>
+  <p>Hay que <b>evitar giros cervicales de más de 45°</b>: las rotaciones continuas del cuello contracturan el <b>esternocleidomastoideo</b> (diapositiva 4).</p>
+ </div>
+ <div class="card" id="c2-3">
+  <h3 style="margin-top:0">2.3 Dispositivos de entrada: teclado y ratón</h3>
+  <p>Teclear y usar el ratón de forma continuada provoca <b>microtraumatismos repetitivos</b> en las vainas tendinosas de la muñeca.</p>
+  <div class="grid g3">
+   <div class="box key" style="margin:0"><span class="lbl">Teclado independiente</span>Separado de la pantalla, <b>mate</b> (baja reflectancia), con inclinación ajustable de <b>0° a 15°</b> y al menos <b>10 cm libres</b> entre el borde de la mesa y el teclado para apoyar las muñecas en las pausas.</div>
+   <div class="box key" style="margin:0"><span class="lbl">Ratón ergonómico o vertical</span>Adaptado a la mano. Los ratones verticales de <b>57°</b> mantienen el antebrazo en <b>pronosupinación neutra</b> y evitan comprimir el <b>nervio mediano</b>. Debe estar al mismo nivel que el teclado y pegado a él.</div>
+   <div class="box key" style="margin:0"><span class="lbl">Reposamuñecas de gel</span>Mantiene la muñeca en <b>posición neutra</b>, sin desviación radial o cubital extrema ni extensión dorsal forzada: el plano mano-antebrazo queda recto.</div>
+  </div>
+ </div>
+ <div class="card" id="c2-t">
+  <h3 style="margin-top:0">Tabla 2.1 · Parámetros ergonómicos estandarizados (INSST)</h3>
+  <div class="tbl"><table>
+   <tr><th>Elemento</th><th>Rango recomendado</th><th>Consecuencia si no se cumple</th></tr>
+   <tr><td>Altura de la mesa</td><td class="num">68–75 cm (fija) · 65–125 cm (sit-stand)</td><td>Cifosis dorsal o elevación compensatoria de los hombros</td></tr>
+   <tr><td>Distancia ojo-pantalla</td><td class="num">40–75 cm (según la diagonal)</td><td>Fatiga de acomodación o tensión cervical en flexión</td></tr>
+   <tr><td>Ángulo del codo</td><td class="num">90°–110° en plano horizontal</td><td><b>Epicondilitis</b> (codo de tenista) y tensión en los trapecios</td></tr>
+   <tr><td>Ángulo poplíteo (rodilla)</td><td class="num">90°–100°, pies apoyados</td><td>Compresión vascular del muslo y problemas de retorno venoso</td></tr>
+   <tr><td>Espacio libre para la muñeca</td><td class="num">≥ 10 cm delante del teclado</td><td>Compresión del nervio mediano en el <b>túnel carpiano</b></td></tr>
+  </table></div>
+  <h4>Diapositiva 6 · Síntesis de ajustes y riesgo que evitan</h4>
+  <div class="tbl"><table>
+   <tr><th>Elemento</th><th>Parámetro</th><th>Riesgo mitigado</th></tr>
+   <tr><td>Silla</td><td>Base de 5 ruedas, regulación oleoneumática, apoyo lumbar regulable</td><td>Lumbalgias, compresión discal L4-L5, problemas de retorno venoso</td></tr>
+   <tr><td>Monitor</td><td>50–70 cm, borde superior a la vista, inclinación 10°–20°</td><td>Cervicalgias, síndrome de trapecios, espasmo de acomodación ciliar</td></tr>
+   <tr><td>Teclado y reposamuñecas</td><td>≥ 10 cm libres, inclinación ≤ 15°, gel en las pausas</td><td>Tendinitis de flexores y extensores, túnel carpiano</td></tr>
+   <tr><td>Mesa</td><td>Baja reflectancia, 68–75 cm o sit-stand</td><td>Cifosis postural, sobrecarga de hombros, fatiga estática del tronco</td></tr>
+  </table></div>
+ </div>
+</section>
+
+<!-- ============ C3 ============ -->
+<section class="view" id="v-c3">
+ <h2>Capítulo 3 · Factores ambientales y confort</h2>
+ <div class="card">
+  <h3 style="margin-top:0">3.1 Iluminación y deslumbramientos</h3>
+  <ul>
+   <li><b>Nivel de iluminación ambiental: 300–500 lux</b>, suficiente para programar y leer documentación en papel.</li>
+   <li><b>Relación de luminancias</b> entre monitor y fondo de <b>3:1 como máximo</b> (diapositiva 7).</li>
+   <li><b>Luminarias con difusores de baja reflectancia</b>: nada de bombillas desnudas que proyecten puntos de luz sobre el monitor.</li>
+   <li>Ventanas con <b>persianas orientables o estores translúcidos</b>.</li>
+  </ul>
+  <h4>Posición de la pantalla respecto a la ventana (vista desde arriba)</h4>
+  <div class="grid g3">
+   <div class="fig"><svg viewBox="0 0 220 180" role="img" aria-label="Pantalla de frente a la ventana: incorrecto"><rect x="20" y="10" width="180" height="10" fill="#7cc4ff"/><text x="110" y="36" text-anchor="middle" font-size="11">ventana</text><rect x="70" y="80" width="80" height="8" fill="var(--fig)"/><circle cx="110" cy="140" r="12" fill="var(--fig)"/><line x1="110" y1="128" x2="110" y2="24" stroke="#c4332b" stroke-width="2" stroke-dasharray="4 4"/><text x="110" y="170" text-anchor="middle" font-size="12" font-weight="700" fill="#c4332b">✗ De frente: deslumbramiento</text></svg></div>
+   <div class="fig"><svg viewBox="0 0 220 180" role="img" aria-label="Pantalla de espaldas a la ventana: incorrecto"><rect x="20" y="160" width="180" height="10" fill="#7cc4ff"/><text x="110" y="154" text-anchor="middle" font-size="11">ventana (detrás)</text><rect x="70" y="30" width="80" height="8" fill="var(--fig)"/><circle cx="110" cy="100" r="12" fill="var(--fig)"/><line x1="110" y1="88" x2="110" y2="42" stroke="var(--fig2)" stroke-width="2" stroke-dasharray="4 4"/><path d="M60 160 L95 40" stroke="#f0b54a" stroke-width="2"/><text x="110" y="18" text-anchor="middle" font-size="12" font-weight="700" fill="#c4332b">✗ De espaldas: reflejos</text></svg></div>
+   <div class="fig"><svg viewBox="0 0 220 180" role="img" aria-label="Pantalla perpendicular a la ventana: correcto"><rect x="10" y="20" width="10" height="140" fill="#7cc4ff"/><text x="28" y="16" font-size="11">ventana (al lado)</text><rect x="106" y="40" width="80" height="8" fill="var(--fig)"/><circle cx="146" cy="120" r="12" fill="var(--fig)"/><line x1="146" y1="108" x2="146" y2="52" stroke="#1d7f45" stroke-width="2" stroke-dasharray="4 4"/><text x="110" y="168" text-anchor="middle" font-size="12" font-weight="700" fill="#1d7f45">✓ Perpendicular a la ventana</text><text x="146" y="90" text-anchor="middle" font-size="10">mirada paralela</text></svg></div>
+  </div>
+  <div class="box trap"><span class="lbl">Cómo decirlo en el examen</span>La pantalla, <b>perpendicular a la ventana</b> (90°), con la <b>línea de visión paralela</b> a las ventanas y a las filas de luminarias. <b>Nunca de frente</b> (deslumbramiento directo: no se ve el código) <b>ni de espaldas</b> (la luz exterior se refleja en el monitor y crea «fantasmas»). Acción correctora: girar la mesa 90° y bajar los estores.</div>
+  <h3>3.2 Termohigrometría: temperatura y humedad</h3>
+  <p>Las CPU, los servidores y los monitores desprenden calor. El calor acumulado y el aire acondicionado intensivo <b>secan las mucosas</b> de los ojos y las vías respiratorias. Según el RD 486/1997 y las recomendaciones del INSST:</p>
+  <div class="tbl"><table>
+   <tr><th>Parámetro</th><th>Valor</th><th>Por qué</th></tr>
+   <tr><td>Temperatura en invierno (calefacción)</td><td class="num">20–24 °C</td><td rowspan="2">Evita la somnolencia por calor y el agarrotamiento muscular por frío</td></tr>
+   <tr><td>Temperatura en verano (aire acondicionado)</td><td class="num">23–26 °C</td></tr>
+   <tr><td>Humedad relativa</td><td class="num">40–60 %</td><td>Por debajo del <b>30 %</b> la lágrima se evapora rápido: <b>queratitis</b> y síndrome de <b>ojo seco</b></td></tr>
+   <tr><td>Velocidad del aire</td><td class="num">&lt; 0,25 m/s</td><td>Evita corrientes directas molestas</td></tr>
+  </table></div>
+  <h3>3.3 Confort acústico</h3>
+  <p>Trabajar con el ordenador no suele causar sordera profesional (<b>hipoacusia</b>), pero el ruido constante de los ventiladores, racks y climatización <b>rompe la concentración y eleva la tensión arterial</b>.</p>
+  <div class="box key"><span class="lbl">Límite del INSST</span>Como máximo <b>55 dBA</b> en trabajos de alta atención intelectual, como programar algoritmos complejos. Los servidores se aíslan en salas técnicas independientes (<b>CPD</b>).</div>
+ </div>
+</section>
+
+<!-- ============ C4 ============ -->
+<section class="view" id="v-c4">
+ <h2>Capítulo 4 · Patologías laborales frecuentes y prevención médica</h2>
+ <div class="card">
+  <h3 style="margin-top:0">4.1 Trastornos musculoesqueléticos (TME)</h3>
+  <p>Los TME son <b>más del 65 %</b> de las bajas temporales del sector informático. Los causan los <b>microtraumatismos repetitivos</b>: posturas estáticas mantenidas y movimientos muy frecuentes sobre el teclado. La diapositiva 9 resume las zonas: <b>C1–C7</b> (tensión cervical por inclinar la cabeza hacia la pantalla del portátil) y <b>L4–S1</b> (compresión discal por sentarse mal).</p>
+  <div class="tbl"><table>
+   <tr><th>Lesión</th><th>Qué es</th><th>Causa</th><th>Prevención</th></tr>
+   <tr><td><b>Cervicalgia y síndrome del trapecio</b></td><td>Contractura continuada de la musculatura cervical</td><td>Inclinar o adelantar la cabeza hacia la pantalla («cuello de texto»)</td><td>Pantalla a la altura de los ojos y a la distancia correcta</td></tr>
+   <tr><td><b>Lumbalgia mecánica</b></td><td>Aplastamiento y sobrepresión del anillo fibroso de los discos</td><td>Inclinar el tronco hacia delante sin apoyo lumbar</td><td>Silla con apoyo lumbar L1–L5</td></tr>
+   <tr><td><b>Síndrome del túnel carpiano (STC)</b></td><td>Atrapamiento y compresión del <b>nervio mediano</b> a su paso por el retináculo flexor de la muñeca</td><td>Muñeca apoyada en el borde o en extensión</td><td>≥ 10 cm libres, reposamuñecas de gel, ratón vertical</td></tr>
+   <tr><td><b>Epicondilitis lateral</b> (codo de tenista)</td><td>Inflamación de los tendones <b>extensores</b> de la muñeca en su inserción en el codo</td><td>Extender los dedos una y otra vez sobre el ratón</td><td>Codo a 90°–110° con reposabrazos, ratón ergonómico</td></tr>
+  </table></div>
+  <div class="box trap"><span class="lbl">Síntomas del túnel carpiano</span><b>Parestesias</b> (hormigueo) en el <b>pulgar, el índice y el medio</b>, pérdida de fuerza para agarrar y dolor por la noche.</div>
+  <h3>4.2 Fatiga visual, astenopia y ojo seco</h3>
+  <div class="grid g2">
+   <div class="nb"><b>15–20 parpadeos/min</b><span>en condiciones normales</span></div>
+   <div class="nb"><b>5–7 parpadeos/min</b><span>programando o depurando (debugging)</span></div>
+  </div>
+  <p>Al parpadear tan poco, la película lagrimal se rompe antes del siguiente parpadeo (<b>Break-Up Time &lt; 10 segundos</b>). El resultado es el <b>Síndrome de Visión Informática (SVI)</b> o <b>astenopia</b>.</p>
+  <p><b>Síntomas:</b> picor, sensación de cuerpo extraño, visión borrosa a ratos, <b>diplopía</b> (visión doble) temporal y <b>cefalea supraorbitaria</b> (dolor de cabeza sobre los ojos). Pueden llegar a irritación y <b>queratitis</b>.</p>
+  <div class="box ok"><span class="lbl">💡 Regla 20-20-20 (INSST y Academia Española de Oftalmología)</span>Cada <b>20 minutos</b>, durante <b>20 segundos</b>, mira a un objeto a <b>20 pies (unos 6 metros)</b>. Previene el <b>espasmo de acomodación del músculo ciliar</b> y la sequedad ocular, y recupera el parpadeo fisiológico.</div>
+  <div class="card" style="background:var(--surface2)">
+   <div class="row" style="justify-content:space-between"><b>⏱ Pruébalo: temporizador 20-20-20</b><span class="small muted" id="t20msg">20 min de trabajo → 20 s mirando lejos</span></div>
+   <div class="row" style="margin-top:8px"><span class="timer" id="t20">20:00</span><button class="btn" id="t20go">Iniciar</button><button class="btn ghost" id="t20demo">Demo rápida (20 s)</button><button class="btn ghost" id="t20stop">Parar</button></div>
+  </div>
+  <h3>4.3 Micro-pausas activas y estiramientos</h3>
+  <p>Las pausas con PVD <b>no se acumulan</b> al final de la jornada: se reparten de forma regular. Mejor <b>pausas cortas y frecuentes</b> que pausas largas y aisladas.</p>
+  <div class="tbl"><table>
+   <tr><th>Intensidad del trabajo</th><th>Frecuencia</th><th>Duración y actividad</th></tr>
+   <tr><td><b>Alta</b> (debugging continuo)</td><td class="num">Cada 60 minutos</td><td>5–10 min caminando y con estiramientos activos</td></tr>
+   <tr><td><b>Moderada</b> (programación general)</td><td class="num">Cada 90–120 minutos</td><td>15 min sin pantalla y cambiando de postura</td></tr>
+  </table></div>
+  <div class="grid g3">
+   <div class="box vio" style="margin:0"><span class="lbl">Paso 1 · Parada</span>Cada <b>60 minutos</b>: dejar de programar y levantar la vista del monitor.</div>
+   <div class="box vio" style="margin:0"><span class="lbl">Paso 2 · Movilidad</span><b>5 minutos</b>: rotaciones suaves de cuello y hombros, estiramiento de muñecas.</div>
+   <div class="box vio" style="margin:0"><span class="lbl">Paso 3 · Hidratación</span><b>Beber agua</b> para favorecer la película lagrimal.</div>
+  </div>
+  <p class="small muted">Diapositiva 11: «Tres fases de micro-pausas periódicas evitan el espasmo de acomodación ciliar».</p>
+ </div>
+</section>
+
+<!-- ============ C5 ============ -->
+<section class="view" id="v-c5">
+ <h2>Capítulo 5 · Riesgos psicosociales, tecnoestrés y salud digital</h2>
+ <div class="card">
+  <h3 style="margin-top:0">5.1 La carga mental en la ingeniería de software</h3>
+  <p>La <b>carga mental</b> es el conjunto de exigencias <b>cognitivas, resolutivas y emocionales</b> que soporta el desarrollador. En metodologías ágiles (<b>Scrum, Kanban</b>), las entregas en ciclos cortos (<b>sprints de 2 semanas</b>), las dependencias complejas y las incidencias críticas en producción generan sobrecarga.</p>
+  <div class="grid g2">
+   <div><b>Factores de carga mental (diapositiva 12)</b><ul><li><b>Sprints apretados:</b> entregas fijas cada quince días, con picos de presión.</li><li><b>Debugging crítico:</b> errores en producción bajo mucha presión.</li><li><b>Procesamiento complejo:</b> mantener durante horas el modelo mental del código.</li></ul></div>
+   <div><b>Medidas organizativas</b><ul><li><b>Estimación realista:</b> puntos de historia razonables, sin sobrecargar los sprints.</li><li><b>Gestión de interrupciones:</b> bloques de trabajo concentrado (<b>Deep Work</b>) sin Slack ni Teams.</li><li><b>Priorización clara:</b> evitar la multitarea en varios proyectos a la vez.</li></ul></div>
+  </div>
+  <h3>5.2 Tecnoestrés, tecnoansiedad y burnout</h3>
+  <div class="box key"><span class="lbl">Definición (INSST)</span><b>Tecnoestrés:</b> patología psicosocial emergente; la <b>incapacidad de adaptarse de forma saludable</b> al uso de las nuevas tecnologías informáticas.</div>
+  <div class="tbl"><table>
+   <tr><th>Tipo</th><th>Qué es</th><th>Ejemplo IT</th></tr>
+   <tr><td><b>Tecnoansiedad</b></td><td>Tensión, <b>fobia o temor</b> a no estar actualizado: la «ansiedad por obsolescencia»</td><td>Miedo a no dominar el último framework o lenguaje (obsolescencia acelerada de competencias)</td></tr>
+   <tr><td><b>Tecnosobrecarga</b></td><td>Estimulación continua con notificaciones que <b>fragmenta la atención</b> e impide el estado de <b>flujo (flow)</b>; aumentan los errores</td><td>Avisos de Slack, Jira, Teams y correo a la vez</td></tr>
+   <tr><td><b>Tecnofatiga</b> (diapositiva 13)</td><td><b>Agotamiento mental</b>: cansancio cognitivo crónico por procesar datos e interfaces sin parar</td><td>Acabar la jornada «frito» de pantallas</td></tr>
+   <tr><td><b>Tecnofobia</b> (titular de la diapositiva 13)</td><td>Miedo o rechazo a la tecnología</td><td>Rechazo a una herramienta nueva</td></tr>
+   <tr><td><b>Burnout</b> (síndrome de estar quemado)</td><td>Agotamiento por estrés laboral crónico. La falta de desconexión lo dispara (diapositiva 14)</td><td>Guardias y mensajes fuera de horario durante meses</td></tr>
+  </table></div>
+  <div class="box trap"><span class="lbl">Ojo</span>El manual dice que el tecnoestrés tiene <b>dos vertientes principales</b>: <b>tecnoansiedad y tecnosobrecarga</b>. Las diapositivas añaden la <b>tecnofatiga</b> como tercer tipo.</div>
+  <h3>5.3 El derecho a la desconexión digital</h3>
+  <ul>
+   <li><b>Art. 88 de la Ley Orgánica 3/2018</b>, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales (<b>LOPDGDD</b>).</li>
+   <li><b>Art. 20 bis del Estatuto de los Trabajadores</b>.</li>
+   <li>El trabajador <b>no está obligado</b> a responder correos, mensajes de Slack o llamadas fuera de su horario.</li>
+   <li>Las empresas están <b>obligadas a elaborar un protocolo interno</b> que limite el uso de los dispositivos fuera de la jornada, para preservar el <b>descanso</b> y la <b>intimidad familiar</b>. Por ejemplo, prohibiendo enviar comunicaciones de noche o en fin de semana.</li>
+   <li>Sin desconexión no hay recuperación neuropsicológica, y aumentan la depresión laboral y el burnout.</li>
+  </ul>
+ </div>
+</section>
+
+<!-- ============ C6 ============ -->
+<section class="view" id="v-c6">
+ <h2>Capítulo 6 · Protocolo práctico y lista de chequeo ergonómico</h2>
+ <div class="card">
+  <p>Matriz de inspección basada en el INSST para autoevaluar tu puesto en el aula, en el laboratorio o en teletrabajo. <b>Rellénala con tu puesto real</b>: es la mejor forma de memorizarla.</p>
+  <div class="tbl chk"><table>
+   <thead><tr><th>Punto de inspección</th><th>Criterio técnico</th><th>¿Conforme?</th><th>Acción correctora</th></tr></thead>
+   <tbody id="chkBody"></tbody>
+  </table></div>
+  <div class="out" id="chkOut"></div>
+  <h4>Diapositiva 15 · La versión corta de 5 puntos</h4>
+  <ol>
+   <li><b>Silla:</b> respaldo ajustado a la lordosis L1–L5 y codos a 90° → regular el respaldo y los reposabrazos.</li>
+   <li><b>Monitor:</b> borde superior a la altura de los ojos, a 50–70 cm → elevador de monitor o brazo articulado.</li>
+   <li><b>Teclado:</b> ≥ 10 cm libres delante → desplazar el teclado hacia el fondo de la mesa.</li>
+   <li><b>Luz:</b> sin reflejos, pantalla bien orientada respecto a ventanas y luminarias → girar la mesa 90° respecto a las ventanas.</li>
+   <li><b>Pausas:</b> regla 20-20-20 → configurar avisos en el sistema operativo.</li>
+  </ol>
+  <h3>Conclusión</h3>
+  <p>Aplicar la PRL y la ergonomía no es solo una <b>exigencia legal (RD 488/1997)</b>: es la base de una <b>carrera profesional sostenible</b>. Higiene postural, confort ambiental y protección frente a los riesgos psicosociales.</p>
+  <ol><li><b>Ajusta tu entorno físico:</b> silla, monitor y periféricos son la primera línea de defensa.</li><li><b>Protege tu vista y tu musculatura:</b> regla 20-20-20 y micro-pausas de 5 minutos por hora.</li><li><b>Exige tus derechos digitales:</b> desconexión y gestión del tecnoestrés.</li></ol>
+  <h4>Referencias oficiales</h4>
+  <ul class="small"><li>INSST: Guía técnica para la evaluación y prevención de los riesgos relativos a la utilización de equipos con PVD.</li><li>Ley 31/1995, de 8 de noviembre, de PRL (BOE núm. 269).</li><li>Real Decreto 488/1997, de 14 de abril (BOE núm. 97).</li><li>Ley Orgánica 3/2018, de 5 de diciembre, art. 88 (BOE núm. 294).</li></ul>
+ </div>
+</section>
+
+<!-- ============ TEST ============ -->
+<section class="view" id="v-test">
+ <h2>Test</h2>
+ <div class="card" id="tSetup">
+  <p>Banco de <b id="nQ"></b> preguntas que cubren los 6 capítulos y las diapositivas. Recibes la corrección al momento, con la explicación.</p>
+  <div class="row">
+   <label>Capítulo <select id="tCap"><option value="all">Todos</option><option value="1">1 · Marco legal</option><option value="2">2 · Puesto</option><option value="3">3 · Ambiente</option><option value="4">4 · Patologías</option><option value="5">5 · Psicosocial</option><option value="6">6 · Chequeo</option><option value="fail">Solo las falladas</option></select></label>
+   <label>Preguntas <select id="tN"><option>10</option><option selected>20</option><option value="999">Todas</option></select></label>
+   <label>Cada fallo resta <select id="tPen"><option value="0" selected>0</option><option value="0.25">0,25</option><option value="0.333">0,33</option></select></label>
+  </div>
+  <button class="btn" id="tStart" style="margin-top:10px">Empezar</button>
+ </div>
+ <div class="card" id="tRun" hidden></div>
+</section>
+
+<!-- ============ NÚMEROS ============ -->
+<section class="view" id="v-num">
+ <h2>Entrenador de números</h2>
+ <p class="muted">Escribe el número que falta y pulsa «Corregir». En los rangos, escribe cualquiera de los dos extremos (por ejemplo, 40 o 75).</p>
+ <div class="card fill" id="fill"></div>
+ <div class="row"><button class="btn" id="fillChk">Corregir</button><button class="btn ghost" id="fillNew">Otra tanda</button><span id="fillScore" class="small"></span></div>
+</section>
+
+<!-- ============ FICHAS ============ -->
+<section class="view" id="v-flash">
+ <h2>Fichas: todas las preguntas con su respuesta</h2>
+ <p class="muted small">Están todas: las <b>92 preguntas del test</b> (con su respuesta correcta y el porqué), <b>preguntas abiertas de desarrollo</b>, los <b>30 datos numéricos</b>, los <b>10 puntos de la lista de chequeo</b> y las fichas de resumen. Toca la tarjeta para girarla y marca si te la sabes. Tu progreso se guarda en este navegador.</p>
+ <div class="row" style="margin:8px 0">
+  <label class="small">Capítulo <select id="flCap"><option value="all">Todos</option><option value="1">1 · Marco legal</option><option value="2">2 · Puesto</option><option value="3">3 · Ambiente</option><option value="4">4 · Patologías</option><option value="5">5 · Psicosocial</option><option value="6">6 · Chequeo</option></select></label>
+  <label class="small">Tipo <select id="flTipo"><option value="all">Todos</option><option value="test">Preguntas del test</option><option value="abierta">Preguntas abiertas</option><option value="num">Números</option><option value="chk">Lista de chequeo</option><option value="res">Resumen</option></select></label>
+  <label class="small"><input type="checkbox" id="flTodo"> Solo las que no sé</label>
+  <input type="search" id="flSearch" placeholder="Buscar: lux, túnel, 488…" style="font:inherit;padding:7px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface2);color:var(--fg);min-width:0;flex:1 1 160px">
+ </div>
+ <div class="row small" style="margin-bottom:10px"><span id="flStats"></span><button class="btn ghost sm" id="flList">📋 Ver todas en lista</button><button class="btn ghost sm" id="flReset">↺ Reiniciar progreso</button></div>
+ <div id="flCardWrap">
+  <div class="flash" id="flash"><div class="inner"><div class="face"><div class="row"><span class="pill" id="flTag"></span><span class="pill" id="flKind" style="background:var(--surface2);color:var(--muted)"></span></div><div class="t" id="flQ" style="margin-top:10px"></div><p class="small muted">Toca para ver la respuesta · tecla espacio</p></div><div class="face back"><div id="flA"></div></div></div></div>
+  <div class="row" style="justify-content:center;margin-top:14px"><button class="btn ghost" id="flPrev">←</button><span class="small muted" id="flPos"></span><button class="btn ghost" id="flNext">→</button><button class="btn ghost" id="flNo">✗ Repasar</button><button class="btn" id="flYes">✓ La sé</button><button class="btn ghost" id="flShuf">🔀 Barajar</button></div>
+ </div>
+ <div id="flListBox" hidden></div>
+</section>
+</main>
+<footer>Guía de estudio a partir del manual «Prevención de riesgos laborales y ergonomía en sistemas informáticos» y la presentación «PRL en los sistemas informáticos» (Sistemas Informáticos · IES Clara del Rey).</footer>
+
+<script>
+const QS=[
+/* C1 */
+{c:1,q:'¿Qué norma regula de forma específica el trabajo con pantallas de visualización de datos?',o:['Ley 31/1995','RD 486/1997','RD 488/1997','LO 3/2018'],a:2,e:'RD 488/1997, de 14 de abril. El RD 486/1997 regula los lugares de trabajo.'},
+{c:1,q:'La Ley 31/1995 de Prevención de Riesgos Laborales es…',o:['de 14 de abril','de 8 de noviembre','de 5 de diciembre','de 17 de enero'],a:1,e:'Ley 31/1995, de 8 de noviembre. El 14 de abril es el RD 488/1997 y el 5 de diciembre, la LO 3/2018.'},
+{c:1,q:'¿Qué directiva europea transpone la Ley 31/1995?',o:['Directiva 90/270/CEE','Directiva Marco 89/391/CEE','Reglamento 2016/679','Directiva 2003/88/CE'],a:1,e:'Directiva Marco 89/391/CEE.'},
+{c:1,q:'Según el INSST, un trabajador es «usuario de PVD» cuando usa la pantalla…',o:['Más de 2 h al día o 10 h a la semana','Más de 4 h al día o 20 h a la semana','Más de 6 h al día','Cualquier tiempo'],a:1,e:'Más de 4 horas diarias o más de 20 horas semanales.'},
+{c:1,q:'¿Qué NO forma parte del «puesto de trabajo con PVD» según el RD 488/1997?',o:['El asiento y la mesa','La iluminación y el ruido del entorno','El teclado y el ratón','El transporte hasta el centro de trabajo'],a:3,e:'El puesto incluye equipo, accesorios, asiento, mesa y entorno inmediato (iluminación, ruido, humedad, temperatura).'},
+{c:1,q:'Para el RD 488/1997, una pantalla de visualización es…',o:['Solo los monitores LCD de sobremesa','Toda pantalla alfanumérica o gráfica, sea cual sea el método de representación','Solo las pantallas de más de 15 pulgadas','Solo las pantallas táctiles'],a:1,e:'Incluye CRT, LCD, OLED, portátiles y tabletas.'},
+{c:1,q:'El INSST es…',o:['El órgano que sanciona a las empresas','El órgano científico-técnico de la Administración General del Estado en prevención','Un sindicato del sector IT','La Inspección de Trabajo'],a:1,e:'Elabora, entre otras, la Guía Técnica PVD.'},
+{c:1,q:'Ser usuario de PVD obliga a la empresa a…',o:['Pagar un plus salarial','Hacer evaluaciones ergonómicas específicas y reconocimientos médicos periódicos (vista y aparato locomotor)','Reducir la jornada a 4 horas','Dar un portátil al trabajador'],a:1,e:'Es el criterio legal del INSST que recoge el manual.'},
+{c:1,q:'En la Tabla 1.1, la «organización del trabajo» se aplica en desarrollo web como…',o:['Interrupciones estructuradas de 5 min por hora ante alta carga cognitiva','Revisiones oftalmológicas','Formación en higiene postural','Auditoría del teletrabajo'],a:0,e:'Pausas o cambios de actividad periódicos: 5 min por hora.'},
+{c:1,q:'En la Tabla 1.1, la «vigilancia de la salud» se concreta en…',o:['Formación en ajuste de sillas','Revisiones oftalmológicas periódicas orientadas a la acomodación foveal','Pausas de 15 minutos','Protocolo de desconexión'],a:1,e:'Reconocimientos médicos específicos con atención ocular y ósea.'},
+{c:1,q:'¿Se aplican las garantías preventivas en el teletrabajo?',o:['No, solo en la oficina','Sí, por igual en remoto o en presencial','Solo si el trabajador lo pide','Solo en empresas de más de 50 trabajadores'],a:1,e:'Diapositiva 2: aplicación en teletrabajo.'},
+{c:1,q:'Los riesgos del trabajo con ordenador que clasifica el INSST son de carácter…',o:['Inmediato y puntual','Acumulativo: biomecánicos, neurosensoriales y psicosociales','Exclusivamente visual','Inexistente'],a:1,e:'Es falsa la percepción de que trabajar con ordenador no tiene peligro.'},
+/* C2 */
+{c:2,q:'¿Qué discos intervertebrales sufren más sobrepresión al estar sentado?',o:['C1-C2','T6-T7','L4-L5 y L5-S1','C5-C6'],a:2,e:'La columna lumbar baja: L4-L5 y L5-S1.'},
+{c:2,q:'¿Qué norma técnica se cita para la silla de trabajo?',o:['UNE-EN 1335','ISO 27001','UNE-EN 60950','ISO 9241-5'],a:0,e:'UNE-EN 1335 (sillas de oficina).'},
+{c:2,q:'La base de la silla debe tener…',o:['3 patas fijas','4 patas con tacos','5 puntos de apoyo con ruedas','Una base circular sin ruedas'],a:2,e:'Estabilidad dinámica: evita vuelcos y permite girar sin torsión.'},
+{c:2,q:'El ángulo poplíteo (rodilla) recomendado es…',o:['45°–60°','70°–80°','90°–100°','120°–135°'],a:2,e:'Muslos horizontales y pies apoyados.'},
+{c:2,q:'El ángulo del codo recomendado es…',o:['60°–80°','90°–110°','120°–140°','180°'],a:1,e:'Antebrazos paralelos a la mesa, sin elevar los hombros.'},
+{c:2,q:'¿A qué distancia de los ojos debe estar la pantalla según el manual?',o:['20–30 cm','40–75 cm','80–100 cm','Más de 1 m'],a:1,e:'Más o menos la longitud del brazo extendido. La lista de chequeo dice 50–70 cm.'},
+{c:2,q:'En monitores panorámicos de 27 a 32 pulgadas, la distancia recomendada pasa a…',o:['30–40 cm','40–50 cm','60–70 cm','90–100 cm'],a:2,e:'Para abarcar el campo visual horizontal sin girar mucho el cuello.'},
+{c:2,q:'El borde superior de la pantalla debe quedar…',o:['10 cm por encima de los ojos','A la altura de los ojos o algo por debajo','A la altura de la barbilla','A la altura del pecho'],a:1,e:'Así la mirada baja 10°–20°.'},
+{c:2,q:'¿Qué inclinación de la mirada hacia abajo se recomienda?',o:['0°','10°–20°','30°–45°','60°'],a:1,e:'Mantiene relajada la musculatura cervical posterior.'},
+{c:2,q:'La pantalla condiciona sobre todo la posición de las vértebras…',o:['L1–L5','C1–C7','T1–T12','S1–S5'],a:1,e:'Cervicales C1–C7.'},
+{c:2,q:'Si usas dos monitores por igual (50/50), debes colocar…',o:['El izquierdo centrado','La unión entre los dos en el centro del eje de visión','Los dos a 45°','Uno encima del otro'],a:1,e:'Configuración dual simétrica.'},
+{c:2,q:'Con un monitor principal (editor) y otro auxiliar (consola o navegador), el auxiliar va…',o:['Centrado','Adyacente, a un máximo de 30° de ángulo lateral','A 90°','Detrás del principal'],a:1,e:'El principal centrado; el secundario, como mucho a 30°.'},
+{c:2,q:'Los giros continuos de cuello de más de 45° contracturan el…',o:['Bíceps','Esternocleidomastoideo','Cuádriceps','Gemelo'],a:1,e:'Diapositiva 4.'},
+{c:2,q:'¿Qué inclinación debe permitir el teclado?',o:['0°–15°','20°–30°','30°–45°','Debe ser siempre plano'],a:0,e:'Además debe ser independiente y mate.'},
+{c:2,q:'¿Cuánto espacio libre debe quedar entre el borde de la mesa y el teclado?',o:['Ninguno','Al menos 5 cm','Al menos 10 cm','Al menos 30 cm'],a:2,e:'Para apoyar las muñecas en las pausas.'},
+{c:2,q:'Los ratones verticales recomendados tienen una inclinación de…',o:['15°','30°','57°','90°'],a:2,e:'Mantienen el antebrazo en pronosupinación neutra.'},
+{c:2,q:'La altura recomendada de una mesa fija es…',o:['50–60 cm','68–75 cm','80–90 cm','100 cm'],a:1,e:'Las mesas sit-stand regulables van de 65 a 125 cm.'},
+{c:2,q:'El teclado debe ser…',o:['Brillante para verse mejor','Mate (baja reflectancia) e independiente de la pantalla','Integrado en la pantalla','Siempre inalámbrico'],a:1,e:'Para evitar reflejos.'},
+{c:2,q:'Según la diapositiva 3, base de 5 puntos y regulación lumbar reducen la sobrepresión discal un…',o:['10 %','30 %','60 %','90 %'],a:2,e:'Un 60 %.'},
+{c:2,q:'Un codo fuera de los 90°–110° puede provocar…',o:['Epicondilitis y tensión en los trapecios','Ojo seco','Hipoacusia','Tecnoansiedad'],a:0,e:'Tabla 2.1.'},
+{c:2,q:'Una mesa a altura incorrecta provoca…',o:['Cifosis dorsal o elevación compensatoria de los hombros','Túnel carpiano','Astenopia','Queratitis'],a:0,e:'Tabla 2.1.'},
+{c:2,q:'La regulación de altura de la silla es…',o:['Manual por tornillos','Oleoneumática','Eléctrica obligatoriamente','Fija'],a:1,e:'Pistón oleoneumático.'},
+{c:2,q:'El respaldo debe adaptarse a…',o:['La cifosis cervical','La lordosis fisiológica lumbar','La escoliosis','Los omóplatos'],a:1,e:'Apoyo lumbar regulable, con basculación sincronizada con la pelvis.'},
+/* C3 */
+{c:3,q:'Nivel de iluminación ambiental recomendado para tareas informáticas con lectura de papel:',o:['50–100 lux','100–200 lux','300–500 lux','1000–1500 lux'],a:2,e:'Guía Técnica del INSST.'},
+{c:3,q:'¿Cómo debe colocarse la pantalla respecto a las ventanas?',o:['De frente a la ventana','De espaldas a la ventana','Perpendicular a la ventana, con la mirada paralela a ella','Es indiferente'],a:2,e:'De frente deslumbra; de espaldas refleja.'},
+{c:3,q:'Una pantalla de espaldas a la ventana provoca…',o:['Deslumbramiento directo','Reflejos en la pantalla','Ruido','Ojo seco'],a:1,e:'La luz exterior se refleja y crea «fantasmas» visuales.'},
+{c:3,q:'Una pantalla de cara a la ventana provoca…',o:['Deslumbramiento directo','Reflejos','Más contraste','Nada'],a:0,e:'Impide ver el código.'},
+{c:3,q:'Relación de luminancias máxima entre el monitor y el fondo:',o:['1:10','3:1','10:1','No hay límite'],a:1,e:'Diapositiva 7.'},
+{c:3,q:'Temperatura operativa en invierno (calefacción):',o:['17–20 °C','20–24 °C','23–26 °C','25–28 °C'],a:1,e:'En verano, 23–26 °C.'},
+{c:3,q:'Temperatura operativa en verano (aire acondicionado):',o:['18–21 °C','20–24 °C','23–26 °C','27–30 °C'],a:2,e:'En invierno, 20–24 °C.'},
+{c:3,q:'Humedad relativa recomendada:',o:['10–20 %','20–30 %','40–60 %','70–90 %'],a:2,e:'Por debajo del 30 % se seca la película lagrimal.'},
+{c:3,q:'¿Por debajo de qué humedad se acelera la evaporación de la lágrima?',o:['70 %','50 %','30 %','10 %'],a:2,e:'Provoca queratitis y síndrome de ojo seco.'},
+{c:3,q:'Velocidad del aire máxima recomendada:',o:['0,25 m/s','1 m/s','2,5 m/s','5 m/s'],a:0,e:'Para evitar corrientes directas.'},
+{c:3,q:'Límite máximo de ruido del INSST para tareas de alta atención intelectual:',o:['35 dBA','55 dBA','80 dBA','87 dBA'],a:1,e:'80 y 87 dBA son los valores de acción y límite del RD 286/2006 (riesgo de sordera), no de confort.'},
+{c:3,q:'El ruido de los ventiladores de los servidores en una oficina técnica…',o:['Suele causar sordera profesional','Interrumpe la concentración y eleva la tensión arterial','No tiene ningún efecto','Solo afecta a la vista'],a:1,e:'No suele causar hipoacusia, pero perjudica la concentración.'},
+{c:3,q:'¿Dónde deben estar los armarios de servidores?',o:['Junto a los programadores','Aislados acústicamente en salas técnicas independientes (CPD)','En el pasillo','Debajo de cada mesa'],a:1,e:'Así se cumple el límite de 55 dBA.'},
+{c:3,q:'Para evitar puntos de luz sobre el monitor se usan…',o:['Bombillas desnudas','Luminarias con difusores de baja reflectancia','Focos halógenos','Luz de color rojo'],a:1,e:'Difusores de baja reflectancia.'},
+{c:3,q:'Las ventanas de una sala de desarrollo deben tener…',o:['Cristales espejados','Persianas orientables o estores translúcidos','Cortinas negras opacas','Nada'],a:1,e:'Para regular la luz natural.'},
+/* C4 */
+{c:4,q:'¿Qué porcentaje de las bajas temporales del sector informático se deben a TME?',o:['Más del 15 %','Más del 35 %','Más del 65 %','Más del 95 %'],a:2,e:'Más del 65 %.'},
+{c:4,q:'El síndrome del túnel carpiano consiste en la compresión del nervio…',o:['Cubital','Radial','Mediano','Ciático'],a:2,e:'A su paso por el retináculo flexor de la muñeca.'},
+{c:4,q:'El túnel carpiano provoca hormigueo (parestesias) en…',o:['Meñique y anular','Pulgar, índice y medio','Toda la mano por igual','El codo'],a:1,e:'También pérdida de fuerza para agarrar y dolor nocturno.'},
+{c:4,q:'La epicondilitis lateral («codo de tenista») es…',o:['La compresión del nervio mediano','La inflamación de los tendones extensores de la muñeca en su inserción en el codo','Una contractura cervical','Una hernia lumbar'],a:1,e:'La causa la extensión repetida de los dedos sobre el ratón.'},
+{c:4,q:'El «cuello de texto» se asocia a…',o:['Lumbalgia mecánica','Cervicalgia y síndrome del trapecio','Epicondilitis','Astenopia'],a:1,e:'Por inclinar o adelantar la cabeza hacia la pantalla.'},
+{c:4,q:'La lumbalgia mecánica se produce por…',o:['Inclinar el tronco hacia delante sin apoyo lumbar','Mirar la pantalla de lado','El ruido','Parpadear poco'],a:0,e:'Aplastamiento del anillo fibroso de los discos.'},
+{c:4,q:'¿Cuántas veces por minuto parpadea una persona en condiciones normales?',o:['5–7','10–12','15–20','30–40'],a:2,e:'Programando baja a 5–7.'},
+{c:4,q:'¿Cuántas veces por minuto se parpadea mientras se programa o depura?',o:['1–2','5–7','15–20','25–30'],a:1,e:'Esto rompe la película lagrimal.'},
+{c:4,q:'La rotura de la película lagrimal se produce con un Break-Up Time de…',o:['menos de 10 segundos','más de 30 segundos','1 minuto','5 minutos'],a:0,e:'Deriva en el Síndrome de Visión Informática (astenopia).'},
+{c:4,q:'El Síndrome de Visión Informática (SVI) también se llama…',o:['Hipoacusia','Astenopia','Epicondilitis','Burnout'],a:1,e:'Fatiga visual.'},
+{c:4,q:'¿Cuál NO es un síntoma de la astenopia?',o:['Picor y sensación de cuerpo extraño','Visión borrosa episódica','Diplopía temporal y cefalea supraorbitaria','Hormigueo en los dedos'],a:3,e:'El hormigueo en los dedos es del túnel carpiano.'},
+{c:4,q:'La regla 20-20-20 consiste en…',o:['Trabajar 20 min y descansar 20 min','Cada 20 min, mirar 20 s a un objeto a 20 pies (≈ 6 m)','20 parpadeos cada 20 segundos','Pausa de 20 min cada 20 h'],a:1,e:'Previene el espasmo de acomodación del músculo ciliar.'},
+{c:4,q:'20 pies equivalen aproximadamente a…',o:['2 metros','6 metros','20 metros','60 metros'],a:1,e:'1 pie ≈ 0,3 m.'},
+{c:4,q:'¿Qué músculo se relaja con la regla 20-20-20?',o:['El ciliar (acomodación)','El trapecio','El bíceps','El diafragma'],a:0,e:'Evita el espasmo de acomodación.'},
+{c:4,q:'¿Cómo deben ser las pausas en el trabajo con PVD?',o:['Acumuladas al final de la jornada','Breves y frecuentes, repartidas regularmente','Una sola pausa larga a mediodía','No son necesarias'],a:1,e:'Mejor cortas y frecuentes que largas y aisladas.'},
+{c:4,q:'En trabajo de alta intensidad (debugging continuo), la pausa recomendada es…',o:['Cada 60 min, 5–10 min de marcha y estiramientos','Cada 120 min, 1 min','Cada 4 h, 30 min','Cada 20 min, 15 min'],a:0,e:'Tabla 4.1.'},
+{c:4,q:'En programación de intensidad moderada, la pausa recomendada es…',o:['Cada 30 min, 5 min','Cada 90–120 min, 15 min sin pantalla y cambiando de postura','Cada 4 h, 1 h','Ninguna'],a:1,e:'Tabla 4.1.'},
+{c:4,q:'¿Cuáles son las tres fases de la micro-pausa de la diapositiva 11?',o:['Parada, movilidad e hidratación','Comer, dormir y volver','Café, móvil y redes','Correr, saltar y nadar'],a:0,e:'Cada 60 min · 5 min de movilidad · beber agua.'},
+/* C5 */
+{c:5,q:'Según el INSST, el tecnoestrés es…',o:['El uso excesivo del móvil','La incapacidad de adaptarse de forma saludable al uso de las nuevas tecnologías','Una enfermedad profesional del RD 1299/2006','Un virus informático'],a:1,e:'Es una patología psicosocial emergente.'},
+{c:5,q:'Miedo continuado a no estar al día con los últimos frameworks y librerías:',o:['Tecnosobrecarga','Tecnoansiedad','Tecnofatiga','Burnout'],a:1,e:'Ansiedad por la obsolescencia acelerada de las competencias.'},
+{c:5,q:'Bombardeo de notificaciones (Slack, Jira, Teams, correo) que fragmenta la atención e impide el flow:',o:['Tecnoansiedad','Tecnosobrecarga','Tecnofobia','Astenopia'],a:1,e:'Aumenta los errores en el código.'},
+{c:5,q:'Cansancio cognitivo crónico por procesar datos e interfaces sin parar:',o:['Tecnofatiga','Tecnoansiedad','Epicondilitis','Tecnosobrecarga'],a:0,e:'Diapositiva 13.'},
+{c:5,q:'Según el manual, ¿cuáles son las dos vertientes principales del tecnoestrés?',o:['Tecnofobia y tecnoadicción','Tecnoansiedad y tecnosobrecarga','Burnout y mobbing','Estrés y depresión'],a:1,e:'Las diapositivas añaden la tecnofatiga.'},
+{c:5,q:'La carga mental es el conjunto de exigencias…',o:['Físicas y posturales','Cognitivas, resolutivas y emocionales','Solo visuales','Solo económicas'],a:1,e:'Capítulo 5.1.'},
+{c:5,q:'Duración típica de un sprint ágil según el manual:',o:['1 día','2 semanas','3 meses','1 año'],a:1,e:'Entregas quincenales con picos de presión.'},
+{c:5,q:'¿Qué medida organizativa reduce la carga mental?',o:['Más multitarea entre proyectos','Bloques de trabajo concentrado (Deep Work) sin Slack ni Teams','Más notificaciones','Sprints más cortos y cargados'],a:1,e:'También ayudan la estimación realista y la priorización clara.'},
+{c:5,q:'El derecho a la desconexión digital está en…',o:['Art. 88 de la LO 3/2018 (LOPDGDD) y art. 20 bis del ET','Art. 40.2 de la Constitución','RD 488/1997','Ley 31/1995, art. 29'],a:0,e:'LOPDGDD de 5 de diciembre de 2018.'},
+{c:5,q:'Respecto a la desconexión digital, las empresas están obligadas a…',o:['Pagar las horas fuera de jornada','Elaborar un protocolo interno que limite el uso de dispositivos fuera de la jornada','Apagar los servidores por la noche','Nada'],a:1,e:'Para preservar el descanso y la intimidad familiar.'},
+{c:5,q:'¿Está obligado un programador a contestar un Slack del jefe a las 23:00?',o:['Sí, siempre','No: tiene derecho a la desconexión digital fuera de su horario','Solo si es en fin de semana','Solo si trabaja en remoto'],a:1,e:'Art. 88 LOPDGDD.'},
+{c:5,q:'La falta de desconexión digital aumenta el riesgo de…',o:['Hipoacusia','Depresión laboral y burnout','Túnel carpiano','Queratitis'],a:1,e:'Impide la recuperación neuropsicológica.'},
+{c:5,q:'¿Qué factor de carga mental es propio del trabajo IT?',o:['Debugging crítico de errores en producción bajo presión','Manipular cargas pesadas','El ruido de impacto','Las vibraciones'],a:0,e:'Junto con los sprints apretados y el procesamiento complejo.'},
+/* C6 */
+{c:6,q:'En la lista de chequeo, el monitor debe estar a…',o:['20–30 cm','50–70 cm','80–100 cm','150 cm'],a:1,e:'Con el brazo extendido. Acción correctora: retrasar o adelantar el monitor.'},
+{c:6,q:'Si la silla no deja los pies apoyados con las rodillas a 90°, la acción correctora es…',o:['Comprar otra mesa','Ajustar el pistón o pedir un reposapiés','Sentarse en el borde','Quitar el respaldo'],a:1,e:'Tabla 6.1.'},
+{c:6,q:'Si el borde superior del monitor queda por debajo de los ojos, la acción correctora es…',o:['Inclinar el cuello','Elevar el soporte o usar un brazo articulado','Bajar la silla al máximo','Nada'],a:1,e:'Tabla 6.1.'},
+{c:6,q:'Si hay reflejos en la pantalla, la acción correctora es…',o:['Subir el brillo','Girar la mesa o bajar los estores','Ponerse gafas de sol','Apagar todas las luces'],a:1,e:'Pantalla perpendicular a ventanas y luces.'},
+{c:6,q:'Si el ruido del puesto supera los 55 dBA por los ventiladores…',o:['Usar orejeras siempre','Aislar los racks o reubicar la CPU','Subir la música','Nada'],a:1,e:'Tabla 6.1.'},
+{c:6,q:'Para cumplir las pausas de 5 min cada hora, la lista propone…',o:['Configurar alarmas o un temporizador pomodoro','Trabajar 8 h seguidas','Pausas solo al final','Comer en el puesto'],a:0,e:'Diapositiva 15: configurar avisos en el sistema operativo.'},
+{c:6,q:'El ratón, según la lista de chequeo, debe estar…',o:['En otra mesa','Al mismo nivel que el teclado y pegado a él','Más alto que el teclado','Sobre las piernas'],a:1,e:'Acción correctora: reorganizar el espacio de trabajo.'},
+{c:6,q:'El apoyo lumbar del respaldo debe ajustarse a la curva de las vértebras…',o:['C1–C7','T1–T12','L1–L5','S1–S5'],a:2,e:'Acción correctora: regular la altura y profundidad lumbar.'},
+{c:6,q:'Si no hay 10 cm libres delante del teclado, la acción correctora es…',o:['Desplazar el teclado hacia el fondo de la mesa','Usar el teclado sobre las piernas','Comprar un teclado más pequeño','Nada'],a:0,e:'Tabla 6.1 y diapositiva 15.'},
+{c:6,q:'Según la conclusión, la PRL y la ergonomía son, además de una exigencia legal (RD 488/1997)…',o:['Una moda','La garantía básica de una carrera profesional sostenible','Un gasto innecesario','Solo cosa de la empresa'],a:1,e:'Conclusiones del manual.'}
+];
+const FL=[['Ley de PRL','Ley 31/1995, de 8 de noviembre. Transpone la Directiva Marco 89/391/CEE.'],['RD de las PVD','RD 488/1997, de 14 de abril.'],['Usuario de PVD (INSST)','Más de 4 h al día o más de 20 h a la semana.'],['Puesto con PVD','Equipo + accesorios + asiento + mesa + entorno inmediato (luz, ruido, humedad, temperatura).'],['Obligaciones del empleador (Tabla 1.1)','Evaluación de riesgos · organización (pausas) · formación e información · vigilancia de la salud.'],['Silla (UNE-EN 1335)','Base de 5 ruedas · altura oleoneumática · apoyo lumbar regulable L1–L5 · reposabrazos 3D/4D.'],['Ángulos','Rodilla (poplíteo) 90°–100° · codo 90°–110° · mirada 10°–20° hacia abajo.'],['Distancia a la pantalla','40–75 cm (manual) · 60–70 cm en monitores de 27–32″ · 50–70 cm en la lista de chequeo.'],['Dos monitores','50/50: la unión en el centro. Principal + auxiliar: el principal centrado y el auxiliar a máx. 30°. Evitar giros > 45°.'],['Teclado','Independiente, mate, 0°–15°, ≥ 10 cm libres delante.'],['Ratón','Vertical de 57°, a la altura del teclado y pegado a él. Reposamuñecas de gel.'],['Mesa','68–75 cm fija · 65–125 cm sit-stand · superficie de baja reflectancia.'],['Iluminación','300–500 lux · luminancias ≤ 3:1 · difusores · pantalla perpendicular a la ventana.'],['Temperatura','Invierno 20–24 °C · verano 23–26 °C.'],['Humedad y aire','Humedad 40–60 % (< 30 % → ojo seco) · aire < 0,25 m/s.'],['Ruido','≤ 55 dBA en tareas de alta atención · servidores aislados en el CPD.'],['TME','> 65 % de las bajas en IT · cervicalgia · lumbalgia · túnel carpiano · epicondilitis.'],['Túnel carpiano','Compresión del nervio mediano en el retináculo flexor. Hormigueo en pulgar, índice y medio; dolor nocturno.'],['Epicondilitis lateral','Inflamación de los tendones extensores de la muñeca en el codo, por el uso del ratón.'],['Parpadeo','Normal 15–20/min · programando 5–7/min · Break-Up Time < 10 s → astenopia (SVI).'],['Regla 20-20-20','Cada 20 min, 20 s mirando a 20 pies (6 m). Relaja el músculo ciliar.'],['Pausas (Tabla 4.1)','Alta intensidad: cada 60 min, 5–10 min · moderada: cada 90–120 min, 15 min.'],['Tecnoestrés','Incapacidad de adaptarse de forma saludable a las nuevas tecnologías (INSST).'],['Tipos de tecnoestrés','Tecnoansiedad (obsolescencia) · tecnosobrecarga (notificaciones) · tecnofatiga (agotamiento).'],['Desconexión digital','Art. 88 LO 3/2018 (LOPDGDD) + art. 20 bis ET · la empresa debe tener un protocolo interno.']];
+const FILL=[['Ley 31/____ de PRL',[1995]],['Real Decreto ____/1997 de PVD',[488]],['Usuario PVD: más de ___ horas al día',[4]],['Usuario PVD: más de ___ horas a la semana',[20]],['Base de la silla: ___ puntos de apoyo',[5]],['Ángulo poplíteo: 90° a ___°',[100,90]],['Ángulo del codo: 90° a ___°',[110,90]],['Distancia a la pantalla (manual): 40 a ___ cm',[75,40]],['Monitor de 27–32″: 60 a ___ cm',[70,60]],['Mirada hacia abajo: 10° a ___°',[20,10]],['Monitor auxiliar: máximo ___° lateral',[30]],['Inclinación del teclado: 0° a ___°',[15,0]],['Espacio libre delante del teclado: ≥ ___ cm',[10]],['Ratón vertical: ___°',[57]],['Mesa fija: 68 a ___ cm',[75,68]],['Iluminación: 300 a ___ lux',[500,300]],['Temperatura en invierno: 20 a ___ °C',[24,20]],['Temperatura en verano: 23 a ___ °C',[26,23]],['Humedad relativa: 40 a ___ %',[60,40]],['Humedad que causa ojo seco: < ___ %',[30]],['Ruido máximo: ___ dBA',[55]],['TME: más del ___ % de las bajas en IT',[65]],['Parpadeo normal: 15 a ___ por minuto',[20,15]],['Parpadeo programando: 5 a ___ por minuto',[7,5]],['Regla 20-20-20: 20 pies ≈ ___ metros',[6]],['Pausa en alta intensidad: cada ___ minutos',[60]],['Pausa en intensidad moderada: ___ minutos',[15]],['Desconexión digital: artículo ___ de la LOPDGDD',[88]],['Sprint ágil: ___ semanas',[2]],['Relación de luminancias máxima: ___:1',[3]]];
+const CHK=[['Silla: altura del asiento','Pies totalmente apoyados en el suelo, rodillas a 90°','Ajustar el pistón o pedir un reposapiés'],['Silla: apoyo lumbar','Respaldo ajustado a la curva de las vértebras L1–L5','Regular la altura y profundidad lumbar'],['Silla: reposabrazos','Codos a 90°–110°, paralelos a la mesa, sin elevar los hombros','Ajustar la altura de los reposabrazos'],['Monitor: distancia','A 50–70 cm de los ojos (brazo extendido)','Retrasar o adelantar el monitor'],['Monitor: altura','Borde superior alineado con la altura de los ojos','Elevar el soporte o usar un brazo articulado'],['Teclado: espacio de apoyo','≥ 10 cm libres delante del teclado para las muñecas','Desplazar el teclado hacia dentro'],['Ratón: posición','Al mismo nivel que el teclado y pegado a él','Reorganizar el espacio de trabajo'],['Iluminación: reflejos','Pantalla perpendicular a las ventanas y luces','Girar la mesa o bajar los estores'],['Ambiente: ruido','Ruido de ventiladores y equipos ≤ 55 dBA','Aislar los racks o reubicar la CPU'],['Pausas: frecuencia','Interrupciones de 5 min por cada hora de programación','Configurar alarmas o un temporizador pomodoro']];
+
+const FL_C=[1,1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,4,4,4,4,4,4,5,5,5];
+const FILL_C=[1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,4,4,4,4,4,4,5,5,3];
+const OPEN=[
+[1,'¿Por qué es falsa la idea de que trabajar con ordenador no es peligroso?','Porque la exposición continuada a equipos informáticos genera riesgos <b>biomecánicos, neurosensoriales y psicosociales</b> de carácter <b>acumulativo</b>, clasificados por el INSST.'],
+[1,'¿Qué principio general establece la Ley 31/1995?','Que la seguridad y la salud de los trabajadores deben protegerse <b>de forma integral</b>, eliminando o mitigando el riesgo <b>en el origen</b>.'],
+[1,'Define los tres conceptos clave del RD 488/1997.','<b>PVD:</b> toda pantalla alfanumérica o gráfica (CRT, LCD, OLED, portátil, tableta).<br><b>Puesto con PVD:</b> equipo + accesorios + asiento + mesa + entorno inmediato (luz, ruido, humedad, temperatura).<br><b>Usuario de PVD:</b> quien la usa habitualmente durante una parte relevante de la jornada (INSST: más de 4 h al día o 20 h a la semana).'],
+[1,'¿Qué obligaciones tiene la empresa con un usuario de PVD?','<b>Evaluación ergonómica específica</b> del puesto y <b>reconocimientos médicos periódicos</b> de la vista y el aparato locomotor. Además, formación postural y planificación de pausas.'],
+[1,'¿Cuáles son los 4 ámbitos de obligaciones del empleador (Tabla 1.1)?','1) <b>Evaluación de riesgos</b> (físicos, visuales y mentales) → auditoría ergonómica.<br>2) <b>Organización del trabajo</b> (pausas) → 5 min por hora.<br>3) <b>Formación e información</b> → higiene postural y ajuste de la silla.<br>4) <b>Vigilancia de la salud</b> → revisiones oftalmológicas y óseas.'],
+[1,'¿Qué es el INSST y qué guía elabora?','El <b>Instituto Nacional de Seguridad y Salud en el Trabajo</b>: el órgano <b>científico-técnico</b> de la Administración General del Estado en prevención. Elabora la <b>Guía Técnica para la evaluación y prevención de los riesgos relativos al trabajo con PVD</b>.'],
+[1,'¿Se aplica la PRL igual en teletrabajo?','<b>Sí.</b> Las garantías preventivas se aplican por igual en remoto y en presencial (diapositiva 2).'],
+[2,'¿Por qué es perjudicial estar sentado mucho tiempo?','Porque la sedestación continuada sobrecarga los discos intervertebrales <b>L4-L5 y L5-S1</b> de la columna lumbar. El cuerpo no está diseñado para estar quieto y sentado durante horas.'],
+[2,'Describe los 4 elementos de una silla ergonómica (UNE-EN 1335).','1) <b>Base de 5 puntos con ruedas</b>: estabilidad y giros sin torsión.<br>2) <b>Altura oleoneumática</b>: muslos horizontales, rodilla a 90°–100°, pies apoyados.<br>3) <b>Respaldo con apoyo lumbar regulable</b>: respeta la lordosis L1–L5 y bascula con la pelvis.<br>4) <b>Reposabrazos 3D/4D</b>: codo a 90°–110° sin elevar los hombros.'],
+[2,'¿Cómo debe colocarse la pantalla? (distancia y altura)','<b>Distancia:</b> 40–75 cm (brazo extendido), o 60–70 cm en monitores de 27–32″. La lista de chequeo dice 50–70 cm.<br><b>Altura:</b> el borde superior a la altura de los ojos o algo por debajo, para que la mirada baje 10°–20°.'],
+[2,'¿Qué es la protrusión cervical («cuello de texto») y cómo se evita?','Adelantar o inclinar la cabeza hacia la pantalla, lo que contractura la musculatura cervical (C1–C7). Se evita <b>acercando la pantalla</b> en lugar de adelantar el cuello y colocándola a la altura correcta.'],
+[2,'¿Cómo se colocan dos monitores?','<b>Uso 50/50:</b> la unión de las dos pantallas en el centro del eje de visión.<br><b>Principal + auxiliar:</b> el principal (código) centrado y el auxiliar (consola o navegador) al lado, como mucho a <b>30°</b>. Evitar giros de cuello de más de <b>45°</b> (contractura del esternocleidomastoideo).'],
+[2,'¿Qué requisitos debe cumplir el teclado?','Ser <b>independiente</b> de la pantalla, <b>mate</b> (baja reflectancia), con inclinación ajustable de <b>0° a 15°</b> y con <b>al menos 10 cm libres</b> delante para apoyar las muñecas en las pausas.'],
+[2,'¿Para qué sirven el ratón vertical y el reposamuñecas de gel?','El <b>ratón vertical (57°)</b> mantiene el antebrazo en pronosupinación neutra y evita comprimir el nervio mediano. El <b>reposamuñecas de gel</b> mantiene la muñeca en posición neutra (sin desviación radial o cubital ni extensión forzada).'],
+[2,'Di cada parámetro de la Tabla 2.1 y qué pasa si no se cumple.','<b>Mesa</b> 68–75 cm (sit-stand 65–125) → cifosis o hombros elevados.<br><b>Ojo-pantalla</b> 40–75 cm → fatiga de acomodación o tensión cervical.<br><b>Codo</b> 90°–110° → epicondilitis y tensión en los trapecios.<br><b>Rodilla</b> 90°–100° → compresión vascular y problemas de retorno venoso.<br><b>Muñeca</b> ≥ 10 cm libres → túnel carpiano.'],
+[3,'¿Qué pasa si la pantalla está de frente o de espaldas a la ventana? ¿Cuál es la posición correcta?','<b>De frente:</b> deslumbramiento directo, no se ve el código.<br><b>De espaldas:</b> reflejos («fantasmas») en la pantalla.<br><b>Correcto:</b> la pantalla <b>perpendicular</b> a la ventana, con la mirada paralela a ella, y persianas o estores. Acción correctora: girar la mesa 90° o bajar los estores.'],
+[3,'¿Por qué los entornos informáticos resecan los ojos?','Porque las CPU, los servidores y los monitores desprenden calor, y el aire acondicionado intensivo reseca el ambiente. Con una humedad <b>menor del 30 %</b> la lágrima se evapora rápido: queratitis y ojo seco. Por eso la humedad debe estar entre el <b>40 % y el 60 %</b>.'],
+[3,'¿Causa sordera el ruido de una oficina informática? ¿Qué efecto tiene?','En general <b>no causa hipoacusia</b>, pero el ruido constante de ventiladores, racks y climatización <b>rompe la concentración y sube la tensión arterial</b>. Límite: <b>55 dBA</b>; los servidores, aislados en el <b>CPD</b>.'],
+[3,'Resume las condiciones ambientales del puesto informático.','Luz <b>300–500 lux</b> (luminancias ≤ 3:1, difusores) · temperatura <b>20–24 °C</b> en invierno y <b>23–26 °C</b> en verano · humedad <b>40–60 %</b> · aire <b>&lt; 0,25 m/s</b> · ruido <b>≤ 55 dBA</b>.'],
+[4,'¿Qué son los TME y cuáles son los 4 más habituales en programadores?','Trastornos musculoesqueléticos por microtraumatismos repetitivos: posturas estáticas y movimientos frecuentes. Son <b>más del 65 %</b> de las bajas en IT.<br>1) <b>Cervicalgia y síndrome del trapecio</b>. 2) <b>Lumbalgia mecánica</b>. 3) <b>Síndrome del túnel carpiano</b>. 4) <b>Epicondilitis lateral</b>.'],
+[4,'¿Qué es el síndrome del túnel carpiano y qué síntomas da?','La compresión del <b>nervio mediano</b> a su paso por el retináculo flexor de la muñeca. Síntomas: <b>hormigueo (parestesias) en el pulgar, el índice y el medio</b>, pérdida de fuerza para agarrar y dolor por la noche.'],
+[4,'¿Por qué programar provoca fatiga visual (astenopia)?','Porque se parpadea menos: de <b>15–20</b> veces por minuto se pasa a <b>5–7</b>. La película lagrimal se rompe antes de parpadear (Break-Up Time <b>&lt; 10 s</b>) y aparece el <b>Síndrome de Visión Informática</b>.'],
+[4,'Síntomas de la astenopia (Síndrome de Visión Informática).','Picor, sensación de cuerpo extraño, visión borrosa a ratos, <b>diplopía</b> temporal (visión doble) y <b>cefalea supraorbitaria</b>. Puede llegar a la queratitis.'],
+[4,'Explica la regla 20-20-20 y para qué sirve.','Cada <b>20 minutos</b>, mirar durante <b>20 segundos</b> un objeto a <b>20 pies (≈ 6 m)</b>. Relaja el <b>músculo ciliar</b> (evita el espasmo de acomodación) y recupera el parpadeo para combatir la sequedad ocular. La recomiendan el INSST y la Academia Española de Oftalmología.'],
+[4,'¿Cómo deben organizarse las pausas en el trabajo con PVD?','<b>Breves y frecuentes</b>, repartidas a lo largo de la jornada, nunca acumuladas al final.<br><b>Alta intensidad:</b> cada 60 min, 5–10 min de marcha y estiramientos.<br><b>Moderada:</b> cada 90–120 min, 15 min sin pantalla.<br>Las fases son parada, movilidad e hidratación.'],
+[5,'Define la carga mental y explica por qué es alta en el desarrollo ágil.','Es el conjunto de exigencias <b>cognitivas, resolutivas y emocionales</b>. En Scrum y Kanban la aumentan los <b>sprints de 2 semanas</b>, las dependencias complejas y las incidencias críticas en producción.'],
+[5,'¿Qué medidas organizativas reducen la carga mental?','<b>Estimación realista</b> (sin sobrecargar los sprints), <b>gestión de interrupciones</b> (bloques de Deep Work sin Slack ni Teams) y <b>priorización clara</b> (evitar la multitarea en varios proyectos).'],
+[5,'¿Qué es el tecnoestrés y qué tipos hay?','Según el INSST, la <b>incapacidad de adaptarse de forma saludable</b> al uso de las nuevas tecnologías. Tipos: <b>tecnoansiedad</b> (miedo a quedarse obsoleto), <b>tecnosobrecarga</b> (notificaciones que rompen el flow) y <b>tecnofatiga</b> (agotamiento mental; aparece en las diapositivas).'],
+[5,'Explica el derecho a la desconexión digital.','Lo regulan el <b>art. 88 de la LO 3/2018 (LOPDGDD)</b> y el <b>art. 20 bis del ET</b>. El trabajador no tiene que responder correos, mensajes o llamadas fuera de su horario. La empresa debe tener un <b>protocolo interno</b> que limite el uso de dispositivos fuera de la jornada, para proteger el descanso y la intimidad familiar. No desconectar aumenta la depresión y el burnout.'],
+[6,'¿Cuáles son las 3 ideas de la conclusión?','1) <b>Ajusta tu entorno físico</b>: silla, monitor y periféricos son la primera defensa.<br>2) <b>Protege tu vista y tu musculatura</b>: regla 20-20-20 y micro-pausas de 5 min por hora.<br>3) <b>Exige tus derechos digitales</b>: desconexión y gestión del tecnoestrés.'],
+[6,'¿Para qué sirve la lista de chequeo del capítulo 6?','Para que el estudiante <b>autoevalúe su puesto</b> (aula, laboratorio o teletrabajo) según los protocolos del INSST: en cada punto se comprueba si es conforme (SÍ/NO) y se aplica la acción correctora.']
+];
+
+(function(){
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const st={get(k,d){try{const v=localStorage.getItem('siprl:'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('siprl:'+k,JSON.stringify(v))}catch(e){}}};
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const root=document.documentElement,t0=st.get('theme',null);if(t0)root.dataset.theme=t0;
+$('#themeBtn').onclick=()=>{const c=root.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'),n=c==='dark'?'light':'dark';root.dataset.theme=n;st.set('theme',n)};
+const V=['resumen','c1','c2','c3','c4','c5','c6','test','num','flash'];
+function show(v){if(!V.includes(v))v='resumen';$$('section.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+v));$$('#tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.v===v));window.scrollTo(0,0)}
+$$('#tabs button').forEach(b=>b.onclick=()=>{location.hash=b.dataset.v});
+addEventListener('hashchange',()=>show(location.hash.slice(1)));
+document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#"]');if(!a)return;const id=a.getAttribute('href').slice(1);if(!V.includes(id)){const el=document.getElementById(id);if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth'})}}});
+// PVD
+function pvd(){const d=+$('#pvdD').value,s=+$('#pvdS').value,w=d*s,yes=d>4||w>20;$('#pvdOut').innerHTML=`${d} h/día · ${w} h/semana → <b style="color:var(${yes?'--ok':'--bad'})">${yes?'Sí eres usuario de PVD':'No llegas al umbral de usuario de PVD'}</b>. ${yes?'Tu empresa debe evaluar tu puesto ergonómicamente y hacerte reconocimientos médicos periódicos (vista y aparato locomotor).':'El umbral del INSST es más de 4 h al día o más de 20 h a la semana.'}`}
+$('#pvdD').oninput=pvd;$('#pvdS').oninput=pvd;pvd();
+// 20-20-20
+let tI=null,tL=0,phase='w';const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+function tick(){tL--;if(tL<=0){if(phase==='w'){phase='r';tL=20;$('#t20msg').innerHTML='<b style="color:var(--ok)">👀 ¡Mira a 6 metros durante 20 segundos!</b>'}else{phase='w';tL=st._w||1200;$('#t20msg').textContent='Vuelve al trabajo: 20 min'}}$('#t20').textContent=fmt(tL)}
+function start(w){clearInterval(tI);st._w=w;phase='w';tL=w;$('#t20').textContent=fmt(tL);$('#t20msg').textContent='Trabajando…';tI=setInterval(tick,1000)}
+$('#t20go').onclick=()=>start(1200);$('#t20demo').onclick=()=>start(20);$('#t20stop').onclick=()=>{clearInterval(tI);$('#t20').textContent='20:00';$('#t20msg').textContent='20 min de trabajo → 20 s mirando lejos'};
+// checklist
+const cv=st.get('chk',{});
+$('#chkBody').innerHTML=CHK.map((r,i)=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td><label><input type="radio" name="ck${i}" value="si" ${cv[i]==='si'?'checked':''}> SÍ</label><label><input type="radio" name="ck${i}" value="no" ${cv[i]==='no'?'checked':''}> NO</label></td><td>${r[2]}</td></tr>`).join('');
+function chk(){const no=CHK.map((r,i)=>cv[i]==='no'?r:null).filter(Boolean),done=Object.keys(cv).length;$('#chkOut').innerHTML=done?`<b>${done - no.length} de ${done}</b> puntos revisados son conformes (${CHK.length - done} sin revisar).${no.length?'<br>Acciones correctoras pendientes:<ul>'+no.map(r=>`<li><b>${r[0]}:</b> ${r[2]}</li>`).join('')+'</ul>':' 🎉 Tu puesto cumple lo que has revisado.'}`:'Marca SÍ o NO en cada punto para ver tus acciones correctoras.'}
+$('#chkBody').addEventListener('change',e=>{const i=+e.target.name.slice(2);cv[i]=e.target.value;st.set('chk',cv);chk()});chk();
+// test
+$('#nQ').textContent=QS.length;let T=null;
+$('#tStart').onclick=()=>{const c=$('#tCap').value;let pool=QS;if(c==='fail'){const f=new Set(st.get('fails',[]));pool=QS.filter((q,i)=>f.has(i));if(!pool.length){$('#tSetup').insertAdjacentHTML('beforeend','<p class="out">No tienes preguntas falladas pendientes. 🎉</p>');return}}else if(c!=='all')pool=QS.filter(q=>String(q.c)===c);
+ T={qs:shuf(pool).slice(0,+$('#tN').value),i:0,ok:0,ko:0,pen:+$('#tPen').value,bad:[]};$('#tSetup').hidden=true;$('#tRun').hidden=false;rq()};
+function rq(){const q=T.qs[T.i];$('#tRun').innerHTML=`<div class="row" style="justify-content:space-between"><span class="small muted">Pregunta ${T.i+1}/${T.qs.length} · Cap. ${q.c}</span><span class="small">✓ ${T.ok} · ✗ ${T.ko}</span></div><div class="progress"><i style="width:${T.i/T.qs.length*100}%"></i></div><p style="font-weight:600;font-size:1.05rem">${q.q}</p><div class="opts">${(q._p=shuf(q.o.map((o,j)=>j))).map((j,x)=>`<button class="opt" data-j="${j}">${'abcd'[x]}) ${q.o[j]}</button>`).join('')}</div><div id="fb"></div>`;$$('#tRun .opt').forEach(b=>b.onclick=()=>ans(+b.dataset.j))}
+function ans(j){const q=T.qs[T.i],k=QS.indexOf(q),f=new Set(st.get('fails',[]));$$('#tRun .opt').forEach(b=>{const x=+b.dataset.j;b.disabled=true;if(x===q.a)b.classList.add('right');else if(x===j)b.classList.add('wrong')});
+ if(j===q.a){T.ok++;f.delete(k)}else{T.ko++;f.add(k);T.bad.push(q)}st.set('fails',[...f]);
+ $('#fb').innerHTML=`<div class="out"><b>${j===q.a?'✓ Correcto':'✗ Incorrecto'}</b> · ${q.e}</div><button class="btn" id="nx" style="margin-top:10px">${T.i+1<T.qs.length?'Siguiente →':'Ver resultado'}</button>`;$('#nx').onclick=()=>{T.i++;T.i<T.qs.length?rq():end()};$('#nx').focus()}
+function end(){const n=T.qs.length,nota=Math.max(0,T.ok-T.ko*T.pen)/n*10;$('#tRun').innerHTML=`<h3 style="margin-top:0">Resultado</h3><div class="score"><div><b>${nota.toFixed(2).replace('.',',')}</b><span class="small muted">sobre 10</span></div><div><b>${T.ok}</b><span class="small muted">aciertos</span></div><div><b>${T.ko}</b><span class="small muted">fallos</span></div></div>${T.bad.map(q=>`<div class="box trap"><b>${q.q}</b><br>✓ ${q.o[q.a]}<br><span class="small">${q.e}</span></div>`).join('')}<button class="btn" id="again">Otro test</button>`;$('#again').onclick=()=>{$('#tRun').hidden=true;$('#tSetup').hidden=false}}
+// fill
+let F=[];function nf(){F=shuf(FILL).slice(0,10);$('#fill').innerHTML=F.map((f,i)=>`<div class="q">${esc(f[0]).replace(/_{3,}/,`<input type="number" step="any" id="f${i}" aria-label="respuesta">`)}<span class="res" id="r${i}"></span></div>`).join('');$('#fillScore').textContent=''}
+$('#fillChk').onclick=()=>{let ok=0;F.forEach((f,i)=>{const v=parseFloat($('#f'+i).value),g=f[1].includes(v);if(g)ok++;$('#r'+i).innerHTML=g?'<span style="color:var(--ok)">✓</span>':`<span style="color:var(--bad)">✗ ${f[1][0]}</span>`});$('#fillScore').textContent=`${ok}/${F.length}`};
+$('#fillNew').onclick=nf;nf();
+// flash
+const DECK=[...QS.map(q=>({c:q.c,k:'test',q:q.q,a:`<p style="font-weight:700">✓ ${esc(q.o[q.a])}</p><p class="small">${q.e}</p>`})),
+ ...OPEN.map(o=>({c:o[0],k:'abierta',q:o[1],a:o[2]})),
+ ...FILL.map((f,i)=>({c:FILL_C[i],k:'num',q:f[0].replace(/_{3,}/,'¿…?'),a:`<p style="font-weight:700;font-size:1.2rem">${esc(f[0]).replace(/_{3,}/,'<u>'+f[1][0]+'</u>')}</p>`})),
+ ...CHK.map(r=>({c:6,k:'chk',q:`Lista de chequeo · ${r[0]}: ¿qué criterio se comprueba y qué acción correctora se aplica?`,a:`<p><b>Criterio:</b> ${r[1]}</p><p><b>Acción correctora:</b> ${r[2]}</p>`})),
+ ...FL.map((f,i)=>({c:FL_C[i],k:'res',q:f[0],a:`<p>${esc(f[1])}</p>`}))];
+const KN={test:'Test',abierta:'Abierta',num:'Número',chk:'Chequeo',res:'Resumen'};
+const known=new Set(st.get('flKnown',[]));let fo=[],fi=0;
+function flBuild(sh){const c=$('#flCap').value,t=$('#flTipo').value,todo=$('#flTodo').checked,qq=$('#flSearch').value.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+ fo=DECK.map((d,i)=>i).filter(i=>{const d=DECK[i];return(c==='all'||String(d.c)===c)&&(t==='all'||d.k===t)&&(!todo||!known.has(i))&&(!qq||(d.q+' '+d.a).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').includes(qq))});
+ if(sh)fo=shuf(fo);fi=0;fr();if(!$('#flListBox').hidden)flListRender()}
+function stats(){$('#flStats').innerHTML=`<b>${DECK.length}</b> fichas en total · <b class="fl-known">${known.size}</b> sabidas · en este filtro: <b>${fo.length}</b>`}
+function fr(){stats();$('#flash').classList.remove('flip');if(!fo.length){$('#flTag').textContent='';$('#flKind').textContent='';$('#flQ').textContent='No hay fichas con este filtro 🎉';$('#flA').innerHTML='';$('#flPos').textContent='0/0';return}
+ const i=fo[fi],d=DECK[i];$('#flTag').textContent='Cap. '+d.c+(known.has(i)?' · ✓ sabida':'');$('#flKind').textContent=KN[d.k];$('#flQ').textContent=d.q;$('#flA').innerHTML=`<p class="small muted" style="margin-top:0">${esc(d.q)}</p>${d.a}`;$('#flPos').textContent=`${fi+1}/${fo.length}`}
+function flListRender(){$('#flListBox').innerHTML=fo.map(i=>{const d=DECK[i];return`<details class="fl-item"><summary>${known.has(i)?'<span class="fl-known">✓</span> ':''}<span class="pill">Cap. ${d.c}</span> ${esc(d.q)}</summary><div class="a">${d.a}</div></details>`}).join('')||'<p class="muted">No hay fichas con este filtro.</p>'}
+$('#flash').onclick=()=>$('#flash').classList.toggle('flip');
+$('#flNext').onclick=()=>{if(!fo.length)return;fi=(fi+1)%fo.length;fr()};$('#flPrev').onclick=()=>{if(!fo.length)return;fi=(fi-1+fo.length)%fo.length;fr()};
+const mark=k=>{if(!fo.length)return;const i=fo[fi];k?known.add(i):known.delete(i);st.set('flKnown',[...known]);if($('#flTodo').checked&&k){fo.splice(fi,1);if(fi>=fo.length)fi=0}else fi=(fi+1)%fo.length;fr()};
+$('#flYes').onclick=()=>mark(true);$('#flNo').onclick=()=>mark(false);$('#flShuf').onclick=()=>flBuild(true);
+['flCap','flTipo','flTodo'].forEach(id=>$('#'+id).onchange=()=>flBuild(false));$('#flSearch').oninput=()=>flBuild(false);
+$('#flList').onclick=()=>{const b=$('#flListBox'),show=b.hidden;b.hidden=!show;$('#flCardWrap').hidden=show;$('#flList').textContent=show?'🃏 Ver como tarjetas':'📋 Ver todas en lista';if(show)flListRender()};
+$('#flReset').onclick=()=>{known.clear();st.set('flKnown',[]);flBuild(false)};
+document.addEventListener('keydown',e=>{if(!$('#v-flash').classList.contains('on')||/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName))return;if(e.key===' '){e.preventDefault();$('#flash').classList.toggle('flip')}if(e.key==='ArrowRight')$('#flNext').click();if(e.key==='ArrowLeft')$('#flPrev').click()});
+flBuild(false);
+show(location.hash.slice(1));
+})();
+</script>
+</body>
+</html>
